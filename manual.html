@@ -26,8 +26,8 @@
 </div>
 <div class="container">
 <h1>マニュアル</h1>
-<p>以下では，日本語Wikipediaオントロジー検索システム ver.2009-11-22の使用方法について説明する．</p>
-<div style="text-align: right; font-size: 80%;">最終更新日: 2009年11月22日</div>
+<p>以下では，日本語Wikipediaオントロジー検索システム ver.2009-11-23の使用方法について説明する．</p>
+<div style="text-align: right; font-size: 80%;">最終更新日: 2009年11月30日</div>
 
 <a name="table_of_contents"></a>
 <h2>目次</h2>
@@ -37,6 +37,7 @@
 	<li><a href="#server_side_program">サーバーサイドプログラム</a>
 	<ul>
 		<li><a href="#get_class">クラスの取得</a></li>
+		<li><a href="#get_property">プロパティの取得</a></li>
 		<li><a href="#get_instance">インスタンスの取得</a></li>
 		<li><a href="#get_instance_with_multiple_type">複数のタイプ(rdf:type)を持つインスタンスの取得</a></li>
 		<li><a href="#get_class_and_instance_with_inference_model">推論モデルを用いたクラスおよびインスタンスの取得</a></li>
@@ -56,6 +57,7 @@
 	<li><a href="#search_panel">2. 検索パネル</a>
 	<ul>
 		<li><a href="#class_search">クラス検索</a></li>
+		<li><a href="#property_search">プロパティ検索</a></li>
 		<li><a href="#instance_search">インスタンス検索</a></li>
 		<li><a href="#use_inference_model">推論モデルの利用</a></li>
 		<li><a href="#number_of_statements">表示ステートメント数</a></li>
@@ -108,21 +110,21 @@ Exploreでは現在正常に動作しない．</div>
 <br />
 
 <p>
-図1に日本語Wikipediaオントロジー検索システムのシステム構成を示す．日本語Wikipediaオントロジー検索システムは，クライアントプログラム，サーバーサイドプログラム，
-日本語Wikipediaオントロジーデータベースの3つから構成される．</p>
-<p>クライアントプログラム（検索インタフェース）は，<a href="http://extjs.co.jp/"
+図1に日本語Wikipediaオントロジー検索システムのシステム構成を示す．日本語Wikipediaオントロジー検索システムは，検索インターフェース，サーバーサイドプログラム，
+日本語WikipediaオントロジーDBの3つから構成される．</p>
+<p>検索インターフェースは，<a href="http://extjs.co.jp/"
 	rel="external">ExtJS</a>ライブラリを用いて実装されている． サーバーサイドプログラムは，Java Servletと<a
 	href="http://jena.sourceforge.net/" rel="external">Jena Semantic
 Web Framework for Java</a>を用いて実装し， <a href="http://tomcat.apache.org/"
 	rel="external">Apache Tomcat</a>上で動作している． <a
-	href="http://wikipedia-ont.sourceforge.jp/" rel="external">日本語Wikipediaオントロジー</a>データベースは，JenaのAPIを用いてあらかじめOWL形式の
+	href="http://wikipedia-ont.sourceforge.jp/" rel="external">日本語Wikipediaオントロジー</a>DBは，JenaのAPIを用いてあらかじめOWL形式の
 日本語WikipediaオントロジーおよびインスタンスをMySQLに格納している．</p>
 <p>
-クライアントプログラムでは，はじめにユーザが検索キーワードを入力すると，キーワードに関連する日本語Wikipediaオントロジー内の
-クラスまたはインスタンスを識別するURIに変換する．
-サーバーサイドプログラムでは，クライアントプログラムから問い合わせのあったURIに関連するステートメントを日本語Wikipediaオントロジーデータベースに問い合わせて，
-クライアントプログラムに，RDF/XMLデータとJSONデータ（テーブル用とツリー用）を返す．クライアントプログラムは，
-サーバーサイドプログラムから返されたJSONデータを元に，テーブルやツリーの構造でWikipediaオントロジーのクラスおよびインスタンスにおける
+検索インターフェースでは，はじめにユーザが検索キーワードを入力すると，キーワードに関連する日本語Wikipediaオントロジー内の
+クラス，プロパティ，インスタンスを識別するURIに変換する．
+サーバーサイドプログラムでは，クライアントプログラムから問い合わせのあったURIに関連するステートメントを日本語WikipediaオントロジーDBに問い合わせて，
+検索インターフェースに，RDF/XMLデータとJSONデータ（テーブル用とツリー用）を返す．検索インターフェースは，
+サーバーサイドプログラムから返されたJSONデータを元に，テーブルやツリーの構造でWikipediaオントロジーのクラス，プロパティ，インスタンスにおける
 ステートメントや階層関係を表示する．また，ソースコードとしてRDF/XMLデータを表示することもできる．</p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
@@ -175,6 +177,52 @@ http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/json_tree/慶應
 	href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.html"
 	rel="external">
 http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/慶應義塾大学の人物.html</a>
+</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_property"></a>
+<h3>プロパティの取得</h3>
+<p>以下のURIにアクセスすると，プロパティのラベルを含むRDF/XMLデータが取得できる．</p>
+
+<h4>RDF/XMLデータ</h4>
+<div style="font-weight: bold;">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+	style="color: green;">property</span>/<span style="color: red;">data</span>/[プロパティ名].rdf</div>
+<p>例： <a
+	href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.rdf"
+	rel="external">
+http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/ジャンル.rdf</a>
+</p>
+<br />
+<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
+
+<h4>JSON（テーブル用）データ</h4>
+<div style="font-weight: bold;">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+	style="color: green;">property</span>/<span style="color: red;">json_table</span>/[プロパティ名].json</div>
+<p>例： <a
+	href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/json_table/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.json"
+	rel="external">
+http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/json_table/ジャンル.json</a>
+</p>
+
+<h4>JSON（ツリー用）データ</h4>
+<div style="font-weight: bold;">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+	style="color: green;">property</span>/<span style="color: red;">json_tree</span>/[プロパティ名].json</div>
+<p>例： <a
+	href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/json_tree/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.json"
+	rel="external">
+http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/json_tree/ジャンル.json</a>
+</p>
+
+<br />
+<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
+<h4>HTML</h4>
+<div style="font-weight: bold;">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+	style="color: green;">property</span>/<span style="color: red;">page</span>/[プロパティ名].html</div>
+<p>例： <a
+	href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/page/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.html"
+	rel="external">
+http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/page/ジャンル.html</a>
 </p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
@@ -543,6 +591,13 @@ icon-instanceクラスを用意している．スタイルシートは以下のU
 <br />
 <p>「キーワード」テキストフィールドに複数のクラス名をスペース区切りで入力し，検索ボタンを押すと，
 複数のタイプ(rdf:type)を持つインスタンス（複数のクラスに属するインスタンス）一覧を取得することができる．</p>
+
+<a name="property_search"></a>
+<h3>プロパティ検索</h3>
+<p>「キーワード」テキストフィールドにプロパティ名（日本語Wikipediaオントロジー内のクラスが持つラベル（rdfs:labelプロパティの値））を入力し，
+検索対象としてプロパティを選択し，検索ボタンを押すと「ステートメント」タブと「クラス階層とインスタンス」パネルに
+結果が表示される．検索結果として対象プロパティに関連するステートメントを取得する．</p>
+<br />
 
 <a name="instance_search"></a>
 <h3>インスタンス検索</h3>
