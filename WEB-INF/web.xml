@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+	<servlet>
+		<servlet-name>
+            wikiont
+		</servlet-name>
+		<servlet-class>
+            jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.WikipediaOntologySearchServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont
+		</servlet-name>
+		<url-pattern>
+            /class/*
+		</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont
+		</servlet-name>
+		<url-pattern>
+            /instance/*
+		</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont
+		</servlet-name>
+		<url-pattern>
+            /property/*
+		</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>saveFileFilter</filter-name>
+		<filter-class>jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.SaveFileFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>saveFileFilter</filter-name>
+		<url-pattern>/class/*</url-pattern>
+		<url-pattern>/property/*</url-pattern>
+		<url-pattern>/instance/*</url-pattern>
+	</filter-mapping>
+
+</web-app>
