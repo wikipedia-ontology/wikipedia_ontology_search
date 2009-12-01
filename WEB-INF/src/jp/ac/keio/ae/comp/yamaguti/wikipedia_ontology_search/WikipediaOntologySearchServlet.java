@@ -108,7 +108,6 @@ public class WikipediaOntologySearchServlet extends HttpServlet {
             File templateFile = new File(getServletContext().getRealPath("sparql_templates/query_types.tmpl"));
             String sparqlTemplate = WikipediaOntologyUtilities.readFile(templateFile);
             String queryString = wikiOntSearch.getQueryString(typeSet, sparqlTemplate);
-            System.out.println(queryString);
             wikiOntSearch.setQueryResults2(queryString, typeSet);
             out.println(getOutputString(wikiOntSearch, req, resp));
         }
