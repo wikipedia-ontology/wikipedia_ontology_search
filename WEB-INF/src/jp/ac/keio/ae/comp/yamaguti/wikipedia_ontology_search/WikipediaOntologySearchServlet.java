@@ -96,14 +96,19 @@ public class WikipediaOntologySearchServlet extends HttpServlet {
             if (keyWord.equals("ALLClasses") && queryType == Type.CLASS) {
                 wikiOntSearch.setAllClassesModel();
             } else {
-                String queryString = wikiOntSearch.getQueryString(keyWord);
+                File templateFile = new File(getServletContext().getRealPath("sparql_templates/query_resource.tmpl"));
+                String sparqlTemplate = WikipediaOntologyUtilities.readFile(templateFile);
+                String queryString = wikiOntSearch.getQueryString(keyWord, sparqlTemplate);
                 wikiOntSearch.setQueryResults(queryString);
             }
             out.println(getOutputString(wikiOntSearch, req, resp));
         } else {
             queryType = Type.INSTANCE;
             wikiOntSearch.setQueryType(queryType);
-            String queryString = wikiOntSearch.getQueryString(typeSet);
+            File templateFile = new File(getServletContext().getRealPath("sparql_templates/query_types.tmpl"));
+            String sparqlTemplate = WikipediaOntologyUtilities.readFile(templateFile);
+            String queryString = wikiOntSearch.getQueryString(typeSet, sparqlTemplate);
+            System.out.println(queryString);
             wikiOntSearch.setQueryResults2(queryString, typeSet);
             out.println(getOutputString(wikiOntSearch, req, resp));
         }
@@ -165,7 +170,7 @@ public class WikipediaOntologySearchServlet extends HttpServlet {
         req.setAttribute("outputFile", outputFile);
         if (outputFile.exists()) {
             wikiOntSearch.closeDB();
-            return readFile(outputFile);
+            return WikipediaOntologyUtilities.readFile(outputFile);
         }
         Model outputModel = getOutputModel(wikiOntSearch);
         return getOutputString(outputModel, wikiOntSearch, req, resp);
@@ -298,21 +303,6 @@ public class WikipediaOntologySearchServlet extends HttpServlet {
         }
 
         return subOutputModel;
-    }
-
-    private String readFile(File outputFile) {
-        StringBuilder builder = new StringBuilder();
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(outputFile), "UTF-8"));
-            while (reader.ready()) {
-                builder.append(reader.readLine());
-                builder.append("\n");
-            }
-            reader.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-        return builder.toString();
     }
 
     private void removeIsaLoop(Model model) {

@@ -1,4 +1,4 @@
-#Wed Nov 25 20:52:37 JST 2009
+#Tue Dec 01 21:44:03 JST 2009
 eclipse.preferences.version=1
 encoding//js/actions=UTF-8
 encoding//js/parameters.js=UTF-8
@@ -9,5 +9,6 @@ encoding//js/utilities.js=UTF-8
 encoding//js/widgets=UTF-8
 encoding//js/widgets/TreePanel.js=UTF-8
 encoding//js/wikipedia-ontology-search.js=UTF-8
+encoding//jsp/properties_ranked_by_number_of_statements.jsp=UTF-8
 encoding//jsp/resource_page.jsp=UTF-8
-encoding/number_of_instances_statistics.html=UTF-8
+encoding/<project>=UTF-8

@@ -15,7 +15,7 @@ import com.hp.hpl.jena.vocabulary.*;
 public class WikipediaOntologyUtils {
 
     /**
-     * ƒ‹[ƒv‚µ‚Ä‚¢‚éƒXƒe[ƒgƒƒ“ƒg‚ğœ‹‚·‚éƒƒ\ƒbƒh
+     * ãƒ«ãƒ¼ãƒ—ã—ã¦ã„ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’é™¤å»ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
      *
      * @param ontModel
      * @return
@@ -46,7 +46,7 @@ public class WikipediaOntologyUtils {
     }
 
     /**
-     * ƒNƒ‰ƒX‚ÆƒTƒuƒNƒ‰ƒX‚ÌƒZƒbƒg‚Ìƒ}ƒbƒv‚ğ•Ô‚·ƒƒ\ƒbƒhD ƒ‹[ƒgƒm[ƒh‚ÌƒZƒbƒg‚ÆƒŠ[ƒtƒm[ƒh‚ÌƒZƒbƒg‚ğ‹‚ß‚éÛ‚É•K—vD
+     * ã‚¯ãƒ©ã‚¹ã¨ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã®ã‚»ãƒƒãƒˆã®ãƒãƒƒãƒ—ã‚’è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰ï¼ ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã®ã‚»ãƒƒãƒˆã¨ãƒªãƒ¼ãƒ•ãƒãƒ¼ãƒ‰ã®ã‚»ãƒƒãƒˆã‚’æ±‚ã‚ã‚‹éš›ã«å¿…è¦ï¼
      *
      * @param ontModel
      * @return
@@ -76,7 +76,7 @@ public class WikipediaOntologyUtils {
     }
 
     /**
-     * ƒ‹[ƒgƒm[ƒh‚ÌƒNƒ‰ƒX‚ğ•Ô‚·ƒƒ\ƒbƒh
+     * ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã®ã‚¯ãƒ©ã‚¹ã‚’è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰
      *
      */
     private static Set<Resource> getRootClassSet(Map<Resource, Set<Resource>> classSubClassMap) {
@@ -97,7 +97,7 @@ public class WikipediaOntologyUtils {
     }
 
     /**
-     * ƒŠ[ƒtƒm[ƒhiƒŠƒ\[ƒXj‚ÌƒZƒbƒg‚ğ•Ô‚·ƒƒ\ƒbƒh
+     * ãƒªãƒ¼ãƒ•ãƒãƒ¼ãƒ‰ï¼ˆãƒªã‚½ãƒ¼ã‚¹ï¼‰ã®ã‚»ãƒƒãƒˆã‚’è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰
      *
      * @param classSubClassMap
      * @return

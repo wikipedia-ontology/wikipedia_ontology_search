@@ -1,5 +1,6 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
+import java.io.*;
 import java.util.*;
 
 import org.json.*;
@@ -64,22 +65,17 @@ public class WikipediaOntologySearch {
         return wikiOntStrage.getDBModel(WikipediaOntologyAndInstanceInferenceModelName);
     }
 
-    public String getQueryString(Set<String> typeSet) {
-        StringBuilder queryString = new StringBuilder();
-        queryString.append("PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-                + "PREFIX  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX  owl: <http://www.w3.org/2002/07/owl#>  SELECT ?resource");
-        queryString.append(" WHERE {");
+    public String getQueryString(Set<String> typeSet, String sparqlTemplate) {
+        StringBuilder queryTypeSetString = new StringBuilder();
         int i = 0;
         for (String type : typeSet) {
-            queryString.append("?resource rdf:type ?type" + i + ". ?type" + i + " rdfs:label \"" + type + "\".");
+            queryTypeSetString.append("?resource rdf:type ?type" + i + ". ?type" + i + " rdfs:label \"" + type + "\".");
             i++;
         }
-        queryString.append("}");
-        return queryString.toString();
+        return sparqlTemplate.replace("<QueryTypeSet>", queryTypeSetString);
     }
 
-    public String getQueryString(String keyWord) {
+    public String getQueryString(String keyWord, String sparqlTemplate) {
         Type queryType = searchParameters.getQueryType();
         String searchOption = searchParameters.getSearchOption();
 
@@ -89,7 +85,7 @@ public class WikipediaOntologySearch {
         } else if (queryType == Type.PROPERTY) {
             typeFilter = "?resource rdf:type ?type . FILTER (?type = owl:ObjectProperty) ";
         } else if (queryType == Type.INSTANCE) {
-            // ŒŸõŠÔ‚ª‚©‚©‚é
+            // æ¤œç´¢æ™‚é–“ãŒã‹ã‹ã‚‹
             // typeFilter =
             // "OPTIONAL { ?resource rdf:type ?type  FILTER (?type != owl:ObjectClass || ?type != owl:ObjectProperty)} ";
         }
@@ -105,11 +101,10 @@ public class WikipediaOntologySearch {
         } else if (searchOption.equals("exact_match")) {
             regexString = "^" + keyWord + "$";
         }
-        return "PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-                + "PREFIX  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-                + "PREFIX  owl: <http://www.w3.org/2002/07/owl#> " + "SELECT ?resource ?type "
-                + "WHERE { ?resource rdfs:label ?label . " + typeFilter + " FILTER regex(?label, \"" + regexString
-                + "\")}";
+
+        String queryString = sparqlTemplate.replace("<TypeFilter>", typeFilter);
+        queryString = queryString.replace("<RegexString>", regexString);
+        return queryString;
     }
 
     public void setQueryResults2(String queryString, Set<String> keyWordSet) {
@@ -172,7 +167,7 @@ public class WikipediaOntologySearch {
                     if (type.equals(OWL.Class)) {
                         typeSet.add(resource);
                     } else if (type.equals(OWL.ObjectProperty)) {
-                        // ƒ^ƒCƒv‚É‚Í’Ç‰Á‚µ‚È‚¢
+                        // ã‚¿ã‚¤ãƒ—ã«ã¯è¿½åŠ ã—ãªã„
                     } else {
                         typeSet.add(type);
                     }
@@ -239,26 +234,28 @@ public class WikipediaOntologySearch {
         searchParameters.setSearchOption("exact_match");
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParameters);
 
-        // String keyWord = "ƒAƒbƒvƒ‹ƒRƒ“ƒsƒ…[ƒ^";
-        String keyWord = "Œcœä‹`m‘åŠw‚Ìl•¨";
-        // String keyWord = "RŒû‚•½";
-        // String keyWord = "ƒAƒiƒEƒ“ƒT[";
-        // String keyWord = "“ú–{‚ÌƒAƒiƒEƒ“ƒT[";
+        // String keyWord = "ã‚¢ãƒƒãƒ—ãƒ«ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿";
+        String keyWord = "æ…¶æ‡‰ç¾©å¡¾å¤§å­¦ã®äººç‰©";
+        // String keyWord = "å±±å£é«˜å¹³";
+        // String keyWord = "ã‚¢ãƒŠã‚¦ãƒ³ã‚µãƒ¼";
+        // String keyWord = "æ—¥æœ¬ã®ã‚¢ãƒŠã‚¦ãƒ³ã‚µãƒ¼";
         // String keyWord = "ALLClasses";
 
         // Set<String> keyWordSet = new HashSet();
-        // keyWordSet.add("Œcœä‹`m‘åŠw‚Ìl•¨");
-        // keyWordSet.add("“Œ‹“sog‚Ìl•¨");
-        // keyWordSet.add("“ú–{‚ÌƒAƒiƒEƒ“ƒT[");
-        // keyWordSet.add("ƒAƒiƒEƒ“ƒT[");
+        // keyWordSet.add("æ…¶æ‡‰ç¾©å¡¾å¤§å­¦ã®äººç‰©");
+        // keyWordSet.add("æ±äº¬éƒ½å‡ºèº«ã®äººç‰©");
+        // keyWordSet.add("æ—¥æœ¬ã®ã‚¢ãƒŠã‚¦ãƒ³ã‚µãƒ¼");
+        // keyWordSet.add("ã‚¢ãƒŠã‚¦ãƒ³ã‚µãƒ¼");
 
         // String queryString = wikiOntSearch.getQueryString(keyWordSet);
         // System.out.println(queryString);
         // wikiOntSearch.setQueryResults2(queryString, keyWordSet);
         // wikiOntSearch.showResourceSet();
 
-        // ’Pˆêƒ^ƒCƒvŒŸõ
-        String queryString = wikiOntSearch.getQueryString(keyWord);
+        // å˜ä¸€ã‚¿ã‚¤ãƒ—æ¤œç´¢
+        File templateFile = new File("sparql_templates/query_resource.tmpl");
+        String sparqlTemplate = WikipediaOntologyUtilities.readFile(templateFile);
+        String queryString = wikiOntSearch.getQueryString(keyWord, sparqlTemplate);
         wikiOntSearch.setQueryResults(queryString);
         Model outputModel = wikiOntSearch.getOutputModel();
         // System.out.println(outputModel.size());
@@ -432,12 +429,12 @@ public class WikipediaOntologySearch {
             int instanceCnt = 0;
             if (wikiOntStrage.getDBName().equals(WikipediaOntologyDBName)) {
                 instanceCnt = getInstanceCnt((String) jsonChildObj.get("text"));
-                jsonChildObj.put("text", jsonChildObj.get("text") + "i" + instanceCnt + "j");
+                jsonChildObj.put("text", jsonChildObj.get("text") + "ï¼ˆ" + instanceCnt + "ï¼‰");
             } else {
                 if (!jsonChildObj.getBoolean("leaf")) {
                     instanceCnt = getInstanceCnt((JSONArray) jsonChildObj.get("children"));
                     if (0 < instanceCnt) {
-                        jsonChildObj.put("text", jsonChildObj.get("text") + "i" + instanceCnt + "j");
+                        jsonChildObj.put("text", jsonChildObj.get("text") + "ï¼ˆ" + instanceCnt + "ï¼‰");
                     }
                 }
             }

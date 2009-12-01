@@ -103,6 +103,21 @@ public class WikipediaOntologyUtilities {
         }
     }
 
+    public static String readFile(File outputFile) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(outputFile), "UTF-8"));
+            while (reader.ready()) {
+                builder.append(reader.readLine());
+                builder.append("\n");
+            }
+            reader.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return builder.toString();
+    }
+
     public static String getQname(Resource res) {
         String prefix = "";
         String localName = "";

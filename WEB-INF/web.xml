@@ -12,6 +12,33 @@
 		</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>
+            wikiont_statistics
+		</servlet-name>
+		<servlet-class>
+            jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.WikipediaOntologyStatisticsServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont_statistics
+		</servlet-name>
+		<url-pattern>
+            /classes_ranked_by_number_of_instances
+		</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont_statistics
+		</servlet-name>
+		<url-pattern>
+            /properties_ranked_by_number_of_statements
+		</url-pattern>
+	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>
             wikiont
@@ -49,6 +76,12 @@
 		<url-pattern>/class/*</url-pattern>
 		<url-pattern>/property/*</url-pattern>
 		<url-pattern>/instance/*</url-pattern>
+		<url-pattern>
+            /classes_ranked_by_number_of_instances
+		</url-pattern>
+		<url-pattern>
+            /properties_ranked_by_number_of_statements
+		</url-pattern>
 	</filter-mapping>
 
 </web-app>

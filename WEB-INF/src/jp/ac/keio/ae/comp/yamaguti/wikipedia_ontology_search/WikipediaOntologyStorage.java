@@ -123,7 +123,7 @@ public class WikipediaOntologyStorage {
     }
 
     /**
-     * WikipediaƒIƒ“ƒgƒƒW[‚ğƒf[ƒ^ƒx[ƒX‚ÉŠi”[‚·‚é
+     * Wikipediaã‚ªãƒ³ãƒˆãƒ­ã‚¸ãƒ¼ã‚’ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ ¼ç´ã™ã‚‹
      *
      * @param modelName
      * @param isInfModel
@@ -138,7 +138,7 @@ public class WikipediaOntologyStorage {
     }
 
     /**
-     * WikipediaƒIƒ“ƒgƒƒW[‚ÆƒCƒ“ƒXƒ^ƒ“ƒX‚ğƒf[ƒ^ƒx[ƒX‚ÉŠi”[‚·‚é
+     * Wikipediaã‚ªãƒ³ãƒˆãƒ­ã‚¸ãƒ¼ã¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ ¼ç´ã™ã‚‹
      *
      * @param modelName
      * @param isInfModel
