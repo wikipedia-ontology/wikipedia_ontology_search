@@ -10,6 +10,16 @@
 <%@ page
 	import="jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.*"%>
 
+<%
+String lang = (String) request.getAttribute("lang");
+String langStr = "";
+if (lang.equals("ja")) {
+    langStr = "(日本語)";
+} else if (lang.equals("en")) {
+    langStr = "(英語)";
+}
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
@@ -17,7 +27,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="./myresources/mystyle.css" type="text/css"
 	media="all" />
-<title>統計データ（インスタンス数でソートしたクラスのリスト）: 日本語Wikipediaオントロジー検索システム</title>
+<title>インスタンス数でソートしたクラス<%=langStr %>のリスト</title>
 <script type="text/javascript" src="js/lib/external.js"></script>
 <script type="text/javascript" src="js/lib/smoothscroll.js"></script>
 </head>
@@ -33,7 +43,7 @@
 </ul>
 </div>
 <div class="container">
-<h1>統計データ（インスタンス数でソートしたクラスのリスト）</h1>
+<h1>インスタンス数でソートしたクラス<%=langStr %>のリスト</h1>
 <div style="text-align: right; font-size: 80%;">最終更新日: <%=Calendar.getInstance().getTime()%></div>
 
 <%
@@ -49,7 +59,7 @@
 	            Literal label = cls.getProperty(RDFS.label).getLiteral();
 	            try {
 	                String labelStr = label.getString();
-	                if (labelStr.matches("[\\w|\\s]+")) {
+	                if (WikipediaOntologyUtilities.isEnglishTerm(labelStr)) {
 	                    labelStr = labelStr.replaceAll("\\s", "_");
 	                } else {
 	                    labelStr = URLEncoder.encode(labelStr, "UTF-8");

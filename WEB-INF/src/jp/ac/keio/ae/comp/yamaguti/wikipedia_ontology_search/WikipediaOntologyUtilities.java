@@ -162,4 +162,8 @@ public class WikipediaOntologyUtilities {
         return localName;
     }
 
+    public static boolean isEnglishTerm(String term) {
+        return term.matches("[-|:|'|\\w|\\s|\\(|\\)|\\?|\\.]+");
+    }
+
 }

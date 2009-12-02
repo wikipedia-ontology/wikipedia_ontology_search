@@ -28,8 +28,15 @@ public class WikipediaOntologyStatisticsServlet extends HttpServlet {
         if (htmlFile.exists()) {
             out.println(WikipediaOntologyUtilities.readFile(htmlFile));
         } else {
+            req.setAttribute("outputFile", htmlFile);
             if (statisticsType.equals("classes_ranked_by_number_of_instances")) {
-                setClassesRankedByNumberOfInstances(req);
+                setClassesRankedByNumberOfInstances(req, "");
+            } else if (statisticsType.equals("ja_classes_ranked_by_number_of_instances")) {
+                setClassesRankedByNumberOfInstances(req, "ja");
+                statisticsType = statisticsType.replace("ja_", "");
+            } else if (statisticsType.equals("en_classes_ranked_by_number_of_instances")) {
+                setClassesRankedByNumberOfInstances(req, "en");
+                statisticsType = statisticsType.replace("en_", "");
             } else if (statisticsType.equals("properties_ranked_by_number_of_statements")) {
                 setInfoboxPropertiesInfo(req);
             }
@@ -39,8 +46,6 @@ public class WikipediaOntologyStatisticsServlet extends HttpServlet {
 
     private void outputHTML(String statisticsType, HttpServletRequest req, HttpServletResponse resp) {
         try {
-            File htmlFile = new File(getServletContext().getRealPath(statisticsType + ".html"));
-            req.setAttribute("outputFile", htmlFile);
             getServletContext().getRequestDispatcher("/jsp/" + statisticsType + ".jsp").include(req, resp);
         } catch (ServletException se) {
             se.printStackTrace();
@@ -61,12 +66,18 @@ public class WikipediaOntologyStatisticsServlet extends HttpServlet {
         }
     };
 
-    private void setClassesRankedByNumberOfInstances(HttpServletRequest req) {
+    private void setClassesRankedByNumberOfInstances(HttpServletRequest req, String lang) {
         Model ontModel = FileManager.get().loadModel(getServletContext().getRealPath("ontology/ALLClasses.owl"));
         Map<Integer, Set<Resource>> numClsMap = new TreeMap<Integer, Set<Resource>>(descendingComparator);
 
         for (ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.Class); resIter.hasNext();) {
             Resource cls = resIter.nextResource();
+            if (lang.equals("ja") && WikipediaOntologyUtilities.isEnglishTerm(cls.getURI().split("class/")[1])) {
+                continue;
+            }
+            if (lang.equals("en") && !WikipediaOntologyUtilities.isEnglishTerm(cls.getURI().split("class/")[1])) {
+                continue;
+            }
             int numberOfInstances = cls.getProperty(WikipediaOntologyStorage.instanceCount).getLiteral().getInt();
             if (numClsMap.get(numberOfInstances) != null) {
                 Set<Resource> clsSet = numClsMap.get(numberOfInstances);
@@ -78,6 +89,7 @@ public class WikipediaOntologyStatisticsServlet extends HttpServlet {
             }
         }
         req.setAttribute("numClsMap", numClsMap);
+        req.setAttribute("lang", lang);
     }
 
     private void setInfoboxPropertiesInfo(HttpServletRequest req) {

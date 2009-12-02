@@ -35,7 +35,25 @@
             wikiont_statistics
 		</servlet-name>
 		<url-pattern>
-            /properties_ranked_by_number_of_statements
+            /ja_classes_ranked_by_number_of_instances
+		</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont_statistics
+		</servlet-name>
+		<url-pattern>
+            /en_classes_ranked_by_number_of_instances
+		</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>
+            wikiont_statistics
+		</servlet-name>
+		<url-pattern>
+            /.*properties_ranked_by_number_of_statements
 		</url-pattern>
 	</servlet-mapping>
 
@@ -80,7 +98,13 @@
             /classes_ranked_by_number_of_instances
 		</url-pattern>
 		<url-pattern>
-            /properties_ranked_by_number_of_statements
+            /ja_classes_ranked_by_number_of_instances
+		</url-pattern>
+		<url-pattern>
+            /en_classes_ranked_by_number_of_instances
+		</url-pattern>
+		<url-pattern>
+            /.*properties_ranked_by_number_of_statements
 		</url-pattern>
 	</filter-mapping>
 
