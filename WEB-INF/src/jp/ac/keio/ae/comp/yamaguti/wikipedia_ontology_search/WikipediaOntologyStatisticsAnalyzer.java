@@ -16,9 +16,10 @@ import com.hp.hpl.jena.vocabulary.*;
 public class WikipediaOntologyStatisticsAnalyzer {
 
     public static void countAllSortsOfTriples() {
-        Model infoboxModel = FileManager.get().loadModel("../ontology/wikipedia_ontology_infobox_20091120.owl");
-        Model instanceModel = FileManager.get().loadModel("../ontology/wikipedia_instance_20091120.owl");
-        Model ontModel = FileManager.get().loadModel("../ontology/wikipedia_ontology_20091120.owl");
+        Model infoboxModel = FileManager.get().loadModel("./ontology/wikipedia_ontology_infobox_20091120.owl");
+        Model instanceModel = FileManager.get().loadModel("./ontology/wikipedia_instance_20091120.owl");
+//        Model instanceModel = FileManager.get().loadModel("./ontology/wikipedia_ontology_english_instance.owl");
+        Model ontModel = FileManager.get().loadModel("./ontology/wikipedia_ontology_20091120.owl");
         Model wikiontAndInstanceModel = ModelFactory.createDefaultModel();
         wikiontAndInstanceModel.add(infoboxModel);
         wikiontAndInstanceModel.add(instanceModel);

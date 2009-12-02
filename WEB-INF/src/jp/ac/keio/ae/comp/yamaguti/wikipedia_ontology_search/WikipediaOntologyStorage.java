@@ -94,11 +94,13 @@ public class WikipediaOntologyStorage {
 
     private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = "ontology/wikipedia_ontology_infobox_20091120.owl";
     private static final String WIKIPEDIA_INSTANCE_FILE_PATH = "ontology/wikipedia_instance_20091120.owl";
+    private static final String ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH = "ontology/refined_wikipedia_ontology_english_instance_2009_10_27.owl";
     private static final String WIKIPEDIA_ONTOLOGY_FILE_PATH = "ontology/wikipedia_ontology_20091120.owl";
 
     public Model getWikipediaOntologyAndInstanceMemModel(boolean isInfModel) {
         Model instanceModel = FileManager.get().loadModel(WIKIPEDIA_INSTANCE_FILE_PATH);
         instanceModel.add(FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH));
+        instanceModel.add(FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH));
         Model ontModel = FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_FILE_PATH);
         Model model = null;
         if (isInfModel) {
@@ -315,7 +317,7 @@ public class WikipediaOntologyStorage {
         // boolean isInfModel = true;
         // storeWikipediaOntologyAndInstanceToDB(isInfModel);
         // storeWikipediaOntologyToFile();
-        // storeWikipediaOntologyToDB();
-        storeEnglishWikipediaInstanceToDB();
+        storeWikipediaOntologyToDB();
+        // storeEnglishWikipediaInstanceToDB();
     }
 }

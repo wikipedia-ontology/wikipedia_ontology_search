@@ -22,7 +22,7 @@
 <script type="text/javascript" src="js/lib/smoothscroll.js"></script>
 </head>
 
-<body style="background-color: #eee;">
+<body>
 <div class="page-title">日本語Wikipediaオントロジー検索システム</div>
 <div class="menu">
 <ul>
@@ -52,7 +52,7 @@
                     String rdfUrl = WikipediaOntologyStorage.CLASS_NS + "data/"
                             + URLEncoder.encode(label.getString() + ".rdf", "UTF-8");
                     %>
-	<li><a href="<%=url %>"><%=label.getString() %></a>(<%=numberOfInstance %>)
+	<li><a href="<%=url %>"><%=label.getString() %></a> (<%=numberOfInstance %>)
 	(<a href="<%=rdfUrl %>">RDF/XML</a>)</li>
 	<%
                 } catch (UnsupportedEncodingException exp) {
