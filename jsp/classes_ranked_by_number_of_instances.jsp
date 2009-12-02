@@ -34,33 +34,38 @@
 </div>
 <div class="container">
 <h1>統計データ（インスタンス数でソートしたクラスのリスト）</h1>
-<div style="text-align: right; font-size: 80%;">最終更新日: <%= Calendar.getInstance().getTime() %></div>
+<div style="text-align: right; font-size: 80%;">最終更新日: <%=Calendar.getInstance().getTime()%></div>
 
 <%
- Map<Integer, Set<Resource>> numClsMap = (Map<Integer, Set<Resource>>) request.getAttribute("numClsMap");
- %>
+    Map<Integer, Set<Resource>> numClsMap = (Map<Integer, Set<Resource>>) request.getAttribute("numClsMap");
+%>
 
 <ol>
 	<%
-     for (Entry<Integer, Set<Resource>> entry : numClsMap.entrySet()) {
-            int numberOfInstance = entry.getKey();
-            Set<Resource> clsSet = entry.getValue();
-            for (Resource cls : clsSet) {
-                Literal label = cls.getProperty(RDFS.label).getLiteral();
-                try {
-                    String url = WikipediaOntologyStorage.CLASS_NS + URLEncoder.encode(label.getString(), "UTF-8");
-                    String rdfUrl = WikipediaOntologyStorage.CLASS_NS + "data/"
-                            + URLEncoder.encode(label.getString() + ".rdf", "UTF-8");
-                    %>
-	<li><a href="<%=url %>"><%=label.getString() %></a> (<%=numberOfInstance %>)
-	(<a href="<%=rdfUrl %>">RDF/XML</a>)</li>
+	    for (Entry<Integer, Set<Resource>> entry : numClsMap.entrySet()) {
+	        int numberOfInstance = entry.getKey();
+	        Set<Resource> clsSet = entry.getValue();
+	        for (Resource cls : clsSet) {
+	            Literal label = cls.getProperty(RDFS.label).getLiteral();
+	            try {
+	                String labelStr = label.getString();
+	                if (labelStr.matches("[\\w|\\s]+")) {
+	                    labelStr = labelStr.replaceAll("\\s", "_");
+	                } else {
+	                    labelStr = URLEncoder.encode(labelStr, "UTF-8");
+	                }
+	                String url = WikipediaOntologyStorage.CLASS_NS + labelStr;
+	                String rdfUrl = WikipediaOntologyStorage.CLASS_NS + "data/"  + labelStr + ".rdf";
+	%>
+	<li><a href="<%=url%>"><%=label.getString()%></a> (<%=numberOfInstance%>)
+	(<a href="<%=rdfUrl%>">RDF/XML</a>)</li>
 	<%
-                } catch (UnsupportedEncodingException exp) {
-                    exp.printStackTrace();
-                }
-            }
-        }
-     %>
+	    } catch (UnsupportedEncodingException exp) {
+	                exp.printStackTrace();
+	            }
+	        }
+	    }
+	%>
 </ol>
 
 </div>
