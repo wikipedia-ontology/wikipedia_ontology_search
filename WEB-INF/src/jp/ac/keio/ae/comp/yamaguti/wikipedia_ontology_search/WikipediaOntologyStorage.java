@@ -116,6 +116,38 @@ public class WikipediaOntologyStorage {
         return model;
     }
 
+    public Model getEnglishWikipediaInstanceMemModel() {
+        Model instanceModel = FileManager.get().loadModel("ontology/wikipedia_ontology_english_instance.owl");
+        Model refinedInstanceModel = ModelFactory.createDefaultModel();
+
+        for (StmtIterator i = instanceModel.listStatements(); i.hasNext();) {
+            Statement stmt = i.nextStatement();
+            Resource subject = stmt.getSubject();
+            Property predicate = stmt.getPredicate();
+            RDFNode object = stmt.getObject();
+
+            Resource refinedSubject = subject;
+            if (subject.getURI().contains(" ")) {
+                refinedSubject = ResourceFactory.createResource(subject.getURI().replaceAll("\\s", "_"));
+                // System.out.println(subject + "=>" + refinedSubject);
+            }
+            RDFNode refinedObject = object;
+            if (object.isResource()) {
+                Resource objectResource = (Resource) object;
+                if (objectResource.getURI().contains(" ")) {
+                    refinedObject = ResourceFactory.createResource(objectResource.getURI().replaceAll("\\s", "_"));
+                    // System.out.println(object + "=>" + refinedObject);
+                }
+            }
+            refinedInstanceModel.add(ResourceFactory.createStatement(refinedSubject, predicate, refinedObject));
+        }
+        WikipediaOntologyUtilities.saveRDFFile(refinedInstanceModel,
+                "ontology/refined_wikipedia_ontology_english_instance.owl");
+        System.out.println("wikipedia instance triple size: " + refinedInstanceModel.listStatements().toSet().size());
+
+        return refinedInstanceModel;
+    }
+
     private static final String WIKIPEDIA_ALLCLASSES_FILE_PATH = "ontology/ALLClasses.owl";
 
     public Model getWikipediaOntologyMemModel() {
@@ -245,30 +277,45 @@ public class WikipediaOntologyStorage {
         System.out.println("DB Name: " + dbName);
         System.out.println("Model Name: " + modelName);
         boolean isServerSideApp = false;
-        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(dbName, isServerSideApp);
-        wikiOntStrage.storeWikipediaOntologyAndInstanceToDB(modelName, isInfModel);
-        wikiOntStrage.closeDB();
+        WikipediaOntologyStorage wikiOntStorage = new WikipediaOntologyStorage(dbName, isServerSideApp);
+        wikiOntStorage.storeWikipediaOntologyAndInstanceToDB(modelName, isInfModel);
+        wikiOntStorage.closeDB();
     }
 
     private static void storeWikipediaOntologyToDB() {
         String dbName = "wikipedia_ontology_2009_11_20";
         String modelName = "wikipedia_ontology";
         boolean isServerSideApp = false;
-        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(dbName, isServerSideApp);
-        wikiOntStrage.storeWikipediaOntologyToDB(modelName);
-        wikiOntStrage.closeDB();
+        WikipediaOntologyStorage wikiOntStorage = new WikipediaOntologyStorage(dbName, isServerSideApp);
+        wikiOntStorage.storeWikipediaOntologyToDB(modelName);
+        wikiOntStorage.closeDB();
     }
 
     private static void storeWikipediaOntologyToFile() {
-        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage();
-        Model model = wikiOntStrage.getWikipediaOntologyAndInstanceMemModel(false);
-        wikiOntStrage.saveFixWikipediaOntologyToFile(model);
+        WikipediaOntologyStorage wikiOntStorage = new WikipediaOntologyStorage();
+        Model model = wikiOntStorage.getWikipediaOntologyAndInstanceMemModel(false);
+        wikiOntStorage.saveFixWikipediaOntologyToFile(model);
+    }
+
+    private static void storeEnglishWikipediaInstanceToDB() {
+        String dbName = "english_wikipedia_instance_2009_10_27";
+        String modelName = "english_wikipedia_instance";
+        boolean isServerSideApp = false;
+        WikipediaOntologyStorage wikiOntStorage = new WikipediaOntologyStorage(dbName, isServerSideApp);
+        try {
+            Model dbModel = wikiOntStorage.getDBModel(modelName);
+            dbModel.add(wikiOntStorage.getEnglishWikipediaInstanceMemModel());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        wikiOntStorage.closeDB();
     }
 
     public static void main(String[] args) {
-        boolean isInfModel = true;
+        // boolean isInfModel = true;
         // storeWikipediaOntologyAndInstanceToDB(isInfModel);
         // storeWikipediaOntologyToFile();
-        storeWikipediaOntologyToDB();
+        // storeWikipediaOntologyToDB();
+        storeEnglishWikipediaInstanceToDB();
     }
 }

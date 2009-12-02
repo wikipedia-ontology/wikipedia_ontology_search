@@ -14,7 +14,7 @@
 }
 
 body {
-	background-color: white;
+	background-color: #eee;
 }
 
 .container {
@@ -184,4 +184,24 @@ pre {
 .url {
 	font-weight: bold; 
 	margin: 1em;
+}
+
+.two_column_block {
+	width: 49%;
+	float: left; 
+	margin-right: 0.5em;
+}
+
+.download_box {
+	font-size: 100%;
+	font-weight: bold;
+	background-color: #ffcc66; 
+	border-style: solid; 
+	border-width: 1px; 
+	margin-top: -10px; 
+	margin-bottom: 10px; 
+    border-radius: 20px;         /* CSS3 */
+    -moz-border-radius: 20px;    /* Firefox */
+    -webkit-border-radius: 20px; /* Safari,Chrome */
+
 }

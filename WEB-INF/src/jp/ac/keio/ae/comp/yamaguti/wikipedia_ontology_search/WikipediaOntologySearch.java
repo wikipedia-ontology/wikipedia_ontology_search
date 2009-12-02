@@ -31,6 +31,8 @@ public class WikipediaOntologySearch {
     private static final String WikipediaOntologyAndInstanceModelName = "wikipedia_ontology_and_instance";
     private static final String WikipediaOntologyAndInstanceInferenceDBName = "wikipedia_ontology_and_instance_inference_2009_11_20";
     private static final String WikipediaOntologyAndInstanceInferenceModelName = "wikipedia_ontology_and_instance_inference";
+    private static final String EnglishWikipediaInstanceDBName = "english_wikipedia_instance_2009_10_27";
+    private static final String EnglishWikipediaInstanceModelName = "english_wikipedia_instance";
 
     public WikipediaOntologySearch(SearchParameters params) {
         searchParameters = params;
@@ -48,6 +50,11 @@ public class WikipediaOntologySearch {
 
     public Model getDBModel() {
         return dbModel;
+    }
+
+    private Model getEnglishWikipediaInstanceModel() {
+        wikiOntStrage = new WikipediaOntologyStorage(EnglishWikipediaInstanceDBName, true);
+        return wikiOntStrage.getDBModel(EnglishWikipediaInstanceModelName);
     }
 
     private Model getWikipediaOntologyModel() {
@@ -69,6 +76,9 @@ public class WikipediaOntologySearch {
         StringBuilder queryTypeSetString = new StringBuilder();
         int i = 0;
         for (String type : typeSet) {
+            if (type.matches("[\\w|\\s]+")) {
+                type = type.replaceAll("_", " ");
+            }
             queryTypeSetString.append("?resource rdf:type ?type" + i + ". ?type" + i + " rdfs:label \"" + type + "\".");
             i++;
         }
@@ -92,6 +102,10 @@ public class WikipediaOntologySearch {
 
         String regexString = "";
         keyWord = keyWord.replaceAll("\\(|\\)|\\$|\\[|\\]|\\+|\\*|\\\\|\\?", "\\.");
+        if (keyWord.matches("[\\w|\\s]+")) {
+            keyWord = keyWord.replaceAll("_", " ");
+        }
+
         if (searchOption.equals("starts_with")) {
             regexString = "^" + keyWord;
         } else if (searchOption.equals("ends_with")) {
@@ -111,7 +125,11 @@ public class WikipediaOntologySearch {
         if (searchParameters.isUseInfModel()) {
             dbModel = getInferenceWikipediaOntologyAndInstanceModel();
         } else {
-            dbModel = getWikipediaOntologyAndInstanceModel();
+            if (keyWordSet.toArray()[0].toString().matches("[\\w|\\s]+")) {
+                dbModel = getEnglishWikipediaInstanceModel();
+            } else {
+                dbModel = getWikipediaOntologyAndInstanceModel();
+            }
         }
         Query query = QueryFactory.create(queryString);
         QueryExecution qexec = QueryExecutionFactory.create(query, dbModel);
@@ -146,7 +164,11 @@ public class WikipediaOntologySearch {
         if (searchParameters.isUseInfModel()) {
             dbModel = getInferenceWikipediaOntologyAndInstanceModel();
         } else {
-            dbModel = getWikipediaOntologyAndInstanceModel();
+            if (searchParameters.getKeyWord().matches("[\\w|\\s]+")) {
+                dbModel = getEnglishWikipediaInstanceModel();
+            } else {
+                dbModel = getWikipediaOntologyAndInstanceModel();
+            }
         }
         Query query = QueryFactory.create(queryString);
         QueryExecution qexec = QueryExecutionFactory.create(query, dbModel);
