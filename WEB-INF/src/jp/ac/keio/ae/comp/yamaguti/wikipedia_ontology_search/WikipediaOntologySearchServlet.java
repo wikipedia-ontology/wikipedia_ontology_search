@@ -30,7 +30,8 @@ public class WikipediaOntologySearchServlet extends HttpServlet {
         if (req.getParameter("search_option") != null) {
             String searchOption = req.getParameter("search_option");
             if (!(searchOption.equals("exact_match") || searchOption.equals("starts_with")
-                    || searchOption.equals("ends_with") || searchOption.equals("any_match"))) {
+                    || searchOption.equals("ends_with") || searchOption.equals("any_match")
+                    || searchOption.equals("siblings") || searchOption.equals("subClasses"))) {
                 searchOption = "exact_match";
             }
             searchParameters.setSearchOption(searchOption);
@@ -92,9 +93,15 @@ public class WikipediaOntologySearchServlet extends HttpServlet {
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParameters);
         String keyWord = searchParameters.getKeyWord();
         Type queryType = searchParameters.getQueryType();
+        String searchOption = searchParameters.getSearchOption();
         if (typeSet.size() == 0) {
             if (keyWord.equals("ALLClasses") && queryType == Type.CLASS) {
                 wikiOntSearch.setAllClassesModel();
+            } else if (queryType == Type.CLASS && (searchOption.equals("siblings") || searchOption.equals("subClasses"))){
+                File templateFile = new File(getServletContext().getRealPath("sparql_templates/query_types.tmpl"));
+                String sparqlTemplate = WikipediaOntologyUtilities.readFile(templateFile);
+                String queryString = wikiOntSearch.getClassQueryString(keyWord, sparqlTemplate);
+                wikiOntSearch.setQueryResults(queryString);
             } else {
                 File templateFile = new File(getServletContext().getRealPath("sparql_templates/query_resource.tmpl"));
                 String sparqlTemplate = WikipediaOntologyUtilities.readFile(templateFile);

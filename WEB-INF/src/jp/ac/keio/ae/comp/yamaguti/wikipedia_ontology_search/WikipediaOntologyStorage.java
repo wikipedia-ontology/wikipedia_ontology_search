@@ -92,7 +92,7 @@ public class WikipediaOntologyStorage {
         }
     }
 
-    private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = "ontology/wikipedia_ontology_infobox_20091120.owl";
+    private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = "ontology/wikipedia_ontology_infobox_20100126.owl";
     private static final String WIKIPEDIA_INSTANCE_FILE_PATH = "ontology/wikipedia_instance_20091120.owl";
     private static final String ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH = "ontology/refined_wikipedia_ontology_english_instance_2009_10_27.owl";
     private static final String WIKIPEDIA_ONTOLOGY_FILE_PATH = "ontology/wikipedia_ontology_20091120.owl";
@@ -100,7 +100,7 @@ public class WikipediaOntologyStorage {
     public Model getWikipediaOntologyAndInstanceMemModel(boolean isInfModel) {
         Model instanceModel = FileManager.get().loadModel(WIKIPEDIA_INSTANCE_FILE_PATH);
         instanceModel.add(FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH));
-        instanceModel.add(FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH));
+        // instanceModel.add(FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH));
         Model ontModel = FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_FILE_PATH);
         Model model = null;
         if (isInfModel) {
@@ -270,7 +270,7 @@ public class WikipediaOntologyStorage {
     }
 
     private static void storeWikipediaOntologyAndInstanceToDB(boolean isInfModel) {
-        String dbName = "wikipedia_ontology_and_instance_2009_11_20";
+        String dbName = "wikipedia_ontology_and_instance_2010_01_26";
         String modelName = "wikipedia_ontology_and_instance";
         if (isInfModel) {
             dbName = "wikipedia_ontology_and_instance_inference_2009_11_20";
@@ -314,10 +314,10 @@ public class WikipediaOntologyStorage {
     }
 
     public static void main(String[] args) {
-        // boolean isInfModel = true;
-        // storeWikipediaOntologyAndInstanceToDB(isInfModel);
+        boolean isInfModel = false;
+        storeWikipediaOntologyAndInstanceToDB(isInfModel);
         // storeWikipediaOntologyToFile();
-        storeWikipediaOntologyToDB();
+        // storeWikipediaOntologyToDB();
         // storeEnglishWikipediaInstanceToDB();
     }
 }

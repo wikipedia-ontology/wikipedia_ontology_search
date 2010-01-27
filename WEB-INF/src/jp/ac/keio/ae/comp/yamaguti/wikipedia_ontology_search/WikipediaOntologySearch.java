@@ -27,7 +27,7 @@ public class WikipediaOntologySearch {
 
     private static final String WikipediaOntologyDBName = "wikipedia_ontology_2009_11_20";
     private static final String WikipediaOntologyModelName = "wikipedia_ontology";
-    private static final String WikipediaOntologyAndInstanceDBName = "wikipedia_ontology_and_instance_2009_11_20";
+    private static final String WikipediaOntologyAndInstanceDBName = "wikipedia_ontology_and_instance_2010_01_26";
     private static final String WikipediaOntologyAndInstanceModelName = "wikipedia_ontology_and_instance";
     private static final String WikipediaOntologyAndInstanceInferenceDBName = "wikipedia_ontology_and_instance_inference_2009_11_20";
     private static final String WikipediaOntologyAndInstanceInferenceModelName = "wikipedia_ontology_and_instance_inference";
@@ -85,9 +85,22 @@ public class WikipediaOntologySearch {
         return sparqlTemplate.replace("<QueryTypeSet>", queryTypeSetString);
     }
 
+    public String getClassQueryString(String keyWord, String sparqlTemplate) {
+        String searchOption = searchParameters.getSearchOption();
+        String typeFilter = "";
+        if (searchOption.equals("siblings")) {
+            typeFilter = "?resource rdfs:subClassOf ?supTargetCls . ?targetCls rdfs:subClassOf ?supTargetCls . ?targetCls  rdfs:label  \""
+                    + keyWord + "\" .";
+        } else if (searchOption.equals("subClasses")) {
+            typeFilter = "?resource rdfs:subClassOf ?targetCls . ?targetCls  rdfs:label \""
+                    + keyWord + "\" .";
+        }
+        String queryString = sparqlTemplate.replace("<QueryTypeSet>", typeFilter);
+        return queryString;
+    }
+
     public String getQueryString(String keyWord, String sparqlTemplate) {
         Type queryType = searchParameters.getQueryType();
-        String searchOption = searchParameters.getSearchOption();
 
         String typeFilter = "";
         if (queryType == Type.CLASS) {
@@ -106,6 +119,7 @@ public class WikipediaOntologySearch {
             keyWord = keyWord.replaceAll("_", " ");
         }
 
+        String searchOption = searchParameters.getSearchOption();
         if (searchOption.equals("starts_with")) {
             regexString = "^" + keyWord;
         } else if (searchOption.equals("ends_with")) {
@@ -169,6 +183,7 @@ public class WikipediaOntologySearch {
                 dbModel = getWikipediaOntologyAndInstanceModel();
             }
         }
+
         Query query = QueryFactory.create(queryString);
         QueryExecution qexec = QueryExecutionFactory.create(query, dbModel);
         ResultSet results = qexec.execSelect();
