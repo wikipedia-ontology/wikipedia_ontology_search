@@ -1,9 +1,9 @@
 .page-title {
-	font-size: 180%;
+	font-size: 130%;
 	font-weight: bold;
 	text-align: center;
 	color: white;
-	padding: 15px 10px;
+	padding: 10px 10px;
 	width: 850px;
 	background: #1E4176;
 	border-color: #1E4176;
@@ -30,7 +30,7 @@ body {
 .footer {
 	text-align: center;
 	color: #eee;
-	padding: 20px 10px;
+	padding: 10px 10px;
 	width: 850px;
 	margin: 0px;
 	background: #1E4176;
@@ -54,7 +54,7 @@ body {
 
 .menu ul {
 	text-align: center;
-	margin: 5px;
+	margin: 3px;
 }
 
 .menu ul li {
@@ -64,16 +64,18 @@ body {
 
 .menu ul li a {
 	color: black;
-	font-size: 110%;
-	font-weight: bold;
+    text-decoration: none;
+	font-size: 90%;
 	padding: 0 20px;
 }
 
 .menu ul li a:hover,.menu_ul1 ul li a.selected {
 	color: #A52A2A;
+    text-decoration: underline;
 }
 
 dl {
+	line-height: 1.2em;
 	margin: 1em;
 	font-size: 90%;
 }
@@ -83,6 +85,7 @@ dt {
 }
 
 ul {
+	line-height: 1.2em;
 	list-style-type: square;
 }
 
@@ -91,6 +94,7 @@ ul li {
 }
 
 ol li {
+	line-height: 1.2em;
 	border-bottom-style: dotted;
 	border-width: 1px;
 	padding: 0.5em;
@@ -103,19 +107,19 @@ h1,h2,h3,h4,h5,h6 {
 
 h1 {
 	color: #A52A2A;
-	font-size: 150%;
+	font-size: 120%;
 }
 
 h2 {
 	color: white;
 	background-color: #1E4176;
-	font-size: 120%;
-	line-height: 150%;
+	font-size: 110%;
+	line-height: 1.2em;
 	padding: 0.1em 1em;
 }
 
 h3 {
-	font-size: 110%;
+	font-size: 100%;
 	line-height: 150%;
 	margin: 1em 1em;
 	border-style: solid;
@@ -124,7 +128,7 @@ h3 {
 }
 
 h4 {
-	font-size: 100%;
+	font-size: 90%;
 	line-height: 150%;
 	margin: 1em;
 	border-style: dotted;
@@ -193,15 +197,31 @@ pre {
 }
 
 .download_box {
+	width: 65%;
 	font-size: 100%;
 	font-weight: bold;
 	background-color: #ffcc66; 
 	border-style: solid; 
 	border-width: 1px; 
-	margin-top: -10px; 
-	margin-bottom: 10px; 
-    border-radius: 20px;         /* CSS3 */
-    -moz-border-radius: 20px;    /* Firefox */
-    -webkit-border-radius: 20px; /* Safari,Chrome */
+	margin: auto;
+	padding: 15px;
+	margin-bottom: 5px;
+	text-align: center;
+    border-radius: 15px;         /* CSS3 */
+    -moz-border-radius: 15px;    /* Firefox */
+    -webkit-border-radius: 15px; /* Safari,Chrome */
 
+}
+
+.download_box a {
+	color: navy;
+	text-decoration: none;
+}
+
+.download_box a:hover {
+	text-decoration: underline;
+}
+
+a {
+	color: navy;
 }
