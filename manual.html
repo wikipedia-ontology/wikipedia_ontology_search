@@ -27,7 +27,7 @@
 <div class="container">
 <h1>マニュアル</h1>
 <p>以下では，日本語Wikipediaオントロジー検索システム ver.2009-11-23の使用方法について説明する．</p>
-<div style="text-align: right; font-size: 80%;">最終更新日: 2009年11月30日</div>
+<div style="text-align: right; font-size: 80%;">最終更新日: 2010年1月28日</div>
 
 <a name="table_of_contents"></a>
 <h2>目次</h2>
@@ -366,7 +366,7 @@ http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/rdfs_inference/p
 	<dd>一度に返すステートメント数を指定する．</dd>
 	<dt>search_option</dt>
 	<dd>完全一致 (exact_match)，部分一致 (any_match)，前方一致 (starts_with)，後方一致
-	(ends_with))検索オプションを指定する．</dd>
+	(ends_with)，兄弟クラスリスト (siblings)，1階層下のサブクラスリスト (subClasses) 検索オプションのいずれかを指定できる．</dd>
 </dl>
 
 <p>startとlimitパラメータの使用例として，以下のURLにアクセスすることで，
@@ -380,20 +380,31 @@ http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/rdfs_inference/p
 http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?start=500&amp;limit=100</a>
 </p>
 <br />
-<p>search_optionパラメータの使用例として，「日本」をラベルに含むクラスを完全一致，部分一致，前方一致，後方一致で検索した結果取得するためのURLを以下に示す．</p>
+<p>search_optionパラメータの使用例として，「日本」をラベルに含むクラスを完全一致，部分一致，前方一致，後方一致で検索した結果を取得するためのURLを以下に示す．</p>
 <dl>
 	<dt>完全一致</dt>
 	<dd><a rel="external"
-		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=exact_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=exact_match</a></dd>
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=exact_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=exact_match</a></dd>
 	<dt>部分一致</dt>
 	<dd><a rel="external"
-		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=any_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=any_match</a></dd>
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=any_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=any_match</a></dd>
 	<dt>前方一致</dt>
 	<dd><a rel="external"
-		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=starts_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=starts_with</a></dd>
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=starts_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=starts_with</a></dd>
 	<dt>後方一致</dt>
 	<dd><a rel="external"
-		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=ends_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本?search_option=ends_with</a></dd>
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=ends_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=ends_with</a></dd>
+</dl>
+
+<p>クラス検索を行う際に，search_optionパラメータに，siblingsまたはsubClassesを指定すると，指定したクラスの兄弟クラスのリストまたは1階層下のサブクラスのリストを取得できる．以下に時代小説クラスの兄弟クラスリストおよび受賞者クラスの1階層下のサブクラスリストを示す．</p>
+
+<dl>
+	<dt>兄弟クラスリスト</dt>
+	<dd><a rel="external"
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/時代小説.rdf?search_option=siblings">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/時代小説.rdf?search_option=siblings</a></dd>
+	<dt>1階層下のサブクラスリスト</dt>
+	<dd><a rel="external"
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=subClasses">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=subClasses</a></dd>
 </dl>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
@@ -886,7 +897,7 @@ Wikipediaにおけるカテゴリページまたは記事ページにアクセ�
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 </div>
 <div class="footer">
-<div class="copyright">Copyright &copy; 2009 慶應義塾大学 理工学部 管理工学科
+<div class="copyright">Copyright &copy; 2009-2010 慶應義塾大学 理工学部 管理工学科
 山口研究室．All Rights Reserved.</div>
 </div>
 
