@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title></title>
+</head>
+<body>
+
+<wicket:extend>
+<h1>統計データ</h1>
+
+<h2>2010年1月26日現在の日本語Wikipediaオントロジー 統計データ</h2>
+
+<table>
+	<tr>
+		<th>種類</th>
+		<th>日本語＋英語</th>
+		<th>日本語</th>
+		<th>英語</th>
+	</tr>
+	<tr>
+		<th>リソース数</th>
+		<td wicket:id = "resource_count_all">719,392</td>
+		<td wicket:id = "resource_count_ja">455,593</td>
+		<td wicket:id = "resource_count_en">263,799</td>
+	</tr>
+	<tr>
+		<th>クラス数</th>
+		<td wicket:id = "class_count_all">16,506</td>
+		<td wicket:id = "class_count_ja"> 13,608</td>
+		<td wicket:id = "class_count_en">2,898</td>
+	</tr>
+	<tr>
+		<th>プロパティ数</th>
+		<td wicket:id = "property_count_all">4,364</td>
+		<td wicket:id = "property_count_ja">4,364</td>
+		<td wicket:id = "property_count_en">0</td>
+	</tr>
+	<tr>
+		<th>インスタンス数</th>
+		<td wicket:id = "instance_count_all">698,522</td>
+		<td wicket:id = "instance_count_ja">437,621</td>
+		<td wicket:id = "instance_count_en">260,901</td>
+	</tr>
+	<tr>
+		<th>ステートメント数</th>
+		<td wicket:id = "statement_count_all">2,192,278</td>
+		<td wicket:id = "statement_count_ja">1,624,434</td>
+		<td wicket:id = "statement_count_en">567,844</td>
+	</tr>
+	<tr>
+		<th>ステートメント数 （推論モデルの利用）</th>
+		<td wicket:id = "inf_statement_count_all">2,486,221</td>
+		<td wicket:id = "inf_statement_count_ja">2,486,221</td>
+		<td wicket:id = "inf_statement_count_en">0</td>
+	</tr>
+	<tr>
+		<th>is-a関係の数</th>
+		<td wicket:id = "isa_count_all">12,109</td>
+		<td wicket:id = "isa_count_ja">12,109</td>
+		<td wicket:id = "isa_count_en">0</td>
+	</tr>
+	<tr>
+		<th>タイプの数</th>
+		<td wicket:id = "type_count_all">702,719</td>
+		<td wicket:id = "type_count_ja">401,572</td>
+		<td wicket:id = "type_count_en">301,147</td>
+	</tr>
+</table>
+
+
+<ul>
+	<li>インスタンス数でソートしたクラスのリスト
+		<ul>
+			<li>
+			<a wicket:id = "classes_ranked_by_number_of_instances" href="#">日本語＋英語</a>，
+			<a  wicket:id = "ja_classes_ranked_by_number_of_instances" href="#">日本語</a>，
+			<a  wicket:id = "en_classes_ranked_by_number_of_instances" href="#">英語</a></li>
+		</ul>
+	</li>
+	<li>Infoboxプロパティの利用ランキング
+		<ul>
+			<li><a wicket:id = "properties_ranked_by_number_of_statements" href="#">日本語</a></li>
+		</ul>
+	</li>
+</ul>
+
+</wicket:extend>
+
+</body>
+</html>

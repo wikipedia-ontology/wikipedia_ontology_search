@@ -1,0 +1,264 @@
+.page-title {
+    font-size: 130%;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    padding: 10px 10px;
+    width: 850px;
+    background: #1E4176;
+    border-color: #1E4176;
+    border-style: solid;
+    border-width: 1px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+body {
+    background-color: #eee;
+}
+
+.container {
+    width: 850px;
+    padding: 15px 10px;
+    margin-top: 0px;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    margin: auto;
+}
+
+.footer {
+    text-align: center;
+    color: #eee;
+    padding: 10px 10px;
+    width: 850px;
+    margin: 0px;
+    background: #1E4176;
+    border-color: #1E4176;
+    border-style: solid;
+    border-width: 1px;
+    margin: auto;
+    margin-bottom: 1em;
+}
+
+.menu {
+    padding: 0 10px;
+    margin: 0.1em auto;
+    color: #eee;
+    background: #eee;
+    width: 850px;
+    border-color: black;
+    border-style: solid;
+    border-width: 0.08em;
+}
+
+.sub_menu {
+    background-color: #eee;
+    width: 250px;
+    text-align: center;
+    padding: 0.5em;
+    border-style: solid;
+    border-width: thin;
+    font-size: 90%;
+}
+
+.menu ul {
+    text-align: center;
+    margin: 3px;
+}
+
+.menu ul li {
+    display: inline;
+    text-decoration: none;
+}
+
+.menu ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 90%;
+    padding: 0 20px;
+}
+
+.menu ul li a:hover,.menu_ul1 ul li a.selected {
+    color: #A52A2A;
+    text-decoration: underline;
+}
+
+dl {
+    line-height: 1.2em;
+    margin: 1em;
+    font-size: 90%;
+}
+
+dt {
+    font-weight: bold;
+}
+
+ul {
+    line-height: 1.2em;
+    list-style-type: square;
+}
+
+ul li {
+    font-size: 90%;
+}
+
+ol li {
+    line-height: 1.2em;
+    border-bottom-style: dotted;
+    border-width: 1px;
+    padding: 0.5em;
+    font-size: 90%;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: arial, sans-serif;
+}
+
+h1 {
+    color: #A52A2A;
+    font-size: 120%;
+}
+
+h2 {
+    color: white;
+    background-color: #1E4176;
+    font-size: 110%;
+    line-height: 1.2em;
+    padding: 0.1em 1em;
+}
+
+h3 {
+    font-size: 100%;
+    line-height: 150%;
+    margin: 1em 1em;
+    border-style: solid;
+    border-color: gray;
+    border-width: 0 0 0.08em 0;
+}
+
+h4 {
+    font-size: 90%;
+    line-height: 150%;
+    margin: 1em;
+    border-style: dotted;
+    border-width: 0 0 0.08em 0;
+}
+
+p {
+    text-indent: 1em;
+    line-height: 150%;
+    margin: 0em;
+    padding: 0 1em;
+    font-size: 90%;
+    line-height: 150%;
+}
+
+.to_table_of_contents {
+    font-size: 80%;
+    text-align: right;
+}
+
+.copyright {
+    text-align: center;
+    font-size: 80%;
+}
+
+.contact {
+    text-align: right;
+    font-size: 80%;
+}
+
+table {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E3E3E3;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+td,th {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E3E3E3;
+    text-align: right;
+    line-height: 1.5em;
+    padding: 5px 20px;
+    font-size: 90%;
+}
+
+th {
+    background: #F5F5F5;
+    text-align: center;
+}
+
+pre {
+    margin: 1em;
+}
+
+.url {
+    font-weight: bold;
+    margin: 1em;
+}
+
+.two_column_block {
+    width: 49%;
+    float: left;
+    margin-right: 0.5em;
+}
+
+.download_box {
+    width: 65%;
+    font-size: 100%;
+    font-weight: bold;
+    background-color: #ffcc66;
+    border-style: solid;
+    border-width: 1px;
+    margin: auto;
+    padding: 15px;
+    margin-bottom: 5px;
+    text-align: center;
+    border-radius: 15px; /* CSS3 */
+    -moz-border-radius: 15px; /* Firefox */
+    -webkit-border-radius: 15px; /* Safari,Chrome */
+}
+
+.download_box a {
+    color: navy;
+    text-decoration: none;
+}
+
+.download_box a:hover {
+    text-decoration: underline;
+}
+
+a {
+    color: navy;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.show_types_style,.show_instances_style {
+    background-color: #eee;
+    font-size: 90%;
+    margin-right: 0.5em;
+    padding: 0.1em 0.2em;
+    border-style: solid;
+    border-width: thin;
+    boder-color: black;
+}
+
+.class_list_style {
+    list-style-image: url('icons/class_icon_s.png');
+}
+
+.property_list_style {
+    list-style-image: url('icons/property_icon_s.png');
+}
+
+.instance_list_style {
+    list-style-image: url('icons/instance_icon_s.png');
+}
