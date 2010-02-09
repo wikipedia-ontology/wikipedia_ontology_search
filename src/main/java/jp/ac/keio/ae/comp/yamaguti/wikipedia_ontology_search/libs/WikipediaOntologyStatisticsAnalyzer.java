@@ -27,7 +27,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
         for (ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.Class); resIter.hasNext();) {
             Resource cls = resIter.nextResource();
             String clsName = WikipediaOntologyUtils.getLocalName(cls);
-            int numberOfInstances = cls.getProperty(WikipediaOntologyStorage.instanceCount).getLiteral().getInt();
+            int numberOfInstances = cls.getProperty(WikipediaOntologyStorage.INSTANCE_COUNT_PROPERTY).getLiteral().getInt();
             if (0 < clsName.length()) {
                 try {
                     ClassStatistics clsStatistics = em.create(ClassStatistics.class);

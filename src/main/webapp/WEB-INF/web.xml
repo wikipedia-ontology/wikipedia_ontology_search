@@ -30,4 +30,22 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<context-param>
+		<param-name>wikipedia_ontology_path</param-name>
+		<param-value>C:/wikipedia_ontology/</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>h2_db_path</param-name>
+		<param-value>~/h2db/</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>h2_db_protocol</param-name>
+		<param-value>tcp://localhost/</param-value>
+		<!--
+		<param-value>file:</param-value>
+		-->
+	</context-param>
+
 </web-app>

@@ -343,7 +343,7 @@ public class WikipediaOntologySearch {
     public int getInstanceCnt(String localName) {
         int instanceCnt = 0;
         Resource cls = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + localName);
-        for (NodeIterator nodeIter = dbModel.listObjectsOfProperty(cls, WikipediaOntologyStorage.instanceCount); nodeIter
+        for (NodeIterator nodeIter = dbModel.listObjectsOfProperty(cls, WikipediaOntologyStorage.INSTANCE_COUNT_PROPERTY); nodeIter
                 .hasNext();) {
             RDFNode object = nodeIter.nextNode();
             if (object.isLiteral()) {

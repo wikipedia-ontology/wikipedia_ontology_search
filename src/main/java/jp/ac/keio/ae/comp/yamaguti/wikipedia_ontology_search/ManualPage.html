@@ -10,8 +10,12 @@
 <wicket:extend>
 
 <h1>マニュアル</h1>
-<p class="page_description">以下では，日本語Wikipediaオントロジー検索システム ver.<span wicket:id="version"></span>の使用方法について説明する．</p>
-<div style="text-align: right; font-size: 80%;">最終更新日: 2010年1月28日</div>
+<p class="page_description">
+以下では，日本語Wikipediaオントロジー検索システム ver.<span wicket:id="version"></span>の使用方法について説明する．
+(執筆途中・・・)
+</p>
+
+<div style="text-align: right; font-size: 80%;">最終更新日: 2010年2月10日</div>
 
 <a name="table_of_contents"></a>
 <h2>目次</h2>
@@ -72,7 +76,7 @@
 <p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.0</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索システムは実行可能である．
 以下の環境で動作確認を行っている．</p>
 <ul>
-	<li>Google Chrome 3.0.195.27</li>
+	<li>Google Chrome 4.0.302.3</li>
 	<li>FireFox 3.5.3</li>
 	<li>Safari 4.0.3</li>
 </ul>
@@ -86,24 +90,35 @@
 <a name="system_overview"></a>
 <h2>システム構成</h2>
 
-<div style="text-align: center;">
-<img src="#" wicket:id="system_overview" alt="日本語Wikipediaオントロジー検索システムのシステム構成" width="700"/>
+<div style="width: 100%; height: 500px;">
 
-<p style="font-weight: bold;">図1: 日本語Wikipediaオントロジー検索システムのシステム構成</p>
+<div style="text-align: center; float: left; margin: 0 10px;">
+<img src="#" wicket:id="system_overview" alt="日本語Wikipediaオントロジー検索システムのシステム構成" width="350"/>
+<p style="font-weight: bold;">図1-1: 日本語Wikipediaオントロジー<br/>検索システムのシステム構成</p>
+</div>
+<div
+	style="text-align: center; float: left; margin: 10px; margin-top: 130px;">
+	<img src="#" wicket:id="server_setting" alt="サーバの構成" width="400"/>
+    <p style="font-weight: bold;">図1-2: サーバの構成</p>
+</div>
 </div>
 
 <br />
 
 <p>
-図1に日本語Wikipediaオントロジー検索システムのシステム構成を示す．日本語Wikipediaオントロジー検索システムは，検索インターフェース，サーバーサイドプログラム，
+図1-1および1-2に日本語Wikipediaオントロジー検索システムとそのサーバの構成を示す．日本語Wikipediaオントロジー検索システムは，検索インターフェース，サーバーサイドプログラム，
 日本語WikipediaオントロジーDBの3つから構成される．</p>
-<p>検索インターフェースは，<a href="http://extjs.co.jp/"
-	rel="external">ExtJS</a>ライブラリを用いて実装されている． サーバーサイドプログラムは，Java Servletと<a
-	href="http://jena.sourceforge.net/" rel="external">Jena Semantic
-Web Framework for Java</a>を用いて実装し， <a href="http://tomcat.apache.org/"
+<p>検索インターフェースは，<a href="http://extjs.co.jp/" rel="external">ExtJS</a>ライブラリを用いて実装されている． サーバーサイドプログラムは，
+  <a rel="external" href="http://wicket.apache.org/">Apache Wicket</a>，
+  <a rel="external" href="http://jena.sourceforge.net/">Jena Semantic
+Web Framework for Java</a>，<a rel="external" href="https://activeobjects.dev.java.net/">ActiveObjects</a>，
+<a rel="external" href="http://github.com/gwhalin/Memcached-Java-Client">Memcached Java Client</a>，
+<a rel="external" href="http://openjena.org/TDB/">TDB - A SPARQL Database for Jena</a>，
+<a rel="external" href="http://www.h2database.com/html/main.html">H2 DB</a>を用いて実装し，
+<a href="http://tomcat.apache.org/"
 	rel="external">Apache Tomcat</a>上で動作している． <a
-	href="http://wikipedia-ont.sourceforge.jp/" rel="external">日本語Wikipediaオントロジー</a>DBは，JenaのAPIを用いてあらかじめOWL形式の
-日本語WikipediaオントロジーおよびインスタンスをMySQLに格納している．</p>
+	href="http://wikipedia-ont.sourceforge.jp/" rel="external">日本語Wikipediaオントロジー</a>DBは，JenaおよびTDBのAPIを用いてあらかじめOWL形式の
+日本語WikipediaオントロジーおよびインスタンスをTDB形式で格納している．</p>
 <p>
 検索インターフェースでは，はじめにユーザが検索キーワードを入力すると，キーワードに関連する日本語Wikipediaオントロジー内の
 クラス，プロパティ，インスタンスを識別するURIに変換する．
@@ -350,7 +365,7 @@ http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/rdfs_inference/p
 	<dd>一度に返すステートメント数を指定する．</dd>
 	<dt>search_option</dt>
 	<dd>完全一致 (exact_match)，部分一致 (any_match)，前方一致 (starts_with)，後方一致
-	(ends_with)，兄弟クラスリスト (siblings)，1階層下のサブクラスリスト (subClasses) 検索オプションのいずれかを指定できる．</dd>
+	(ends_with)，兄弟クラスリスト (siblings)，1階層下のサブクラスリスト (sub_classes) 検索オプションのいずれかを指定できる．</dd>
 </dl>
 
 <p>startとlimitパラメータの使用例として，以下のURLにアクセスすることで，
@@ -380,7 +395,7 @@ http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義�
 		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=ends_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=ends_with</a></dd>
 </dl>
 
-<p>クラス検索を行う際に，search_optionパラメータに，siblingsまたはsubClassesを指定すると，指定したクラスの兄弟クラスのリストまたは1階層下のサブクラスのリストを取得できる．以下に時代小説クラスの兄弟クラスリストおよび受賞者クラスの1階層下のサブクラスリストを示す．</p>
+<p>クラス検索を行う際に，search_optionパラメータに，siblingsまたはsub_classesを指定すると，指定したクラスの兄弟クラスのリストまたは1階層下のサブクラスのリストを取得できる．以下に時代小説クラスの兄弟クラスリストおよび受賞者クラスの1階層下のサブクラスリストを示す．</p>
 
 <dl>
 	<dt>兄弟クラスリスト</dt>
@@ -388,7 +403,7 @@ http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義�
 		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/時代小説.rdf?search_option=siblings">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/時代小説.rdf?search_option=siblings</a></dd>
 	<dt>1階層下のサブクラスリスト</dt>
 	<dd><a rel="external"
-		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=subClasses">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=subClasses</a></dd>
+		href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=sub_classes">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=sub_classes</a></dd>
 </dl>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>

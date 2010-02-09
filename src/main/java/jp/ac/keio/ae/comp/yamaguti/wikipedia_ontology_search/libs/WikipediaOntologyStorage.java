@@ -31,21 +31,27 @@ public class WikipediaOntologyStorage {
     private Model tdbModel;
     private ModelMaker modelMaker;
     private static EntityManager em;
+
+    public static String H2_DB_PATH;
+    public static String H2_DB_PROTOCOL;
+
     public static String ONTOLOGY_NS = "http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/";
     public static String CLASS_NS = ONTOLOGY_NS + "class/";
     public static String PROPERTY_NS = ONTOLOGY_NS + "property/";
     public static String INSTANCE_NS = ONTOLOGY_NS + "instance/";
-    public static Property instanceCount = ResourceFactory.createProperty(ONTOLOGY_NS + "instanceCount");
+    public static Property INSTANCE_COUNT_PROPERTY = ResourceFactory.createProperty(ONTOLOGY_NS + "instanceCount");
 
-    private static final String BASE_ONTOLOGY_DIR = "C:/wikipedia_ontology/";
-    private static final String BASE_ONTOLOGY_NAME = "_wikipedia_ontology_2010_02_09";
+    public static String WIKIPEDIA_ONTOLOGY_PATH;
+    private static final String BASE_WIKIPEDIA_ONTOLOGY_NAME = "_wikipedia_ontology_2010_02_09";
 
-    private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = BASE_ONTOLOGY_DIR
+    private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
             + "wikipedia_ontology_infobox_20100126.owl";
-    private static final String WIKIPEDIA_INSTANCE_FILE_PATH = BASE_ONTOLOGY_DIR + "wikipedia_instance_20091120.owl";
-    private static final String ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH = BASE_ONTOLOGY_DIR
+    private static final String WIKIPEDIA_INSTANCE_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
+            + "wikipedia_instance_20091120.owl";
+    private static final String ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
             + "refined_wikipedia_ontology_english_instance_2009_10_27.owl";
-    private static final String WIKIPEDIA_ONTOLOGY_FILE_PATH = BASE_ONTOLOGY_DIR + "wikipedia_ontology_20091120.owl";
+    private static final String WIKIPEDIA_ONTOLOGY_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
+            + "wikipedia_ontology_20091120.owl";
 
     public WikipediaOntologyStorage() {
     }
@@ -53,9 +59,8 @@ public class WikipediaOntologyStorage {
     public static EntityManager getEntityManager() {
         if (em == null) {
             try {
-                em = new EntityManager(
-                        new H2DatabaseProvider("jdbc:h2:tcp://localhost/~/h2db/wikipedia_ontology_statistics",
-                                "wikipedia_ontology", "wikiont"));
+                em = new EntityManager(new H2DatabaseProvider("jdbc:h2:" + H2_DB_PROTOCOL + H2_DB_PATH
+                        + "/wikipedia_ontology_statistics", "wikipedia_ontology", "wikiont"));
                 em.migrate(ClassStatistics.class, PropertyStatistics.class, TripleStatistics.class);
             } catch (SQLException sqle) {
                 sqle.printStackTrace();
@@ -70,7 +75,7 @@ public class WikipediaOntologyStorage {
             if (inferenceType.equals("rdfs")) {
                 infLabel = "_with_rdfs_inference";
             }
-            tdbModel = TDBFactory.createModel(BASE_ONTOLOGY_DIR + lang + BASE_ONTOLOGY_NAME + infLabel);
+            tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang + BASE_WIKIPEDIA_ONTOLOGY_NAME + infLabel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -212,7 +217,8 @@ public class WikipediaOntologyStorage {
             if (isInfModel) {
                 infLabel = "_with_rdfs_inference";
             }
-            Model tdbModel = TDBFactory.createModel(BASE_ONTOLOGY_DIR + lang + BASE_ONTOLOGY_NAME + infLabel);
+            Model tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang + BASE_WIKIPEDIA_ONTOLOGY_NAME
+                    + infLabel);
             tdbModel.add(getWikipediaOntologyAndInstanceMemModel(isInfModel, lang));
             tdbModel.close();
         } catch (Exception e) {
@@ -282,7 +288,7 @@ public class WikipediaOntologyStorage {
             System.out.println(cls + ": " + instanceCnt);
             Literal instanceCntLiteral = ResourceFactory.createTypedLiteral(String.valueOf(instanceCnt),
                     XSDDatatype.XSDint);
-            instanceCntModel.add(ResourceFactory.createStatement(cls, instanceCount, instanceCntLiteral));
+            instanceCntModel.add(ResourceFactory.createStatement(cls, INSTANCE_COUNT_PROPERTY, instanceCntLiteral));
         }
         outputModel.add(instanceCntModel);
         return outputModel;

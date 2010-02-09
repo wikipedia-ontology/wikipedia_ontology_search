@@ -15,6 +15,7 @@ public class ManualPage extends CommonPage {
     public ManualPage() {
         add(new Label("title", "マニュアル: " + TITLE).setRenderBodyOnly(true));
         addImage("system_overview");
+        addImage("server_setting");
         addImage("search_interface_overview");
         addImage("search_panel");
         addImage("class_tree_and_instances_panel");

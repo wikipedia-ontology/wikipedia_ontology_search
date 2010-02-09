@@ -1,5 +1,7 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
+
 import org.apache.wicket.*;
 import org.apache.wicket.protocol.http.*;
 import org.apache.wicket.request.target.coding.*;
@@ -42,6 +44,10 @@ public class WikipediaOntologySearchApplication extends WebApplication {
                 PropertiesRankedByNumberOfStatementsPage.class, new String[] { "lang"}));
         mount(new MixedParamUrlCodingStrategy("/query", ResourcePage.class, new String[] { "resource_type",
                 "data_type", "resource_name"}));
+
+        WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
+        WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
+        WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter("wikipedia_ontology_path");
     }
 
 }
