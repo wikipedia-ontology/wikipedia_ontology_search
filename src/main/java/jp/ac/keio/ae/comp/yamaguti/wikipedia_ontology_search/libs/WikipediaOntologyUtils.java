@@ -114,6 +114,9 @@ public class WikipediaOntologyUtils {
 
     public static List<PropertyImpl> getPropertyImplList(String queryString, String lang) {
         Query query = QueryFactory.create(queryString);
+        if (lang.equals("ja+en")) {
+            lang = "ja";
+        }
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
         Model dbModel = wikiOntStrage.getTDBModel();
         QueryExecution qexec = QueryExecutionFactory.create(query, dbModel);
@@ -136,7 +139,6 @@ public class WikipediaOntologyUtils {
         }
         return propertyList;
     }
-
     public static List<ClassImpl> getClassImplList(String queryString, String lang) {
         Query query = QueryFactory.create(queryString);
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
