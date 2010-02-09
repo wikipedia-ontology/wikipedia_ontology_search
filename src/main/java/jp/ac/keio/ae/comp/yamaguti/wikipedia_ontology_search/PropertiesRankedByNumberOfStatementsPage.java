@@ -25,7 +25,7 @@ import com.google.common.collect.*;
  */
 public class PropertiesRankedByNumberOfStatementsPage extends CommonPage {
 
-    private static final String TITLE = "Infoboxプロパティの利用ランキング";
+    private static final String TITLE = "プロパティ一覧";
 
     private IDataProvider<PropertyImpl> getPropertyDataProvider(final PagingData pagingData) {
         return new IDataProvider<PropertyImpl>() {
@@ -277,5 +277,8 @@ public class PropertiesRankedByNumberOfStatementsPage extends CommonPage {
         propertyListContainer.add(new IndicatingAjaxPagingNavigator("bottom_property_paging", propertyStatisticsView,
                 bottomIndicator));
         add(propertyListContainer);
+        add(new Image("plus_icon", WikipediaOntologyUtils.getPlusIconReference()));
+        add(new Image("minus_icon", WikipediaOntologyUtils.getMinusIconReference()));
+        add(new Image("rdf_icon", WikipediaOntologyUtils.getRDFIconReference()));
     }
 }

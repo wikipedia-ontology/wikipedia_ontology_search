@@ -10,9 +10,7 @@ import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
 import net.java.ao.*;
 
-import org.apache.wicket.*;
 import org.apache.wicket.markup.html.basic.*;
-import org.apache.wicket.markup.html.link.*;
 
 /**
  * @author takeshi morita
@@ -84,11 +82,6 @@ public class StatisticsPage extends CommonPage {
         addStatistics("ja", false);
         addStatistics("ja", true);
         addStatistics("all", false);
-
-        add(new BookmarkablePageLink<Void>("ja_classes_ranked_by_number_of_instances",
-                ClassesRankedByNumberOfInstancesPage.class, new PageParameters("lang=ja")));
-        add(new BookmarkablePageLink<Void>("en_classes_ranked_by_number_of_instances",
-                ClassesRankedByNumberOfInstancesPage.class, new PageParameters("lang=en")));
 
     }
 }

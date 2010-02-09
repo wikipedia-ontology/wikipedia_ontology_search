@@ -1,29 +1,42 @@
 .page-title {
-    font-size: 130%;
+    font-size: 120%;
     font-weight: bold;
     text-align: center;
     color: white;
-    padding: 10px 10px;
     width: 850px;
-    background: #1E4176;
-    border-color: #1E4176;
-    border-style: solid;
-    border-width: 1px;
+    background: #455894;
     margin: auto;
-    margin-top: 30px;
+    padding: 10px 10px;
 }
 
 body {
+    margin: auto;
+    filter: progid :
+        DXImageTransform.Microsoft.Gradient (
+                 GradientType =                       0, StartColorStr =
+
+             gray, EndColorStr =
+                     #eee );
+    background-image:
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAJYCAYAAACjC4yfAAAAVElEQVRIiWNoaGj4z8TAwMCARDAyMjKgi+GUwKmYTPNoYijdHDmYQoNuoTskHDm0PT0aGsPM0wPvyMEUGqNF1WD19GhojKZTki2itqcHU+gODkcCAEOmCHg0DmlYAAAAAElFTkSuQmCC")
+        ;
+    background-repeat: repeat-x;
     background-color: #eee;
+    filter: progid :
+        DXImageTransform.Microsoft.Gradient (
+
+                 GradientType =                       0, StartColorStr =
+
+             gray, EndColorStr =
+                     #eee );
 }
 
 .container {
     width: 850px;
-    padding: 15px 10px;
-    margin-top: 0px;
+    padding: 10px;
     background-color: white;
-    border-style: solid;
-    border-width: 1px;
+    border-style: dotted;
+    border-width: 1px 0 0 0;
     margin: auto;
 }
 
@@ -33,23 +46,24 @@ body {
     padding: 10px 10px;
     width: 850px;
     margin: 0px;
-    background: #1E4176;
-    border-color: #1E4176;
-    border-style: solid;
-    border-width: 1px;
+    background: #455894;
     margin: auto;
     margin-bottom: 1em;
 }
 
+.footer a {
+    color: white;
+    text-decoration: underline;
+}
+
 .menu {
-    padding: 0 10px;
-    margin: 0.1em auto;
-    color: #eee;
-    background: #eee;
+    font-size: 90%;
+    height: 25px;
     width: 850px;
-    border-color: black;
-    border-style: solid;
-    border-width: 0.08em;
+    padding: 2px 10px;
+    margin: auto;
+    background-color: #eee;
+    height: 25px;
 }
 
 .sub_menu {
@@ -75,7 +89,6 @@ body {
 .menu ul li a {
     color: black;
     text-decoration: none;
-    font-size: 90%;
     padding: 0 20px;
 }
 
@@ -116,20 +129,20 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 h1 {
-    color: #A52A2A;
-    font-size: 120%;
+    color: #455894;
+    font-size: 110%;
 }
 
 h2 {
     color: white;
-    background-color: #1E4176;
-    font-size: 110%;
+    background-color: #455894;
+    font-size: 100%;
     line-height: 1.2em;
     padding: 0.1em 1em;
 }
 
 h3 {
-    font-size: 100%;
+    font-size: 95%;
     line-height: 150%;
     margin: 1em 1em;
     border-style: solid;
@@ -224,7 +237,7 @@ pre {
 }
 
 .download_box a {
-    color: navy;
+    color: #455894;
     text-decoration: none;
 }
 
@@ -233,7 +246,7 @@ pre {
 }
 
 a {
-    color: navy;
+    color: #455894;
     text-decoration: none;
 }
 
@@ -261,4 +274,27 @@ a:hover {
 
 .instance_list_style {
     list-style-image: url('icons/instance_icon_s.png');
+}
+
+.server_name_style {
+    color: #gray;
+    background-color: lightgray;
+    padding: 0.1em 1em;
+    margin-left: 2em;
+    border-color: lightgray border-style :    solid;
+    border-width: thin;
+}
+
+a img {
+    border-style: none;
+}
+
+.page_description {
+    font-size: 90%;
+    padding: 1em 5em;
+}
+
+.separator {
+    border-style: dotted;
+    border-width: thin 0 0 0;
 }

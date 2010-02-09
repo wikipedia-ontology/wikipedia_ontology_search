@@ -7,6 +7,7 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
 
 import org.apache.wicket.markup.html.*;
+import org.apache.wicket.markup.html.basic.*;
 import org.apache.wicket.markup.html.link.*;
 
 /**
@@ -18,6 +19,7 @@ public abstract class CommonPage extends WebPage {
     protected static final String TITLE = "日本語Wikipediaオントロジー検索システム";
 
     public CommonPage() {
+        add(new Label("server_name", WikipediaOntologyUtils.getHostName()));
         add(new BookmarkablePageLink<Void>("index", IndexPage.class));
         add(new BookmarkablePageLink<Void>("manual", ManualPage.class));
         add(new BookmarkablePageLink<Void>("changelog", ChangeLogPage.class));

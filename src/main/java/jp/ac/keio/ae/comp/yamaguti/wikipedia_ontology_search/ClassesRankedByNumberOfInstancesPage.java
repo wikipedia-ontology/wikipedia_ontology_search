@@ -29,7 +29,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
  */
 public class ClassesRankedByNumberOfInstancesPage extends CommonPage {
 
-    private static final String TITLE = "インスタンス数でソートしたクラスのリスト";
+    private static final String TITLE = "クラス一覧";
 
     private IDataProvider<ClassImpl> getClassDataProvider(final String lang, final PagingData classPagingData) {
         return new IDataProvider<ClassImpl>() {
@@ -309,6 +309,9 @@ public class ClassesRankedByNumberOfInstancesPage extends CommonPage {
                 ClassesRankedByNumberOfInstancesPage.class, new PageParameters("lang=ja")));
         add(new BookmarkablePageLink<Void>("en_classes_ranked_by_number_of_instances",
                 ClassesRankedByNumberOfInstancesPage.class, new PageParameters("lang=en")));
+        add(new Image("plus_icon", WikipediaOntologyUtils.getPlusIconReference()));
+        add(new Image("minus_icon", WikipediaOntologyUtils.getMinusIconReference()));
+        add(new Image("rdf_icon", WikipediaOntologyUtils.getRDFIconReference()));
     }
 
     public ClassesRankedByNumberOfInstancesPage() {

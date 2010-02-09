@@ -10,8 +10,18 @@
 <wicket:extend>
 
 <h1 wicket:id = "h1-title">H1 Title</h1>
-<div  style="text-align: right; font-size: 80%;">最終更新日: 2010-02-03</div>
+<div  style="text-align: right; font-size: 80%;">最終更新日: 2010-02-08</div>
 
+<p class="page_description">
+以下は，クラスが持つインスタンス数でソートしたクラス一覧である．()内は，クラスが持つインスタンス数を示している．
+クラスの<img src="#" wicket:id="plus_icon" />をクリックすると，そのクラスのインスタンス一覧が表示される．
+さらに，インスタンスの<img src="#" wicket:id="plus_icon" />を
+クリックすると，そのインスタンスが持つプロパティおよびプロパティ値が表形式で表示される．<img src="#" wicket:id="minus_icon" />をクリックすると，
+表示を折りたたむことができる．
+クラス，インスタンス，プロパティ，オブジェクトプロパティ値
+については，各リソースのHTMLページへリンクが張られている．また，<img src="#" wicket:id="rdf_icon" />をクリックすると，各リソースについてRDF/XML形式のデータが
+ダウンロードできる．
+</p>
 <div class = "sub_menu">
 [<a   wicket:id = "classes_ranked_by_number_of_instances" href="#">日本語＋英語</a>]
 [<a  wicket:id = "ja_classes_ranked_by_number_of_instances" href="#">日本語</a>]
@@ -54,7 +64,7 @@ Results: <span wicket:id = "class_start">1</span> – <span wicket:id = "class_e
 		</li>
 	</ul>
 	<div wicket:id="instance_paging">1,2</div>
-	<hr/>
+	<hr class="separator"/>
 	 </div>
 	</li>
 </ul>

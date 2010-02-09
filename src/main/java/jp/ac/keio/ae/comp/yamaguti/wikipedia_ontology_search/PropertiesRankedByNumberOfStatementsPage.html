@@ -12,6 +12,17 @@
 <h1 wicket:id = "h1-title">H1 Title</h1>
 <div  style="text-align: right; font-size: 80%;">最終更新日: 2010-02-08</div>
 
+<p class="page_description">
+以下は，利用されているインスタンス数でソートしたプロパティ一覧である．( )内は，そのプロパティが利用されているインスタンス数を示している．
+プロパティの<img src="#" wicket:id="plus_icon" />をクリックすると，そのプロパティを持つインスタンス一覧が表示される．
+さらに，インスタンスの<img src="#" wicket:id="plus_icon" />を
+クリックすると，そのインスタンスのタイプが(rdf:type)表示される．<img src="#" wicket:id="minus_icon" />をクリックすると，
+表示を折りたたむことができる．
+プロパティ，インスタンス，インスタンスのタイプ（クラス）については，各リソースのHTMLページへリンクが張られている．
+また，<img src="#" wicket:id="rdf_icon" />をクリックすると，各リソースについてRDF/XML形式のデータが
+ダウンロードできる．
+</p>
+
 <div style="padding-left: 2em;" wicket:id = "property_list_container">
 Results: <span wicket:id = "property_start">1</span> – <span wicket:id = "property_end">50</span> of <span wicket:id = "property_count">50</span>
 <img src="#" wicket:id="top_indicator" style="display:none"/>
@@ -44,7 +55,7 @@ Results: <span wicket:id = "property_start">1</span> – <span wicket:id = "prop
 		</li>
 	</ul>
 	<div wicket:id="instance_paging">1,2</div>
-	<hr/>
+	<hr class="separator"/>
 	 </div>
 	</li>
 </ul>
