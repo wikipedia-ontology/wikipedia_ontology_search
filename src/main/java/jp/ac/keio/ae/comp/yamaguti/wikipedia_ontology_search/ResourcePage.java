@@ -153,7 +153,8 @@ public class ResourcePage extends CommonPage implements Serializable {
 
     private void setLinks(String resName, Resource uri, boolean isUseInfModel) {
         add(new ExternalLink("page_uri", uri.getURI(), uri.getURI()));
-        String htmlURL = uri.getNameSpace() + "page/" + resName + ".html";
+        String ns = uri.getNameSpace().replaceAll("wikipedia_ontology/", "wikipedia_ontology/query/");
+        String htmlURL = ns + "page/" + resName + ".html";
         String inferenceType = "";
         String inferenceURL = htmlURL;
         String inferenceTypeLabel = "Reasoner: None -> RDFS";
@@ -168,15 +169,15 @@ public class ResourcePage extends CommonPage implements Serializable {
         ExternalLink htmlLink = getExternalLink("html_url", htmlURL + inferenceType);
         htmlLink.add(getImage("html_icon", "myresources/icons/html.png"));
         add(htmlLink);
-        String dataURL = uri.getNameSpace() + "data/" + resName + ".rdf";
+        String dataURL = ns + "data/" + resName + ".rdf";
         ExternalLink rdfLink = getExternalLink("rdf_url", dataURL + inferenceType);
         rdfLink.add(getImage("rdf_icon", "myresources/icons/rdf_w3c_icon.16.png"));
         add(rdfLink);
-        String jsonTableURL = uri.getNameSpace() + "json_table/" + resName + ".json";
+        String jsonTableURL = ns + "json_table/" + resName + ".json";
         ExternalLink jsonTableLink = getExternalLink("json_table_url", jsonTableURL + inferenceType);
         jsonTableLink.add(getImage("table_icon", "myresources/icons/table.png"));
         add(jsonTableLink);
-        String jsonTreeURL = uri.getNameSpace() + "json_tree/" + resName + ".json";
+        String jsonTreeURL = ns + "json_tree/" + resName + ".json";
         ExternalLink jsonTreeLink = getExternalLink("json_tree_url", jsonTreeURL + inferenceType);
         jsonTreeLink.add(getImage("tree_icon", "myresources/icons/expand-all.gif"));
         add(jsonTreeLink);

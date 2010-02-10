@@ -1,6 +1,6 @@
 // var BASE_SERVER_URL =
 // "http://hpcs01.comp.ae.keio.ac.jp:8080/wikipedia_ontology/";
-var BASE_SERVER_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/";
+var BASE_SERVER_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/query/";
 var BASE_URI = "http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/";
 
 var BASE_CLASS_URI = BASE_URI + "class/";
