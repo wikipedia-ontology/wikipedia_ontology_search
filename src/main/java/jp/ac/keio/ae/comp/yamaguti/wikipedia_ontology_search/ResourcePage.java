@@ -43,7 +43,11 @@ public class ResourcePage extends CommonPage implements Serializable {
 
     public ResourcePage(PageParameters params) {
         MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-        String outputString = (String) mcStorage.get(getKey());
+        String key = getKey();
+        String outputString = null;
+        if (!key.contains("type=")) {
+            outputString = (String) mcStorage.get(key);
+        }
         if (outputString != null) {
             outputResource(outputString);
             return;
@@ -55,17 +59,19 @@ public class ResourcePage extends CommonPage implements Serializable {
         }
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParams);
         Model outputModel = getOutputModel(wikiOntSearch, searchParams);
+        long numberOfStatements = outputModel.size();
         outputModel = getSubOutputModel(outputModel, wikiOntSearch.getSearchParameters());
         wikiOntSearch.closeDB();
-        output(outputModel, wikiOntSearch);
+        output(outputModel, wikiOntSearch, numberOfStatements);
     }
 
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
         wikiOntSearch.setTDBModel();
         MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-        String rdfString = (String) mcStorage.get(searchParams.getRDFKey());
-        if (rdfString != null) { return WikipediaOntologyUtils.readRDFString(rdfString); }
-
+        if (!searchParams.getRDFKey().contains("type=")) {
+            String rdfString = (String) mcStorage.get(searchParams.getRDFKey());
+            if (rdfString != null) { return WikipediaOntologyUtils.readRDFString(rdfString); }
+        }
         Set<String> typeSet = searchParams.getTypeSet();
         SearchOptionType searchOptionType = searchParams.getSearchOption();
         if (typeSet.size() == 0) {
@@ -352,7 +358,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         return new RDFNodeImpl(l.toString(), "", l.isResource());
     }
 
-    private void output(Model outputModel, WikipediaOntologySearch wikiOntSearch) {
+    private void output(Model outputModel, WikipediaOntologySearch wikiOntSearch, long numberOfStatements) {
         PropertyImpl instancePropertyImpl = new PropertyImpl(WikipediaOntologyStorage.INSTANCE_NS, "instanceProperty");
         SearchParameters searchParams = wikiOntSearch.getSearchParameters();
         switch (searchParams.getDataType()) {
@@ -372,7 +378,6 @@ public class ResourcePage extends CommonPage implements Serializable {
             mcStorage.add(getKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
             break;
         case JSON_TABLE:
-            long numberOfStatements = outputModel.size();
             outputResource(wikiOntSearch.getTableJSONString(outputModel, numberOfStatements));
             break;
         case JSON_TREE:

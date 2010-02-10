@@ -117,19 +117,21 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
 		url = e.getTarget().children.item(1).toString();
 	}
 	if (url.indexOf("wikiont_class") != -1) {
-		var queryURL = url.replace("wikiont_class:", "class/json_table/");
+		var queryURL = url.replace("wikiont_class:", "query/class/json_table/");
 		var keyword = queryURL.split("json_table/")[1];
 		keyword = decodeURI(keyword);
 		queryType = 'class';
 		makeClassContextMenu(keyword).showAt(e.getXY());
 	} else if (url.indexOf("wikiont_property") != -1) {
-		var queryURL = url.replace("wikiont_property:", "property/json_table/");
+		var queryURL = url.replace("wikiont_property:",
+				"query/property/json_table/");
 		var keyword = queryURL.split("json_table/")[1];
 		keyword = decodeURI(keyword);
 		queryType = 'property';
 		makePropertyContextMenu(keyword).showAt(e.getXY());
 	} else if (url.indexOf("wikiont_instance") != -1) {
-		var queryURL = url.replace("wikiont_instance:", "instance/json_table/");
+		var queryURL = url.replace("wikiont_instance:",
+				"query/instance/json_table/");
 		var keyword = queryURL.split("json_table/")[1];
 		keyword = decodeURI(keyword);
 		queryType = 'instance';
@@ -169,28 +171,28 @@ function reloadWikiOntJSONData(queryJSONTableURL) {
 function renderLink(value) {
 	var newValue = "";
 	if (value.indexOf("wikiont_class") != -1) {
-		newValue += "<img alt='" + value
-				+ "' src='./myresources/icons/class_icon_s.png'/>";
+		newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL
+				+ "class_icon_s.png'/> ";
 	} else if (value.indexOf("wikiont_property") != -1) {
-		newValue += "<img alt='" + value
-				+ "' src='./myresources/icons/property_icon_s.png'/>";
+		newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL
+				+ "property_icon_s.png'/> ";
 	} else if (value.indexOf("wikiont_instance") != -1) {
-		newValue += "<img alt='" + value
-				+ "'src='./myresources/icons/instance_icon_s.png'/>";
+		newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL
+				+ "instance_icon_s.png'/> ";
 	} else if (value.indexOf("wikipedia.org") != -1) {
-		newValue += "<img alt='" + value
-				+ "'src='./myresources/icons/wikipedia_icon_s.png'/>";
+		newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL
+				+ "wikipedia_icon_s.png'/> ";
 	} else if (value.indexOf("dbpedia.org") != -1) {
-		newValue += "<img alt='" + value
-				+ "'src='./myresources/icons/dbpedia_icon_s.png'/>";
+		newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL
+				+ "dbpedia_icon_s.png'/> ";
 	}
 	if (value.indexOf(":") != -1) {
 		newValue += '<a href="' + value + '" onclick="openWikiOntRDFData(\''
 				+ value + '\'); return false;">' + value + "</a>";
 		return newValue;
 	} else {
-		newValue += "<img alt='" + value
-				+ "' src='./myresources/icons/label_icon_s.png'/>" + value;
+		newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL
+				+ "label_icon_s.png'/> " + value;
 		return newValue;
 	}
 }
@@ -227,19 +229,21 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
 		url = e.getTarget().children.item(1).toString();
 	}
 	if (url.indexOf("wikiont_class") != -1) {
-		var queryURL = url.replace("wikiont_class:", "class/json_table/");
+		var queryURL = url.replace("wikiont_class:", "query/class/json_table/");
 		var keyword = queryURL.split("json_table/")[1];
 		keyword = decodeURI(keyword);
 		queryType = 'class';
 		reloadWikiOntJSONData2(queryURL, keyword);
 	} else if (url.indexOf("wikiont_property") != -1) {
-		var queryURL = url.replace("wikiont_property:", "property/json_table/");
+		var queryURL = url.replace("wikiont_property:",
+				"query/property/json_table/");
 		var keyword = queryURL.split("json_table/")[1];
 		keyword = decodeURI(keyword);
 		queryType = 'property';
 		reloadWikiOntJSONData2(queryURL, keyword);
 	} else if (url.indexOf("wikiont_instance") != -1) {
-		var queryURL = url.replace("wikiont_instance:", "instance/json_table/");
+		var queryURL = url.replace("wikiont_instance:",
+				"query/instance/json_table/");
 		var keyword = queryURL.split("json_table/")[1];
 		keyword = decodeURI(keyword);
 		queryType = 'instance';

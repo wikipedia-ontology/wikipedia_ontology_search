@@ -36,10 +36,30 @@ public class SearchParameters {
         limit = params.getInt("limit", 0);
     }
 
+    private String addParamSimbol(String rdfKey) {
+        if (rdfKey.contains("?")) {
+            rdfKey += "&";
+        } else {
+            rdfKey += "?";
+        }
+        return rdfKey;
+    }
+
     public String getRDFKey() {
         String rdfKey = "query/" + resourceType.toString().toLowerCase() + "/data/" + resourceName + ".rdf";
+        if (searchOption != null) {
+            rdfKey = addParamSimbol(rdfKey);
+            rdfKey += "search_option=" + searchOption.toString().toLowerCase();
+        }
         if (inferenceType != InferenceType.NONE) {
+            rdfKey = addParamSimbol(rdfKey);
             rdfKey += "?inference_type=" + inferenceType.toString().toLowerCase();
+        }
+        if (0 < typeSet.size()) {
+            rdfKey = addParamSimbol(rdfKey);
+            for (String type : typeSet) {
+                rdfKey += "type=" + type + "&";
+            }
         }
         return rdfKey;
     }

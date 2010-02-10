@@ -28,7 +28,7 @@ function searchWikipediaOntology2(keyword) {
 		queryURL += 'class/json_table/' + "queryString?";
 		unescapeQueryURL += 'class/data/' + "queryString?";
 		for (var i = 0; i < keywords.length; i++) {
-			queryURL += "type=" + EscapeSJIS(keywords[i]);
+			queryURL += "type=" + keywords[i];
 			unescapeQueryURL += "type=" + keywords[i];
 			if (i != keywords.length - 1) {
 				queryURL += "&";
@@ -47,13 +47,12 @@ function searchWikipediaOntology2(keyword) {
 
 function setUseInfModelOption(queryURL) {
 	if (useInfModel) {
-		if (queryURL.indexOf("class") != -1) {
-			return queryURL.replace("class/", "class/rdfs_inference/");
-		} else if (queryURL.indexOf("property") != -1) {
-			return queryURL.replace("property/", "property/rdfs_inference/");
-		} else if (queryURL.indexOf("instance") != -1) {
-			return queryURL.replace("instance/", "instance/rdfs_inference/");
+		if (queryURL.indexOf("?") == -1) {
+			queryURL += "?";
+		} else {
+			queryURL += "&";
 		}
+		queryURL += "inference_type=rdfs";
 	}
 	return queryURL;
 }

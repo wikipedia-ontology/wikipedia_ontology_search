@@ -83,7 +83,7 @@ public class WikipediaOntologySearch {
         if (searchParameters.isUseInfModel()) {
             dbModel = getWikipediaOntologyAndInstanceModel("ja", "rdfs");
         } else {
-            if (searchParameters.isEnglishResourceName()) {
+            if (!searchParameters.getResourceName().equals("queryString") && searchParameters.isEnglishResourceName()) {
                 dbModel = getWikipediaOntologyAndInstanceModel("en", "");
             } else {
                 dbModel = getWikipediaOntologyAndInstanceModel("ja", "");
@@ -147,7 +147,8 @@ public class WikipediaOntologySearch {
                 addLabelStatements(res, outputModel);
             }
         }
-        if (searchParameters.getResourceType() == ResourceType.CLASS && searchOption == SearchOptionType.EXACT_MATCH) {
+        if (searchParameters.getTypeSet().size() == 0 && searchParameters.getResourceType() == ResourceType.CLASS
+                && searchOption == SearchOptionType.EXACT_MATCH) {
             for (Resource type : typeSet) {
                 for (StmtIterator stmtIter = type.listProperties(); stmtIter.hasNext();) {
                     Statement stmt = stmtIter.nextStatement();
@@ -343,8 +344,8 @@ public class WikipediaOntologySearch {
     public int getInstanceCnt(String localName) {
         int instanceCnt = 0;
         Resource cls = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + localName);
-        for (NodeIterator nodeIter = dbModel.listObjectsOfProperty(cls, WikipediaOntologyStorage.INSTANCE_COUNT_PROPERTY); nodeIter
-                .hasNext();) {
+        for (NodeIterator nodeIter = dbModel.listObjectsOfProperty(cls,
+                WikipediaOntologyStorage.INSTANCE_COUNT_PROPERTY); nodeIter.hasNext();) {
             RDFNode object = nodeIter.nextNode();
             if (object.isLiteral()) {
                 instanceCnt = ((Literal) object).getInt();

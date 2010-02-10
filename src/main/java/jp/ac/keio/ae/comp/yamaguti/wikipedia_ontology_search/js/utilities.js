@@ -23,11 +23,13 @@ function getSearchOptionComboBox(name) {
 
 function renderKeyword(value, metadata, record) {
 	if (record.get("queryType") == 'class') {
-		return "<img src='./myresources/icons/class_icon_s.png'/> " + value;
+		return "<img src='" + BASE_ICON_URL + "class_icon_s.png'/> " + value;
+		a
 	} else if (record.get("queryType") == 'property') {
-		return "<img src='./myresources/icons/property_icon_s.png'/> " + value;
+		return "<img src='" + BASE_ICON_URL + "property_icon_s.png'/> " + value;
 	} else if (record.get("queryType") == 'instance') {
-		return "<img src='./myresources/icons/instance_icon_s.png'/> " + value;
+		return "<img src='" + BASE_ICON_URL + "instance_icon_s.png'/> "
+				+ value;
 	}
 	return value;
 }
