@@ -27,7 +27,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 /**
  * @author Takeshi Morita
  */
-public class ClassesRankedByNumberOfInstancesPage extends CommonPage {
+public class ClassListPage extends CommonPage {
 
     private static final String TITLE = "クラス一覧";
 
@@ -306,20 +306,20 @@ public class ClassesRankedByNumberOfInstancesPage extends CommonPage {
         add(classListContainer);
 
         add(new BookmarkablePageLink<Void>("ja_classes_ranked_by_number_of_instances",
-                ClassesRankedByNumberOfInstancesPage.class, new PageParameters("lang=ja")));
+                ClassListPage.class, new PageParameters("lang=ja")));
         add(new BookmarkablePageLink<Void>("en_classes_ranked_by_number_of_instances",
-                ClassesRankedByNumberOfInstancesPage.class, new PageParameters("lang=en")));
+                ClassListPage.class, new PageParameters("lang=en")));
         add(new Image("plus_icon", WikipediaOntologyUtils.getPlusIconReference()));
         add(new Image("minus_icon", WikipediaOntologyUtils.getMinusIconReference()));
         add(new Image("rdf_icon", WikipediaOntologyUtils.getRDFIconReference()));
     }
 
-    public ClassesRankedByNumberOfInstancesPage() {
+    public ClassListPage() {
         String title = TITLE + "（日本語+英語）";
         renderPage(title, "ja+en");
     }
 
-    public ClassesRankedByNumberOfInstancesPage(PageParameters params) {
+    public ClassListPage(PageParameters params) {
         String title = TITLE;
         String lang = params.getString("lang");
         if (lang.equals("ja")) {

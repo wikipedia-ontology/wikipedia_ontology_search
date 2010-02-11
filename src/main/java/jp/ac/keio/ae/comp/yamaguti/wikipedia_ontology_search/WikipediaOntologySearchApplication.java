@@ -38,16 +38,15 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         mountBookmarkablePage("/search.html", SearchJaPage.class);
         mountBookmarkablePage("/en_search.html", SearchEnPage.class);
         mountBookmarkablePage("/error.html", ErrorPage.class);
-        mount(new MixedParamUrlCodingStrategy("/classes_ranked_by_number_of_instances",
-                ClassesRankedByNumberOfInstancesPage.class, new String[] { "lang"}));
-        mount(new MixedParamUrlCodingStrategy("/properties_ranked_by_number_of_statements",
-                PropertiesRankedByNumberOfStatementsPage.class, new String[] { "lang"}));
+        mount(new MixedParamUrlCodingStrategy("/class_list", ClassListPage.class, new String[] { "lang"}));
+        mount(new MixedParamUrlCodingStrategy("/property_list", PropertyListPage.class, new String[] { "lang"}));
         mount(new MixedParamUrlCodingStrategy("/query", ResourcePage.class, new String[] { "resource_type",
                 "data_type", "resource_name"}));
 
         WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
         WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
-        WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter("wikipedia_ontology_path");
+        WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter(
+                "wikipedia_ontology_path");
     }
 
 }

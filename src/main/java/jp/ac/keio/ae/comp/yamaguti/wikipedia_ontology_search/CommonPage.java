@@ -15,7 +15,7 @@ import org.apache.wicket.markup.html.link.*;
  */
 public abstract class CommonPage extends WebPage {
 
-    protected static final String VERSION = "2009-11-23";
+    public static final String VERSION = "2009-11-23";
     protected static final String TITLE = "日本語Wikipediaオントロジー検索システム";
 
     public CommonPage() {
@@ -25,9 +25,9 @@ public abstract class CommonPage extends WebPage {
         add(new BookmarkablePageLink<Void>("changelog", ChangeLogPage.class));
         add(new BookmarkablePageLink<Void>("statistics", StatisticsPage.class));
         add(new BookmarkablePageLink<Void>("classes_ranked_by_number_of_instances",
-                ClassesRankedByNumberOfInstancesPage.class));
+                ClassListPage.class));
         add(new BookmarkablePageLink<Void>("properties_ranked_by_number_of_statements",
-                PropertiesRankedByNumberOfStatementsPage.class));
+                PropertyListPage.class));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/external.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/smoothscroll.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/prettify.js"));

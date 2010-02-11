@@ -23,7 +23,7 @@ import com.google.common.collect.*;
 /**
  * @author t_morita
  */
-public class PropertiesRankedByNumberOfStatementsPage extends CommonPage {
+public class PropertyListPage extends CommonPage {
 
     private static final String TITLE = "プロパティ一覧";
 
@@ -205,7 +205,7 @@ public class PropertiesRankedByNumberOfStatementsPage extends CommonPage {
                 indicator));
     }
 
-    public PropertiesRankedByNumberOfStatementsPage() {
+    public PropertyListPage() {
         add(new Label("title", TITLE).setRenderBodyOnly(true));
         add(new Label("h1-title", TITLE));
 

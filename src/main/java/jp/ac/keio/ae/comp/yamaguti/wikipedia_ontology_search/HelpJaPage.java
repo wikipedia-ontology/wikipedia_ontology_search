@@ -5,9 +5,9 @@ import org.apache.wicket.markup.html.basic.*;
 /**
  * @author t_morita
  */
-public class HelpJaPage extends CommonPage {
+public class HelpJaPage extends HelpCommonPage {
     public HelpJaPage() {
-        add(new Label("title", "ヘルプ: " + TITLE).setRenderBodyOnly(true));
-        add(new Label("version", VERSION));
+        add(new Label("title", "ヘルプ").setRenderBodyOnly(true));
+        add(new Label("version", CommonPage.VERSION));
     }
 }

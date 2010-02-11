@@ -90,83 +90,80 @@ function getMainView() {
 	var versionInfoDialog = getVersionInfoDialog();
 
 	return new Ext.Viewport({
-				id : 'mainView',
-				layout : 'border',
-				hideBorders : true,
-				items : [{
-					region : 'north',
-					height : 60,
-					cls : 'docs-header',
-					items : [{
-								xtype : 'box',
-								el : 'header',
-								border : false,
-								anchor : 'none -25'
+		id : 'mainView',
+		layout : 'border',
+		hideBorders : true,
+		items : [{
+			region : 'north',
+			height : 60,
+			cls : 'docs-header',
+			items : [{
+						xtype : 'box',
+						el : 'header',
+						border : false,
+						anchor : 'none -25'
+					}, {
+						xtype : 'toolbar',
+						items : [{
+							xtype : 'tbbutton',
+							text : LANGUAGE,
+							menu : [{
+								text : ENGLISH,
+								handler : function() {
+									window.open(HOME_URL + SEARCH_EN_HTML,
+											"_self");
+								}
 							}, {
-								xtype : 'toolbar',
-								items : [{
-									xtype : 'tbbutton',
-									text : LANGUAGE,
-									menu : [{
-										text : ENGLISH,
-										handler : function() {
-											window.open(BASE_SERVER_URL
-															+ "en_search.html",
-													"_self");
-										}
+								text : JAPANESE,
+								handler : function() {
+									window.open(HOME_URL + SEARCH_JA_HTML,
+											"_self");
+								}
+							}]
+						}, {
+							xtype : 'tbbutton',
+							text : TOOL,
+							menu : [{
+										text : SHOW_WHOLE_CLASS_HIEARCHY,
+										handler : showWholeIsaTree
 									}, {
-										text : JAPANESE,
-										handler : function() {
-											window.open(BASE_SERVER_URL
-															+ "search.html",
-													"_self");
-										}
+										text : OPTION,
+										handler : showOptionDialog
 									}]
-								}, {
-									xtype : 'tbbutton',
-									text : TOOL,
-									menu : [{
-												text : SHOW_WHOLE_CLASS_HIEARCHY,
-												handler : showWholeIsaTree
-											}, {
-												text : OPTION,
-												handler : showOptionDialog
-											}]
-								}, {
-									xtype : 'tbbutton',
-									text : HELP,
-									menu : [{
+						}, {
+							xtype : 'tbbutton',
+							text : HELP,
+							menu : [{
 										text : MANUAL,
 										handler : function() {
-											window.open(BASE_SERVER_URL
-													+ MANUAL_HTML);
+											window.open(HOME_URL + MANUAL_HTML);
 										}
 									}, {
 										text : VERSION_INFORMATION,
 										handler : showVersionInfoDialog
 									}]
-								}]
-							}]
-				}, {
-					region : 'center',
-					layout : 'fit',
-					width : "80%",
-					collapsible : true,
-					items : mainPanel
-				}, {
-					title : HIEARCHY,
-					region : 'west',
-					layout : 'fit',
-					width : 300,
-					minWidth : 300,
-					split : true,
-					animate : true,
-					collapsible : true,
-					items : westSidePanel
-				}, {
-					region : 'south',
-					height : 25,
-					items : statusBarPanel
-				}]
-			});
+						}]
+					}]
+		}, {
+			region : 'center',
+			layout : 'fit',
+			width : "80%",
+			collapsible : true,
+			items : mainPanel
+		}, {
+			title : HIEARCHY,
+			region : 'west',
+			layout : 'fit',
+			width : 300,
+			minWidth : 300,
+			split : true,
+			animate : true,
+			collapsible : true,
+			items : westSidePanel
+		}, {
+			region : 'south',
+			height : 25,
+			items : statusBarPanel
+		}]
+	});
 }

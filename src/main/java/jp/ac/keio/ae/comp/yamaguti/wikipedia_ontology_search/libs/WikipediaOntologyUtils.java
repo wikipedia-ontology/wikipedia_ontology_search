@@ -83,7 +83,9 @@ public class WikipediaOntologyUtils {
     }
 
     public static ExternalLink getRDFLink(String uri, String type) {
-        ExternalLink rdfLink = new ExternalLink(type + "_rdf_url", uri.replaceAll(type + "/", type + "/data/") + ".rdf");
+        ExternalLink rdfLink = new ExternalLink(type + "_rdf_url", uri.replaceAll(type + "/", "query/" + type
+                + "/data/")
+                + ".rdf");
         rdfLink.add(getRDFIcon("rdf_icon"));
         return rdfLink;
     }

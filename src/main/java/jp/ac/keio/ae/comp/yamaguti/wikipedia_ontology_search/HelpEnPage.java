@@ -5,10 +5,10 @@ import org.apache.wicket.markup.html.basic.*;
 /**
  * @author t_morita
  */
-public class HelpEnPage extends CommonPage {
+public class HelpEnPage extends HelpCommonPage {
     public HelpEnPage() {
-        add(new Label("title", "Japanese Wikipedia Ontology Search Interface & Web APIs").setRenderBodyOnly(true));
-        add(new Label("version", VERSION));
+        add(new Label("title", "Help").setRenderBodyOnly(true));
+        add(new Label("version", CommonPage.VERSION));
     }
 
 }

@@ -58,6 +58,8 @@ var SEARCHING = "検索中・・・";
 var HELP_HTML = "help.html";
 var MANUAL = "マニュアル";
 var MANUAL_HTML = "manual.html";
+var SEARCH_EN_HTML = "en_search.html";
+var SEARCH_JA_HTML = "search.html";
 
 var SEARCH_OPTION = "検索オプション";
 var SEARCH_OPTION_EXACT_MATCH = "完全一致";

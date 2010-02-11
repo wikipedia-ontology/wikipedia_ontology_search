@@ -49,7 +49,7 @@ public class ResourcePage extends CommonPage implements Serializable {
             outputString = (String) mcStorage.get(key);
         }
         if (outputString != null) {
-            outputResource(outputString);
+            outputResource("application/xml", outputString);
             return;
         }
         SearchParameters searchParams = new SearchParameters(params, getWebRequestCycle().getResponse());
@@ -157,10 +157,12 @@ public class ResourcePage extends CommonPage implements Serializable {
         return new ExternalLink(id, url);
     }
 
-    private void setLinks(String resName, Resource uri, boolean isUseInfModel) {
+    private void setLinks(String resName, Resource uri, SearchParameters searchParams) {
+        boolean isUseInfModel = searchParams.isUseInfModel();
+        String resourceType = searchParams.getResourceType().toString().toLowerCase();
         add(new ExternalLink("page_uri", uri.getURI(), uri.getURI()));
-        String ns = uri.getNameSpace().replaceAll("wikipedia_ontology/", "wikipedia_ontology/query/");
-        String htmlURL = ns + "page/" + resName + ".html";
+        String baseURL = WikipediaOntologyStorage.ONTOLOGY_NS + "query/" + resourceType + "/";
+        String htmlURL = baseURL + "page/" + resName + ".html";
         String inferenceType = "";
         String inferenceURL = htmlURL;
         String inferenceTypeLabel = "Reasoner: None -> RDFS";
@@ -173,17 +175,21 @@ public class ResourcePage extends CommonPage implements Serializable {
         ExternalLink inferenceTypeLink = new ExternalLink("inference_type", inferenceURL, inferenceTypeLabel);
         add(inferenceTypeLink);
         ExternalLink htmlLink = getExternalLink("html_url", htmlURL + inferenceType);
+        System.out.println(htmlURL);
         htmlLink.add(getImage("html_icon", "myresources/icons/html.png"));
         add(htmlLink);
-        String dataURL = ns + "data/" + resName + ".rdf";
+        String dataURL = baseURL + "data/" + resName + ".rdf";
+        System.out.println(dataURL);
         ExternalLink rdfLink = getExternalLink("rdf_url", dataURL + inferenceType);
         rdfLink.add(getImage("rdf_icon", "myresources/icons/rdf_w3c_icon.16.png"));
         add(rdfLink);
-        String jsonTableURL = ns + "json_table/" + resName + ".json";
+        String jsonTableURL = baseURL + "json_table/" + resName + ".json";
+        System.out.println(jsonTableURL);
         ExternalLink jsonTableLink = getExternalLink("json_table_url", jsonTableURL + inferenceType);
         jsonTableLink.add(getImage("table_icon", "myresources/icons/table.png"));
         add(jsonTableLink);
-        String jsonTreeURL = ns + "json_tree/" + resName + ".json";
+        String jsonTreeURL = baseURL + "json_tree/" + resName + ".json";
+        System.out.println(jsonTreeURL);
         ExternalLink jsonTreeLink = getExternalLink("json_tree_url", jsonTreeURL + inferenceType);
         jsonTreeLink.add(getImage("tree_icon", "myresources/icons/expand-all.gif"));
         add(jsonTreeLink);
@@ -303,9 +309,10 @@ public class ResourcePage extends CommonPage implements Serializable {
         }).setRenderBodyOnly(true);
     }
 
-    private void outputResource(final String outputString) {
+    private void outputResource(final String contentType, final String outputString) {
         getRequestCycle().setRequestTarget(new IRequestTarget() {
             public void respond(RequestCycle requestCycle) {
+                requestCycle.getResponse().setContentType(contentType + "; charset=utf-8");
                 requestCycle.getResponse().write(outputString);
             }
             public void detach(RequestCycle requestCycle) {
@@ -366,22 +373,22 @@ public class ResourcePage extends CommonPage implements Serializable {
             String resName = wikiOntSearch.getSearchParameters().getResourceName();
             add(new Label("title", resName).setRenderBodyOnly(true));
             Resource uri = getPageResource(resName, wikiOntSearch.getSearchParameters().getResourceType());
-            setLinks(resName, uri, searchParams.isUseInfModel());
+            setLinks(resName, uri, searchParams);
             Map<PropertyImpl, List<RDFNodeImpl>> propertyRDFNodeMap = getPropertyRDFNodeMap(outputModel, uri,
                     instancePropertyImpl);
             setInstanceList(propertyRDFNodeMap, instancePropertyImpl);
             setPropertyAndValueList(propertyRDFNodeMap, instancePropertyImpl);
             break;
         case RDF_XML:
-            outputResource(WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+            outputResource("application/xml", WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
             MemCachedStorage mcStorage = MemCachedStorage.getInstance();
             mcStorage.add(getKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
             break;
         case JSON_TABLE:
-            outputResource(wikiOntSearch.getTableJSONString(outputModel, numberOfStatements));
+            outputResource("application/json", wikiOntSearch.getTableJSONString(outputModel, numberOfStatements));
             break;
         case JSON_TREE:
-            outputResource(wikiOntSearch.getTreeJSONString(outputModel));
+            outputResource("application/json", wikiOntSearch.getTreeJSONString(outputModel));
             break;
         }
     }
