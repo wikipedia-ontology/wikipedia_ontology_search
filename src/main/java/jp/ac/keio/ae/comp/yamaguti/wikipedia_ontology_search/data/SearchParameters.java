@@ -45,25 +45,6 @@ public class SearchParameters {
         return rdfKey;
     }
 
-    public String getRDFKey() {
-        String rdfKey = "query/" + resourceType.toString().toLowerCase() + "/data/" + resourceName + ".rdf";
-        if (searchOption != null) {
-            rdfKey = addParamSimbol(rdfKey);
-            rdfKey += "search_option=" + searchOption.toString().toLowerCase();
-        }
-        if (inferenceType != InferenceType.NONE) {
-            rdfKey = addParamSimbol(rdfKey);
-            rdfKey += "?inference_type=" + inferenceType.toString().toLowerCase();
-        }
-        if (0 < typeSet.size()) {
-            rdfKey = addParamSimbol(rdfKey);
-            for (String type : typeSet) {
-                rdfKey += "type=" + type + "&";
-            }
-        }
-        return rdfKey;
-    }
-
     public boolean isValidRequest() {
         return resourceType != null && dataType != null && 0 < resourceName.length();
     }
@@ -183,6 +164,28 @@ public class SearchParameters {
         default:
             return false;
         }
+    }
+
+    public String getKey() {
+        return getKey(this.dataType);
+    }
+
+    public String getRDFKey() {
+        return getKey(DataType.RDF_XML);
+    }
+
+    private String getKey(DataType dt) {
+        int hashCode = 0;
+        hashCode += resourceType.hashCode();
+        hashCode += dt.hashCode();
+        hashCode += resourceName.hashCode();
+        for (String type : typeSet) {
+            hashCode += type.hashCode();
+        }
+        hashCode += searchOption.hashCode();
+        hashCode += inferenceType.hashCode();
+
+        return Integer.toString(hashCode);
     }
 
     public String toString() {

@@ -162,8 +162,8 @@ public class WikipediaOntologySearch {
                 addInstances(type, outputModel);
             }
         }
-        MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-        mcStorage.add(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(
+                outputModel, "RDF/XML-ABBREV"));
         return outputModel;
     }
 

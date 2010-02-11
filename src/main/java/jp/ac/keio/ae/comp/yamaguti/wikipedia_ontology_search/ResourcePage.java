@@ -32,30 +32,17 @@ import com.hp.hpl.jena.rdf.model.Resource;
  */
 public class ResourcePage extends CommonPage implements Serializable {
 
-    private String getKey() {
-        try {
-            return new String(getRequestCycle().getRequest().getURL().getBytes("8859_1"), "UTF-8");
-        } catch (UnsupportedEncodingException ueex) {
-            ueex.printStackTrace();
-        }
-        return null;
-    }
-
     public ResourcePage(PageParameters params) {
-        MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-        String key = getKey();
-        String outputString = null;
-        if (!key.contains("type=")) {
-            outputString = (String) mcStorage.get(key);
-        }
-        if (outputString != null) {
-            outputResource("application/xml", outputString);
-            return;
-        }
         SearchParameters searchParams = new SearchParameters(params, getWebRequestCycle().getResponse());
         if (!searchParams.isValidRequest()) {
             params.put("search_parameters", searchParams);
             setResponsePage(ErrorPage.class, params);
+        }
+        String outputString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getKey());
+        if (outputString != null) {
+            System.out.println("get from memcached");
+            outputResource("application/xml", outputString);
+            return;
         }
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParams);
         Model outputModel = getOutputModel(wikiOntSearch, searchParams);
@@ -67,11 +54,8 @@ public class ResourcePage extends CommonPage implements Serializable {
 
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
         wikiOntSearch.setTDBModel();
-        MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-        if (!searchParams.getRDFKey().contains("type=")) {
-            String rdfString = (String) mcStorage.get(searchParams.getRDFKey());
-            if (rdfString != null) { return WikipediaOntologyUtils.readRDFString(rdfString); }
-        }
+        String rdfString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getRDFKey());
+        if (rdfString != null) { return WikipediaOntologyUtils.readRDFString(rdfString); }
         Set<String> typeSet = searchParams.getTypeSet();
         SearchOptionType searchOptionType = searchParams.getSearchOption();
         if (typeSet.size() == 0) {
@@ -380,15 +364,19 @@ public class ResourcePage extends CommonPage implements Serializable {
             setPropertyAndValueList(propertyRDFNodeMap, instancePropertyImpl);
             break;
         case RDF_XML:
-            outputResource("application/xml", WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
-            MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-            mcStorage.add(getKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+            String rdfString = WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
+            outputResource("application/xml", rdfString);
+            WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), rdfString);
             break;
         case JSON_TABLE:
-            outputResource("application/json", wikiOntSearch.getTableJSONString(outputModel, numberOfStatements));
+            String jsonString = wikiOntSearch.getTableJSONString(outputModel, numberOfStatements);
+            outputResource("application/json", jsonString);
+            WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
             break;
         case JSON_TREE:
-            outputResource("application/json", wikiOntSearch.getTreeJSONString(outputModel));
+            jsonString = wikiOntSearch.getTreeJSONString(outputModel);
+            outputResource("application/json", jsonString);
+            WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
             break;
         }
     }
