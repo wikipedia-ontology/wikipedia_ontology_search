@@ -35,13 +35,11 @@ import com.hp.hpl.jena.vocabulary.*;
 public class WikipediaOntologyUtils {
 
     public static void addStringToMemcached(String key, String value) {
-        System.out.println("add : " + " hashKey: " + key);
         MemCachedStorage mcStorage = MemCachedStorage.getInstance();
         mcStorage.add(key, value);
     }
 
     public static String getStringFromMemcached(String key) {
-        System.out.println("get : " + " hashKey: " + key);
         return (String) MemCachedStorage.getInstance().get(key);
     }
 

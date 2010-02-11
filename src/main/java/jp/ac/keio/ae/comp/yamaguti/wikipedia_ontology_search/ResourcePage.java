@@ -40,7 +40,6 @@ public class ResourcePage extends CommonPage implements Serializable {
         }
         String outputString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getKey());
         if (outputString != null) {
-            System.out.println("get from memcached");
             outputResource("application/xml", outputString);
             return;
         }
@@ -159,21 +158,17 @@ public class ResourcePage extends CommonPage implements Serializable {
         ExternalLink inferenceTypeLink = new ExternalLink("inference_type", inferenceURL, inferenceTypeLabel);
         add(inferenceTypeLink);
         ExternalLink htmlLink = getExternalLink("html_url", htmlURL + inferenceType);
-        System.out.println(htmlURL);
         htmlLink.add(getImage("html_icon", "myresources/icons/html.png"));
         add(htmlLink);
         String dataURL = baseURL + "data/" + resName + ".rdf";
-        System.out.println(dataURL);
         ExternalLink rdfLink = getExternalLink("rdf_url", dataURL + inferenceType);
         rdfLink.add(getImage("rdf_icon", "myresources/icons/rdf_w3c_icon.16.png"));
         add(rdfLink);
         String jsonTableURL = baseURL + "json_table/" + resName + ".json";
-        System.out.println(jsonTableURL);
         ExternalLink jsonTableLink = getExternalLink("json_table_url", jsonTableURL + inferenceType);
         jsonTableLink.add(getImage("table_icon", "myresources/icons/table.png"));
         add(jsonTableLink);
         String jsonTreeURL = baseURL + "json_tree/" + resName + ".json";
-        System.out.println(jsonTreeURL);
         ExternalLink jsonTreeLink = getExternalLink("json_tree_url", jsonTreeURL + inferenceType);
         jsonTreeLink.add(getImage("tree_icon", "myresources/icons/expand-all.gif"));
         add(jsonTreeLink);
