@@ -173,6 +173,10 @@ public class SearchParameters {
         hashCode += searchOption.toString().hashCode();
         hashCode += inferenceType.toString().hashCode();
 
+        if (!(start == 0 && limit == 0)) {
+            hashCode += ("start" + start).hashCode();
+            hashCode += ("limit" + limit).hashCode();
+        }
         return Integer.toString(hashCode);
     }
 

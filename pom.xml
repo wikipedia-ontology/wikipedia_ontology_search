@@ -4,7 +4,7 @@
 	<groupId>jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search</groupId>
 	<artifactId>wikipedia_ontology_search</artifactId>
 	<packaging>war</packaging>
-	<version>2010-02-11</version>
+	<version>2010-02-11-b</version>
 	<name>Wikipedia Ontology Search System</name>
 	<description></description>
 	<!--
@@ -187,7 +187,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<wicket.version>1.4.5</wicket.version>
+		<wicket.version>1.4.6</wicket.version>
 		<jetty.version>6.1.4</jetty.version>
 	</properties>
 
