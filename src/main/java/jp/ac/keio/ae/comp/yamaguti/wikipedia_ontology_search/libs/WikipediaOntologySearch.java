@@ -79,16 +79,17 @@ public class WikipediaOntologySearch {
         }
     }
 
-    public void setTDBModel() {
+    public String setTDBModel() {
         if (searchParameters.isUseInfModel()) {
             dbModel = getWikipediaOntologyAndInstanceModel("ja", "rdfs");
-        } else {
-            if (!searchParameters.getResourceName().equals("queryString") && searchParameters.isEnglishResourceName()) {
-                dbModel = getWikipediaOntologyAndInstanceModel("en", "");
-            } else {
-                dbModel = getWikipediaOntologyAndInstanceModel("ja", "");
-            }
+            return "ja";
         }
+        if (!searchParameters.getResourceName().equals("queryString") && searchParameters.isEnglishResourceName()) {
+            dbModel = getWikipediaOntologyAndInstanceModel("en", "");
+            return "en";
+        }
+        dbModel = getWikipediaOntologyAndInstanceModel("ja", "");
+        return "ja";
     }
 
     private QueryExecution getQueryExecution(String queryString) {
@@ -96,10 +97,9 @@ public class WikipediaOntologySearch {
         return QueryExecutionFactory.create(query, dbModel);
     }
 
-    public void setQueryResults(String queryString) {
+    public void setQueryResults(String lang, String queryString) {
         QueryExecution qexec = getQueryExecution(queryString);
         ResultSet results = qexec.execSelect();
-
         try {
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
@@ -123,6 +123,11 @@ public class WikipediaOntologySearch {
             }
         } finally {
             qexec.close();
+        }
+        // 英語名らしきラベルがついているが，日本語Wikipediaオントロジーで定義されている場合の処理
+        if (lang.equals("en") && resourceSet.size() == 0) {
+            dbModel = getWikipediaOntologyAndInstanceModel("ja", "");
+            setQueryResults("ja", queryString);
         }
         if (searchParameters.getResourceType() == ResourceType.INSTANCE
                 && searchParameters.getSearchOption() == SearchOptionType.EXACT_MATCH) {

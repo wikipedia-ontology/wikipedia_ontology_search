@@ -33,14 +33,19 @@ import com.hp.hpl.jena.rdf.model.Resource;
 public class ResourcePage extends CommonPage implements Serializable {
 
     public ResourcePage(PageParameters params) {
-        SearchParameters searchParams = new SearchParameters(params, getWebRequestCycle().getResponse());
+        SearchParameters searchParams = new SearchParameters(params);
         if (!searchParams.isValidRequest()) {
             params.put("search_parameters", searchParams);
             setResponsePage(ErrorPage.class, params);
         }
         String outputString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getKey());
+        System.out.println(searchParams.getKey() + ": +" + outputString);
         if (outputString != null) {
-            outputResource("application/xml", outputString);
+            if (searchParams.getDataType() == DataType.RDF_XML) {
+                outputResource("application/xml", outputString);
+            } else {
+                outputResource("application/json", outputString);
+            }
             return;
         }
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParams);
@@ -52,7 +57,7 @@ public class ResourcePage extends CommonPage implements Serializable {
     }
 
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
-        wikiOntSearch.setTDBModel();
+        String lang = wikiOntSearch.setTDBModel();
         String rdfString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getRDFKey());
         if (rdfString != null) { return WikipediaOntologyUtils.readRDFString(rdfString); }
         Set<String> typeSet = searchParams.getTypeSet();
@@ -69,7 +74,7 @@ public class ResourcePage extends CommonPage implements Serializable {
                         "sparql_templates/query_resource.tmpl");
                 queryString = SPARQLQueryMaker.getResourceQueryString(searchParams, sparqlTemplateString);
             }
-            wikiOntSearch.setQueryResults(queryString);
+            wikiOntSearch.setQueryResults(lang, queryString);
         } else {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                     "sparql_templates/query_types.tmpl");

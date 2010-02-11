@@ -51,7 +51,6 @@
 		<param-name>h2_db_protocol</param-name>
 		<param-value>tcp://localhost/</param-value>
 		<!--
-			<param-value>tcp://hpcs01/</param-value>
 			<param-value>file:</param-value>
 			-->
 	</context-param>

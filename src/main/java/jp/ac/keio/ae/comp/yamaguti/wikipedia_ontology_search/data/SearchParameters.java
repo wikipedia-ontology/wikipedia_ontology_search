@@ -25,24 +25,15 @@ public class SearchParameters {
     private SearchOptionType searchOption;
     private InferenceType inferenceType;
 
-    public SearchParameters(PageParameters params, Response resp) {
+    public SearchParameters(PageParameters params) {
         resourceType = getResourceType(params.getString("resource_type"));
         dataType = getDataType(params.getString("data_type"));
-        resourceName = getResourceName(params.getString("resource_name"), resp);
+        resourceName = getResourceName(params.getString("resource_name"));
         typeSet = getTypeSet(params.getStringArray("type"));
         searchOption = getSearchOptionType(params.getString("search_option", "exact_match"));
         inferenceType = getInferenceType(params.getString("inference_type", "none"));
         start = params.getInt("start", 0);
         limit = params.getInt("limit", 0);
-    }
-
-    private String addParamSimbol(String rdfKey) {
-        if (rdfKey.contains("?")) {
-            rdfKey += "&";
-        } else {
-            rdfKey += "?";
-        }
-        return rdfKey;
     }
 
     public boolean isValidRequest() {
@@ -73,17 +64,14 @@ public class SearchParameters {
         return null;
     }
 
-    private String getResourceName(String resName, Response resp) {
+    private String getResourceName(String resName) {
         switch (dataType) {
         case PAGE:
-            resp.setContentType("text/html; charset=UTF-8");
             return resName.replaceAll("\\.html", "");
         case RDF_XML:
-            resp.setContentType("application/rdf+xml; charset=UTF-8");
             return resName.replaceAll("\\.rdf", "");
         case JSON_TABLE:
         case JSON_TREE:
-            resp.setContentType("application/json; charset=UTF-8");
             return resName.replaceAll("\\.json", "");
         default:
             return resName;
@@ -176,14 +164,14 @@ public class SearchParameters {
 
     private String getKey(DataType dt) {
         int hashCode = 0;
-        hashCode += resourceType.hashCode();
-        hashCode += dt.hashCode();
+        hashCode += resourceType.toString().hashCode();
+        hashCode += dt.toString().hashCode();
         hashCode += resourceName.hashCode();
         for (String type : typeSet) {
             hashCode += type.hashCode();
         }
-        hashCode += searchOption.hashCode();
-        hashCode += inferenceType.hashCode();
+        hashCode += searchOption.toString().hashCode();
+        hashCode += inferenceType.toString().hashCode();
 
         return Integer.toString(hashCode);
     }

@@ -101,7 +101,7 @@ public class SPARQLQueryMaker {
         }
 
         String regexString = "";
-        resourceName = resourceName.replaceAll("\\(|\\)|\\$|\\[|\\]|\\+|\\*|\\\\|\\?", "\\.");
+        resourceName = resourceName.replaceAll("\\(|\\)|\\$|\\[|\\]|\\+|\\*|\\\\|\\?|-", "\\.");
         if (WikipediaOntologyUtils.isEnglishTerm(resourceName)) {
             resourceName = resourceName.replaceAll("_", " ");
         }
