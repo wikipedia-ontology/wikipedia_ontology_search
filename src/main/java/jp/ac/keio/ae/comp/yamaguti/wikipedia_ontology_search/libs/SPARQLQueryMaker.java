@@ -31,7 +31,7 @@ public class SPARQLQueryMaker {
     public static String getIntancesOfClassQueryString(ClassImpl cls, int limit, int offset) {
         String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                 "sparql_templates/query_instances_of_class.tmpl");
-        String queryString = sparqlTemplateString.replaceAll("\\$CLASS", "<" + escape(cls.getURI()) + ">");
+        String queryString = sparqlTemplateString.replaceAll("\\$CLASS", "<" + escape(cls.getUri()) + ">");
         queryString = queryString.replaceAll("\\$LIMIT", Integer.toString(limit));
         queryString = queryString.replaceAll("\\$OFFSET", Integer.toString(offset));
         return queryString;

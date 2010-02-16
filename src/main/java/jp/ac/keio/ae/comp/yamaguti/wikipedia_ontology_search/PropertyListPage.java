@@ -133,8 +133,8 @@ public class PropertyListPage extends CommonPage {
             @Override
             protected void populateItem(ListItem<ClassImpl> item) {
                 ClassImpl c = item.getModelObject();
-                String name = c.getClassName();
-                String uri = c.getURI();
+                String name = c.getClsName();
+                String uri = c.getUri();
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "type"));
                 item.add(new ExternalLink("type", uri, name));
             }

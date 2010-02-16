@@ -1,28 +1,40 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
-import java.sql.*;
-import java.util.*;
-
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.*;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
-import net.java.ao.*;
-
-import org.apache.wicket.*;
-import org.apache.wicket.ajax.*;
-import org.apache.wicket.markup.html.*;
-import org.apache.wicket.markup.html.basic.*;
-import org.apache.wicket.markup.html.image.*;
-import org.apache.wicket.markup.html.link.*;
-import org.apache.wicket.markup.html.list.*;
-import org.apache.wicket.markup.repeater.*;
-import org.apache.wicket.markup.repeater.data.*;
-import org.apache.wicket.model.*;
-import org.apache.wicket.model.Model;
-
-import com.google.common.collect.*;
-import com.hp.hpl.jena.rdf.model.*;
+import com.google.common.collect.Lists;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.ClassStatistics;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.IndicatingAjaxPagingNavigator;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.SPARQLQueryMaker;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
+import net.java.ao.EntityManager;
+import net.java.ao.Query;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxIndicatorAware;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Takeshi Morita
@@ -64,7 +76,7 @@ public class ClassListPage extends CommonPage {
                 return new Model<ClassImpl>(object);
             }
 
-            public Iterator< ? extends ClassImpl> iterator(int first, int count) {
+            public Iterator<? extends ClassImpl> iterator(int first, int count) {
                 classPagingData.setStart(first + 1);
                 classPagingData.setEnd(first + count);
                 resolveDao();
@@ -87,7 +99,7 @@ public class ClassListPage extends CommonPage {
     }
 
     private IDataProvider<InstanceImpl> getInstanceDataProvider(final PagingData pagingData, final ClassImpl cls,
-            final String lang) {
+                                                                final String lang) {
         return new IDataProvider<InstanceImpl>() {
             transient EntityManager em;
 
@@ -105,7 +117,7 @@ public class ClassListPage extends CommonPage {
                 try {
                     int size = 0;
                     for (ClassStatistics c : em.find(ClassStatistics.class, Query.select().where("classname = ?",
-                            cls.getClassName()))) {
+                            cls.getClsName()))) {
                         size = c.getInstanceCount();
                     }
                     pagingData.setSize(size);
@@ -120,7 +132,7 @@ public class ClassListPage extends CommonPage {
                 return new Model<InstanceImpl>(object);
             }
 
-            public Iterator< ? extends InstanceImpl> iterator(int first, int count) {
+            public Iterator<? extends InstanceImpl> iterator(int first, int count) {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 resolveDao();
@@ -247,8 +259,8 @@ public class ClassListPage extends CommonPage {
             @Override
             protected void populateItem(final Item<ClassImpl> item) {
                 final ClassImpl c = item.getModelObject();
-                String name = c.getClassName();
-                String uri = c.getURI();
+                String name = c.getClsName();
+                String uri = c.getUri();
                 item.add(new Label("instance_count", Integer.toString(c.getInstanceCount())));
                 item.add(new ExternalLink("class", uri, name));
                 final WebMarkupContainer instanceListContainer = new WebMarkupContainer("instance_list_container");

@@ -4,7 +4,7 @@
 
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
-import org.apache.wicket.markup.html.basic.*;
+import org.apache.wicket.markup.html.basic.Label;
 
 /**
  * @author takeshi morita
