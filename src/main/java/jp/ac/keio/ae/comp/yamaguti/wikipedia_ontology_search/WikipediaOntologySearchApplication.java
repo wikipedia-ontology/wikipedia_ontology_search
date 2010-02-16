@@ -1,17 +1,11 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
+import org.apache.wicket.Page;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.target.coding.MixedParamUrlCodingStrategy;
 
-import org.apache.wicket.*;
-import org.apache.wicket.protocol.http.*;
-import org.apache.wicket.request.target.coding.*;
-
-/**
- * Application object for your web application. If you want to run this
- * application without deploying, run the Start class.
- *
- * @see jp.ac.keio.ae.comp.yamaguti.Start#main(String[])
- */
 public class WikipediaOntologySearchApplication extends WebApplication {
     /**
      * Constructor
@@ -20,7 +14,7 @@ public class WikipediaOntologySearchApplication extends WebApplication {
     }
 
     @Override
-    public Class< ? extends Page> getHomePage() {
+    public Class<? extends Page> getHomePage() {
         return IndexPage.class;
     }
 
@@ -38,15 +32,21 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         mountBookmarkablePage("/search.html", SearchJaPage.class);
         mountBookmarkablePage("/en_search.html", SearchEnPage.class);
         mountBookmarkablePage("/error.html", ErrorPage.class);
-        mount(new MixedParamUrlCodingStrategy("/class_list", ClassListPage.class, new String[] { "lang"}));
-        mount(new MixedParamUrlCodingStrategy("/property_list", PropertyListPage.class, new String[] { "lang"}));
-        mount(new MixedParamUrlCodingStrategy("/query", ResourcePage.class, new String[] { "resource_type",
+        mount(new MixedParamUrlCodingStrategy("/class_list", ClassListPage.class, new String[]{"lang"}));
+        mount(new MixedParamUrlCodingStrategy("/property_list", PropertyListPage.class, new String[]{"lang"}));
+        mount(new MixedParamUrlCodingStrategy("/query", ResourcePage.class, new String[]{"resource_type",
                 "data_type", "resource_name"}));
-
+        String hostName = WikipediaOntologyUtils.getHostName();
         WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
+        if (hostName.equals("zest")) {
+            WikipediaOntologyStorage.H2_DB_PATH = "~/h2db/";
+        }
         WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
         WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter(
                 "wikipedia_ontology_path");
+        if (hostName.equals("zest")) {
+            WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "C:/wikipedia_ontology/";
+        }
     }
 
 }
