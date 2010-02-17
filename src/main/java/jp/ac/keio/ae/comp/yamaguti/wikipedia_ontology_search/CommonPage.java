@@ -15,8 +15,8 @@ import org.apache.wicket.markup.html.link.*;
  */
 public abstract class CommonPage extends WebPage {
 
-    public static final String VERSION = "2009-11-23";
-    protected static final String TITLE = "日本語Wikipediaオントロジー検索システム";
+    public final String VERSION = "2009-11-23";
+    public final String TITLE = "日本語Wikipediaオントロジー検索システム";
 
     public CommonPage() {
         add(new Label("server_name", WikipediaOntologyUtils.getHostName()));
