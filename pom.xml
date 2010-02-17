@@ -150,6 +150,9 @@
                 <includes>
                     <include>**</include>
                 </includes>
+                <excludes>
+                    <exclude>*.scala</exclude>
+                </excludes>
             </resource>
         </resources>
         <testResources>
