@@ -12,6 +12,6 @@ import org.apache.wicket.markup.html.basic.Label
  */
 class IndexPage extends CommonPage {
     add(new Label("title", "ホーム: " + TITLE).setRenderBodyOnly(true));
-    add(new Label("version", VERSION));
+    add(new Label("version", CommonPage.VERSION));
 }
 

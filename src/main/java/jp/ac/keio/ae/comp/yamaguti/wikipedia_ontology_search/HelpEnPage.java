@@ -10,6 +10,5 @@ public class HelpEnPage extends HelpCommonPage {
         add(new Label("title", "Help").setRenderBodyOnly(true));
         add(new Label("version", CommonPage.VERSION));
     }
-
 }
 
