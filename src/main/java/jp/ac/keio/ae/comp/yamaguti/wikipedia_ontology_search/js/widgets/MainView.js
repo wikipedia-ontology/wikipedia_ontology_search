@@ -24,7 +24,7 @@ function getMainView() {
 	var westSideNorthPanel = new Ext.Panel({
 				frame : true,
 				autoScroll : true,
-				collapsible : true,
+				collapsible : false,
 				layout : "accordion",
 				items : [classAndInstanceTreePanel, wholeClassTreePanel]
 			});
@@ -32,7 +32,7 @@ function getMainView() {
 	var westSideSouthPanel = new Ext.Panel({
 				frame : true,
 				autoScroll : true,
-				collapsible : true,
+				collapsible : false,
 				layout : "accordion",
 				items : [sideBookmarkPanel, sideHistoryPanel]
 			});
@@ -41,7 +41,7 @@ function getMainView() {
 				layout : 'border',
 				items : [{
 							region : 'center',
-							collapsible : true,
+							collapsible : false,
 							layout : 'fit',
 							split : true,
 							items : westSideNorthPanel
@@ -81,7 +81,7 @@ function getMainView() {
 							region : 'center',
 							layout : 'fit',
 							width : "80%",
-							collapsible : true,
+							collapsible : false,
 							items : wikiOntContentsTab
 						}]
 			});
@@ -148,7 +148,7 @@ function getMainView() {
 			region : 'center',
 			layout : 'fit',
 			width : "80%",
-			collapsible : true,
+			collapsible : false,
 			items : mainPanel
 		}, {
 			title : HIEARCHY,

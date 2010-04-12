@@ -15,7 +15,7 @@ import org.apache.wicket.markup.html.link.*;
  */
 public abstract class CommonPage extends WebPage {
 
-    public final String VERSION = "2009-11-23";
+    public final String VERSION = "2010-04-12";
     public final String TITLE = "日本語Wikipediaオントロジー検索システム";
 
     public CommonPage() {

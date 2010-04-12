@@ -48,9 +48,10 @@
  * 階層検索についても，完全一致，前方一致，後方一致，部分一致を選択して検索できるようにした．
  *
  * ver.2010-04-12 ブックマークと履歴をWeb Storageに保存するようにした
+ *                 ExtJsのバージョンを3.2にアップ．
  * contact: t_morita@ae.keio.ac.jp
  *
- * Copyright © 2009 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ * Copyright © 2009-2010 慶應義塾大学 理工学部 管理工学科 山口研究室．
  *
  */
 
@@ -65,7 +66,7 @@ var start_collapsed_group = true;
 
 Ext.onReady(function() {
 			Ext.QuickTips.init();
-			Ext.getDom("title").innerHTML = APP_TITLE + " ver. 2009-11-23";
+			Ext.getDom("title").innerHTML = APP_TITLE + " ver. 2010-04-12";
 			var cookieProvider = new Ext.state.CookieProvider({
 						expires : new Date(new Date().getTime()
 								+ (1000 * 60 * 60 * 24 * 365 * 5))
