@@ -1,8 +1,8 @@
-var historyDataArray = []; // 履歴はクッキーには保存しない
 
-// 現在，利用していない．
-// var historyDataArray = getDataFromCookie("historyData");
-// var historyCookieNum = 0;
+var historyDataArray = [];
+if (localStorage.history != undefined) {
+    historyDataArray = getDataFromWebStorage(localStorage.history);
+}
 
 function addHistoryData() {
 	var searchPanel = Ext.getCmp('SearchPanel');
@@ -14,15 +14,13 @@ function addHistoryData() {
 			currentURI];
 	historyDataStore.loadData([record], true);
 	historyDataStore.sort('date', 'DESC');
-	// historyCookieNum = saveDataToCookie(historyDataStore, "historyData",
-	// historyCookieNum);
+	saveHistoryDataToWebStorage(historyDataStore);
 }
 
 function removeAllHistoryData() {
 	var historyDataStore = Ext.getCmp('HistoryPanel').store;
 	historyDataStore.loadData([], false);
-	// historyCookieNum = saveDataToCookie(historyDataStore, "historyData",
-	// historyCookieNum);
+	saveHistoryDataToWebStorage(historyDataStore);
 }
 
 function removeSelectedHistories() {
@@ -33,8 +31,7 @@ function removeSelectedHistories() {
 	for (var i = 0; i < selectedRecords.length; i++) {
 		historyDataStore.remove(selectedRecords[i]);
 	}
-	// historyCookieNum = saveDataToCookie(historyDataStore, "historyData",
-	// historyCookieNum);
+	saveHistoryDataToWebStorage(historyDataStore);
 }
 
 function addSelectedHistoriesToBookmark() {
@@ -51,6 +48,7 @@ function addSelectedHistoriesToBookmark() {
 	}
 	bookmarkStore.loadData(addedBookmarks, true);
 	bookmarkStore.sort('date', 'DESC');
+	saveBookmarksToWebStorage(bookmarkStore);
 }
 
 function getHistoryDataColumnModel(isSidePanel,

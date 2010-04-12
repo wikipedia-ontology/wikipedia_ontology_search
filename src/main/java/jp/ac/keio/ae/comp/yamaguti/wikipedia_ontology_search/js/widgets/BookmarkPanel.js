@@ -1,9 +1,7 @@
 var bookmarkArray = [];
-
-// 現在使われていない．
-// var bookmarkCookieNum = 0;
-// getDataFromCookie("bookmarkData");
-// bookmarkCookieNum = bookmarkArray[1];
+if (localStorage.bookmark != undefined) {
+    bookmarkArray = getDataFromWebStorage(localStorage.bookmark);
+}
 
 function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
 	return new Ext.grid.ColumnModel({
@@ -163,8 +161,7 @@ function addBookmark() {
 			currentURI];
 	bookmarkStore.loadData([record], true);
 	bookmarkStore.sort('date', 'DESC');
-	// bookmarkCookieNum = saveDataToCookie(bookmarkStore, "bookmarkData",
-	// bookmarkCookieNum);
+	saveBookmarksToWebStorage(bookmarkStore);
 }
 
 function removeSelectedBookmarks() {
@@ -175,8 +172,7 @@ function removeSelectedBookmarks() {
 	for (var i = 0; i < selectedRecords.length; i++) {
 		bookmarkStore.remove(selectedRecords[i]);
 	}
-	// bookmarkCookieNum = saveDataToCookie(bookmarkStore, "bookmarkData",
-	// bookmarkCookieNum);
+	saveBookmarksToWebStorage(bookmarkStore);
 }
 
 function showBookmarkContextMenu(grid, rowIndex, cellIndex, e) {

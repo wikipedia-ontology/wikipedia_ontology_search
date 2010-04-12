@@ -160,49 +160,32 @@ function setQueryType() {
 }
 
 /**
- * 現状では利用していない
+ * Web Storageからデータを復元
  */
-function getDataFromCookie(dataType) {
-	var cookieNum = 0;
-	var data = [];
-	if (cookieProvider.get(dataType + "0") != null
-			&& cookieProvider.get(dataType + "0")[0] != undefined) {
-		for (var i = 0; cookieProvider.get(dataType + i) != null; i++) {
-			data = data.concat(cookieProvider.get(dataType + i));
-			cookieNum++;
-		}
-	}
-	return [data, cookieNum];
+function getDataFromWebStorage(storage) {
+   return JSON.parse(storage);
+}
+
+function getLocalDataArray(localData) {
+   var tmpData = [];
+   localData.each(function(record) {
+				tmpData.push([record.get('date'), record.get('keyword'),
+						record.get('searchOption'), record.get('queryType'),
+						record.get('useInfModel'), record.get('URL')]);
+			});
+    return tmpData;
 }
 
 /**
- * クッキーには4kbしか保存できず，限界を超えるとアプリが起動できなくなるので，クッキーには保存しない 現在利用していない．
+ * Web Storageにブックマークを保存
  */
-var maxCookieNum = 3;
-function saveDataToCookie(store, dataType, prevCookieNum) {
-	var data = [];
-	var cookieNum = 0;
-	store.each(function(record) {
-				data.push([record.get('date'), record.get('keyword'),
-						record.get('searchOption'), record.get('queryType'),
-						record.get('useInfModel'), record.get('URL')]);
-				if (data.length == 5) {
-					if (cookieNum < maxCookieNum) {
-						cookieProvider.set(dataType + cookieNum, data);
-					}
-					cookieNum++;
-					data = [];
-				}
-			});
+function saveBookmarksToWebStorage(bookmarkData) {
+    localStorage.bookmark = JSON.stringify(getLocalDataArray(bookmarkData));
+}
 
-	if (0 < data.length && cookieNum < maxCookieNum) {
-		cookieProvider.set(dataType + cookieNum, data);
-	}
-	if (maxCookieNum < cookieNum) {
-		cookieNum = maxCookieNum
-	}
-	for (var i = cookieNum; i < prevCookieNum; i++) {
-		cookieProvider.set(dataType + i, []);
-	}
-	return cookieNum;
+/**
+ * Web Storageに履歴データを保存
+ */
+function saveHistoryDataToWebStorage(historyData) {
+    localStorage.history = JSON.stringify(getLocalDataArray(historyData));
 }
