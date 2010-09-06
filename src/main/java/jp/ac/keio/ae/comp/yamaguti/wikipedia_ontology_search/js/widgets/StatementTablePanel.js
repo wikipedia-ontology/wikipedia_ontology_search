@@ -38,6 +38,7 @@ function getStatementTableDataStore() {
 function getProxy(json_url) {
 	return new Ext.data.HttpProxy({
 				url : json_url,
+                timeout: 1000 * 60 * 5,			
 				method : "GET"
 			});
 }

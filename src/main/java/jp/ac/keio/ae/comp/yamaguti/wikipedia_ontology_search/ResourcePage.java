@@ -4,28 +4,31 @@
 
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
-import java.io.*;
-import java.util.*;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.hp.hpl.jena.rdf.model.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
+import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
-import org.apache.wicket.*;
-import org.apache.wicket.ajax.markup.html.navigation.paging.*;
-import org.apache.wicket.behavior.*;
-import org.apache.wicket.markup.html.*;
-import org.apache.wicket.markup.html.basic.*;
-import org.apache.wicket.markup.html.image.*;
-import org.apache.wicket.markup.html.link.*;
-import org.apache.wicket.markup.html.list.*;
-import org.apache.wicket.markup.repeater.*;
-import org.apache.wicket.markup.repeater.data.*;
-import org.apache.wicket.model.*;
-
-import com.google.common.collect.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * @author takeshi morita
@@ -39,14 +42,16 @@ public class ResourcePage extends CommonPage implements Serializable {
             setResponsePage(ErrorPage.class, params);
         }
         String outputString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getKey());
-        System.out.println(searchParams.getKey() + ": +" + outputString);
         if (outputString != null) {
+            System.out.println("Memcached: "+ searchParams.getKey() + ": " + outputString.length());
             if (searchParams.getDataType() == DataType.RDF_XML) {
                 outputResource("application/xml", outputString);
             } else {
                 outputResource("application/json", outputString);
             }
             return;
+        } else {
+            System.out.println("memcached null");
         }
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParams);
         Model outputModel = getOutputModel(wikiOntSearch, searchParams);

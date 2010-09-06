@@ -117,7 +117,7 @@ public class ClassListPage extends CommonPage {
                 try {
                     int size = 0;
                     for (ClassStatistics c : em.find(ClassStatistics.class, Query.select().where("classname = ?",
-                            cls.getClsName()))) {
+                            cls.getClassName()))) {
                         size = c.getInstanceCount();
                     }
                     pagingData.setSize(size);
@@ -165,6 +165,7 @@ public class ClassListPage extends CommonPage {
                 PropertyImpl p = item.getModelObject();
                 String uri = p.getURI();
                 String value = p.getValue();
+//                uri = uri.replace("http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/", "http://localhost:8080/wikipedia_ontology_search/query/property/page/") +  ".html";
                 item.add(WikipediaOntologyUtils.getPropertyIconS("property_icon_s"));
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "property"));
                 item.add(new ExternalLink("property", uri, p.getName()));
@@ -191,6 +192,7 @@ public class ClassListPage extends CommonPage {
                 final InstanceImpl i = item.getModelObject();
                 String name = i.getInstanceName();
                 String uri = i.getURI();
+//                uri = uri.replace("http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/", "http://localhost:8080/wikipedia_ontology_search/query/instance/page/") +  ".html";
                 item.add(new ExternalLink("instance", uri, name));
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "instance"));
                 final WebMarkupContainer propertyListContainer = new WebMarkupContainer(
@@ -259,8 +261,9 @@ public class ClassListPage extends CommonPage {
             @Override
             protected void populateItem(final Item<ClassImpl> item) {
                 final ClassImpl c = item.getModelObject();
-                String name = c.getClsName();
-                String uri = c.getUri();
+                String name = c.getClassName();
+                String uri = c.getURI();
+//                uri = uri.replace("http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/", "http://localhost:8080/wikipedia_ontology_search/query/class/page/") +  ".html";
                 item.add(new Label("instance_count", Integer.toString(c.getInstanceCount())));
                 item.add(new ExternalLink("class", uri, name));
                 final WebMarkupContainer instanceListContainer = new WebMarkupContainer("instance_list_container");

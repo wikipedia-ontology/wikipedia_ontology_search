@@ -1,29 +1,34 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.*;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
-
-import org.apache.tools.ant.filters.*;
-import org.apache.wicket.*;
-import org.apache.wicket.ajax.*;
-import org.apache.wicket.behavior.*;
-import org.apache.wicket.markup.html.*;
-import org.apache.wicket.markup.html.image.*;
-import org.apache.wicket.markup.html.link.*;
-import org.apache.wicket.markup.html.resources.*;
-import org.apache.wicket.util.resource.*;
-
-import com.google.common.collect.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.vocabulary.*;
-import com.hp.hpl.jena.util.*;
-import com.hp.hpl.jena.vocabulary.*;
+import com.hp.hpl.jena.sparql.vocabulary.FOAF;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.vocabulary.OWL;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.CommonPage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.IndexPage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
+import org.apache.tools.ant.filters.StringInputStream;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.JavascriptPackageResource;
+import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.util.resource.IStringResourceStream;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.util.*;
 
 /*
  * @(#)  2009/10/29
@@ -175,7 +180,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static HeaderContributor getJsPackageResource(String path) {
-        return JavascriptPackageResource.getHeaderContribution(new CompressedResourceReference(IndexPage.class, path));
+        return JavascriptPackageResource.getHeaderContribution(new CompressedResourceReference(CommonPage.class, path));
     }
 
     public static Image getIndicator(String id) {

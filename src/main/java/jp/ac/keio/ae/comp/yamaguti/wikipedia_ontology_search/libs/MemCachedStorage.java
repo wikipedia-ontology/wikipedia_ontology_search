@@ -4,9 +4,11 @@
 
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 
-import java.util.*;
+import com.danga.MemCached.MemCachedClient;
+import com.danga.MemCached.SockIOPool;
 
-import com.danga.MemCached.*;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Takeshi Morita
@@ -16,8 +18,8 @@ public class MemCachedStorage {
     private static MemCachedStorage mcStorage;
     private Date date;
     private MemCachedClient mcc;
-    private static final String HOST = "hpcs01.comp.ae.keio.ac.jp";
-    private static final String PORT = "11211";
+    public static String HOST = "localhost";
+    public static String PORT = "11211";
 
     private MemCachedStorage() {
         SockIOPool pool = SockIOPool.getInstance();
@@ -44,4 +46,5 @@ public class MemCachedStorage {
     public Object get(String key) {
         return mcc.get(key);
     }
+
 }

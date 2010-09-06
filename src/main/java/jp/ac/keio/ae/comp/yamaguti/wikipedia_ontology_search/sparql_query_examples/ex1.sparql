@@ -1,0 +1,1 @@
+PREFIX++rdf%3a+%3chttp%3a%2f%2fwww.w3.org%2f1999%2f02%2f22-rdf-syntax-ns%23%3e%0aPREFIX++rdfs%3a++%3chttp%3a%2f%2fwww.w3.org%2f2000%2f01%2frdf-schema%23%3e%0a%0aSELECT+%3finstance+%3fclass%0aWHERE%0a%7b%0a++++%3finstance+rdf%3atype+%3fclass%3b%0a++++rdfs%3alabel+%22%e7%a6%8f%e6%be%a4%e8%ab%ad%e5%90%89%22.%0a%7d

@@ -3,6 +3,7 @@ var HOME_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/";
 // var BASE_SERVER_URL =
  //"http://zest.comp.ae.keio.ac.jp:8080/wikipedia_ontology_search/query/";
 var BASE_SERVER_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/query/";
+//var BASE_SERVER_URL = "http://localhost:8080/wikipedia_ontology_search/query/";
 var BASE_URI = "http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/";
 var BASE_ICON_URL = "resources/jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.SearchPage/myresources/icons/";
 

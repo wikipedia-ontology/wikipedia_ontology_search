@@ -4,7 +4,7 @@
     <groupId>jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search</groupId>
     <artifactId>wikipedia_ontology_search</artifactId>
     <packaging>war</packaging>
-    <version>2010-02-12</version>
+    <version>2010-07-07</version>
     <name>Wikipedia Ontology Search System</name>
     <description></description>
     <!--
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.7.2-rc2</version>
+            <version>2.7.7</version>
         </dependency>
 
         <!--
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.2.126</version>
+            <version>1.2.138</version>
         </dependency>
 
         <!--  JETTY DEPENDENCIES FOR TESTING  -->

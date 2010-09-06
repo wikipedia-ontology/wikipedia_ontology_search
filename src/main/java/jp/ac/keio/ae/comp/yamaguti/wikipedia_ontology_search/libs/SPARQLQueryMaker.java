@@ -4,10 +4,13 @@
 
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 
-import java.util.*;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.ResourcePage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.SearchParameters;
 
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.*;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
+import java.util.Set;
 
 /**
  * @author takeshi morita
@@ -31,7 +34,7 @@ public class SPARQLQueryMaker {
     public static String getIntancesOfClassQueryString(ClassImpl cls, int limit, int offset) {
         String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                 "sparql_templates/query_instances_of_class.tmpl");
-        String queryString = sparqlTemplateString.replaceAll("\\$CLASS", "<" + escape(cls.getUri()) + ">");
+        String queryString = sparqlTemplateString.replaceAll("\\$CLASS", "<" + escape(cls.getURI()) + ">");
         queryString = queryString.replaceAll("\\$LIMIT", Integer.toString(limit));
         queryString = queryString.replaceAll("\\$OFFSET", Integer.toString(offset));
         return queryString;

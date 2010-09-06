@@ -37,12 +37,12 @@
 
     <context-param>
         <param-name>wikipedia_ontology_path</param-name>
-        <param-value>/wikipedia_ontology/</param-value>
+        <param-value>C:/Users/t_morita/wikipedia_ontology/</param-value>
     </context-param>
 
     <context-param>
         <param-name>h2_db_path</param-name>
-        <param-value>/h2db/</param-value>
+        <param-value>C:/Users/t_morita/h2db/</param-value>
     </context-param>
 
     <context-param>
@@ -51,6 +51,16 @@
         <!--
               <param-value>file:</param-value>
               -->
+    </context-param>
+
+    <context-param>
+        <param-name>memcached_host</param-name>
+        <param-value>localhost</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>memcached_port</param-name>
+        <param-value>11211</param-value>
     </context-param>
 
 </web-app>

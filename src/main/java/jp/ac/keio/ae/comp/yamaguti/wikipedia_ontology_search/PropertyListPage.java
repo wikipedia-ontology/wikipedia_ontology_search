@@ -1,24 +1,36 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
-import java.sql.*;
-import java.util.*;
+import com.google.common.collect.Lists;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.PropertyStatistics;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.IndicatingAjaxPagingNavigator;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.SPARQLQueryMaker;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
+import net.java.ao.EntityManager;
+import net.java.ao.Query;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxIndicatorAware;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.*;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
-import net.java.ao.*;
-
-import org.apache.wicket.ajax.*;
-import org.apache.wicket.markup.html.*;
-import org.apache.wicket.markup.html.basic.*;
-import org.apache.wicket.markup.html.image.*;
-import org.apache.wicket.markup.html.link.*;
-import org.apache.wicket.markup.html.list.*;
-import org.apache.wicket.markup.repeater.*;
-import org.apache.wicket.markup.repeater.data.*;
-import org.apache.wicket.model.*;
-
-import com.google.common.collect.*;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author t_morita
@@ -133,8 +145,9 @@ public class PropertyListPage extends CommonPage {
             @Override
             protected void populateItem(ListItem<ClassImpl> item) {
                 ClassImpl c = item.getModelObject();
-                String name = c.getClsName();
-                String uri = c.getUri();
+                String name = c.getClassName();
+                String uri = c.getURI();
+//                uri = uri.replace("http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/", "http://localhost:8080/wikipedia_ontology_search/query/class/page/") +  ".html";
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "type"));
                 item.add(new ExternalLink("type", uri, name));
             }
@@ -151,6 +164,7 @@ public class PropertyListPage extends CommonPage {
                 final InstanceImpl i = item.getModelObject();
                 String name = i.getInstanceName();
                 String uri = i.getURI();
+//                uri = uri.replace("http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/", "http://localhost:8080/wikipedia_ontology_search/query/instance/page/") +  ".html";
                 item.add(new ExternalLink("instance", uri, name));
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "instance"));
                 final WebMarkupContainer typeListContainer = new WebMarkupContainer("type_list_container");
@@ -220,6 +234,7 @@ public class PropertyListPage extends CommonPage {
                 final PropertyImpl p = item.getModelObject();
                 String name = p.getName();
                 String uri = p.getURI();
+//                uri = uri.replace("http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/", "http://localhost:8080/wikipedia_ontology_search/query/property/page/") +  ".html";
                 item.add(new Label("number_of_instances", Integer.toString(p.getNumberOfInstances())));
                 item.add(new ExternalLink("property", uri, name));
                 final WebMarkupContainer instanceListContainer = new WebMarkupContainer("instance_list_container");

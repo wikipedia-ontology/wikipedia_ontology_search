@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+    <h1>SPARQLクエリ</h1>
+   <form wicket:id="textForm" method="get">
+       <textarea wicket:id="textArea" rows="20" cols="80" wrap="soft"></textarea><br/>
+       <select wicket:id="format"/><br/>
+       <input type="submit" wicket:id="query" value="検索"/>
+   </form>
+
+    <h2>SPARQLクエリのサンプル</h2>
+    <ul>
+        <li><a href="" wicket:id="ex1">「福澤諭吉」をラベルとして持つインスタンス</a></li>
+        <li><a href="" wicket:id="ex2">出身地が日本の音楽家</a></li>
+        <li><a href="" wicket:id="ex3">発売元が任天堂で，対応機種がニンテンドーＤＳのゲーム</a></li>
+    </ul>
+</wicket:extend>
+</body>
+</html>
