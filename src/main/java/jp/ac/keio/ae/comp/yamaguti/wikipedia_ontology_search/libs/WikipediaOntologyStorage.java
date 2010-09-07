@@ -41,7 +41,7 @@ public class WikipediaOntologyStorage {
     public static String INSTANCE_NS = ONTOLOGY_NS + "instance/";
     public static Property INSTANCE_COUNT_PROPERTY = ResourceFactory.createProperty(ONTOLOGY_NS + "instanceCount");
 
-    public static String WIKIPEDIA_ONTOLOGY_PATH;
+    public static String WIKIPEDIA_ONTOLOGY_PATH = "/wikipedia_ontology";
     private static final String BASE_WIKIPEDIA_ONTOLOGY_NAME = "_wikipedia_ontology_2010_02_09";
 
     private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH

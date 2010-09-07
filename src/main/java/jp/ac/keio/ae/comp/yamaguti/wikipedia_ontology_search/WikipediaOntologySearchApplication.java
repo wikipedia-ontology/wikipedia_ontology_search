@@ -42,13 +42,13 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         String hostName = WikipediaOntologyUtils.getHostName();
         WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
         if (hostName.equals("zest")) {
-    //        WikipediaOntologyStorage.H2_DB_PATH = "~/h2db/";
+            WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
         }
         WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
         WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter(
                 "wikipedia_ontology_path");
         if (hostName.equals("zest")) {
-     //       WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "C:/wikipedia_ontology/";
+            WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "C:/Users/t_morita/wikipedia_ontology/";
         }
         MemCachedStorage.HOST = getServletContext().getInitParameter("memcached_host");
         MemCachedStorage.PORT = getServletContext().getInitParameter("memcached_port");

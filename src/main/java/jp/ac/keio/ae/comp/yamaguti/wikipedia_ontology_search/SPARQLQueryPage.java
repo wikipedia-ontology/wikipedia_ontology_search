@@ -16,7 +16,6 @@ import org.apache.wicket.model.PropertyModel;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +35,7 @@ public class SPARQLQueryPage extends CommonPage{
     }
 
    private String getQueryResults(String queryString, String outputFormat)  {
+       System.out.println(queryString);
        String output = "";
        QueryExecution queryExec =  null;
        try {
@@ -49,6 +49,7 @@ public class SPARQLQueryPage extends CommonPage{
                output = ResultSetFormatter.asText(results);
            }
        } catch(Exception e) {
+           e.printStackTrace();
            return "error";
        } finally {
            if (queryExec != null) {
@@ -77,7 +78,7 @@ public class SPARQLQueryPage extends CommonPage{
                     outputFormat = "xml";
                 }
                 final String contentType = getContentType(outputFormat);
-                final String outputString = getQueryResults(URLDecoder.decode(query, "UTF-8"), outputFormat);
+                final String outputString = getQueryResults(query, outputFormat);
                 if (outputString.equals("error")) {
                     params = new PageParameters();
                     params.put("error_message", "SPARQLクエリエラー");
@@ -92,20 +93,20 @@ public class SPARQLQueryPage extends CommonPage{
                         }
                     });
                 }
-            } catch(UnsupportedEncodingException e) {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
         }
 
         Form<Void> form = new Form<Void>("textForm");
-        PropertyModel sparqlQueryModel = new PropertyModel<String>(this, "sparqlQuery");
+        PropertyModel<String> sparqlQueryModel = new PropertyModel<String>(this, "sparqlQuery");
         final TextArea<String> queryArea = new TextArea<String>("textArea",sparqlQueryModel);
         queryArea.setOutputMarkupId(true);
         form.add(queryArea);
         add(form);
 
         List<ChoiceElement>  choices = Arrays.asList(new ChoiceElement("xml", "XML"),  new ChoiceElement("text", "テキスト"));
-        final DropDownChoice<ChoiceElement> select = new DropDownChoice("format", new org.apache.wicket.model.Model<ChoiceElement>(), choices,
+        final DropDownChoice<ChoiceElement> select = new DropDownChoice<ChoiceElement>("format", new org.apache.wicket.model.Model<ChoiceElement>(), choices,
                 new IChoiceRenderer<ChoiceElement>() {
                     public String getDisplayValue(ChoiceElement object) {
                         return object.getName();
@@ -120,20 +121,15 @@ public class SPARQLQueryPage extends CommonPage{
         Button submitButton = new Button("query") {
             @Override
             public void onSubmit() {
-                try {
-                    String encodedSPARQLQuery = URLEncoder.encode(sparqlQuery, "UTF-8");
-                    PageParameters params = new PageParameters();
-                    params.put("query", encodedSPARQLQuery);
-                    ChoiceElement elem = select.getModelObject();
-                    String outputFormat = "xml";
-                    if (elem != null) {
-                        outputFormat = elem.getId();
-                    }
-                    params.put("output", outputFormat);
-                    setResponsePage(SPARQLQueryPage.class, params);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                PageParameters params = new PageParameters();
+                params.put("query", sparqlQuery);
+                ChoiceElement elem = select.getModelObject();
+                String outputFormat = "xml";
+                if (elem != null) {
+                    outputFormat = elem.getId();
                 }
+                params.put("output", outputFormat);
+                setResponsePage(SPARQLQueryPage.class, params);
             }
         };
         form.add(submitButton);

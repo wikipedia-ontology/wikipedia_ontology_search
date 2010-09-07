@@ -37,12 +37,12 @@
 
     <context-param>
         <param-name>wikipedia_ontology_path</param-name>
-        <param-value>C:/Users/t_morita/wikipedia_ontology/</param-value>
+        <param-value>/wikipedia_ontology/</param-value>
     </context-param>
 
     <context-param>
         <param-name>h2_db_path</param-name>
-        <param-value>C:/Users/t_morita/h2db/</param-value>
+        <param-value>/h2db/</param-value>
     </context-param>
 
     <context-param>
