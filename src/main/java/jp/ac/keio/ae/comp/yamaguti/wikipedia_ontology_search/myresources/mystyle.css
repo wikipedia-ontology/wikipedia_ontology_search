@@ -205,6 +205,30 @@ th {
     text-align: center;
 }
 
+.sparql_query_info_container {
+   text-align: center;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+table.sparql_query_info_table  {
+   width: 100%;
+}
+
+table.sparql_query_info_table td,th {
+    padding: 5px 5px;
+    text-align: center;
+}
+
+table.sparql_query_info_table td.description {
+   text-align: left;
+}
+
+.error_message {
+  color: red;
+  font-weight: bold;
+}
+
 pre {
     margin: 1em;
 }

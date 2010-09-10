@@ -7,18 +7,65 @@
 <body>
 <wicket:extend>
     <h1>SPARQLクエリ</h1>
-   <form wicket:id="textForm" method="get">
-       <textarea wicket:id="textArea" rows="20" cols="80" wrap="soft"></textarea><br/>
-       <select wicket:id="format"/><br/>
+    <form wicket:id="textForm" method="get">
+       作成者（任意）：
+       <input type="text" id="userId" wicket:id="userId"/><br/>
+       説明：<span class="error_message" wicket:id="description_error_message"></span><br/>
+       <textarea wicket:id="descriptionArea" rows="3" cols="80" wrap="soft"></textarea><br/>
+       クエリ：<span class="error_message" wicket:id="query_error_message"></span><br/>
+       <textarea wicket:id="queryArea" rows="15" cols="80" wrap="soft"></textarea><br/>
+       <select wicket:id="format"/>
+       <input type="checkbox" id="inference_model_check" wicket:id="inference_model_check"/> 
+       <label for="inference_model_check">推論モデルを利用する</label>
+       <br/>
        <input type="submit" wicket:id="query" value="検索"/>
+       <input type="submit" wicket:id="save" value="保存"/>
+       <input type="submit" wicket:id="clear" value="クリア"/>
+       <img src="#" wicket:id="button_indicator" style="display:none"/>
    </form>
 
-    <h2>SPARQLクエリのサンプル</h2>
-    <ul>
-        <li><a href="" wicket:id="ex1">「福澤諭吉」をラベルとして持つインスタンス</a></li>
-        <li><a href="" wicket:id="ex2">出身地が日本の音楽家</a></li>
-        <li><a href="" wicket:id="ex3">発売元が任天堂で，対応機種がニンテンドーＤＳのゲーム</a></li>
-    </ul>
+    <h2>登録されたSPARQLクエリの一覧</h2>
+    <div wicket:id="sparql_query_info_container" class="sparql_query_info_container">
+    <div style="text-align: left;">
+        Results: <span wicket:id = "start">1</span> – <span wicket:id = "end">50</span> of <span wicket:id = "count">50</span>
+        <img src="#" wicket:id="indicator" style="display:none"/>
+        <br/>
+        <div wicket:id="sparql_query_info_paging">1,2</div>
+    </div>
+        <table class="sparql_query_info_table">
+        <thead>
+        <tr>
+            <th width="44%">クエリの説明</th>
+            <th width="10%">作成者</th>
+            <th width="15%">作成日</th>
+            <th width="15%">更新日</th>
+            <th width="8%">更新</th>
+            <th width="8%">削除</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr wicket:id="sparql_query_info_list">
+            <td class="description">
+                <a href="" wicket:id="query_link"><span wicket:id="description"></span></a>
+                <a wicket:id = "html_url" href="#"><img wicket:id = "html_icon" src="#" alt = "HTML Icon"/></a>
+                <a wicket:id = "rdf_url" href="#"><img wicket:id = "rdf_icon" src="#" alt = "RDF Icon"/></a>
+            </td>
+            <td wicket:id="create_userId"></td>
+            <td wicket:id="create_date"></td>
+            <td wicket:id="update_date"></td>
+            <td>
+                <img src="#" wicket:id="update_item_indicator" style="display:none"/>
+                <a href="#" wicket:id="update">更新</a>
+            </td>
+            <td>
+                <img src="#" wicket:id="delete_item_indicator" style="display:none"/>
+                <a href="#" wicket:id="delete">削除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    </div>
 </wicket:extend>
 </body>
 </html>

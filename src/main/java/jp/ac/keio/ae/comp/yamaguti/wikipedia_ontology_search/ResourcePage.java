@@ -370,7 +370,7 @@ public class ResourcePage extends CommonPage implements Serializable {
             break;
         case RDF_XML:
             String rdfString = WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
-            outputResource("application/xml", rdfString);
+            outputResource("application/rdf+xml", rdfString);
             WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), rdfString);
             break;
         case JSON_TABLE:
