@@ -3,6 +3,7 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 import com.google.common.collect.Lists;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.SPARQLQueryInfo;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.SPARQLQueryInfoImpl;
@@ -11,20 +12,19 @@ import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.SPARQLQuerySto
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
 import net.java.ao.EntityManager;
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -53,11 +53,38 @@ public class SPARQLQueryPage extends CommonPage{
     private String outputFormat;
     private String descriptionErrorMessage;
     private String queryErrorMessage;
-    
+    private IndicatingAjaxLink currentAjaxLink;
+    private String confirmType;
+
+   private String keyword;
+    private boolean isSearchAuthorCheck;
+    private boolean isSearchDescriptionCheck;
+    private boolean isSearchQueryCheck;
+
+   public void setConfirmType(String type)  {
+       confirmType = type;
+   }
+
     private Model getWikipediaOntologyAndInstanceModel(String lang, String inferenceType) {
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, inferenceType);
         return wikiOntStrage.getTDBModel();
     }
+
+   private boolean isValidSPARQLQuerySyntax(String queryString)  {
+       QueryExecution queryExec =  null;
+       try {
+           Query query = QueryFactory.create(queryString);
+           queryExec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel());
+       } catch(Exception e) {
+           e.printStackTrace();
+           return false;
+       } finally {
+           if (queryExec != null) {
+               queryExec.close();
+           }
+       }
+       return true;
+   }
 
    private String getQueryResults(String queryString, String outputFormat, String inferenceType)  {
        System.out.println(queryString);
@@ -140,8 +167,28 @@ public class SPARQLQueryPage extends CommonPage{
                 e.printStackTrace();
             }
         }
-        
-        Form<Void> form = new Form<Void>("textForm");
+
+       final ModalWindow confirmDialog = new ModalWindow("confirmDialog");
+        confirmDialog.setOutputMarkupId(true);
+         confirmDialog.setPageCreator(new ModalWindow.PageCreator() {
+            public Page createPage() {
+                return new ConfirmDialog(SPARQLQueryPage.this, confirmDialog);
+            }
+        });
+        confirmDialog.setInitialHeight(120);
+        confirmDialog.setInitialWidth(300);
+        confirmDialog.setResizable(false);
+
+        confirmDialog.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+            public void onClose(AjaxRequestTarget target) {
+                if (!confirmType.equals("cancel")) {
+                    currentAjaxLink.onClick(target);
+                }
+            }
+        });
+        add(confirmDialog);
+
+        Form<Void> form = new Form<Void>("sparql_query_form");
         PropertyModel<String> sparqlQueryModel = new PropertyModel<String>(this, "sparqlQuery");
         final TextArea<String> queryArea = new TextArea<String>("queryArea",sparqlQueryModel);
         queryArea.setOutputMarkupId(true);
@@ -214,8 +261,7 @@ public class SPARQLQueryPage extends CommonPage{
                         inferenceType = "rdfs";
                         params.put("inference_type", "rdfs");
                     }
-                    String outputString = getQueryResults(sparqlQuery, "xml", inferenceType);
-                    if (outputString.equals("error")) {
+                    if (!isValidSPARQLQuerySyntax(sparqlQuery)) {
                         queryErrorMessage = "クエリにエラーがあります．";
                     } else {
                         setResponsePage(SPARQLQueryPage.class, params);
@@ -252,8 +298,7 @@ public class SPARQLQueryPage extends CommonPage{
                     queryErrorMessage = "クエリを入力してください．";
                 }
                 if (!(isDescriptionEmpty() || isQueryEmpty())){
-                    String outputString = getQueryResults(sparqlQuery, "xml", inferenceType);
-                    if (outputString.equals("error")) {
+                    if (!isValidSPARQLQuerySyntax(sparqlQuery)) {
                         queryErrorMessage = "クエリにエラーがあります．";
                     } else {
                         try {
@@ -283,10 +328,14 @@ public class SPARQLQueryPage extends CommonPage{
                 description = "";
                 sparqlQuery = "";
                 isUsingInferenceModel = false;
+                queryErrorMessage = "";
+                descriptionErrorMessage = "";
                 target.addComponent(userIdField);
                 target.addComponent(descriptionArea);
                 target.addComponent(queryArea);
                 target.addComponent(inferenceModelCheckBox);
+                target.addComponent(queryErrorMessageLabel);
+                target.addComponent(descriptionErrorMessageLabel);
             }
 
             public String getAjaxIndicatorMarkupId() {
@@ -345,7 +394,8 @@ public class SPARQLQueryPage extends CommonPage{
 
                 final Image updateItemIndicator = WikipediaOntologyUtils.getIndicator("update_item_indicator");
                 item.add(updateItemIndicator);
-                IndicatingAjaxLink<String> updateLink = new IndicatingAjaxLink<String>("update") {
+
+                final IndicatingAjaxLink<String> updateLink = new IndicatingAjaxLink<String>("update") {
 
                     @Override
                     public void onClick(AjaxRequestTarget target) {
@@ -363,11 +413,10 @@ public class SPARQLQueryPage extends CommonPage{
                             queryErrorMessage = "クエリを入力してください．";
                         }
                         if (!(isDescriptionEmpty() || isQueryEmpty())){
-                            String outputString = getQueryResults(sparqlQuery, "xml", inferenceType);
-                            if (outputString.equals("error")) {
+                            if (!isValidSPARQLQuerySyntax(sparqlQuery)) {
                                 queryErrorMessage = "クエリにエラーがあります．";
                             } else {
-                                    SPARQLQueryStorage.updateSPARQLQueryInfo(id, userId, description, sparqlQuery, infType, createDate);
+                                SPARQLQueryStorage.updateSPARQLQueryInfo(id, userId, description, sparqlQuery, infType, createDate);
                             }
                         }
                         target.addComponent(queryErrorMessageLabel);
@@ -380,9 +429,23 @@ public class SPARQLQueryPage extends CommonPage{
                     }
                 };
 
+                IndicatingAjaxLink<String> updateButtonLink = new IndicatingAjaxLink<String>("update_button") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        currentAjaxLink = updateLink;
+                        confirmDialog.setTitle("更新");
+                        confirmDialog.show(target);
+                    }
+
+                    public String getAjaxIndicatorMarkupId() {
+                        return updateItemIndicator.getMarkupId();
+                    }
+                };
+                item.add(updateButtonLink);
+
                 final Image deleteItemIndicator = WikipediaOntologyUtils.getIndicator("delete_item_indicator");
                 item.add(deleteItemIndicator);
-                IndicatingAjaxLink<String> deleteLink = new IndicatingAjaxLink<String>("delete") {
+                final IndicatingAjaxLink<String> deleteLink = new IndicatingAjaxLink<String>("delete") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         SPARQLQueryStorage.deleteSPARQLQueryInfo(id);
@@ -393,6 +456,21 @@ public class SPARQLQueryPage extends CommonPage{
                         return deleteItemIndicator.getMarkupId();
                     }
                 };
+
+                IndicatingAjaxLink<String> deleteButtonLink = new IndicatingAjaxLink<String>("delete_button") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        currentAjaxLink = deleteLink;
+                        confirmDialog.setTitle("削除");
+                        confirmDialog.show(target);
+                    }
+
+                    public String getAjaxIndicatorMarkupId() {
+                        return deleteItemIndicator.getMarkupId();
+                    }
+                };
+                item.add(deleteButtonLink);
+
                 item.add(updateLink);
                 item.add(deleteLink);
             }
@@ -407,6 +485,71 @@ public class SPARQLQueryPage extends CommonPage{
         sparqlQueryInfoContainer.add(indicator);
         sparqlQueryInfoContainer.add(new IndicatingAjaxPagingNavigator("sparql_query_info_paging", sparqlQueryInfoView, indicator));
         add(sparqlQueryInfoContainer);
+
+        Form<Void> sparqlQueryInfoForm = new Form<Void>("search_sparql_query_info_form");
+        final TextField keywordField = new TextField("keyword", new PropertyModel(this, "keyword"));
+        keywordField.setOutputMarkupId(true);
+        sparqlQueryInfoForm.add(keywordField);
+
+        final CheckBox searchAuthorCheckButton = new CheckBox("search_author_check", new PropertyModel(this, "isSearchAuthorCheck"));
+        searchAuthorCheckButton.setOutputMarkupId(true);
+        sparqlQueryInfoForm.add(searchAuthorCheckButton);
+        final CheckBox searchDescriptionCheckButton = new CheckBox("search_description_check", new PropertyModel(this, "isSearchDescriptionCheck"));
+        searchDescriptionCheckButton.setOutputMarkupId(true);
+        sparqlQueryInfoForm.add(searchDescriptionCheckButton);
+        final CheckBox searchQueryCheckButton = new CheckBox("search_query_check", new PropertyModel(this, "isSearchQueryCheck"));
+        searchQueryCheckButton.setOutputMarkupId(true);
+        sparqlQueryInfoForm.add(searchQueryCheckButton);
+
+        IndicatingAjaxButton searchSPARQLQueryInfoButton = new IndicatingAjaxButton("search_sparql_query_info") {
+            @Override
+            public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(sparqlQueryInfoContainer);
+            }
+
+            public String getAjaxIndicatorMarkupId() {
+                return buttonIndicator.getMarkupId();
+            }
+        };
+
+        sparqlQueryInfoForm.add(searchSPARQLQueryInfoButton);
+
+        IndicatingAjaxButton clearSearchSPARQLQueryInfoButton = new IndicatingAjaxButton("clear_search_sparql_query_info") {
+
+            @Override
+            public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                keyword = "";
+                isSearchDescriptionCheck = false;
+                isSearchQueryCheck = false;
+                isSearchAuthorCheck = false;
+                target.addComponent(keywordField);
+                target.addComponent(searchAuthorCheckButton);
+                target.addComponent(searchDescriptionCheckButton);
+                target.addComponent(searchQueryCheckButton);
+                target.addComponent(sparqlQueryInfoContainer);
+            }
+
+            public String getAjaxIndicatorMarkupId() {
+                return buttonIndicator.getMarkupId();
+            }
+        };
+        sparqlQueryInfoForm.add(clearSearchSPARQLQueryInfoButton);
+        add(sparqlQueryInfoForm);
+
+        Link downloadALLSPARQLQueryInfoLink = new Link("all_sparql_query_info_data") {
+            @Override
+            public void onClick() {
+                getRequestCycle().setRequestTarget(new IRequestTarget() {
+                    public void respond(RequestCycle requestCycle) {
+                        requestCycle.getResponse().setContentType("text/csv; charset=utf-8");
+                        requestCycle.getResponse().write(SPARQLQueryStorage.getAllSPARQLQueryInfoData());
+                    }
+                    public void detach(RequestCycle requestCycle) {
+                    }
+                });
+            }
+        };
+        add(downloadALLSPARQLQueryInfoLink);
         add(new Label("title", "SPARQLクエリ: " + TITLE).setRenderBodyOnly(true));
     }
 
@@ -456,7 +599,9 @@ public class SPARQLQueryPage extends CommonPage{
             public int size() {
                 resolveDao();
                 try {
-                    int size = em.count(SPARQLQueryInfo.class);
+                    net.java.ao.Query query = net.java.ao.Query.select();
+                    query = filterQuery(query);
+                    int size = em.count(SPARQLQueryInfo.class, query);
                     pagingData.setSize(size);
                     return size;
                 } catch (SQLException sqle) {
@@ -469,19 +614,61 @@ public class SPARQLQueryPage extends CommonPage{
                 return new org.apache.wicket.model.Model<SPARQLQueryInfoImpl>(object);
             }
 
+            private String makeFilterQuery(String[] keywords, String fieldName) {
+                StringBuilder builder = new StringBuilder();
+               for (String keyword: keywords)  {
+                   builder.append(fieldName);
+                   builder.append(" like ");
+                   builder.append("'%");
+                   builder.append(keyword);
+                   builder.append("%'");
+                   builder.append(" OR ");
+               }
+                builder.append("false ");
+                return builder.toString();
+            }
+
+            private net.java.ao.Query filterQuery(net.java.ao.Query query) {
+                if (keyword == null)  {
+                    keyword = "";
+                }
+                String[] keywords = keyword.split("\\s+");
+                String filterQuery = "";
+                if (isSearchDescriptionCheck) {
+                    filterQuery += makeFilterQuery(keywords, "description");
+                }
+                if (isSearchQueryCheck) {
+                    if (!filterQuery.isEmpty()) {
+                        filterQuery += " OR ";
+                    }
+                    filterQuery += makeFilterQuery(keywords, "query");
+                }
+                if (isSearchAuthorCheck) {
+                    if (!filterQuery.isEmpty()) {
+                        filterQuery += " OR ";
+                    }
+                    filterQuery += makeFilterQuery(keywords, "userid");
+                }
+                if (!filterQuery.isEmpty()) {
+                    query = query.where(filterQuery);
+                }
+                return query;
+            }
+
             public Iterator< ? extends SPARQLQueryInfoImpl> iterator(int first, int count) {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 List<SPARQLQueryInfoImpl> sparqlQueryInfoList = Lists.newArrayList();
                 net.java.ao.Query query = net.java.ao.Query.select().order("createdate desc, updatedate desc, description desc").limit(count).offset(first);
+                query = filterQuery(query);
                 try {
-                for (SPARQLQueryInfo info: em.find(SPARQLQueryInfo.class, query)) {
-                   String inferenceType = info.getInferenceType();
-                   SPARQLQueryInfoImpl infoImpl = new SPARQLQueryInfoImpl(info.getID(),
-                           info.getDescription(), info.getQuery(), info.getUserId(), inferenceType,
-                           info.getCreateDate(), info.getUpdateDate());
-                   sparqlQueryInfoList.add(infoImpl);
-                }
+                    for (SPARQLQueryInfo info: em.find(SPARQLQueryInfo.class, query)) {
+                        String inferenceType = info.getInferenceType();
+                        SPARQLQueryInfoImpl infoImpl = new SPARQLQueryInfoImpl(info.getID(),
+                                info.getDescription(), info.getQuery(), info.getUserId(), inferenceType,
+                                info.getCreateDate(), info.getUpdateDate());
+                        sparqlQueryInfoList.add(infoImpl);
+                    }
                 } catch(SQLException e) {
                     e.printStackTrace();
                 }

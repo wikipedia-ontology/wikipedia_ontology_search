@@ -3,6 +3,8 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.SPARQLQueryInfo;
 import net.java.ao.EntityManager;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +32,27 @@ public class SPARQLQueryStorage {
         }
         return em;
     }
+
+   public static String getAllSPARQLQueryInfoData() {
+       StringBuilder builder = new StringBuilder();
+       try {
+           for (SPARQLQueryInfo info: getEntityManager().find(SPARQLQueryInfo.class)) {
+               builder.append(info.getDescription());
+               builder.append("\t");
+               try {
+                   builder.append(URLEncoder.encode(info.getQuery(), "UTF-8"));
+               } catch(UnsupportedEncodingException e) {
+                   e.printStackTrace();
+               }
+               builder.append("\t");
+               builder.append(info.getUserId());
+               builder.append("\n");
+           }
+       } catch(SQLException e) {
+           e.printStackTrace();
+       }
+       return builder.toString();
+   }
 
    public static void deleteSPARQLQueryInfo(int id)  {
        try {

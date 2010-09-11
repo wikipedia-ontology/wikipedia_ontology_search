@@ -322,3 +322,47 @@ a img {
     border-style: dotted;
     border-width: thin 0 0 0;
 }
+
+label
+{
+margin-right: 0.5em;
+}
+
+.submit input
+{
+margin-left: 4.5em;
+}
+
+input, textarea
+{
+    background: #F5F5F5;
+border: 1px solid gray
+}
+
+input.submit
+{
+    color: #000;
+    background: #F5F5F5;
+    border: 2px outset #d7b9c9
+    font-size: 120%;
+    width: 5em;
+}
+
+fieldset
+{
+border: 1px solid gray;
+width: 820px;
+}
+
+legend
+{
+color: black;
+font-weight:bold;
+background: lightgray;
+border: 1px solid gray;
+padding: 2px 6px
+}
+
+form p {
+ text-indent: 0;
+}
