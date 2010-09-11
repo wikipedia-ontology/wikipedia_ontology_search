@@ -481,7 +481,7 @@ public class SPARQLQueryPage extends CommonPage{
         sparqlQueryInfoContainer.add(new Label("start", new PropertyModel<PagingData>(sparqlQueryInfoPagingData, "start")));
         sparqlQueryInfoContainer.add(new Label("end", new PropertyModel<PagingData>(sparqlQueryInfoPagingData, "end")));
         sparqlQueryInfoContainer.add(new Label("count", new PropertyModel<PagingData>(sparqlQueryInfoPagingData, "size")));
-        org.apache.wicket.markup.html.image.Image indicator = WikipediaOntologyUtils.getIndicator("indicator");
+        final org.apache.wicket.markup.html.image.Image indicator = WikipediaOntologyUtils.getIndicator("indicator");
         sparqlQueryInfoContainer.add(indicator);
         sparqlQueryInfoContainer.add(new IndicatingAjaxPagingNavigator("sparql_query_info_paging", sparqlQueryInfoView, indicator));
         add(sparqlQueryInfoContainer);
@@ -508,7 +508,7 @@ public class SPARQLQueryPage extends CommonPage{
             }
 
             public String getAjaxIndicatorMarkupId() {
-                return buttonIndicator.getMarkupId();
+                return indicator.getMarkupId();
             }
         };
 
