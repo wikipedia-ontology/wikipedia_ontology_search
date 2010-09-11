@@ -4,7 +4,7 @@
     <groupId>jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search</groupId>
     <artifactId>wikipedia_ontology_search</artifactId>
     <packaging>war</packaging>
-    <version>2010-09-07</version>
+    <version>2010-09-11</version>
     <name>Wikipedia Ontology Search System</name>
     <description></description>
     <!--
