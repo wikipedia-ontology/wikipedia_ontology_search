@@ -36,6 +36,8 @@ import java.util.*;
 public class ResourcePage extends CommonPage implements Serializable {
 
     public ResourcePage(PageParameters params) {
+        String resourceType = getRequestCycle().getRequest().getPath().split("/")[0];
+        params.put("resource_type", resourceType);
         SearchParameters searchParams = new SearchParameters(params);
         if (!searchParams.isValidRequest()) {
             params.put("search_parameters", searchParams);
@@ -43,9 +45,9 @@ public class ResourcePage extends CommonPage implements Serializable {
         }
         String outputString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getKey());
         if (outputString != null) {
-            System.out.println("Memcached: "+ searchParams.getKey() + ": " + outputString.length());
+            System.out.println("Memcached: " + searchParams.getKey() + ": " + outputString.length());
             if (searchParams.getDataType() == DataType.RDF_XML) {
-                outputResource("application/xml", outputString);
+                outputResource("application/rdf+xml", outputString);
             } else {
                 outputResource("application/json", outputString);
             }
@@ -154,7 +156,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         boolean isUseInfModel = searchParams.isUseInfModel();
         String resourceType = searchParams.getResourceType().toString().toLowerCase();
         add(new ExternalLink("page_uri", uri.getURI(), uri.getURI()));
-        String baseURL = WikipediaOntologyStorage.ONTOLOGY_NS + "query/" + resourceType + "/";
+        String baseURL = WikipediaOntologyStorage.ONTOLOGY_NS + resourceType + "/";
         String htmlURL = baseURL + "page/" + resName + ".html";
         String inferenceType = "";
         String inferenceURL = htmlURL;
@@ -174,11 +176,11 @@ public class ResourcePage extends CommonPage implements Serializable {
         ExternalLink rdfLink = getExternalLink("rdf_url", dataURL + inferenceType);
         rdfLink.add(getImage("rdf_icon", "myresources/icons/rdf_w3c_icon.16.png"));
         add(rdfLink);
-        String jsonTableURL = baseURL + "json_table/" + resName + ".json";
+        String jsonTableURL = baseURL + "table_data/" + resName + ".json";
         ExternalLink jsonTableLink = getExternalLink("json_table_url", jsonTableURL + inferenceType);
         jsonTableLink.add(getImage("table_icon", "myresources/icons/table.png"));
         add(jsonTableLink);
-        String jsonTreeURL = baseURL + "json_tree/" + resName + ".json";
+        String jsonTreeURL = baseURL + "tree_data/" + resName + ".json";
         ExternalLink jsonTreeLink = getExternalLink("json_tree_url", jsonTreeURL + inferenceType);
         jsonTreeLink.add(getImage("tree_icon", "myresources/icons/expand-all.gif"));
         add(jsonTreeLink);

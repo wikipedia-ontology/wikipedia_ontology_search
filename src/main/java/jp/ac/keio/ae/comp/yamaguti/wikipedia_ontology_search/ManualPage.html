@@ -11,11 +11,10 @@
 
 <h1>マニュアル</h1>
 <p class="page_description">
-以下では，日本語Wikipediaオントロジー検索システム ver.<span wicket:id="version"></span>の使用方法について説明する．
-(執筆途中・・・)
+以下では，日本語Wikipediaオントロジー検索システム ver.<span wicket:id="version"></span>の使用方法について説明する． 
 </p>
 
-<div style="text-align: right; font-size: 80%;">最終更新日: 2010年2月12日</div>
+<div style="text-align: right; font-size: 80%;">最終更新日: 2010年9月13日</div>
 
 <a name="table_of_contents"></a>
 <h2>目次</h2>
@@ -32,6 +31,7 @@
 		<li><a href="#url_parameters">URLパラメータ</a></li>
 		<li><a href="#resource_uri_and_data_uri">リソース（クラス，プロパティ，インスタンス）のURIとデータのURIの区別について</a></li>
 		<li><a href="#data_structure">データ構造</a></li>
+        <li><a href="#sparql">SPARQLによる検索</a></li>
 	</ul>
 	</li>
 	<li><a href="#search_interface">日本語Wikipediaオントロジー検索インタフェースの構成</a></li>
@@ -76,9 +76,9 @@
 <p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.0</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索システムは実行可能である．
 以下の環境で動作確認を行っている．</p>
 <ul>
-	<li>Google Chrome 4.0.302.3</li>
-	<li>FireFox 3.5.3</li>
-	<li>Safari 4.0.3</li>
+	<li>Google Chrome 6.0.472.53</li>
+	<li>FireFox 3.6.9</li>
+	<li>Safari 5.0.2</li>
 </ul>
 
 <div style="color: red; font-weight: bold; margin: 1em;">
@@ -525,6 +525,35 @@ icon-instanceクラスを用意している．スタイルシートは以下のU
 	rel="external">http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/query/myresources/mystyle.css</a>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="sparql"></a>
+<h3>SPARQLによる検索</h3>
+<p>
+以下のURLにqueryパラメータの値としてUTF-8エンコードしたSPARQLクエリを与えると，SPARQLによる検索結果を得ることができる．
+</p>
+
+<div style="widt: 600px; text-align: center; padding: 10px;">
+<a href="http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology/sparql">
+    http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology/sparql
+</a>
+</div>
+
+<p>query以外のURLパラメータには以下が指定できる．</p>
+
+<dl>
+    <dt>inference_type</dt>
+    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可能．</dd>
+    <dt>output</dt>
+    <dd>「xml」または「txt」を指定できる．</dd>
+</dl>
+
+<p>例として，「福澤諭吉」をラベルとして持つインスタンスとそのタイプをXML形式で得るためのURLを以下に示す．</p>
+
+<div style="widt: 600px; text-align: center; padding: 10px;">
+<a href="http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/sparql?query=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none">
+http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/sparql?query=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none
+</a>
+</div>
 
 <a name="search_interface"></a>
 <h2>日本語Wikipediaオントロジー検索インタフェースの構成</h2>

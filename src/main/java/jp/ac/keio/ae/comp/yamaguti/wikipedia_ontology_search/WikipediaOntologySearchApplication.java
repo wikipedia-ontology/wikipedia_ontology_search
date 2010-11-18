@@ -37,8 +37,9 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         mount(new QueryStringUrlCodingStrategy("/sparql", SPARQLQueryPage.class));
         mount(new MixedParamUrlCodingStrategy("/class_list", ClassListPage.class, new String[]{"lang"}));
         mount(new MixedParamUrlCodingStrategy("/property_list", PropertyListPage.class, new String[]{"lang"}));
-        mount(new MixedParamUrlCodingStrategy("/query", ResourcePage.class, new String[]{"resource_type",
-                "data_type", "resource_name"}));
+        mount(new MixedParamUrlCodingStrategy("/class", ResourcePage.class, new String[]{"data_type", "resource_name"}));
+        mount(new MixedParamUrlCodingStrategy("/property", ResourcePage.class, new String[]{"data_type", "resource_name"}));
+        mount(new MixedParamUrlCodingStrategy("/instance", ResourcePage.class, new String[]{"data_type", "resource_name"}));
         String hostName = WikipediaOntologyUtils.getHostName();
         WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
         if (hostName.equals("zest")) {

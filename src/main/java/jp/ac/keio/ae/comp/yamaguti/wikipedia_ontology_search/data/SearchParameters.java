@@ -4,12 +4,11 @@
 
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data;
 
-import java.io.*;
-import java.util.*;
+import com.google.common.collect.Sets;
+import org.apache.wicket.PageParameters;
 
-import org.apache.wicket.*;
-
-import com.google.common.collect.*;
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
 
 /**
  * @author Takeshi Morita
@@ -58,9 +57,9 @@ public class SearchParameters {
             return DataType.PAGE;
         } else if (dt.equals("data")) {
             return DataType.RDF_XML;
-        } else if (dt.equals("json_table")) {
+        } else if (dt.equals("table_data")) {
             return DataType.JSON_TABLE;
-        } else if (dt.equals("json_tree")) { return DataType.JSON_TREE; }
+        } else if (dt.equals("tree_data")) { return DataType.JSON_TREE; }
         return null;
     }
 
