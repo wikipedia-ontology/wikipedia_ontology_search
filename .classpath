@@ -2,15 +2,13 @@
   <classpathentry kind="src" path="src/test/java" output="target/test-classes"/>
   <classpathentry kind="src" path="src/main/java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="src" path="src/main/scala" including="**" excluding="*.scala|**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="var" path="M2_REPO/net/java/dev/activeobjects/activeobjects/0.8.2/activeobjects-0.8.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar" sourcepath="M2_REPO/ant/ant/1.6.5/ant-1.6.5-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/hp/hpl/jena/arq/2.8.2/arq-2.8.2.jar" sourcepath="M2_REPO/com/hp/hpl/jena/arq/2.8.2/arq-2.8.2-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" sourcepath="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/collections/google-collections/1.0/google-collections-1.0.jar" sourcepath="M2_REPO/com/google/collections/google-collections/1.0/google-collections-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/inject/guice/2.0/guice-2.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/h2database/h2/1.2.126/h2-1.2.126.jar" sourcepath="M2_REPO/com/h2database/h2/1.2.126/h2-1.2.126-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/h2database/h2/1.2.138/h2-1.2.138.jar" sourcepath="M2_REPO/com/h2database/h2/1.2.138/h2-1.2.138-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/ibm/icu/icu4j/3.4.4/icu4j-3.4.4.jar" sourcepath="M2_REPO/com/ibm/icu/icu4j/3.4.4/icu4j-3.4.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/hp/hpl/jena/iri/0.8/iri-0.8.jar" sourcepath="M2_REPO/com/hp/hpl/jena/iri/0.8/iri-0.8-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/hp/hpl/jena/jena/2.6.2/jena-2.6.2.jar" sourcepath="M2_REPO/com/hp/hpl/jena/jena/2.6.2/jena-2.6.2-sources.jar"/>
@@ -23,17 +21,14 @@
   <classpathentry kind="var" path="M2_REPO/com/danga/MemCached/2.0.1/MemCached-2.0.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/mx4j/mx4j/3.0.1/mx4j-3.0.1.jar" sourcepath="M2_REPO/mx4j/mx4j/3.0.1/mx4j-3.0.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar" sourcepath="M2_REPO/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.10/mysql-connector-java-5.1.10.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/hp/hpl/jena/sdb/1.3.1/sdb-1.3.1.jar" sourcepath="M2_REPO/com/hp/hpl/jena/sdb/1.3.1/sdb-1.3.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/scala-lang/scala-library/2.8.0/scala-library-2.8.0.jar" sourcepath="M2_REPO/org/scala-lang/scala-library/2.8.0/scala-library-2.8.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.1.4/servlet-api-2.5-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/servlet-api-2.5/6.1.4/servlet-api-2.5-6.1.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.4.2/slf4j-log4j12-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.4.2/slf4j-log4j12-1.4.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/hp/hpl/jena/tdb/0.8.4/tdb-0.8.4.jar" sourcepath="M2_REPO/com/hp/hpl/jena/tdb/0.8.4/tdb-0.8.4-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/wicket/wicket/1.4.5/wicket-1.4.5.jar" sourcepath="M2_REPO/org/apache/wicket/wicket/1.4.5/wicket-1.4.5-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/wicket/wicket-guice/1.4.4/wicket-guice-1.4.4.jar" sourcepath="M2_REPO/org/apache/wicket/wicket-guice/1.4.4/wicket-guice-1.4.4-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/wicket/wicket-ioc/1.4.4/wicket-ioc-1.4.4.jar" sourcepath="M2_REPO/org/apache/wicket/wicket-ioc/1.4.4/wicket-ioc-1.4.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/wicket/wicket/1.4.6/wicket-1.4.6.jar" sourcepath="M2_REPO/org/apache/wicket/wicket/1.4.6/wicket-1.4.6-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/codehaus/woodstox/wstx-asl/3.2.9/wstx-asl-3.2.9.jar" sourcepath="M2_REPO/org/codehaus/woodstox/wstx-asl/3.2.9/wstx-asl-3.2.9-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 </classpath>
