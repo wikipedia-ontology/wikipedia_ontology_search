@@ -22,14 +22,18 @@ public class MemCachedStorage {
     public static String PORT = "11211";
 
     private MemCachedStorage() {
-        SockIOPool pool = SockIOPool.getInstance();
-        pool.setServers(new String[] { HOST + ":" + PORT});
-        pool.initialize();
-        mcc = new MemCachedClient();
+        try {
+            SockIOPool pool = SockIOPool.getInstance();
+            pool.setServers(new String[]{HOST + ":" + PORT});
+            pool.initialize();
+            mcc = new MemCachedClient();
 
-        long time = Calendar.getInstance().getTimeInMillis();
-        time = time + 1000 * 60 * 60 * 24 * 60; // 60 days
-        date = new Date(time);
+            long time = Calendar.getInstance().getTimeInMillis();
+            time = time + 1000 * 60 * 60 * 24 * 60; // 60 days
+            date = new Date(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static MemCachedStorage getInstance() {

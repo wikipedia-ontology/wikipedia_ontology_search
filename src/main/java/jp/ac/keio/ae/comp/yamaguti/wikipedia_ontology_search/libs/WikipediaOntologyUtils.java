@@ -41,7 +41,9 @@ public class WikipediaOntologyUtils {
 
     public static void addStringToMemcached(String key, String value) {
         MemCachedStorage mcStorage = MemCachedStorage.getInstance();
-        mcStorage.add(key, value);
+        if (mcStorage != null) {
+            mcStorage.add(key, value);
+        }
     }
 
     public static String getStringFromMemcached(String key) {
@@ -155,6 +157,7 @@ public class WikipediaOntologyUtils {
         }
         return propertyList;
     }
+
     public static List<ClassImpl> getClassImplList(String queryString, String lang) {
         Query query = QueryFactory.create(queryString);
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
@@ -189,7 +192,7 @@ public class WikipediaOntologyUtils {
         return indicator;
     }
 
-    public static String getResourceString(Class< ? > cls, String path) {
+    public static String getResourceString(Class<?> cls, String path) {
         PackageResource templateFileRes = PackageResource.get(cls, path);
         IStringResourceStream strStream = (IStringResourceStream) templateFileRes.getResourceStream();
         return strStream.asString();
@@ -258,7 +261,6 @@ public class WikipediaOntologyUtils {
 
     /**
      * ルートノードのクラスを返すメソッド
-     *
      */
     private static Set<Resource> getRootClassSet(Map<Resource, Set<Resource>> classSubClassMap) {
         Set<Resource> rootClassSet = Sets.newHashSet();
@@ -369,7 +371,9 @@ public class WikipediaOntologyUtils {
             localName = res.getURI().split(WikipediaOntologyStorage.PROPERTY_NS)[1];
         } else if (res.getURI().contains(WikipediaOntologyStorage.INSTANCE_NS)) {
             prefix = "wikiont_instance";
-            localName = res.getURI().split(WikipediaOntologyStorage.INSTANCE_NS)[1];
+            if (res.getURI().split(WikipediaOntologyStorage.INSTANCE_NS).length == 2) {
+                localName = res.getURI().split(WikipediaOntologyStorage.INSTANCE_NS)[1];
+            }
         } else if (res.getURI().contains(OWL.getURI())) {
             prefix = "owl";
             localName = res.getURI().split(OWL.getURI())[1];

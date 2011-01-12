@@ -53,7 +53,6 @@ public class WikipediaOntologySearch {
         Set<String> typeNameSet = searchParameters.getTypeSet();
         QueryExecution qexec = getQueryExecution(queryString);
         ResultSet results = qexec.execSelect();
-
         try {
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
@@ -98,6 +97,7 @@ public class WikipediaOntologySearch {
     }
 
     public void setQueryResults(String lang, String queryString) {
+//        System.out.println(queryString);
         QueryExecution qexec = getQueryExecution(queryString);
         ResultSet results = qexec.execSelect();
         try {
@@ -254,19 +254,24 @@ public class WikipediaOntologySearch {
         } catch (JSONException jsonExp) {
             jsonExp.printStackTrace();
         }
+//        return "stcCallback1001(" + jsonContainer.toString() + ")";
         return jsonContainer.toString();
     }
 
     private String getQname(Resource res) {
         String prefix = dbModel.getNsURIPrefix(res.getNameSpace());
-        if (prefix == null) { return WikipediaOntologyUtils.getQname(res); }
+        if (prefix == null) {
+            return WikipediaOntologyUtils.getQname(res);
+        }
         String localName = res.getLocalName();
         return prefix + ":" + localName;
     }
 
     private String getLocalName(Resource res) {
         String prefix = dbModel.getNsURIPrefix(res.getNameSpace());
-        if (prefix == null) { return WikipediaOntologyUtils.getLocalName(res); }
+        if (prefix == null) {
+            return WikipediaOntologyUtils.getLocalName(res);
+        }
         return res.getLocalName();
     }
 
@@ -311,21 +316,21 @@ public class WikipediaOntologySearch {
             ResourceType queryType = searchParameters.getResourceType();
             if (typeSet.contains(res)) {
                 switch (queryType) {
-                case CLASS:
-                    for (ResIterator resIter = outputModel.listSubjectsWithProperty(RDF.type, res); resIter.hasNext();) {
-                        Resource instance = resIter.nextResource();
-                        JSONObject jsonChildObj = new JSONObject();
-                        addJSONAttributes(jsonChildObj, instance, true);
-                        childArray.put(jsonChildObj);
-                    }
-                    break;
-                case INSTANCE:
-                    for (Resource keyInstance : resourceSet) {
-                        JSONObject jsonChildObj = new JSONObject();
-                        addJSONAttributes(jsonChildObj, keyInstance, true);
-                        childArray.put(jsonChildObj);
-                    }
-                    break;
+                    case CLASS:
+                        for (ResIterator resIter = outputModel.listSubjectsWithProperty(RDF.type, res); resIter.hasNext();) {
+                            Resource instance = resIter.nextResource();
+                            JSONObject jsonChildObj = new JSONObject();
+                            addJSONAttributes(jsonChildObj, instance, true);
+                            childArray.put(jsonChildObj);
+                        }
+                        break;
+                    case INSTANCE:
+                        for (Resource keyInstance : resourceSet) {
+                            JSONObject jsonChildObj = new JSONObject();
+                            addJSONAttributes(jsonChildObj, keyInstance, true);
+                            childArray.put(jsonChildObj);
+                        }
+                        break;
                 }
             }
         }
@@ -413,6 +418,7 @@ public class WikipediaOntologySearch {
         } catch (JSONException jsonExp) {
             jsonExp.printStackTrace();
         }
+//        return "stcCallback1001(" + rootObj.toString() + ")";
         return rootObj.toString();
     }
 

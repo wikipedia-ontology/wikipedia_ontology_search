@@ -92,8 +92,8 @@
 
         <dependency>
             <groupId>com.danga</groupId>
-            <artifactId>MemCached</artifactId>
-            <version>2.0.1</version>
+            <artifactId>memcached</artifactId>
+            <version>2.0</version>
         </dependency>
 
         <dependency>
@@ -209,6 +209,10 @@
             <id>openjena.org</id>
             <name>Jena Repository</name>
             <url>http://openjena.org/repo</url>
+        </repository>
+        <repository>
+            <id>HiveDB</id>
+            <url>http://www.hivedb.org/maven</url>
         </repository>
     </repositories>
 </project>

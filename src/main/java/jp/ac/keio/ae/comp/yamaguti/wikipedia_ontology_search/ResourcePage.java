@@ -39,6 +39,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         String resourceType = getRequestCycle().getRequest().getPath().split("/")[0];
         params.put("resource_type", resourceType);
         SearchParameters searchParams = new SearchParameters(params);
+//        System.out.println(searchParams);
         if (!searchParams.isValidRequest()) {
             params.put("search_parameters", searchParams);
             setResponsePage(ErrorPage.class, params);
@@ -66,7 +67,9 @@ public class ResourcePage extends CommonPage implements Serializable {
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
         String lang = wikiOntSearch.setTDBModel();
         String rdfString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getRDFKey());
-        if (rdfString != null) { return WikipediaOntologyUtils.readRDFString(rdfString); }
+        if (rdfString != null) {
+            return WikipediaOntologyUtils.readRDFString(rdfString);
+        }
         Set<String> typeSet = searchParams.getTypeSet();
         SearchOptionType searchOptionType = searchParams.getSearchOption();
         if (typeSet.size() == 0) {
@@ -122,18 +125,18 @@ public class ResourcePage extends CommonPage implements Serializable {
     private Resource getPageResource(String resName, ResourceType resType) {
         String ns = "";
         switch (resType) {
-        case CLASS:
-            ns = WikipediaOntologyStorage.CLASS_NS;
-            addIconImageWithAlt("class_icon_m", "クラス");
-            break;
-        case PROPERTY:
-            ns = WikipediaOntologyStorage.PROPERTY_NS;
-            addIconImageWithAlt("property_icon_m", "プロパティ");
-            break;
-        case INSTANCE:
-            ns = WikipediaOntologyStorage.INSTANCE_NS;
-            addIconImageWithAlt("instance_icon_m", "インスタンス");
-            break;
+            case CLASS:
+                ns = WikipediaOntologyStorage.CLASS_NS;
+                addIconImageWithAlt("class_icon_m", "クラス");
+                break;
+            case PROPERTY:
+                ns = WikipediaOntologyStorage.PROPERTY_NS;
+                addIconImageWithAlt("property_icon_m", "プロパティ");
+                break;
+            case INSTANCE:
+                ns = WikipediaOntologyStorage.INSTANCE_NS;
+                addIconImageWithAlt("instance_icon_m", "インスタンス");
+                break;
         }
         return ResourceFactory.createResource(ns + resName);
     }
@@ -187,7 +190,7 @@ public class ResourcePage extends CommonPage implements Serializable {
     }
 
     private IDataProvider<RDFNodeImpl> getIDataProvider(final List<RDFNodeImpl> instanceList,
-            final PagingData pagingData) {
+                                                        final PagingData pagingData) {
         return new IDataProvider<RDFNodeImpl>() {
 
             public void detach() {
@@ -201,7 +204,7 @@ public class ResourcePage extends CommonPage implements Serializable {
                 return new org.apache.wicket.model.Model<RDFNodeImpl>(object);
             }
 
-            public Iterator< ? extends RDFNodeImpl> iterator(int first, int count) {
+            public Iterator<? extends RDFNodeImpl> iterator(int first, int count) {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 return instanceList.subList(first, first + count).iterator();
@@ -210,7 +213,7 @@ public class ResourcePage extends CommonPage implements Serializable {
     }
 
     private void setInstanceList(Map<PropertyImpl, List<RDFNodeImpl>> propertyRDFNodeMap,
-            PropertyImpl instancePropertyImpl) {
+                                 PropertyImpl instancePropertyImpl) {
         WebMarkupContainer instanceListContainer = new WebMarkupContainer("instance_list_block");
         add(instanceListContainer);
         if (propertyRDFNodeMap.get(instancePropertyImpl) != null) {
@@ -258,7 +261,7 @@ public class ResourcePage extends CommonPage implements Serializable {
     }
 
     private void setPropertyAndValueList(final Map<PropertyImpl, List<RDFNodeImpl>> propertyRDFNodeMap,
-            final PropertyImpl instancePropertyImpl) {
+                                         final PropertyImpl instancePropertyImpl) {
         List<PropertyImpl> propertyList = Lists.newArrayList(propertyRDFNodeMap.keySet());
         Collections.sort(propertyList, new PropertySorter());
 
@@ -306,13 +309,14 @@ public class ResourcePage extends CommonPage implements Serializable {
                 requestCycle.getResponse().setContentType(contentType + "; charset=utf-8");
                 requestCycle.getResponse().write(outputString);
             }
+
             public void detach(RequestCycle requestCycle) {
             }
         });
     }
 
     private Map<PropertyImpl, List<RDFNodeImpl>> getPropertyRDFNodeMap(Model outputModel, Resource uri,
-            PropertyImpl instancePropertyImpl) {
+                                                                       PropertyImpl instancePropertyImpl) {
 
         Map<PropertyImpl, List<RDFNodeImpl>> propertyRDFNodeMap = Maps.newHashMap();
         for (StmtIterator i = outputModel.listStatements(); i.hasNext();) {
@@ -347,6 +351,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         }
         return propertyRDFNodeMap;
     }
+
     private static RDFNodeImpl getRDFNodeImpl(RDFNode node) {
         if (node.isResource()) {
             Resource r = (Resource) node;
@@ -360,31 +365,31 @@ public class ResourcePage extends CommonPage implements Serializable {
         PropertyImpl instancePropertyImpl = new PropertyImpl(WikipediaOntologyStorage.INSTANCE_NS, "instanceProperty");
         SearchParameters searchParams = wikiOntSearch.getSearchParameters();
         switch (searchParams.getDataType()) {
-        case PAGE:
-            String resName = wikiOntSearch.getSearchParameters().getResourceName();
-            add(new Label("title", resName).setRenderBodyOnly(true));
-            Resource uri = getPageResource(resName, wikiOntSearch.getSearchParameters().getResourceType());
-            setLinks(resName, uri, searchParams);
-            Map<PropertyImpl, List<RDFNodeImpl>> propertyRDFNodeMap = getPropertyRDFNodeMap(outputModel, uri,
-                    instancePropertyImpl);
-            setInstanceList(propertyRDFNodeMap, instancePropertyImpl);
-            setPropertyAndValueList(propertyRDFNodeMap, instancePropertyImpl);
-            break;
-        case RDF_XML:
-            String rdfString = WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
-            outputResource("application/rdf+xml", rdfString);
-            WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), rdfString);
-            break;
-        case JSON_TABLE:
-            String jsonString = wikiOntSearch.getTableJSONString(outputModel, numberOfStatements);
-            outputResource("application/json", jsonString);
-            WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
-            break;
-        case JSON_TREE:
-            jsonString = wikiOntSearch.getTreeJSONString(outputModel);
-            outputResource("application/json", jsonString);
-            WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
-            break;
+            case PAGE:
+                String resName = wikiOntSearch.getSearchParameters().getResourceName();
+                add(new Label("title", resName).setRenderBodyOnly(true));
+                Resource uri = getPageResource(resName, wikiOntSearch.getSearchParameters().getResourceType());
+                setLinks(resName, uri, searchParams);
+                Map<PropertyImpl, List<RDFNodeImpl>> propertyRDFNodeMap = getPropertyRDFNodeMap(outputModel, uri,
+                        instancePropertyImpl);
+                setInstanceList(propertyRDFNodeMap, instancePropertyImpl);
+                setPropertyAndValueList(propertyRDFNodeMap, instancePropertyImpl);
+                break;
+            case RDF_XML:
+                String rdfString = WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
+                outputResource("application/rdf+xml", rdfString);
+                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), rdfString);
+                break;
+            case JSON_TABLE:
+                String jsonString = wikiOntSearch.getTableJSONString(outputModel, numberOfStatements);
+                outputResource("application/json", jsonString);
+                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
+                break;
+            case JSON_TREE:
+                jsonString = wikiOntSearch.getTreeJSONString(outputModel);
+                outputResource("application/json", jsonString);
+                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
+                break;
         }
     }
 }

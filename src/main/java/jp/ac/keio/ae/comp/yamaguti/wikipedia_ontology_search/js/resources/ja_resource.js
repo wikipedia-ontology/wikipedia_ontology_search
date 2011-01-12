@@ -10,6 +10,8 @@ var NUMBER_OF_STATEMENTS = "表示ステートメント数";
 var COMMUNICATION_ERROR = "通信エラー";
 var STATUS = "ステータス";
 var STATEMENT = "ステートメント";
+var NEW_TAB = "新しいタブ";
+var ADD_TAB = "タブを追加";
 var SUBJECT = "主語";
 var PREDICATE = "述語";
 var OBJECT = "目的語";
@@ -68,21 +70,21 @@ var SEARCH_OPTION_STARTS_WITH = "前方一致";
 var SEARCH_OPTION_ENDS_WITH = "後方一致";
 
 function getSearchKeywordLabel(keyword) {
-	return keyword + "を検索";
+    return keyword + "を検索";
 }
 
 function getNarrowDownKeywordLabel(keyword) {
-	return keyword + "で絞り込む";
+    return keyword + "で絞り込む";
 }
 
 function getAddKeywordToBookmarkLabel(keyword) {
-	return keyword + "をブックマークに追加";
+    return keyword + "をブックマークに追加";
 }
 
 function getRemoveKeywordFromBookmarkLabel(keyword) {
-	return keyword + "をブックマークから削除";
+    return keyword + "をブックマークから削除";
 }
 
 function getRemoveKeywordFromHistoryLabel(keyword) {
-	return keyword + "を検索履歴から削除";
+    return keyword + "を検索履歴から削除";
 }

@@ -48,7 +48,9 @@ public class SearchParameters {
             return ResourceType.CLASS;
         } else if (resType.equals("property")) {
             return ResourceType.PROPERTY;
-        } else if (resType.equals("instance")) { return ResourceType.INSTANCE; }
+        } else if (resType.equals("instance")) {
+            return ResourceType.INSTANCE;
+        }
         return null;
     }
 
@@ -59,34 +61,31 @@ public class SearchParameters {
             return DataType.RDF_XML;
         } else if (dt.equals("table_data")) {
             return DataType.JSON_TABLE;
-        } else if (dt.equals("tree_data")) { return DataType.JSON_TREE; }
+        } else if (dt.equals("tree_data")) {
+            return DataType.JSON_TREE;
+        }
         return null;
     }
 
     private String getResourceName(String resName) {
         switch (dataType) {
-        case PAGE:
-            return resName.replaceAll("\\.html", "");
-        case RDF_XML:
-            return resName.replaceAll("\\.rdf", "");
-        case JSON_TABLE:
-        case JSON_TREE:
-            return resName.replaceAll("\\.json", "");
-        default:
-            return resName;
+            case PAGE:
+                return resName.replaceAll("\\.html", "");
+            case RDF_XML:
+                return resName.replaceAll("\\.rdf", "");
+            case JSON_TABLE:
+            case JSON_TREE:
+                return resName.replaceAll("\\.json", "");
+            default:
+                return resName;
         }
     }
 
     private Set<String> getTypeSet(String[] types) {
         Set<String> typeSet = Sets.newHashSet();
         if (types != null) {
-            try {
-                for (String type : types) {
-                    type = new String(type.getBytes("ISO8859_1"), "UTF-8");
-                    typeSet.add(type);
-                }
-            } catch (UnsupportedEncodingException uuex) {
-                uuex.printStackTrace();
+            for (String type : types) {
+                typeSet.add(type);
             }
         }
         return typeSet;
@@ -103,12 +102,16 @@ public class SearchParameters {
             return SearchOptionType.ANY_MATCH;
         } else if (so.equals("siblings")) {
             return SearchOptionType.SIBLINGS;
-        } else if (so.equals("sub_classes")) { return SearchOptionType.SUB_CLASSES; }
+        } else if (so.equals("sub_classes")) {
+            return SearchOptionType.SUB_CLASSES;
+        }
         return SearchOptionType.EXACT_MATCH;
     }
 
     private InferenceType getInferenceType(String infType) {
-        if (infType.equals("rdfs")) { return InferenceType.RDFS; }
+        if (infType.equals("rdfs")) {
+            return InferenceType.RDFS;
+        }
         return InferenceType.NONE;
     }
 
@@ -146,10 +149,10 @@ public class SearchParameters {
 
     public boolean isUseInfModel() {
         switch (inferenceType) {
-        case RDFS:
-            return true;
-        default:
-            return false;
+            case RDFS:
+                return true;
+            default:
+                return false;
         }
     }
 

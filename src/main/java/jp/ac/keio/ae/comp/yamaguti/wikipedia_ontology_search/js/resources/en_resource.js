@@ -10,6 +10,8 @@ var NUMBER_OF_STATEMENTS = "Number of Statements";
 var COMMUNICATION_ERROR = "Communication Error";
 var STATUS = "Status";
 var STATEMENT = "Statement";
+var NEW_TAB = "New Tab";
+var ADD_TAB = "Add Tab";
 var SUBJECT = "Subject";
 var PREDICATE = "Predicate";
 var OBJECT = "Object";
@@ -69,21 +71,21 @@ var SEARCH_OPTION_STARTS_WITH = "Starts with";
 var SEARCH_OPTION_ENDS_WITH = "Ends with";
 
 function getSearchKeywordLabel(keyword) {
-	return "Search " + keyword;
+    return "Search " + keyword;
 }
 
 function getNarrowDownKeywordLabel(keyword) {
-	return "Narrow Down " + keyword;
+    return "Narrow Down " + keyword;
 }
 
 function getAddKeywordToBookmarkLabel(keyword) {
-	return "Add " + keyword + " to Bookmark";
+    return "Add " + keyword + " to Bookmark";
 }
 
 function getRemoveKeywordFromBookmarkLabel(keyword) {
-	return "Remove " + keyword + " from Bookmark";
+    return "Remove " + keyword + " from Bookmark";
 }
 
 function getRemoveKeywordFromHistoryLabel(keyword) {
-	return "Remove " + keyword + " from Search History";
+    return "Remove " + keyword + " from Search History";
 }
