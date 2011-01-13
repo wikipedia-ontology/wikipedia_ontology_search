@@ -1,84 +1,80 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
-<title></title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 
 <wicket:extend>
-<h1>ホーム</h1>
+    <h1>ホーム</h1>
 
-<p>以下のURLから日本語Wikipediaオントロジー検索インタフェース (ver.<span wicket:id="version"></span>)にアクセスできます．</p>
-<br/>
+    <p>以下のURLから日本語Wikipediaオントロジー検索インタフェース (ver.<span wicket:id="version"></span>)にアクセスできます．</p>
+    <br/>
 
-<div class="download_box">
-<a
-	href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/search.html"
-	rel="external">
-http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/search.html</a>
-</div>
+    <div class="download_box">
+        <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/search.html" rel="external">
+            http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/search.html</a>
+    </div>
 
-<div class="two_column_block">
-<h2>動作環境</h2>
-<p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.0</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索インタフェースは実行可能です．
-以下の環境で動作確認を行っています．</p>
-<ul>
-	<li>Google Chrome 4.0.302.3</li>
-	<li>FireFox 3.5.3</li>
-	<li>Safari 4.0.3</li>
-</ul>
+    <div class="two_column_block">
+        <h2>動作環境</h2>
 
-<div style="color: red; font-weight: bold; margin: 1em;">
-<p>Internet Exploreでは現在正常に動作しません．</p>
-</div>
-</div>
+        <p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.0</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索インタフェースは実行可能です．
+            以下の環境で動作確認を行っています．</p>
+        <ul>
+            <li>Google Chrome 4.0.302.3</li>
+            <li>FireFox 3.5.3</li>
+            <li>Safari 4.0.3</li>
+        </ul>
 
-<div class="two_column_block">
-<h2>利用しているライブラリ等</h2>
-<ul>
-	<li><a target="_blank" href="http://www.extjs.com/">ExtJS</a></li>
-	<li><a target="_blank" href="http://wicket.apache.org/">Apache Wicket</a></li>
-	<li><a target="_blank" href="https://activeobjects.dev.java.net/">ActiveObjects</a></li>
-	<li><a target="_blank" href="http://github.com/gwhalin/Memcached-Java-Client">Memcached Java Client</a></li>
-	<li><a target="_blank" href="http://jena.sourceforge.net/">Jena
-	- Semantic Web Framework for Java</a></li>
-	<li><a target="_blank" href="http://openjena.org/TDB/">TDB - A SPARQL Database for Jena</a></li>
+        <div style="color: red; font-weight: bold; margin: 1em;">
+            <p>Internet Exploreでは現在正常に動作しません．</p>
+        </div>
+    </div>
 
-	<li><a target="_blank" href="http://www.h2database.com/html/main.html">H2 Database Engine</a></li>
-	<li><a target="_blank"
-		href="http://nurucom-archives.hp.infoseek.co.jp/digital/escape-codec-library.html">Escape
-	Codec Library: ecl.js</a></li>
-	<li><a target="_blank"
-		href="http://sourceforge.jp/projects/wikipedia-ont/">日本語Wikipediaオントロジー</a></li>
-</ul>
-</div>
+    <div class="two_column_block">
+        <h2>利用しているライブラリ等</h2>
+        <ul>
+            <li><a target="_blank" href="http://www.extjs.com/">ExtJS</a></li>
+            <li><a target="_blank" href="http://wicket.apache.org/">Apache Wicket</a></li>
+            <li><a target="_blank" href="https://activeobjects.dev.java.net/">ActiveObjects</a></li>
+            <li><a target="_blank" href="http://github.com/gwhalin/Memcached-Java-Client">Memcached Java Client</a></li>
+            <li><a target="_blank" href="http://jena.sourceforge.net/">Jena - Semantic Web Framework for Java</a></li>
+            <li><a target="_blank" href="http://openjena.org/TDB/">TDB - A SPARQL Database for Jena</a></li>
+            <li><a target="_blank" href="http://www.h2database.com/html/main.html">H2 Database Engine</a></li>
+            <li><a target="_blank" href="http://nurucom-archives.hp.infoseek.co.jp/digital/escape-codec-library.html">Escape
+                Codec Library: ecl.js</a></li>
+            <li><a target="_blank" href="http://sourceforge.jp/projects/wikipedia-ont/">日本語Wikipediaオントロジー</a></li>
+            <li><a target="_blank" href="http://www.famfamfam.com/lab/icons/silk/">SILK ICONS</a> </li>
+        </ul>
+    </div>
 
-<div style="clear: both;"/>
+    <div style="clear: both;"/>
 
-<div class="two_column_block">
-<h2>関連プロジェクト</h2>
-<ul>
-<li><a href="http://sourceforge.jp/projects/wikipedia-ont/">Wikipedia Ontology</a></li>
-<li><a href="http://doddle-owl.sourceforge.net/ja/">DODDLE</a></li>
-<li><a href="http://mr3.sourceforge.net/ja/">MR<sup>3</sup></a></li>
-</ul>
+    <div class="two_column_block">
+        <h2>関連プロジェクト</h2>
+        <ul>
+            <li><a href="http://sourceforge.jp/projects/wikipedia-ont/">Wikipedia Ontology</a></li>
+            <li><a href="http://doddle-owl.sourceforge.net/ja/">DODDLE</a></li>
+            <li><a href="http://mr3.sourceforge.net/ja/">MR<sup>3</sup></a></li>
+        </ul>
 
-</div>
+    </div>
 
-<div class="two_column_block">
-<h2>連絡先</h2>
-<p>
-不具合等，何かありましたら，下記までご連絡ください．
-</p>
-<ul>
-	<li>森田 武史 ＜t_morita@ae.keio.ac.jp＞</li>
-</ul>
-</div>
+    <div class="two_column_block">
+        <h2>連絡先</h2>
 
-<div style="clear: both;"/>
+        <p>
+            不具合等，何かありましたら，下記までご連絡ください．
+        </p>
+        <ul>
+            <li>森田 武史 ＜t_morita@ae.keio.ac.jp＞</li>
+        </ul>
+    </div>
 
+    <div style="clear: both;"/>
 
 </wicket:extend>
 

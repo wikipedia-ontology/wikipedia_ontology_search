@@ -1,14 +1,20 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 function getProxy(json_url) {
-//    return new Ext.data.ScriptTagProxy({
-//        url : json_url,
-//        timeout: 1000 * 60 * 5,
-//        method : "GET"
-//    });
-        return new Ext.data.HttpProxy({
-            url : json_url,
-            timeout: 1000 * 60 * 5,
-            method : "GET"
-        });
+    //    return new Ext.data.ScriptTagProxy({
+    //        url : json_url,
+    //        timeout: 1000 * 60 * 5,
+    //        method : "GET"
+    //    });
+    return new Ext.data.HttpProxy({
+        url : json_url,
+        timeout: 1000 * 60 * 5,
+        method : "GET"
+    });
 }
 
 function getSearchOptionComboBox(name) {
@@ -55,6 +61,7 @@ function makeClassContextMenu(keyword) {
         items : [
             {
                 text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-search',
                 handler : function() {
                     setQueryType();
                     var searchPanel = Ext.getCmp("SearchPanel");
@@ -66,6 +73,7 @@ function makeClassContextMenu(keyword) {
             },
             {
                 text : getNarrowDownKeywordLabel(keyword),
+                iconCls: 'icon-search',
                 handler : function() {
                     setQueryType();
                     var searchPanel = Ext.getCmp("SearchPanel");
@@ -78,6 +86,7 @@ function makeClassContextMenu(keyword) {
             },
             {
                 text : getAddKeywordToBookmarkLabel(keyword),
+                iconCls: 'icon-book_add',
                 handler : function() {
                     setQueryType();
                     var searchPanel = Ext.getCmp("SearchPanel");
@@ -100,6 +109,7 @@ function makeInstanceAndPropertyContextMenu(keyword) {
         items : [
             {
                 text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-search',
                 handler : function() {
                     setQueryType();
                     var searchPanel = Ext.getCmp("SearchPanel");
@@ -111,6 +121,7 @@ function makeInstanceAndPropertyContextMenu(keyword) {
             },
             {
                 text : getAddKeywordToBookmarkLabel(keyword),
+                iconCls: 'icon-book_add',
                 handler : function() {
                     setQueryType();
                     var searchPanel = Ext.getCmp("SearchPanel");

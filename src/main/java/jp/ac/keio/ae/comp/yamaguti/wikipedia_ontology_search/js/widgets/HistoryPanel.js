@@ -1,3 +1,9 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 var historyDataArray = [];
 if (localStorage.history != undefined) {
     historyDataArray = getDataFromWebStorage(localStorage.history);
@@ -9,7 +15,7 @@ function addHistoryData() {
     var historyDataStore = Ext.getCmp('HistoryPanel').store;
     var keyword = searchPanel.getForm().findField('keyword').getValue();
     var searchOption = searchOptionSelection.getValue();
-    var record = [new Date(), keyword, searchOption, queryType, useInfModel, currentURI];
+    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI];
     historyDataStore.loadData([record], true);
     historyDataStore.sort('date', 'DESC');
     saveHistoryDataToWebStorage(historyDataStore);
@@ -36,7 +42,7 @@ function addSelectedHistoriesToBookmark() {
     var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var records = historyDataCheckboxSelectionModel.getSelections();
     var addedBookmarks = [];
-    var date = new Date();
+    var date = new Date().toLocaleString();
     for (var i = 0; i < records.length; i++) {
         addedBookmarks.push([date, records[i].get("keyword"),
             records[i].get("searchOption"), records[i].get("queryType"),
@@ -135,6 +141,7 @@ function getHistoryPanel() {
         frame : true,
         autoExpandColumn : 'url_id',
         sm : historyDataCheckboxSelectionModel,
+        iconCls: 'icon-time',
         listeners : {
             celldblclick : function() {
                 openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
@@ -148,6 +155,7 @@ function getHistoryPanel() {
                 items : [
                     {
                         xtype : 'tbbutton',
+                        iconCls: 'icon-time_go',
                         text : OPEN_SELECTED_HISTORY,
                         handler : function() {
                             openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
@@ -156,18 +164,21 @@ function getHistoryPanel() {
                     '-',
                     {
                         xtype : 'tbbutton',
+                        iconCls: 'icon-time_add',
                         text : ADD_SELECTED_HISTORIES_TO_BOOKMARK,
                         handler : addSelectedHistoriesToBookmark
                     },
                     '-',
                     {
                         xtype : 'tbbutton',
+                        iconCls: 'icon-time_delete',
                         text : REMOVE_SELECTED_HISTORIES,
                         handler : removeSelectedHistories
                     },
                     '-',
                     {
                         xtype : 'tbbutton',
+                        iconCls: 'icon-time_delete',
                         text : REMOVE_ALL_HISTORY,
                         handler : removeAllHistoryData
                     }
@@ -192,6 +203,7 @@ function getSideHistoryPanel() {
         frame : true,
         autoExpandColumn : 'keyword_id',
         sm : historyDataCheckboxSelectionModel,
+        iconCls: 'icon-time',
         listeners : {
             cellclick : function() {
                 openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
@@ -282,12 +294,14 @@ function makeHistoryInstanceAndPropertyContextMenu(record) {
         items : [
             {
                 text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-time_go',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
                 text : getAddKeywordToBookmarkLabel(keyword),
+                iconCls: 'icon-book_add',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                     addBookmark();
@@ -295,6 +309,7 @@ function makeHistoryInstanceAndPropertyContextMenu(record) {
             },
             {
                 text : getRemoveKeywordFromHistoryLabel(keyword),
+                iconCls: 'icon-time_delete',
                 handler : removeSelectedHistories
             }
         ]

@@ -1,3 +1,8 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
 function getTreePanel(title, treeType) {
     var treePanelId = treeType + "Panel";
     var treePanelSearchFieldlId = treeType + "Field";
@@ -36,6 +41,7 @@ function getTreePanel(title, treeType) {
         }), {
             text : SEARCH,
             name : 'search-button',
+            iconCls: 'icon-search',
             handler : function() {
                 filterTreeNode(treeType);
             }
@@ -54,7 +60,7 @@ function getTreePanel(title, treeType) {
         }, '- ', searchOptionComboBox],
         loader : new Ext.tree.TreeLoader({
             dataUrl : NULL_TABLE_DATA,
-//            proxy: getProxy(NULL_TABLE_DATA),
+            //            proxy: getProxy(NULL_TABLE_DATA),
             requestMethod : 'GET',
             listeners : {
                 beforeload : function() {
@@ -219,14 +225,14 @@ var isRenderTree = true;
 function reloadTree(queryJSONTableURL) {
     var queryJSONTreeURL = queryJSONTableURL.replace("table_data", "tree_data");
     queryURL = queryJSONTreeURL;
-//    alert("tree:" + queryJSONTreeURL);
+    //    alert("tree:" + queryJSONTreeURL);
     if (show_isa_tree_and_instance) {
         if (!isRenderTree) {
             return;
         }
         var classAndInstanceTreePanel = Ext.getCmp('classAndInstanceTreePanel');
         classAndInstanceTreePanel.loader.dataUrl = queryJSONTreeURL;
-//        classAndInstanceTreePanel.loader.proxy = getProxy(queryJSONTableURL);
+        //        classAndInstanceTreePanel.loader.proxy = getProxy(queryJSONTableURL);
         classAndInstanceTreePanel.loader.load(classAndInstanceTreePanel.getRootNode());
     }
 }
@@ -234,7 +240,7 @@ function reloadTree(queryJSONTableURL) {
 function showWholeIsaTree() {
     var wholeClassTreePanel = Ext.getCmp('wholeClassTreePanel');
     wholeClassTreePanel.loader.dataUrl = ALL_CLASSES;
-//    classAndInstanceTreePanel.loader.proxy = getProxy(ALL_CLASSES);
+    //    classAndInstanceTreePanel.loader.proxy = getProxy(ALL_CLASSES);
     wholeClassTreePanel.loader.load(wholeClassTreePanel.getRootNode());
     wholeClassTreePanel.getRootNode().expand();
 }

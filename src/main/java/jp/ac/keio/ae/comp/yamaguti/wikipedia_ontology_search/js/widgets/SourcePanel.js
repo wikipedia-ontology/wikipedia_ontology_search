@@ -1,6 +1,13 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 function getSourcePanel() {
     return new Ext.Panel({
         title : "RDF/XML",
+        iconCls: 'icon-rdf',
         hideBorders : true,
         autoScroll : true,
         bodyStyle : 'font-size: 80%; padding: 10px;',
@@ -17,7 +24,7 @@ function reloadRDFSource(queryJSONTreeURL) {
     if (!show_rdf_xml) {
         return;
     }
-    var queryDataURL = queryJSONTreeURL.replace("json_tree", "data");
+    var queryDataURL = queryJSONTreeURL.replace("tree_data", "data");
     Ext.Ajax.request({
         url : queryDataURL,
         success : function(res, opt) {

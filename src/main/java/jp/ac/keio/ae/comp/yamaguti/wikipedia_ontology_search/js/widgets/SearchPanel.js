@@ -1,5 +1,10 @@
-function getSearchPanel() {
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
 
+function getSearchPanel() {
     var searchOptionSelection = getSearchOptionComboBox('Resource_Search_Option');
     var numberOfStatementsSelection = getNumberOfStatementsSelectionPanel();
     numberOfStatementsSelection.setValue("100");
@@ -15,10 +20,10 @@ function getSearchPanel() {
             width : 250
         }, {
             xtype : 'button',
+            iconCls: 'icon-search',
             text : SEARCH,
             name : 'search-button',
-            // searchWikipediaOntology function is defined in
-            // SearchAction.js
+            // searchWikipediaOntology function is defined in SearchAction.js
             handler : searchWikipediaOntology
         }]
     };
@@ -30,17 +35,20 @@ function getSearchPanel() {
         layout : 'column',
         items : [
             {
+                xtype: 'radio',
                 checked : true,
                 boxLabel : CLASS,
                 name : 'query-type',
                 id : 'class_button'
             },
             {
+                xtype: 'radio',
                 boxLabel : PROPERTY,
                 name : 'query-type',
                 id : 'property_button'
             },
             {
+                xtype: 'radio',
                 boxLabel : INSTANCE,
                 name : 'query-type',
                 id : 'instance_button'

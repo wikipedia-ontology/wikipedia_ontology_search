@@ -221,8 +221,9 @@ public class WikipediaOntologyUtils {
             Statement stmt = stmtIter.nextStatement();
             Resource object = (Resource) stmt.getObject();
             if (!supClassList.contains(object)) {
-                supClassList.add(object);
-                checkLoop(object, supClassList, loopModel);
+                List<Resource> supClassListCopy = new ArrayList<Resource>(supClassList);
+                supClassListCopy.add(object);
+                checkLoop(object, supClassListCopy, loopModel);
             } else {
                 loopModel.add(stmt);
             }

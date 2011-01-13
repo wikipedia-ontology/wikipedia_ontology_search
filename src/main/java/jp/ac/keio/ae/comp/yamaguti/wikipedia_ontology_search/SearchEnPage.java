@@ -11,6 +11,6 @@ public class SearchEnPage extends SearchPage {
     public SearchEnPage() {
         add(new Label("app_title", "Japanese Wikipedia Ontology Search Interface").setRenderBodyOnly(true));
         add(new Label("loading_message", "Japanese Wikipedia Ontology Search Interface Loading..."));
-        add(WikipediaOntologyUtils.getJsPackageResource("js/resources/en_resource.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/resources/EnResource.js"));
     }
 }

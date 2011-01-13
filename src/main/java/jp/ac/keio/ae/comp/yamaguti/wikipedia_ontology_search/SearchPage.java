@@ -23,8 +23,8 @@ public class SearchPage extends WebPage {
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/ProgressBarPager.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/TabCloseMenu.js"));
         // my libs
-        add(WikipediaOntologyUtils.getJsPackageResource("js/parameters.js"));
-        add(WikipediaOntologyUtils.getJsPackageResource("js/utilities.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/Parameters.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/Utilities.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/actions/SearchAction.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/BookmarkImportAndExportDialog.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/BookmarkPanel.js"));
@@ -39,7 +39,7 @@ public class SearchPage extends WebPage {
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/StatementTabPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/TreePanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/VersionInfoDialog.js"));
-        add(WikipediaOntologyUtils.getJsPackageResource("js/wikipedia-ontology-search.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/WikipediaOntologySearch.js"));
 
         add(new Image("loading_icon", new ResourceReference(SearchPage.class, "./myresources/icons/extanim32.gif")));
     }

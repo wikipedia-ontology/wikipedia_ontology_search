@@ -1,3 +1,9 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 var APP_TITLE = "Japanese Wikipedia Ontology Search Interface";
 var KEYWORD = "Keyword";
 var SEARCH = "Search";
@@ -62,7 +68,6 @@ var MANUAL = "manual";
 var MANUAL_HTML = "en_manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
-
 
 var SEARCH_OPTION = "Search Option";
 var SEARCH_OPTION_EXACT_MATCH = "Exact match";

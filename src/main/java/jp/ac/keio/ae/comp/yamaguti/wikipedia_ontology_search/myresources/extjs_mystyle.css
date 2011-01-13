@@ -55,6 +55,14 @@
     text-align: left;
 }
 
+.icon-search {
+    background-image: url(icons/search.png) !important;
+}
+
+.icon-option {
+    background-image: url(icons/cog.png) !important;
+}
+
 .icon-newtab {
     background-image: url(icons/new_tab.gif) !important;
 }
@@ -82,3 +90,60 @@
 .icon-collapse-all {
     background-image: url(icons/collapse-all.gif) !important;
 }
+
+.icon-book {
+    background-image: url(icons/book.png) !important;
+}
+
+.icon-book_add {
+    background-image: url(icons/book_add.png) !important;
+}
+
+.icon-book_delete {
+    background-image: url(icons/book_delete.png) !important;
+}
+
+.icon-book_open {
+    background-image: url(icons/book_open.png) !important;
+}
+
+.icon-time {
+    background-image: url(icons/time.png) !important;
+}
+
+.icon-time_add {
+    background-image: url(icons/time_add.png) !important;
+}
+
+.icon-time_delete {
+    background-image: url(icons/time_delete.png) !important;
+}
+
+.icon-time_go {
+    background-image: url(icons/time_go.png) !important;
+}
+
+.icon-help {
+    background-image: url(icons/help.png) !important;
+}
+
+.icon-information {
+    background-image: url(icons/information.png) !important;
+}
+
+.icon-rdf {
+    background-image: url(icons/rdf_w3c_icon.16.png) !important;
+}
+
+.icon-table {
+    background-image: url(icons/table.png) !important;
+}
+
+.icon-import {
+    background-image: url(icons/arrow_down.png) !important;
+}
+
+.icon-export {
+    background-image: url(icons/arrow_up.png) !important;
+}
+

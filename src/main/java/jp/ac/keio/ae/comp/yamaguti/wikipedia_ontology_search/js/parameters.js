@@ -1,3 +1,8 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
 var HOME_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/";
 
 //var BASE_SERVER_URL = "http://zest.comp.ae.keio.ac.jp:8080/wikipedia_ontology_search/";

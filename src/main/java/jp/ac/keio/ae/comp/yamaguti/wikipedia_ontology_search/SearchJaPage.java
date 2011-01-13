@@ -11,6 +11,6 @@ public class SearchJaPage extends SearchPage {
     public SearchJaPage() {
         add(new Label("app_title", "日本語Wikipediaオントロジー検索インタフェース").setRenderBodyOnly(true));
         add(new Label("loading_message", "日本語Wikipediaオントロジー検索インタフェース 読み込み中..."));
-        add(WikipediaOntologyUtils.getJsPackageResource("js/resources/ja_resource.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/resources/JaResource.js"));
     }
 }

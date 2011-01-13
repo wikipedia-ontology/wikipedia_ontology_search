@@ -1,3 +1,9 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 var bookmarkArray = [];
 if (localStorage.bookmark != undefined) {
     bookmarkArray = getDataFromWebStorage(localStorage.bookmark);
@@ -91,6 +97,7 @@ function getBookmarkPanel() {
         frame : true,
         autoExpandColumn : 'url_id',
         sm : bookmarkCheckboxSelectionModel,
+        iconCls: 'icon-book',
         listeners : {
             celldblclick : function() {
                 openHistoryAndBookmarkData(bookmarkCheckboxSelectionModel.getSelected());
@@ -104,6 +111,7 @@ function getBookmarkPanel() {
                 items : [
                     {
                         xtype : 'button',
+                        iconCls: 'icon-book_open',
                         text : OPEN_SELECTED_BOOKMARK,
                         handler : function() {
                             openHistoryAndBookmarkData(bookmarkCheckboxSelectionModel.getSelected());
@@ -112,24 +120,28 @@ function getBookmarkPanel() {
                     '-',
                     {
                         xtype : 'button',
+                        iconCls: 'icon-book_add',
                         text : ADD_CURRENT_KEYWORD_TO_BOOKMARK,
                         handler : addBookmark
                     },
                     '-',
                     {
                         xtype : 'button',
+                        iconCls: 'icon-book_delete',
                         text : REMOVE_SELECTED_BOOKMARKS,
                         handler : removeSelectedBookmarks
                     },
                     '-',
                     {
                         xtype : 'button',
+                        iconCls: 'icon-import',
                         text : IMPORT,
                         handler : showBookmarkImportDialog
                     },
                     '-',
                     {
                         xtype : 'button',
+                        iconCls: 'icon-export',
                         text : EXPORT,
                         handler : showBookmarkExportDialog
                     }
@@ -153,6 +165,7 @@ function getSideBookmarkPanel() {
         stripeRows : true,
         frame : true,
         autoExpandColumn : 'keyword_id',
+        iconCls: 'icon-book',
         listeners : {
             cellclick : function() {
                 openHistoryAndBookmarkData(bookmarkCheckboxSelectionModel.getSelected());
@@ -259,12 +272,14 @@ function makeBookmarkInstanceAndPropertyContextMenu() {
         items : [
             {
                 text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-book_open',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
                 text : getRemoveKeywordFromBookmarkLabel(keyword),
+                iconCls: 'icon-book_delete',
                 handler : removeSelectedBookmarks
             }
         ]

@@ -1,3 +1,8 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
 function getStatementTableDataStore(tabIndex) {
     var reader = new Ext.data.JsonReader({
         root : "statement",
@@ -19,7 +24,7 @@ function getStatementTableDataStore(tabIndex) {
     });
 
     return new Ext.data.GroupingStore({
-        id : 'StatementTableDataStore'  + tabIndex,
+        id : 'StatementTableDataStore' + tabIndex,
         reader : reader,
         proxy : getProxy(NULL_TABLE_DATA),
         sortInfo : {
@@ -142,7 +147,7 @@ function reloadStatementTable(queryJSONTableURL) {
     var statementTableDataStore = statementTabPanel.getActiveTab().store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
     var pagingToolBar = statementTabPanel.getActiveTab().bbar;
-//    alert(queryJSONTableURL);
+    //    alert(queryJSONTableURL);
     statementTableDataStore.proxy = getProxy(queryJSONTableURL);
     var limitSize = 100;
     if (!isNaN(numberOfStatementsSelection.getValue())) {
@@ -181,8 +186,7 @@ function renderLink(value) {
         newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL + "dbpedia_icon_s.png'/> ";
     }
     if (value.indexOf(":") != -1) {
-        newValue += '<a href="' + value + '" onclick="openWikiOntRDFData(\''
-                + value + '\'); return false;">' + value + "</a>";
+        newValue += '<a href="' + value + '" onclick="openWikiOntRDFData(\'' + value + '\'); return false;">' + value + "</a>";
         return newValue;
     } else {
         newValue += "<img alt='" + value + "' src='" + BASE_ICON_URL + "label_icon_s.png'/> " + value;

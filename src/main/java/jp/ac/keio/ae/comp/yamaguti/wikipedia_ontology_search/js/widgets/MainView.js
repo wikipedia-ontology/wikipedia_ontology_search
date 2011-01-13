@@ -1,3 +1,9 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 function getMainView() {
     var searchPanel = getSearchPanel();
     var historyPanel = getHistoryPanel();
@@ -77,6 +83,7 @@ function getMainView() {
                 split : true,
                 animate : true,
                 collapsible : true,
+                iconCls: 'icon-search',
                 items : searchPanel
             },
             {
@@ -88,7 +95,7 @@ function getMainView() {
             }
         ]
     });
-    
+
     var optionDialog = getOptionDialog(); // new OptionDialog
     var versionInfoDialog = getVersionInfoDialog(); // new VersionInfoDialog
 
@@ -144,6 +151,7 @@ function getMainView() {
                                     },
                                     {
                                         text : OPTION,
+                                        iconCls: 'icon-option',
                                         handler : showOptionDialog
                                     }
                                 ]
@@ -154,12 +162,14 @@ function getMainView() {
                                 menu : [
                                     {
                                         text : MANUAL,
+                                        iconCls: 'icon-help',
                                         handler : function() {
                                             window.open(HOME_URL + MANUAL_HTML);
                                         }
                                     },
                                     {
                                         text : VERSION_INFORMATION,
+                                        iconCls: 'icon-information',
                                         handler : showVersionInfoDialog
                                     }
                                 ]
@@ -177,6 +187,7 @@ function getMainView() {
             },
             {
                 title : HIEARCHY,
+                iconCls: 'icon-expand-all',
                 region : 'west',
                 layout : 'fit',
                 width : 300,

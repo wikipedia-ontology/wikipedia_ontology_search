@@ -1,3 +1,9 @@
+/*
+ * Author: Takeshi Morita
+ * Contact: t_morita@ae.keio.ac.jp
+ * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ */
+
 function getBookmarkImportAndExportDialog() {
     return new Ext.Window({
         id : 'BookmarkImportAndExportDialog',
@@ -7,6 +13,7 @@ function getBookmarkImportAndExportDialog() {
         autoScroll : true,
         modal : true,
         layout : 'border',
+        iconCls: 'icon-book',
         items : {
             id : 'bookmark_source_text_area',
             xtype : 'textarea',
@@ -17,11 +24,13 @@ function getBookmarkImportAndExportDialog() {
         buttons : [
             {
                 xtype : 'button',
+                iconCls: 'icon-import',
                 text : IMPORT,
                 handler : importBookmarks
             },
             {
                 xtype : 'button',
+                iconCls: 'icon-export',
                 text : EXPORT,
                 handler : exportBookmarks
             },
