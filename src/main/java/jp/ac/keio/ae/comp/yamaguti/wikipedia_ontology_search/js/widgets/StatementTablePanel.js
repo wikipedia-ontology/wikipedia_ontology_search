@@ -204,14 +204,20 @@ function openWikiOntRDFData(value) {
         var prefix = values[0];
         var id = values[1];
         if (prefix == "wikiont_class") {
-            var queryURL = BASE_SERVER_CLASS_DATA_URL + id + ".rdf";
-            window.open(queryURL);
+            var keyword = id;
+            var queryURL = BASE_SERVER_CLASS_TABLE_DATA_URL + encodeURI(keyword);
+            queryType = 'class';
+            reloadWikiOntJSONData2(queryURL, keyword);
         } else if (prefix == "wikiont_property") {
-            var queryURL = BASE_SERVER_PROPERTY_DATA_URL + id + ".rdf";
-            window.open(queryURL);
+            var keyword = id;
+            var queryURL = BASE_SERVER_PROPERTY_TABLE_DATA_URL + encodeURI(keyword);
+            queryType = 'property';
+            reloadWikiOntJSONData2(queryURL, keyword);
         } else if (prefix == "wikiont_instance") {
-            var queryURL = BASE_SERVER_INSTANCE_DATA_URL + id + ".rdf";
-            window.open(queryURL);
+            var keyword = id;
+            var queryURL = BASE_SERVER_INSTANCE_TABLE_DATA_URL + encodeURI(keyword);
+            queryType = 'instance';
+            reloadWikiOntJSONData2(queryURL, keyword);
         }
     } else {
         window.open(value);
@@ -230,6 +236,8 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
         var keyword = queryURL.split(TABLE_DATA_PATH)[1];
         keyword = decodeURI(keyword);
         queryType = 'class';
+        alert(queryURL);
+        alert(keyword);
         reloadWikiOntJSONData2(queryURL, keyword);
     } else if (url.indexOf("wikiont_property") != -1) {
         var queryURL = url.replace("wikiont_property:", PROPERTY_PATH + TABLE_DATA_PATH);

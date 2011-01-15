@@ -164,7 +164,7 @@ function getHistoryPanel() {
                     '-',
                     {
                         xtype : 'tbbutton',
-                        iconCls: 'icon-time_add',
+                        iconCls: 'icon-book_add',
                         text : ADD_SELECTED_HISTORIES_TO_BOOKMARK,
                         handler : addSelectedHistoriesToBookmark
                     },
@@ -241,12 +241,14 @@ function makeHistoryClassContextMenu(record) {
         items : [
             {
                 text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-time_go',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
                 text : getNarrowDownKeywordLabel(keyword),
+                iconCls: 'icon-search',
                 handler : function() {
                     var searchPanel = Ext.getCmp('SearchPanel');
                     var currentKeyword = searchPanel.getForm().findField('keyword').getValue();
@@ -261,6 +263,7 @@ function makeHistoryClassContextMenu(record) {
             },
             {
                 text : getAddKeywordToBookmarkLabel(keyword),
+                iconCls: 'icon-book_add',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                     addBookmark();
@@ -268,6 +271,7 @@ function makeHistoryClassContextMenu(record) {
             },
             {
                 text : getRemoveKeywordFromHistoryLabel(keyword),
+                iconCls: 'icon-time_delete',
                 handler : removeSelectedHistories
             }
         ]

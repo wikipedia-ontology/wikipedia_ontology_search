@@ -147,6 +147,7 @@ function getMainView() {
                                     },
                                     {
                                         text : SHOW_WHOLE_CLASS_HIEARCHY,
+                                        iconCls: 'icon-expand-all',
                                         handler : showWholeIsaTree
                                     },
                                     {

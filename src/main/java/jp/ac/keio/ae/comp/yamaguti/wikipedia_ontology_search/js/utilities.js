@@ -72,6 +72,14 @@ function makeClassContextMenu(keyword) {
                 }
             },
             {
+                text: OPEN_NEW_TAB,
+                iconCls: 'icon-newtab',
+                handler: function() {
+                    addTab();
+                    searchKeyWord(keyword);
+                }
+            },
+            {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
@@ -85,38 +93,11 @@ function makeClassContextMenu(keyword) {
                 }
             },
             {
-                text : getAddKeywordToBookmarkLabel(keyword),
-                iconCls: 'icon-book_add',
-                handler : function() {
-                    setQueryType();
-                    var searchPanel = Ext.getCmp("SearchPanel");
-                    searchPanel.getForm().findField('keyword').setValue(keyword);
-                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue('exact_match');
-                    searchWikipediaOntology();
-                    addBookmark();
-                }
-            }
-        ]
-    });
-}
-
-function makeInstanceAndPropertyContextMenu(keyword) {
-    return new Ext.menu.Menu({
-        style : {
-            overflow : 'visible'
-        },
-        items : [
-            {
-                text : getSearchKeywordLabel(keyword),
-                iconCls: 'icon-search',
-                handler : function() {
-                    setQueryType();
-                    var searchPanel = Ext.getCmp("SearchPanel");
-                    searchPanel.getForm().findField('keyword').setValue(keyword);
-                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue('exact_match');
-                    searchWikipediaOntology()
+                text: OPEN_RDF_FILE,
+                iconCls: 'icon-rdf',
+                handler: function() {
+                    var queryURL = BASE_SERVER_CLASS_DATA_URL + encodeURI(keyword) + ".rdf";
+                    window.open(queryURL);
                 }
             },
             {
@@ -136,12 +117,68 @@ function makeInstanceAndPropertyContextMenu(keyword) {
     });
 }
 
+function searchKeyWord(keyword) {
+    setQueryType();
+    var searchPanel = Ext.getCmp("SearchPanel");
+    searchPanel.getForm().findField('keyword').setValue(keyword);
+    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
+    searchOptionSelection.setValue('exact_match');
+    searchWikipediaOntology();
+}
+
+function makeInstanceAndPropertyContextMenu(keyword, type) {
+    return new Ext.menu.Menu({
+        style : {
+            overflow : 'visible'
+        },
+        items : [
+            {
+                text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-search',
+                handler : function() {
+                    searchKeyWord(keyword);
+                }
+            },
+            {
+                text: OPEN_NEW_TAB,
+                iconCls: 'icon-newtab',
+                handler: function() {
+                    addTab();
+                    searchKeyWord(keyword);
+                }
+            },
+            {
+                text: OPEN_RDF_FILE,
+                iconCls: 'icon-rdf',
+                handler: function() {
+                    var baseDataURL = "";
+                    if (type == INSTANCE) {
+                        baseDataURL = BASE_SERVER_INSTANCE_DATA_URL;
+                    } else {
+                        baseDataURL = BASE_SERVER_PROPERTY_DATA_URL;
+                    }
+                    var queryURL = baseDataURL + encodeURI(keyword) + ".rdf";
+                    window.open(queryURL);
+                }
+            },
+            {
+                text : getAddKeywordToBookmarkLabel(keyword),
+                iconCls: 'icon-book_add',
+                handler : function() {
+                    searchKeyWord(keyword);
+                    addBookmark();
+                }
+            }
+        ]
+    });
+}
+
 function makePropertyContextMenu(keyword) {
-    return makeInstanceAndPropertyContextMenu(keyword);
+    return makeInstanceAndPropertyContextMenu(keyword, PROPERTY);
 }
 
 function makeInstanceContextMenu(keyword) {
-    return makeInstanceAndPropertyContextMenu(keyword);
+    return makeInstanceAndPropertyContextMenu(keyword, INSTANCE);
 }
 
 function renderSearchOption(value, metadata, record) {

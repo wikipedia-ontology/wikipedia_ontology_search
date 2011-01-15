@@ -224,12 +224,14 @@ function makeBookmarkClassContextMenu(record) {
         items : [
             {
                 text : getSearchKeywordLabel(keyword),
+                iconCls: 'icon-book_open',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
                 text : getNarrowDownKeywordLabel(keyword),
+                iconCls: 'icon-search',
                 handler : function() {
                     var searchPanel = Ext.getCmp('SearchPanel');
                     var currentKeyword = searchPanel.getForm().findField('keyword').getValue();
@@ -244,6 +246,7 @@ function makeBookmarkClassContextMenu(record) {
             },
             {
                 text : getRemoveKeywordFromBookmarkLabel(keyword),
+                iconCls: 'icon-book_delete',
                 handler : function() {
                     removeSelectedBookmarks();
                 }
