@@ -55,9 +55,10 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
 }
 
 function getBookmarkPanel() {
-    var bookmarkStore = new Ext.data.ArrayStore({
-        id : 'BookmarkStore',
-        fields : [
+    var bookmarkStore = new Ext.data.Store({
+        id: 'BookmarkStore',
+        proxy: new Ext.ux.data.PagingMemoryProxy(bookmarkArray),
+        reader: new Ext.data.ArrayReader({}, [
             {
                 name : 'date'
             },
@@ -76,13 +77,15 @@ function getBookmarkPanel() {
             {
                 name : 'URL'
             }
-        ],
+        ]),
+        remoteSort: true,
         sortInfo : {
             field : 'date',
-            direction : "DESC"
-        },
-        data : bookmarkArray
+            direction : "ACS"
+        }
     });
+    bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
+
     var bookmarkCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
     var bookmarkColumnModel = getBookmarkColumnModel(false, bookmarkCheckboxSelectionModel);
 
@@ -256,6 +259,14 @@ function getBookmarkPanel() {
         }
     }));
 
+    var bbar = new Ext.PagingToolbar({
+        store: bookmarkStore,
+        pageSize : BOOKMARK_PAGE_SIZE,
+        displayInfo : true,
+        displayMsg : "{2} " + "件中" + " {0} - {1} を表示",
+        plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
+    });
+
     return new Ext.grid.GridPanel({
         id : 'BookmarkPanel',
         stateId : 'bookmark_panel',
@@ -276,6 +287,7 @@ function getBookmarkPanel() {
             cellcontextmenu : showBookmarkContextMenu
         },
         tbar: tbar,
+        bbar: bbar,
         items : [
             {
                 region : "north",
@@ -328,6 +340,11 @@ function getSideBookmarkPanel() {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     var sideBookmarkColumnModel = getBookmarkColumnModel(true, bookmarkCheckboxSelectionModel);
 
+    var bbar = new Ext.PagingToolbar({
+        store: bookmarkStore,
+        pageSize : BOOKMARK_PAGE_SIZE,
+        plugins : [new Ext.ux.SlidingPager()]
+    });
     return new Ext.grid.GridPanel({
         stateful : true,
         stateEvents : ['columnresize', 'columnmove', 'columnvisible', 'columnsort'],
@@ -339,6 +356,7 @@ function getSideBookmarkPanel() {
         frame : true,
         autoExpandColumn : 'keyword_id',
         iconCls: 'icon-book',
+        bbar: bbar,
         listeners : {
             cellclick : function() {
                 openHistoryAndBookmarkData(bookmarkCheckboxSelectionModel.getSelected());
@@ -354,9 +372,8 @@ function addBookmark() {
     var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var keyword = searchPanel.getForm().findField('keyword').getValue();
     var searchOption = searchOptionSelection.getValue();
-    var record = [new Date(), keyword, searchOption, queryType, useInfModel, currentURI];
-    bookmarkStore.loadData([record], true);
-    bookmarkStore.sort('date', 'DESC');
+    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI];
+    bookmarkArray.push(record);
     saveBookmarksToWebStorage(bookmarkStore);
 }
 
@@ -364,9 +381,20 @@ function removeSelectedBookmarks() {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var selectedRecords = bookmarkCheckboxSelectionModel.getSelections();
-    for (var i = 0; i < selectedRecords.length; i++) {
-        bookmarkStore.remove(selectedRecords[i]);
+
+    var newBookmarkDataArray = [];
+    for (var h = 0; h < bookmarkArray.length; h++) {
+        var isDelete = false;
+        for (var i = 0; i < selectedRecords.length; i++) {
+            if (bookmarkArray[h][0] == selectedRecords[i].get('date')) {
+                isDelete = true;
+            }
+        }
+        if (!isDelete) {
+            newBookmarkDataArray.push(bookmarkArray[h]);
+        }
     }
+    bookmarkArray = newBookmarkDataArray;
     saveBookmarksToWebStorage(bookmarkStore);
 }
 

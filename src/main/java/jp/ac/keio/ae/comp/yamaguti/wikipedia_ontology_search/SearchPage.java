@@ -25,6 +25,7 @@ public class SearchPage extends WebPage {
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/Reorderer.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/ToolbarReorderer.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/ToolbarDroppable.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/lib/PagingMemoryProxy.js"));
         // my libs
         add(WikipediaOntologyUtils.getJsPackageResource("js/Parameters.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/Utilities.js"));

@@ -223,27 +223,21 @@ function getDataFromWebStorage(storage) {
     return JSON.parse(storage);
 }
 
-function getLocalDataArray(localData) {
-    var tmpData = [];
-    localData.each(function(record) {
-        tmpData.push([record.get('date'), record.get('keyword'),
-            record.get('searchOption'), record.get('queryType'),
-            record.get('useInfModel'), record.get('URL')]);
-    });
-    return tmpData;
-}
-
 /**
  * Web Storageにブックマークを保存
  */
 function saveBookmarksToWebStorage(bookmarkData) {
-    localStorage.bookmark = JSON.stringify(getLocalDataArray(bookmarkData));
+    localStorage.bookmark = JSON.stringify(bookmarkArray);
+    bookmarkData.proxy = new Ext.ux.data.PagingMemoryProxy(bookmarkArray);
+    bookmarkData.reload();
 }
 
 /**
  * Web Storageに履歴データを保存
  */
 function saveHistoryDataToWebStorage(historyData) {
-    localStorage.history = JSON.stringify(getLocalDataArray(historyData));
+    localStorage.history = JSON.stringify(historyDataArray);
+    historyData.proxy = new Ext.ux.data.PagingMemoryProxy(historyDataArray);
+    historyData.reload();
 }
 

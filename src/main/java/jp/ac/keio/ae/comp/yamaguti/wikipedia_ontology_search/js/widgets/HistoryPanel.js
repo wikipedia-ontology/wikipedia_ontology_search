@@ -16,14 +16,13 @@ function addHistoryData() {
     var keyword = searchPanel.getForm().findField('keyword').getValue();
     var searchOption = searchOptionSelection.getValue();
     var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI];
-    historyDataStore.loadData([record], true);
-    historyDataStore.sort('date', 'DESC');
+    historyDataArray.push(record);
     saveHistoryDataToWebStorage(historyDataStore);
 }
 
 function removeAllHistoryData() {
     var historyDataStore = Ext.getCmp('HistoryPanel').store;
-    historyDataStore.loadData([], false);
+    historyDataArray = [];
     saveHistoryDataToWebStorage(historyDataStore);
 }
 
@@ -31,9 +30,19 @@ function removeSelectedHistories() {
     var historyDataStore = Ext.getCmp('HistoryPanel').store;
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var selectedRecords = historyDataCheckboxSelectionModel.getSelections();
-    for (var i = 0; i < selectedRecords.length; i++) {
-        historyDataStore.remove(selectedRecords[i]);
+    var newHistoryDataArray = [];
+    for (var h = 0; h < historyDataArray.length; h++) {
+        var isDelete = false;
+        for (var i = 0; i < selectedRecords.length; i++) {
+            if (historyDataArray[h][0] == selectedRecords[i].get('date')) {
+                isDelete = true;
+            }
+        }
+        if (!isDelete) {
+            newHistoryDataArray.push(historyDataArray[h]);
+        }
     }
+    historyDataArray = newHistoryDataArray;
     saveHistoryDataToWebStorage(historyDataStore);
 }
 
@@ -99,9 +108,10 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
 }
 
 function getHistoryPanel() {
-    var historyDataStore = new Ext.data.ArrayStore({
-        id : 'HistoryDataStore',
-        fields : [
+    var historyDataStore = new Ext.data.Store({
+        id: 'HistoryDataStore',
+        proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
+        reader: new Ext.data.ArrayReader({}, [
             {
                 name : 'date'
             },
@@ -120,13 +130,14 @@ function getHistoryPanel() {
             {
                 name : 'URL'
             }
-        ],
+        ]),
+        remoteSort: true,
         sortInfo : {
             field : 'date',
-            direction : "DESC"
-        },
-        data : historyDataArray
+            direction : "ACS"
+        }
     });
+    historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
     var historyDataCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
     var historyDataColumnModel = getHistoryDataColumnModel(false, historyDataCheckboxSelectionModel);
 
@@ -300,6 +311,14 @@ function getHistoryPanel() {
         }
     }));
 
+    var bbar = new Ext.PagingToolbar({
+        store: historyDataStore,
+        pageSize : HISTORY_PAGE_SIZE,
+        displayInfo : true,
+        displayMsg : "{2} " + "件中" + " {0} - {1} を表示",
+        plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
+    });
+
     return new Ext.grid.GridPanel({
         id : 'HistoryPanel',
         stateId : 'history_panel',
@@ -314,6 +333,7 @@ function getHistoryPanel() {
         sm : historyDataCheckboxSelectionModel,
         iconCls: 'icon-time',
         tbar: tbar,
+        bbar: bbar,
         listeners : {
             celldblclick : function() {
                 openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
@@ -364,6 +384,11 @@ function getSideHistoryPanel() {
     var historyDataStore = Ext.getCmp('HistoryPanel').store;
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var sideHistoryDataColumnModel = getHistoryDataColumnModel(true, historyDataCheckboxSelectionModel);
+    var bbar = new Ext.PagingToolbar({
+        store: historyDataStore,
+        pageSize : HISTORY_PAGE_SIZE,
+        plugins : [new Ext.ux.SlidingPager()]
+    });
     return new Ext.grid.GridPanel({
         id : 'SideHistoryPanel',
         stateful : true,
@@ -376,6 +401,7 @@ function getSideHistoryPanel() {
         autoExpandColumn : 'keyword_id',
         sm : historyDataCheckboxSelectionModel,
         iconCls: 'icon-time',
+        bbar: bbar,
         listeners : {
             cellclick : function() {
                 openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
