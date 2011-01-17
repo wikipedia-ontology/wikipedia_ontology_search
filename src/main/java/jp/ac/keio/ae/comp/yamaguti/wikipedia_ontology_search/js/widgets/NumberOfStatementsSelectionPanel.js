@@ -24,6 +24,7 @@ function getNumberOfStatementsSelectionPanel() {
         typeAhead : true,
         mode : 'local',
         triggerAction : 'all',
-        selectOnFocus : true
+        selectOnFocus : true,
+        width: 100
     });
 }

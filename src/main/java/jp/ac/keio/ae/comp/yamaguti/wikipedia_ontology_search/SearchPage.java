@@ -22,6 +22,9 @@ public class SearchPage extends WebPage {
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/SlidingPager.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/ProgressBarPager.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/TabCloseMenu.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/lib/Reorderer.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/lib/ToolbarReorderer.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/lib/ToolbarDroppable.js"));
         // my libs
         add(WikipediaOntologyUtils.getJsPackageResource("js/Parameters.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/Utilities.js"));
@@ -30,6 +33,9 @@ public class SearchPage extends WebPage {
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/BookmarkPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/HelpPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/HistoryPanel.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/ClassListPanel.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/PropertyListPanel.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/InstanceListPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/MainView.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/NumberOfStatementsSelectionPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/OptionDialog.js"));

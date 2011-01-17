@@ -13,12 +13,66 @@ function getMainView() {
     var sideBookmarkPanel = getSideBookmarkPanel();
     var sourcePanel = getSourcePanel();
     var statementTabPanel = getStatementTabPanel();
+    var classListPanel = getClassListPanel();
+    var classInstanceListPanel = getInstanceListPanel(CLASS);
+    var propertyListPanel = getPropertyListPanel();
+    var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
+
+    var classListTabPanel = new Ext.Panel({
+        layout : 'hbox',
+        title : CLASS_LIST,
+        iconCls: 'icon-class',
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items: [
+            {
+                flex: 1,
+                minWidth: 200,
+                layout: 'fit',
+                items: classListPanel
+            },
+            {
+                flex:2,
+                minWidth: 200,
+                layout: 'fit',
+                items: classInstanceListPanel
+            }
+        ]
+    });
+
+    var propertyListTabPanel = new Ext.Panel({
+        layout : 'hbox',
+        title : PROPERTY_LIST,
+        iconCls: 'icon-property',
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items: [
+            {
+                flex: 1,
+                minWidth: 200,
+                layout: 'fit',
+                items: propertyListPanel
+            },
+            {
+                flex:2,
+                minWidth: 200,
+                layout: 'fit',
+                items: propertyInstanceListPanel
+            }
+        ]
+    });
 
     var wikiOntContentsTab = new Ext.TabPanel({
         activeTab : 0,
         frame : true,
+        defaults: {autoScroll:true},
+        enableTabScroll: true,
         title : 'Contents',
-        items : [statementTabPanel, bookmarkPanel, historyPanel, sourcePanel]
+        items : [statementTabPanel, classListTabPanel, propertyListTabPanel, bookmarkPanel, historyPanel, sourcePanel]
     });
 
     var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree");
@@ -78,8 +132,8 @@ function getMainView() {
                 title : SEARCH,
                 region : 'north',
                 layout : 'fit',
-                height : 150,
-                minHeight : 150,
+                height : 130,
+                minHeight : 130,
                 split : true,
                 animate : true,
                 collapsible : true,

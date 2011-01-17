@@ -11,9 +11,8 @@ function getSearchPanel() {
 
     var searchField = {
         border : false,
-        autoHeight : true,
         fieldLabel : KEYWORD,
-        layout : 'column',
+        xtype: 'compositefield',
         items : [searchOptionSelection, {
             xtype : 'textfield',
             name : 'keyword',
@@ -30,28 +29,33 @@ function getSearchPanel() {
 
     var queryTypeRadioButtons = {
         border : false,
-        xtype : 'radiogroup',
-        autoHeight : true,
-        layout : 'column',
+        xtype: 'compositefield',
+        fieldLabel : SEARCH_TARGET,
         items : [
             {
                 xtype: 'radio',
                 checked : true,
                 boxLabel : CLASS,
                 name : 'query-type',
-                id : 'class_button'
+                id : 'class_button',
+                width: 80
             },
             {
                 xtype: 'radio',
                 boxLabel : PROPERTY,
                 name : 'query-type',
-                id : 'property_button'
+                id : 'property_button',
+                width: 80
             },
             {
                 xtype: 'radio',
                 boxLabel : INSTANCE,
                 name : 'query-type',
-                id : 'instance_button'
+                id : 'instance_button',
+                width: 80
+            },
+            {
+               width: 30
             },
             {
                 xtype : 'checkbox',
@@ -69,18 +73,13 @@ function getSearchPanel() {
     return new Ext.FormPanel({
         id : "SearchPanel",
         frame : true,
-        labelWidth : 150,
+        labelWidth : 120,
         bodyStyle : 'padding: 10px;',
         layout : 'form',
-        items : [searchField, {
-            bodyStyle : 'padding-top: 10px;',
-            fieldLabel : SEARCH_TARGET,
-            border : false,
-            width : 500,
-            items : queryTypeRadioButtons
-        }, {
-            fieldLabel : NUMBER_OF_STATEMENTS,
-            items : numberOfStatementsSelection
-        }]
+        items : [searchField, queryTypeRadioButtons,
+            {
+                fieldLabel : NUMBER_OF_STATEMENTS,
+                items : numberOfStatementsSelection
+            }]
     });
 }

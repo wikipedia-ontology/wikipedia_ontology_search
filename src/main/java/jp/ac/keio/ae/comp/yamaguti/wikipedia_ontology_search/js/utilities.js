@@ -246,3 +246,4 @@ function saveBookmarksToWebStorage(bookmarkData) {
 function saveHistoryDataToWebStorage(historyData) {
     localStorage.history = JSON.stringify(getLocalDataArray(historyData));
 }
+
