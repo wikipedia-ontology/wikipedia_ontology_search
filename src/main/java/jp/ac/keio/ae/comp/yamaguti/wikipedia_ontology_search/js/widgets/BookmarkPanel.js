@@ -80,11 +80,10 @@ function getBookmarkPanel() {
         ]),
         remoteSort: true,
         sortInfo : {
-            field : 'date',
-            direction : "ACS"
+            field : 'keyword',
+            direction : "ASC"
         }
     });
-    bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
 
     var bookmarkCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
     var bookmarkColumnModel = getBookmarkColumnModel(false, bookmarkCheckboxSelectionModel);
@@ -267,6 +266,7 @@ function getBookmarkPanel() {
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
+    bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
     return new Ext.grid.GridPanel({
         id : 'BookmarkPanel',
         stateId : 'bookmark_panel',

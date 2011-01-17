@@ -53,12 +53,10 @@ function addSelectedHistoriesToBookmark() {
     var addedBookmarks = [];
     var date = new Date().toLocaleString();
     for (var i = 0; i < records.length; i++) {
-        addedBookmarks.push([date, records[i].get("keyword"),
+        bookmarkArray.push([date, records[i].get("keyword"),
             records[i].get("searchOption"), records[i].get("queryType"),
             records[i].get("useInfModel"), records[i].get("URL")]);
     }
-    bookmarkStore.loadData(addedBookmarks, true);
-    bookmarkStore.sort('date', 'DESC');
     saveBookmarksToWebStorage(bookmarkStore);
 }
 
@@ -134,10 +132,9 @@ function getHistoryPanel() {
         remoteSort: true,
         sortInfo : {
             field : 'date',
-            direction : "ACS"
+            direction : "DESC"
         }
     });
-    historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
     var historyDataCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
     var historyDataColumnModel = getHistoryDataColumnModel(false, historyDataCheckboxSelectionModel);
 
@@ -267,7 +264,7 @@ function getHistoryPanel() {
         text: DATE_AND_HOUR,
         sortData: {
             field: 'date',
-            direction: 'ASC'
+            direction: 'DESC'
         }
     }));
 
@@ -319,6 +316,7 @@ function getHistoryPanel() {
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
+    historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
     return new Ext.grid.GridPanel({
         id : 'HistoryPanel',
         stateId : 'history_panel',
