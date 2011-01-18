@@ -191,7 +191,7 @@ function getBookmarkPanel() {
          */
         getColumnFromDragDrop: function(data) {
             var index = data.header.cellIndex,
-                    colModel = grid.colModel,
+                    colModel = bookmarkPanel.colModel,
                     column = colModel.getColumnById(colModel.getColumnId(index));
 
             return column;
@@ -227,33 +227,9 @@ function getBookmarkPanel() {
     }));
 
     tbar.add(createSorterButton({
-        text: USE_INFERENCE_MODEL,
-        sortData: {
-            field: 'useInfModel',
-            direction: 'ASC'
-        }
-    }));
-
-    tbar.add(createSorterButton({
-        text: URL,
-        sortData: {
-            field: 'URL',
-            direction: 'ASC'
-        }
-    }));
-
-    tbar.add(createSorterButton({
         text: DATE_AND_HOUR,
         sortData: {
             field: 'date',
-            direction: 'ASC'
-        }
-    }));
-
-    tbar.add(createSorterButton({
-        text: SEARCH_TARGET,
-        sortData: {
-            field: 'queryType',
             direction: 'ASC'
         }
     }));
@@ -267,7 +243,7 @@ function getBookmarkPanel() {
     });
 
     bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
-    return new Ext.grid.GridPanel({
+    var bookmarkPanel = new Ext.grid.GridPanel({
         id : 'BookmarkPanel',
         stateId : 'bookmark_panel',
         stateful : true,
@@ -284,7 +260,14 @@ function getBookmarkPanel() {
             celldblclick : function() {
                 openHistoryAndBookmarkData(bookmarkCheckboxSelectionModel.getSelected());
             },
-            cellcontextmenu : showBookmarkContextMenu
+            cellcontextmenu : showBookmarkContextMenu,
+            scope: this,
+            render: function() {
+                //here we tell the toolbar's droppable plugin that it can accept items from the columns' dragdrop group
+                var dragProxy = bookmarkPanel.getView().columnDrag,
+                        ddGroup = dragProxy.ddGroup;
+                droppable.addDDGroup(ddGroup);
+            }
         },
         tbar: tbar,
         bbar: bbar,
@@ -333,6 +316,7 @@ function getBookmarkPanel() {
             }
         ]
     });
+    return bookmarkPanel;
 }
 
 function getSideBookmarkPanel() {

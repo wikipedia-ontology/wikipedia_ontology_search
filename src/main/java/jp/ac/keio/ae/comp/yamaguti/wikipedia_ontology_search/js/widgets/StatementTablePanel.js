@@ -158,7 +158,7 @@ function getStatementTablePanel(title, tabIndex) {
          */
         getColumnFromDragDrop: function(data) {
             var index = data.header.cellIndex,
-                    colModel = grid.colModel,
+                    colModel = statementTablePanel.colModel,
                     column = colModel.getColumnById(colModel.getColumnId(index));
 
             return column;
@@ -215,7 +215,7 @@ function getStatementTablePanel(title, tabIndex) {
         }
     });
 
-    return new Ext.grid.GridPanel({
+    var statementTablePanel = new Ext.grid.GridPanel({
         id : 'StatementTablePanel' + tabIndex,
         stateId : 'statement_table_panel' + tabIndex,
         stateful : true,
@@ -255,10 +255,18 @@ function getStatementTablePanel(title, tabIndex) {
         closable: true,
         iconCls: 'icon-tab',
         listeners : {
+            scope: this,
             cellclick : openWikiOntJSONData,
-            cellcontextmenu : showStatementTablePanelContextMenu
+            cellcontextmenu : showStatementTablePanelContextMenu,
+            render: function() {
+                //here we tell the toolbar's droppable plugin that it can accept items from the columns' dragdrop group
+                var dragProxy = statementTablePanel.getView().columnDrag,
+                        ddGroup = dragProxy.ddGroup;
+                droppable.addDDGroup(ddGroup);
+            }
         }
     });
+    return statementTablePanel;
 }
 
 function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {

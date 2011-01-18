@@ -241,7 +241,7 @@ function getHistoryPanel() {
          */
         getColumnFromDragDrop: function(data) {
             var index = data.header.cellIndex,
-                    colModel = grid.colModel,
+                    colModel = historyPanel.colModel,
                     column = colModel.getColumnById(colModel.getColumnId(index));
 
             return column;
@@ -284,29 +284,6 @@ function getHistoryPanel() {
         }
     }));
 
-    tbar.add(createSorterButton({
-        text: SEARCH_TARGET,
-        sortData: {
-            field: 'queryType',
-            direction: 'ASC'
-        }
-    }));
-
-    tbar.add(createSorterButton({
-        text: USE_INFERENCE_MODEL,
-        sortData: {
-            field: 'useInfModel',
-            direction: 'ASC'
-        }
-    }));
-
-    tbar.add(createSorterButton({
-        text: URL,
-        sortData: {
-            field: 'URL',
-            direction: 'ASC'
-        }
-    }));
 
     var bbar = new Ext.PagingToolbar({
         store: historyDataStore,
@@ -317,7 +294,7 @@ function getHistoryPanel() {
     });
 
     historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
-    return new Ext.grid.GridPanel({
+    var historyPanel = new Ext.grid.GridPanel({
         id : 'HistoryPanel',
         stateId : 'history_panel',
         stateful : true,
@@ -336,7 +313,14 @@ function getHistoryPanel() {
             celldblclick : function() {
                 openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
             },
-            cellcontextmenu : showHistoryContextMenu
+            cellcontextmenu : showHistoryContextMenu,
+            scope: this,
+            render: function() {
+                //here we tell the toolbar's droppable plugin that it can accept items from the columns' dragdrop group
+                var dragProxy = historyPanel.getView().columnDrag,
+                        ddGroup = dragProxy.ddGroup;
+                droppable.addDDGroup(ddGroup);
+            }
         },
         items : [
             {
@@ -376,6 +360,7 @@ function getHistoryPanel() {
             }
         ]
     });
+    return historyPanel;
 }
 
 function getSideHistoryPanel() {
