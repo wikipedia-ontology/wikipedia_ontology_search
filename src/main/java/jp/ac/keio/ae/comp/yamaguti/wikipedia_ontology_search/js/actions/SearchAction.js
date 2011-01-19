@@ -28,6 +28,8 @@ function searchWikipediaOntology2(keyword) {
     var unescapeQueryURL = BASE_URI;
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     var searchOption = "search_option=" + searchOptionSelection.getValue();
+    var versionOptionSelection = Ext.getCmp('Version_Option');
+    var versionOption = "version=" + versionOptionSelection.getValue();
 
     if (1 < keywords.length) {
         queryURL += CLASS_PATH + TABLE_DATA_PATH + "queryString?";
@@ -40,11 +42,20 @@ function searchWikipediaOntology2(keyword) {
                 unescapeQueryURL += "&";
             }
         }
+        queryURL += "&" + versionOption;
+        unescapeQueryURL += "&" + versionOption;
         reloadWikiOntJSONData1(queryURL, unescapeQueryURL, keywords);
     } else {
+        if (searchOptionSelection.getValue() == "siblings" || searchOptionSelection.getValue() == "sub_classes") {
+            queryType = "class";
+            Ext.getDom('class_button').checked = true;
+        }
         queryURL += queryType + '/' + TABLE_DATA_PATH + keyword;
         if (searchOptionSelection.getValue() != "exact_match") {
             queryURL += '?' + searchOption;
+            queryURL += '&' + versionOption;
+        } else {
+            queryURL += '?' + versionOption;
         }
         reloadWikiOntJSONData2(queryURL, keyword);
     }

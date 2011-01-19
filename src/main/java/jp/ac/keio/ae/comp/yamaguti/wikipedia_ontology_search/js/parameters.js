@@ -5,6 +5,7 @@
  */
 var HOME_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/";
 
+var CURRENT_WIKIPEDIA_ONTOLOGY_VERSION = "2010_11_14";
 //var BASE_SERVER_URL = "http://zest.comp.ae.keio.ac.jp:8080/wikipedia_ontology_search/";
 //var BASE_SERVER_URL = "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/";
 var BASE_SERVER_URL = "http://localhost:8080/wikipedia_ontology_search/";
@@ -39,7 +40,8 @@ var BASE_SERVER_INSTANCE_TREE_DATA_URL = BASE_SERVER_INSTANCE_URL + TREE_DATA_PA
 
 var NULL_TABLE_DATA = BASE_SERVER_CLASS_TABLE_DATA_URL + "NULL";
 var NULL_TREE_DATA = BASE_SERVER_CLASS_TREE_DATA_URL + "NULL";
-var ALL_CLASSES = BASE_SERVER_CLASS_TREE_DATA_URL + "ALLClasses.json";
+//var ALL_CLASSES = BASE_SERVER_CLASS_TREE_DATA_URL + "ALLClasses.json";
+var ALL_CLASSES = BASE_SERVER_URL + "ALLClasses.json";
 
 var HISTORY_PAGE_SIZE = 25;
 var BOOKMARK_PAGE_SIZE = 25;

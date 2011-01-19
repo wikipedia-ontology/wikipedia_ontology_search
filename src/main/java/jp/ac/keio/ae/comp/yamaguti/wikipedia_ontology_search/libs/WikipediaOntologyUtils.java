@@ -416,8 +416,6 @@ public class WikipediaOntologyUtils {
     public static void main(String[] args) {
         Model ontModel = FileManager.get().loadModel("ontology/new_wikipedia_ontology_class.owl");
         System.out.println(ontModel.size());
-        ontModel = WikipediaOntologyUtils.removeLoopModel(ontModel);
-        System.out.println(ontModel.size());
         Map<Resource, Set<Resource>> classSubClassMap = getClassSubClassMap(ontModel);
         System.out.println("total class num:" + classSubClassMap.keySet().size());
         Set<Resource> rootClsSet = WikipediaOntologyUtils.getRootClassSet(classSubClassMap);

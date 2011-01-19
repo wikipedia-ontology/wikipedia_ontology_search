@@ -8,6 +8,7 @@ function getSearchPanel() {
     var searchOptionSelection = getSearchOptionComboBox('Resource_Search_Option');
     var numberOfStatementsSelection = getNumberOfStatementsSelectionPanel();
     numberOfStatementsSelection.setValue("100");
+    var versionOptionSelection = getVersionOptionComboBox('Version_Option');
 
     var searchField = {
         border : false,
@@ -55,7 +56,7 @@ function getSearchPanel() {
                 width: 80
             },
             {
-               width: 30
+                width: 30
             },
             {
                 xtype : 'checkbox',
@@ -80,6 +81,9 @@ function getSearchPanel() {
             {
                 fieldLabel : NUMBER_OF_STATEMENTS,
                 items : numberOfStatementsSelection
+            }, {
+                fieldLabel: VERSION,
+                items: versionOptionSelection
             }]
     });
 }

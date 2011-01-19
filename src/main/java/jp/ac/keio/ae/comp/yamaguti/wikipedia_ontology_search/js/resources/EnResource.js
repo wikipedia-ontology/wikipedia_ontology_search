@@ -62,6 +62,7 @@ var OPTION = "Option";
 var VERSION_INFORMATION = "Version Information";
 var TOOL = "Tool";
 var HELP = "Help";
+var VERSION = "Version";
 var SHOW_WHOLE_CLASS_HIEARCHY = "Show Whole Class Hiearchy";
 var HIEARCHY = "Hiearchy";
 var RDF_XML_MESSAGE = "RDF/XMLタブを選択後，検索を行うとソースコードが表示されます．";
@@ -81,6 +82,8 @@ var SEARCH_OPTION_EXACT_MATCH = "Exact match";
 var SEARCH_OPTION_ANY_MATCH = "Any match";
 var SEARCH_OPTION_STARTS_WITH = "Starts with";
 var SEARCH_OPTION_ENDS_WITH = "Ends with";
+var SEARCH_OPTION_SIBLING_CLASSES = "Sibling Classes";
+var SEARCH_OPTION_SUB_CLASSES = "Sub Classes";
 
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;

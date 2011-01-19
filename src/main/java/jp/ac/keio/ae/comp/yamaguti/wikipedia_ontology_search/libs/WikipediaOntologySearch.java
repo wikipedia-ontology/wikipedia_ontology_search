@@ -2,6 +2,7 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 
 import java.util.*;
 
+import com.hp.hpl.jena.util.FileManager;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 
 import com.google.common.collect.*;
@@ -25,6 +26,10 @@ public class WikipediaOntologySearch {
     private Set<Resource> resourceSet;
     private Set<Resource> typeSet;
     private WikipediaOntologyStorage wikiOntStrage;
+
+    public WikipediaOntologySearch() {
+        dbModel = getWikipediaOntologyAndInstanceModel("ja", "none");
+    }
 
     public WikipediaOntologySearch(SearchParameters params) {
         searchParameters = params;
@@ -79,6 +84,7 @@ public class WikipediaOntologySearch {
     }
 
     public String setTDBModel() {
+        WikipediaOntologyStorage.VERSION = searchParameters.getVersion();
         if (searchParameters.isUseInfModel()) {
             dbModel = getWikipediaOntologyAndInstanceModel("ja", "rdfs");
             return "ja";
@@ -109,13 +115,13 @@ public class WikipediaOntologySearch {
                 resourceSet.add(resource);
                 if (searchParameters.getResourceType() == ResourceType.INSTANCE
                         && searchParameters.getSearchOption() != SearchOptionType.EXACT_MATCH) {
+                    // インスタンス検索時に完全照合以外のオプションが指定されている場合には，typeSetに全インスタンス検索結果を保存
+                    typeSet.add(resource);
                     continue;
                 }
                 if (type != null) {
-                    if (type.equals(OWL.Class)) {
+                    if (type.equals(OWL.Class) || type.equals(OWL.ObjectProperty) || type.equals(OWL.DatatypeProperty)) {
                         typeSet.add(resource);
-                    } else if (type.equals(OWL.ObjectProperty)) {
-                        // タイプには追加しない
                     } else {
                         typeSet.add(type);
                     }
@@ -138,11 +144,21 @@ public class WikipediaOntologySearch {
                 }
             }
         }
+        // 階層表示パネルにサブクラスまたは兄弟クラスリストを表示するため
+        if (searchParameters.getSearchOption() == SearchOptionType.SIBLINGS ||
+                searchParameters.getSearchOption() == SearchOptionType.SUB_CLASSES) {
+            typeSet.addAll(resourceSet);
+        }
     }
 
     private Set<Resource> supClassSet = null;
+    private static final String ALL_CLASSES = "E:/Users/t_morita/wikipedia_ontology/ALLClasses.owl";
 
     public Model getOutputModel() {
+        if (searchParameters.getResourceName().equals("ALLClasses")) {
+            System.out.println("ALLClasses");
+            return FileManager.get().loadModel(ALL_CLASSES);
+        }
         SearchOptionType searchOption = searchParameters.getSearchOption();
         Model outputModel = ModelFactory.createDefaultModel();
         for (Resource res : resourceSet) {
@@ -234,7 +250,10 @@ public class WikipediaOntologySearch {
         return rootClassSet;
     }
 
+    int treeJSONDataIdCount = 1;
+
     public String getTreeJSONString(Model outputModel) {
+        treeJSONDataIdCount = 1;
         Map<Resource, Set<Resource>> classSubClassMap = getClassSubClassMap(outputModel);
         Set<Resource> rootClassSet = getRootClassSet(classSubClassMap);
         JSONArray jsonContainer = new JSONArray();
@@ -249,6 +268,11 @@ public class WikipediaOntologySearch {
                     jsonRootObj.put("leaf", true);
                 }
                 setInstanceCnt(jsonRootObj);
+                if (searchParameters.getResourceName().equals("ALLClasses")) {
+                    String localName = (String) jsonRootObj.get("text");
+                    int instanceCnt = getInstanceCnt(localName, outputModel);
+                    jsonRootObj.put("text", localName + "（" + instanceCnt + "）");
+                }
                 jsonContainer.put(jsonRootObj);
             }
         } catch (JSONException jsonExp) {
@@ -279,11 +303,14 @@ public class WikipediaOntologySearch {
         String qname = getQname(res);
         String localName = getLocalName(res);
         try {
+            jsonObj.put("id", treeJSONDataIdCount++);
             jsonObj.put("text", localName);
-            jsonObj.put("id", qname);
+            jsonObj.put("qname", qname);
             jsonObj.put("leaf", isLeaf);
             if (qname.indexOf("class") != -1) {
                 jsonObj.put("iconCls", "icon-class");
+            } else if (qname.indexOf("property") != -1) {
+                jsonObj.put("iconCls", "icon-property");
             } else if (qname.indexOf("instance") != -1) {
                 jsonObj.put("iconCls", "icon-instance");
             }
@@ -306,6 +333,11 @@ public class WikipediaOntologySearch {
                     } else {
                         jsonChildObj.put("leaf", true);
                     }
+                    if (searchParameters.getResourceName().equals("ALLClasses")) {
+                        String localName = (String) jsonChildObj.get("text");
+                        int instanceCnt = getInstanceCnt(localName, outputModel);
+                        jsonChildObj.put("text", localName + "（" + instanceCnt + "）");
+                    }
                     setInstanceCnt(jsonChildObj);
                     childArray.put(jsonChildObj);
                 } catch (JSONException jsonExp) {
@@ -325,10 +357,12 @@ public class WikipediaOntologySearch {
                         }
                         break;
                     case INSTANCE:
-                        for (Resource keyInstance : resourceSet) {
-                            JSONObject jsonChildObj = new JSONObject();
-                            addJSONAttributes(jsonChildObj, keyInstance, true);
-                            childArray.put(jsonChildObj);
+                        if (searchParameters.getSearchOption() == SearchOptionType.EXACT_MATCH) {
+                            for (Resource keyInstance : resourceSet) {
+                                JSONObject jsonChildObj = new JSONObject();
+                                addJSONAttributes(jsonChildObj, keyInstance, true);
+                                childArray.put(jsonChildObj);
+                            }
                         }
                         break;
                 }
@@ -351,10 +385,10 @@ public class WikipediaOntologySearch {
         }
     }
 
-    public int getInstanceCnt(String localName) {
+    private int getInstanceCnt(String localName, Model outputModel) {
         int instanceCnt = 0;
         Resource cls = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + localName);
-        for (NodeIterator nodeIter = dbModel.listObjectsOfProperty(cls,
+        for (NodeIterator nodeIter = outputModel.listObjectsOfProperty(cls,
                 WikipediaOntologyStorage.INSTANCE_COUNT_PROPERTY); nodeIter.hasNext();) {
             RDFNode object = nodeIter.nextNode();
             if (object.isLiteral()) {
@@ -362,7 +396,7 @@ public class WikipediaOntologySearch {
                 break;
             }
         }
-        // System.out.println(cls + ": " + instanceCnt);
+        System.out.println(cls + ": " + instanceCnt);
         return instanceCnt;
     }
 

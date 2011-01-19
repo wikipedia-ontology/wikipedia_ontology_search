@@ -47,7 +47,14 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             dataIndex : "URL",
             header : URL,
             hidden : isSidePanel
-        }],
+        }, {
+            id : 'version_id',
+            dataIndex : "version",
+            header : VERSION,
+            hidden : isSidePanel,
+            renderer : renderVersionOption
+        }
+        ],
         defaults : {
             sortable : true
         }
@@ -76,6 +83,9 @@ function getBookmarkPanel() {
             },
             {
                 name : 'URL'
+            },
+            {
+                name : 'version'
             }
         ]),
         remoteSort: true,
@@ -234,6 +244,14 @@ function getBookmarkPanel() {
         }
     }));
 
+    tbar.add(createSorterButton({
+        text: VERSION,
+        sortData: {
+            field: 'version',
+            direction: 'ASC'
+        }
+    }));
+
     var bbar = new Ext.PagingToolbar({
         store: bookmarkStore,
         pageSize : BOOKMARK_PAGE_SIZE,
@@ -356,7 +374,9 @@ function addBookmark() {
     var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var keyword = searchPanel.getForm().findField('keyword').getValue();
     var searchOption = searchOptionSelection.getValue();
-    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI];
+    var versionOptionSelection = Ext.getCmp('Version_Option');
+    var versionOption = versionOptionSelection.getValue();
+    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI, versionOption];
     bookmarkArray.push(record);
     saveBookmarksToWebStorage(bookmarkStore);
 }

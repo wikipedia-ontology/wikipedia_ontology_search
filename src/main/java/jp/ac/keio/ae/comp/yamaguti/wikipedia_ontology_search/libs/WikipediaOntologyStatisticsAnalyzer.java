@@ -23,7 +23,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
 
     private static void storeClassStatisticsToDB(String lang) {
         EntityManager em = WikipediaOntologyStorage.getEntityManager();
-        Model ontModel = WikipediaOntologyStorage.getWikipediaOntologyMemModel(lang);
+        Model ontModel = WikipediaOntologyStorage.getWikipediaClassMemModel(lang);
         for (ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.Class); resIter.hasNext();) {
             Resource cls = resIter.nextResource();
             String clsName = WikipediaOntologyUtils.getLocalName(cls);
@@ -43,19 +43,25 @@ public class WikipediaOntologyStatisticsAnalyzer {
         }
     }
 
+    /**
+     * 現在，利用していない
+     *
+     * @param lang
+     */
     private static void storeInstanceStatisticsToDB(String lang) {
-        Model ontModel = WikipediaOntologyStorage.getWikipediaOntologyAndInstanceMemModel(false, lang);
-        setInstanceToType(ontModel);
+        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
+        setInstanceToType(wikiOntStrage.getTDBModel());
     }
 
     private static void storePropertyStatisticsToDB(String lang) {
-        Model ontModel = WikipediaOntologyStorage.getInstanceMemModel(lang);
+        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
+        Model ontologyAndInstanceModel = wikiOntStrage.getTDBModel();
 
         Map<Property, Set<Resource>> propertyInstanceMap = Maps.newHashMap();
-        setPropertyInstanceMap(ontModel, propertyInstanceMap, OWL.ObjectProperty);
-        setPropertyInstanceMap(ontModel, propertyInstanceMap, OWL.DatatypeProperty);
+        setPropertyInstanceMap(ontologyAndInstanceModel, propertyInstanceMap, OWL.ObjectProperty);
+        setPropertyInstanceMap(ontologyAndInstanceModel, propertyInstanceMap, OWL.DatatypeProperty);
 
-        setProperty(propertyInstanceMap, ontModel);
+        setProperty(propertyInstanceMap, ontologyAndInstanceModel);
     }
 
     private static void setProperty(Map<Property, Set<Resource>> propertyInstanceMap, Model ontModel) {
@@ -105,8 +111,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
         }
     }
 
-    private static void setPropertyInstanceMap(Model instanceModel, Map<Property, Set<Resource>> propertyInstanceMap,
-            Resource cls) {
+    private static void setPropertyInstanceMap(Model instanceModel, Map<Property, Set<Resource>> propertyInstanceMap, Resource cls) {
         for (ResIterator propIter = instanceModel.listSubjectsWithProperty(RDF.type, cls); propIter.hasNext();) {
             Property property = ResourceFactory.createProperty(propIter.nextResource().getURI());
             Set<Resource> resSet = Sets.newHashSet();
@@ -179,14 +184,24 @@ public class WikipediaOntologyStatisticsAnalyzer {
     }
 
     public static void countAllSortsOfTriplesAndStoreDB(String lang, String inferenceType) {
-        WikipediaOntologyStorage storage = new WikipediaOntologyStorage(lang, inferenceType);
+        WikipediaOntologyStorage storage = new WikipediaOntologyStorage(lang,  inferenceType);
         Model ontModel = storage.getTDBModel();
 
-        int classCount = ontModel.listSubjectsWithProperty(RDF.type, OWL.Class).toSet().size();
-        Set<Resource> objectPropertySet = ontModel.listSubjectsWithProperty(RDF.type, OWL.ObjectProperty).toSet();
-        int objectPropretyCount = objectPropertySet.size();
-        Set<Resource> datatypePropertySet = ontModel.listSubjectsWithProperty(RDF.type, OWL.DatatypeProperty).toSet();
-        int datatypePropretyCount = datatypePropertySet.size();
+        int classCount = 0;
+        for (ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.Class); resIter.hasNext();) {
+            classCount++;
+            resIter.nextResource();
+        }
+        int objectPropertyCount = 0;
+        for(ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.ObjectProperty); resIter.hasNext();) {
+           objectPropertyCount++;
+            resIter.nextResource();
+        }
+        int datatypePropertyCount = 0;
+        for(ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.DatatypeProperty);resIter.hasNext();) {
+            datatypePropertyCount++;
+            resIter.nextResource();
+        }
 
         Set<Resource> instanceSet = new HashSet<Resource>();
         Set<Resource> propertySet = new HashSet<Resource>();
@@ -203,8 +218,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
             }
 
             if (predicate.equals(RDF.type)
-                    && !(object.equals(OWL.Class) || object.equals(OWL.ObjectProperty) || object
-                            .equals(OWL.DatatypeProperty))) {
+                    && !(object.equals(OWL.Class) || object.equals(OWL.ObjectProperty) || object.equals(OWL.DatatypeProperty))) {
                 typeCount++;
             }
 
@@ -225,7 +239,11 @@ public class WikipediaOntologyStatisticsAnalyzer {
         }
         int instanceCount = instanceSet.size();
         int propertyCount = propertySet.size();
-        int statementCount = ontModel.listStatements().toSet().size();
+        int statementCount = 0;
+        for (StmtIterator stmtIter = ontModel.listStatements();stmtIter.hasNext();) {
+            statementCount++;
+            stmtIter.nextStatement();
+        }
         int resourceCount = classCount + propertyCount + instanceCount;
 
         EntityManager em = WikipediaOntologyStorage.getEntityManager();
@@ -235,10 +253,10 @@ public class WikipediaOntologyStatisticsAnalyzer {
             ts1.setInferenceType(inferenceType);
 
             ts1.setClassCount(classCount);
-            ts1.setDatatypePropertyCount(datatypePropretyCount);
+            ts1.setDatatypePropertyCount(datatypePropertyCount);
             ts1.setInstanceCount(instanceCount);
             ts1.setIsaCount(isaCount);
-            ts1.setObjectPropertyCount(objectPropretyCount);
+            ts1.setObjectPropertyCount(objectPropertyCount);
             ts1.setPropertyCount(propertyCount);
             ts1.setResourceCount(resourceCount);
             ts1.setStatementCount(statementCount);
@@ -250,15 +268,17 @@ public class WikipediaOntologyStatisticsAnalyzer {
     }
 
     public static void main(String[] args) {
-        // countAllSortsOfTriplesAndStoreDB("ja", "none");
-        // countAllSortsOfTriplesAndStoreDB("en", "none");
-        // countAllSortsOfTriplesAndStoreDB("ja", "rdfs");
-        // countAllSortsOfTriplesAndStoreDB("en", "");
+        WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
+        WikipediaOntologyStorage.H2_DB_PROTOCOL = "tcp://localhost/";
+//        countAllSortsOfTriplesAndStoreDB("ja", "none");
+//        countAllSortsOfTriplesAndStoreDB("en", "none");
+//        countAllSortsOfTriplesAndStoreDB("ja", "rdfs");
+//        countAllSortsOfTriplesAndStoreDB("en", "rdfs");
 
-        // String lang = "ja";
-        // storeClassStatisticsToDB(lang);
-        // storePropertyStatisticsToDB("ja");
-        // storeInstanceStatisticsToDB("ja");
+//        storeClassStatisticsToDB("ja");
+//        storePropertyStatisticsToDB("ja");
+//        storeClassStatisticsToDB("en");
+//        storePropertyStatisticsToDB("en");
     }
 
 }

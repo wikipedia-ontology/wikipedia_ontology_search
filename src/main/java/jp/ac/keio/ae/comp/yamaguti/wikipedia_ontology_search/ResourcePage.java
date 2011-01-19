@@ -7,6 +7,8 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.util.FileUtils;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
 import org.apache.wicket.IRequestTarget;
@@ -27,13 +29,22 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
  * @author takeshi morita
  */
 public class ResourcePage extends CommonPage implements Serializable {
+
+    public static void main(String[] args) throws Exception {
+        WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch();
+        Model ontModel = FileManager.get().loadModel("C:/Users/t_morita/wikipedia_ontology/ALLClasses.owl");
+        String str = wikiOntSearch.getTreeJSONString(ontModel);
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("C:/Users/t_morita/wikipedia_ontology/ALLClasses.json")), "UTF-8"));
+        writer.write(str);
+        writer.close();
+    }
 
     public ResourcePage(PageParameters params) {
         String resourceType = getRequestCycle().getRequest().getPath().split("/")[0];
@@ -290,12 +301,10 @@ public class ResourcePage extends CommonPage implements Serializable {
                         resourceObjectContainer.setVisible(node.isResource());
                         literalObjectContainer.setVisible(node.isLiteral());
                         if (node.isLiteral()) {
-                            literalObjectContainer.add(new Label("literal_object_name", node.getName()))
-                                    .setRenderBodyOnly(true);
+                            literalObjectContainer.add(new Label("literal_object_name", node.getName())).setRenderBodyOnly(true);
                         } else if (node.isResource()) {
                             resourceObjectContainer.add(
-                                    new ExternalLink("resource_object_uri", node.getURL(), node.getName()))
-                                    .setRenderBodyOnly(true);
+                                    new ExternalLink("resource_object_uri", node.getURL(), node.getName())).setRenderBodyOnly(true);
                         }
                     }
                 }).setRenderBodyOnly(true);
@@ -328,8 +337,7 @@ public class ResourcePage extends CommonPage implements Serializable {
 
             if (subject.equals(uri)) {
                 Property predicate = stmt.getPredicate();
-                PropertyImpl predicateImpl = new PropertyImpl(predicate.getURI(), WikipediaOntologyUtils
-                        .getQname(predicate));
+                PropertyImpl predicateImpl = new PropertyImpl(predicate.getURI(), WikipediaOntologyUtils.getQname(predicate));
                 if (propertyRDFNodeMap.get(predicateImpl) != null) {
                     List<RDFNodeImpl> rdfNodeSet = propertyRDFNodeMap.get(predicateImpl);
                     rdfNodeSet.add(objectImpl);

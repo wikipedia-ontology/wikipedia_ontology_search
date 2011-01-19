@@ -88,7 +88,7 @@ function getTreePanel(title, treeType) {
         },
         listeners : {
             click : function(n) {
-                var qname = n.attributes.id;
+                var qname = n.attributes.qname;
                 var queryURL = "";
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
@@ -239,6 +239,7 @@ function reloadTree(queryJSONTableURL) {
 
 function showWholeIsaTree() {
     var wholeClassTreePanel = Ext.getCmp('wholeClassTreePanel');
+    //    alert(ALL_CLASSES);
     wholeClassTreePanel.loader.dataUrl = ALL_CLASSES;
     //    classAndInstanceTreePanel.loader.proxy = getProxy(ALL_CLASSES);
     wholeClassTreePanel.loader.load(wholeClassTreePanel.getRootNode());

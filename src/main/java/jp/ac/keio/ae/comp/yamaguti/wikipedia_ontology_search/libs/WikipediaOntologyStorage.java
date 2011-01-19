@@ -41,17 +41,15 @@ public class WikipediaOntologyStorage {
     public static String INSTANCE_NS = ONTOLOGY_NS + "instance/";
     public static Property INSTANCE_COUNT_PROPERTY = ResourceFactory.createProperty(ONTOLOGY_NS + "instanceCount");
 
-    public static String WIKIPEDIA_ONTOLOGY_PATH = "/wikipedia_ontology";
-    private static final String BASE_WIKIPEDIA_ONTOLOGY_NAME = "_wikipedia_ontology_2010_02_09";
+    //    public static String WIKIPEDIA_ONTOLOGY_PATH = "/wikipedia_ontology";
+    public static String WIKIPEDIA_ONTOLOGY_PATH = "E:/Users/t_morita/wikipedia_ontology/";
+    public static String VERSION = "2010_11_14";
+    private static final String BASE_WIKIPEDIA_ONTOLOGY_NAME = "_wikipedia_ontology_";
 
-    private static final String WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
-            + "wikipedia_ontology_infobox_20100126.owl";
-    private static final String WIKIPEDIA_INSTANCE_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
-            + "wikipedia_instance_20091120.owl";
     private static final String ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
             + "refined_wikipedia_ontology_english_instance_2009_10_27.owl";
-    private static final String WIKIPEDIA_ONTOLOGY_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
-            + "wikipedia_ontology_20091120.owl";
+    private static final String JA_WIKIPEDIA_ONTOLOGY_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
+            + "refined_wikipedia_ontology_20101114ja.owl";
 
     public WikipediaOntologyStorage() {
     }
@@ -75,7 +73,8 @@ public class WikipediaOntologyStorage {
             if (inferenceType.equals("rdfs")) {
                 infLabel = "_with_rdfs_inference";
             }
-            tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang + BASE_WIKIPEDIA_ONTOLOGY_NAME + infLabel);
+            tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang +
+                    BASE_WIKIPEDIA_ONTOLOGY_NAME + VERSION + infLabel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,31 +106,60 @@ public class WikipediaOntologyStorage {
         tdbModel.close();
     }
 
-    public static Model getWikipediaOntologyAndInstanceMemModel(boolean isInfModel, String lang) {
+    public static void storeWikipediaOntologyAndInstanceMemModel(boolean isInfModel, String lang, Model tdbModel) {
         Model instanceModel = ModelFactory.createDefaultModel();
         Model ontModel = ModelFactory.createDefaultModel();
         if (lang.equals("ja")) {
-            instanceModel = FileManager.get().loadModel(WIKIPEDIA_INSTANCE_FILE_PATH);
-            instanceModel.add(FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH));
-            ontModel = FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_FILE_PATH);
+            Model ontologyAndInstanceModel = FileManager.get().loadModel(JA_WIKIPEDIA_ONTOLOGY_FILE_PATH);
+            for (StmtIterator stmtIter = ontologyAndInstanceModel.listStatements(); stmtIter.hasNext();) {
+                Statement stmt = stmtIter.nextStatement();
+                String subjectURI = stmt.getSubject().getURI();
+                if (subjectURI.contains(CLASS_NS) || subjectURI.contains(PROPERTY_NS)) {
+                    ontModel.add(stmt);
+                } else {
+                    instanceModel.add(stmt);
+                }
+            }
         } else if (lang.equals("en")) {
             instanceModel.add(FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH));
         }
 
         Model model = null;
         if (isInfModel) {
-            Reasoner rdfsReasoner = ReasonerRegistry.getRDFSSimpleReasoner();
-            Reasoner reasoner = rdfsReasoner.bindSchema(ontModel);
-            model = ModelFactory.createInfModel(reasoner, instanceModel);
-            System.out.println("wikipedia ontology and instance (inference) triple size: "
-                    + model.listStatements().toSet().size());
+            Model subInstanceModel = ModelFactory.createDefaultModel();
+            int stmtCnt = 0;
+            for (StmtIterator stmtIter = instanceModel.listStatements(); stmtIter.hasNext();) {
+                stmtCnt++;
+                subInstanceModel.add(stmtIter.nextStatement());
+                if (stmtCnt % 100000 == 0) {
+                    addInferenceModelToTDB(ontModel, subInstanceModel, tdbModel);
+                    System.out.println("wikipedia ontology and instance (inference) triple size: " + stmtCnt);
+                    subInstanceModel = ModelFactory.createDefaultModel();
+                }
+            }
+            addInferenceModelToTDB(ontModel, subInstanceModel, tdbModel);
+            System.out.println("wikipedia ontology and instance (inference) triple size: " + stmtCnt);
         } else {
             model = ModelFactory.createDefaultModel();
             model.add(instanceModel);
             model.add(ontModel);
-            System.out.println("wikipedia ontology and instance triple size: " + model.listStatements().toSet().size());
+            int stmtCnt = 0;
+            for (StmtIterator stmtIter = model.listStatements(); stmtIter.hasNext();) {
+                stmtCnt++;
+                stmtIter.nextStatement();
+            }
+            System.out.println("wikipedia ontology and instance triple size: " + stmtCnt);
+            tdbModel.add(model);
         }
-        return model;
+    }
+
+    private static void addInferenceModelToTDB(Model ontModel, Model subInstanceModel, Model tdbModel) {
+        Reasoner rdfsReasoner = ReasonerRegistry.getRDFSSimpleReasoner();
+        Reasoner reasoner = rdfsReasoner.bindSchema(ontModel);
+        System.out.println("Constructing Inference Model");
+        Model model = ModelFactory.createInfModel(reasoner, subInstanceModel);
+        System.out.println("Inference Model Constructed");
+        tdbModel.add(model);
     }
 
     public Model getEnglishWikipediaInstanceMemModel() {
@@ -159,56 +187,48 @@ public class WikipediaOntologyStorage {
             }
             refinedInstanceModel.add(ResourceFactory.createStatement(refinedSubject, predicate, refinedObject));
         }
-        WikipediaOntologyUtils.saveRDFFile(refinedInstanceModel,
-                "ontology/refined_wikipedia_ontology_english_instance.owl");
-        System.out.println("wikipedia instance triple size: " + refinedInstanceModel.listStatements().toSet().size());
+        WikipediaOntologyUtils.saveRDFFile(refinedInstanceModel, "ontology/refined_wikipedia_ontology_english_instance.owl");
+        int stmtCnt = 0;
+        for (StmtIterator stmtIter = refinedInstanceModel.listStatements(); stmtIter.hasNext();) {
+            stmtCnt++;
+            stmtIter.nextStatement();
+        }
+        System.out.println("wikipedia instance triple size: " + stmtCnt);
 
         return refinedInstanceModel;
     }
 
-    public static Model getWikipediaOntologyMemModel(String lang) {
-        return FileManager.get().loadModel("C:/wikipedia_ontology/classes_" + lang + ".owl");
+    public static Model getWikipediaClassMemModel(String lang) {
+        Model classModel = ModelFactory.createDefaultModel();
+        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
+        Model ontologyAndInstanceModel = wikiOntStrage.getTDBModel();
+        for (StmtIterator stmtIter = ontologyAndInstanceModel.listStatements(); stmtIter.hasNext();) {
+            Statement stmt = stmtIter.nextStatement();
+            String subjectURI = stmt.getSubject().getURI();
+            if (subjectURI.contains(CLASS_NS)) {
+                classModel.add(stmt);
+            }
+        }
+        return addInstanceCnt(classModel, ontologyAndInstanceModel);
     }
 
     public static Model getInstanceMemModel(String lang) {
         if (lang.equals("en")) {
             return FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH);
         } else if (lang.equals("ja")) {
-            Model ontModel = FileManager.get().loadModel(WIKIPEDIA_INSTANCE_FILE_PATH);
-            ontModel.add(FileManager.get().loadModel(WIKIPEDIA_ONTOLOGY_INFOBOX_FILE_PATH));
-            return ontModel;
+            Model instanceModel = ModelFactory.createDefaultModel();
+            WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
+            Model ontologyAndInstanceModel = wikiOntStrage.getTDBModel();
+            for (StmtIterator stmtIter = ontologyAndInstanceModel.listStatements(); stmtIter.hasNext();) {
+                Statement stmt = stmtIter.nextStatement();
+                String subjectURI = stmt.getSubject().getURI();
+                if (subjectURI.contains(INSTANCE_NS)) {
+                    instanceModel.add(stmt);
+                }
+            }
+            return instanceModel;
         }
         return null;
-    }
-
-    /**
-     * Wikipediaオントロジーをデータベースに格納する
-     *
-     * @param modelName
-     * @param isInfModel
-     */
-    public void storeWikipediaOntologyToDB(String modelName, String lang) {
-        try {
-            Model dbModel = getDBModel(modelName);
-            dbModel.add(getWikipediaOntologyMemModel(lang));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Wikipediaオントロジーとインスタンスをデータベースに格納する
-     *
-     * @param modelName
-     * @param isInfModel
-     */
-    public void storeWikipediaOntologyAndInstanceToDB(String modelName, String lang, boolean isInfModel) {
-        try {
-            Model dbModel = getDBModel(modelName);
-            dbModel.add(getWikipediaOntologyAndInstanceMemModel(isInfModel, lang));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private static void storeWikipediaOntologyAndInstanceToTDB(String lang, boolean isInfModel) {
@@ -217,22 +237,15 @@ public class WikipediaOntologyStorage {
             if (isInfModel) {
                 infLabel = "_with_rdfs_inference";
             }
-            Model tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang + BASE_WIKIPEDIA_ONTOLOGY_NAME
-                    + infLabel);
-            tdbModel.add(getWikipediaOntologyAndInstanceMemModel(isInfModel, lang));
+            Model tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang +
+                    BASE_WIKIPEDIA_ONTOLOGY_NAME + VERSION + infLabel);
+            storeWikipediaOntologyAndInstanceMemModel(isInfModel, lang, tdbModel);
             tdbModel.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void saveFixWikipediaOntologyToFile(Model model, String lang) {
-        Set<Resource> clsSet = getAllClasses(model);
-        Model outputModel = addInstanceCnt(getAllClassesModel(clsSet), model);
-        System.out.println("output: " + outputModel.size());
-        WikipediaOntologyUtils.saveRDFFile(outputModel, "C:/wikipedia_ontology/classes_" + lang + ".owl");
-        WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
-    }
 
     public Set<Resource> getAllClasses(Model dbModel) {
         this.tdbModel = dbModel;
@@ -257,31 +270,12 @@ public class WikipediaOntologyStorage {
         return clsSet;
     }
 
-    public Model getAllClassesModel(Set<Resource> clsSet) {
-        Model outputModel = ModelFactory.createDefaultModel();
-        Model loopModel = ModelFactory.createDefaultModel();
-        for (Resource cls : clsSet) {
-            List<Resource> supClassList = Lists.newArrayList();
-            supClassList.add(cls);
-            checkSuperClasses(cls, supClassList, loopModel);
-            for (StmtIterator stmtIter = cls.listProperties(); stmtIter.hasNext();) {
-                Statement stmt = stmtIter.nextStatement();
-                if (!stmt.getSubject().equals(stmt.getObject())) {
-                    outputModel.add(stmt);
-                }
-            }
-        }
-        System.out.println(loopModel.size());
-        outputModel.remove(loopModel);
-        return outputModel;
-    }
-
-    private Model addInstanceCnt(Model outputModel, Model orgModel) {
+    private static Model addInstanceCnt(Model classModel, Model ontologyAndInstanceModel) {
         Model instanceCntModel = ModelFactory.createDefaultModel();
-        for (ResIterator resIter = outputModel.listSubjectsWithProperty(RDF.type, OWL.Class); resIter.hasNext();) {
+        for (ResIterator resIter = classModel.listSubjectsWithProperty(RDF.type, OWL.Class); resIter.hasNext();) {
             Resource cls = resIter.nextResource();
             int instanceCnt = 0;
-            for (ResIterator instanceIter = orgModel.listSubjectsWithProperty(RDF.type, cls); instanceIter.hasNext();) {
+            for (ResIterator instanceIter = ontologyAndInstanceModel.listSubjectsWithProperty(RDF.type, cls); instanceIter.hasNext();) {
                 instanceIter.nextResource();
                 instanceCnt++;
             }
@@ -290,39 +284,21 @@ public class WikipediaOntologyStorage {
                     XSDDatatype.XSDint);
             instanceCntModel.add(ResourceFactory.createStatement(cls, INSTANCE_COUNT_PROPERTY, instanceCntLiteral));
         }
-        outputModel.add(instanceCntModel);
-        return outputModel;
+        classModel.add(instanceCntModel);
+        return classModel;
     }
 
-    private void checkSuperClasses(Resource res, List<Resource> supClassList, Model loopModel) {
-        for (StmtIterator stmtIter = res.listProperties(); stmtIter.hasNext();) {
-            Statement stmt = stmtIter.nextStatement();
-            if (!stmt.getSubject().equals(stmt.getObject()) && stmt.getPredicate().equals(RDFS.subClassOf)) {
-                Resource object = (Resource) stmt.getObject();
-                if (!supClassList.contains(object)) {
-                    supClassList.add(object);
-                    checkSuperClasses(object, supClassList, loopModel);
-                } else {
-                    loopModel.add(stmt);
-                }
-            }
-        }
-    }
-
-    private static void storeWikipediaOntologyToFile(String lang) {
-        WikipediaOntologyStorage wikiOntStorage = new WikipediaOntologyStorage();
-        Model model = wikiOntStorage.getWikipediaOntologyAndInstanceMemModel(false, lang);
-        wikiOntStorage.saveFixWikipediaOntologyToFile(model, lang);
+    public static void storeAllClassesToFile(String lang) {
+        Model classModel = getWikipediaClassMemModel(lang);
+        WikipediaOntologyUtils.saveRDFFile(classModel, "C:/Users/t_morita/wikipedia_ontology/ALLClasses.owl");
     }
 
     public static void main(String[] args) {
-        boolean isInfModel = false;
-        String lang = "en";
+//        storeWikipediaOntologyAndInstanceToTDB("ja", false);
         storeWikipediaOntologyAndInstanceToTDB("ja", true);
         // storeWikipediaOntologyAndInstanceToTDB("en", false);
         // storeWikipediaOntologyAndInstanceToDB(isInfModel, lang);
-        // storeWikipediaOntologyToFile(lang);
-        // storeWikipediaOntologyToDB();
         // storeEnglishWikipediaInstanceToDB();
+//        storeAllClassesToFile("ja");
     }
 }

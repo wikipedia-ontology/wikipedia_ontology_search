@@ -46,8 +46,7 @@ public class WikipediaOntologySearchApplication extends WebApplication {
             WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
         }
         WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
-        WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter(
-                "wikipedia_ontology_path");
+        WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter("wikipedia_ontology_path");
         if (hostName.equals("zest")) {
             WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "C:/Users/t_morita/wikipedia_ontology/";
         }

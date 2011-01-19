@@ -17,6 +17,7 @@ public class SearchParameters {
 
     private int start;
     private int limit;
+    private String version;
     private String resourceName;
     private ResourceType resourceType;
     private DataType dataType;
@@ -27,6 +28,7 @@ public class SearchParameters {
     public SearchParameters(PageParameters params) {
         resourceType = getResourceType(params.getString("resource_type"));
         dataType = getDataType(params.getString("data_type"));
+        version = getVersion(params.getString("version"));
         resourceName = getResourceName(params.getString("resource_name"));
         typeSet = getTypeSet(params.getStringArray("type"));
         searchOption = getSearchOptionType(params.getString("search_option", "exact_match"));
@@ -41,6 +43,13 @@ public class SearchParameters {
 
     public boolean isEnglishResourceName() {
         return resourceName.matches("[-|:|'|\\w|\\s|\\(|\\)|\\?|\\.]+");
+    }
+
+    private String getVersion(String version) {
+        if (version != null && version.equals("2010_02_09")) {
+            return version;
+        }
+        return "2010_11_14";
     }
 
     private ResourceType getResourceType(String resType) {
@@ -127,6 +136,10 @@ public class SearchParameters {
         return searchOption;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
     public String getResourceName() {
         return resourceName;
     }
@@ -167,6 +180,7 @@ public class SearchParameters {
     private String getKey(DataType dt) {
         int hashCode = 0;
         hashCode += resourceType.toString().hashCode();
+        hashCode += version.hashCode();
         hashCode += dt.toString().hashCode();
         hashCode += resourceName.hashCode();
         for (String type : typeSet) {
@@ -184,6 +198,9 @@ public class SearchParameters {
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        builder.append("Version:");
+        builder.append(version);
+        builder.append("\n");
         builder.append("Resource Type:");
         builder.append(resourceType);
         builder.append("\n");

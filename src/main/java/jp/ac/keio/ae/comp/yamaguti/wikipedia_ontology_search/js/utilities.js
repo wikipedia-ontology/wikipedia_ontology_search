@@ -24,7 +24,9 @@ function getSearchOptionComboBox(name) {
             [SEARCH_OPTION_EXACT_MATCH, "exact_match"],
             [SEARCH_OPTION_ANY_MATCH, "any_match"],
             [SEARCH_OPTION_STARTS_WITH, "starts_with"],
-            [SEARCH_OPTION_ENDS_WITH, "ends_with"]
+            [SEARCH_OPTION_ENDS_WITH, "ends_with"],
+            [SEARCH_OPTION_SIBLING_CLASSES, "siblings"],
+            [SEARCH_OPTION_SUB_CLASSES, "sub_classes"]
         ]
     });
 
@@ -36,9 +38,41 @@ function getSearchOptionComboBox(name) {
         width : 100,
         editable : false,
         mode : "local",
-        store : searchOptionList
+        store : searchOptionList,
+        listeners:
+        {
+            select: function(combo, value) {
+                var selectedValue = combo.getValue();
+                if (selectedValue == "siblings" || selectedValue == "sub_classes") {
+                    Ext.getDom('class_button').checked = true;
+                }
+            }
+        }
     });
     comboBox.setValue('exact_match');
+    return comboBox;
+}
+
+function getVersionOptionComboBox(name) {
+    var versionOptionList = new Ext.data.ArrayStore({
+        fields : ["Version_Option", "Version_Option_Value"],
+        data : [
+            ["2010_11_14", "2010_11_14"],
+            ["2010_02_09", "2010_02_09"]
+        ]
+    });
+
+    var comboBox = new Ext.form.ComboBox({
+        id : name,
+        displayField : 'Version_Option',
+        valueField : 'Version_Option_Value',
+        triggerAction : "all",
+        width : 100,
+        editable : false,
+        mode : "local",
+        store : versionOptionList
+    });
+    comboBox.setValue('2010_11_14');
     return comboBox;
 }
 
@@ -181,6 +215,15 @@ function makeInstanceContextMenu(keyword) {
     return makeInstanceAndPropertyContextMenu(keyword, INSTANCE);
 }
 
+function renderVersionOption(value, metadata, record) {
+    var versionOption = record.get('version');
+    if (versionOption == '') {
+        return CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+    } else {
+        return versionOption;
+    }
+}
+
 function renderSearchOption(value, metadata, record) {
     var searchOption = record.get('searchOption');
     if (searchOption == 'exact_match') {
@@ -191,18 +234,28 @@ function renderSearchOption(value, metadata, record) {
         return SEARCH_OPTION_STARTS_WITH;
     } else if (searchOption == 'ends_with') {
         return SEARCH_OPTION_ENDS_WITH;
+    } else if (searchOption == 'siblings') {
+        return SEARCH_OPTION_SIBLING_CLASSES;
+    } else if (searchOption == 'sub_classes') {
+        return SEARCH_OPTION_SUB_CLASSES;
     }
     return SEARCH_OPTION_EXACT_MATCH;
 }
 
 function openHistoryAndBookmarkData(record) {
-    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     var keyword = record.get('keyword');
     queryType = record.get('queryType');
     setQueryType();
     useInfModel = record.get('useInfModel');
     Ext.getDom('use_inf_model').checked = useInfModel;
+    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     searchOptionSelection.setValue(record.get('searchOption'));
+    var version = record.get('version');
+    if (version == '') {
+        version = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+    }
+    var versionOptionSelection = Ext.getCmp('Version_Option');
+    versionOptionSelection.setValue(version);
     searchWikipediaOntology2(keyword);
 }
 

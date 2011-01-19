@@ -27,7 +27,7 @@ var SUBJECT = "主語";
 var PREDICATE = "述語";
 var OBJECT = "目的語";
 var SORTING_ORDER = "ソート順";
-var NUMBER_OF_INSTANCES="インスタンス数";
+var NUMBER_OF_INSTANCES = "インスタンス数";
 var DATE_AND_HOUR = "日時";
 var URL = "URL";
 var SEARCH_HISTORY = "検索履歴";
@@ -62,6 +62,7 @@ var OPTION = "オプション";
 var VERSION_INFORMATION = "バージョン情報";
 var TOOL = "ツール";
 var HELP = "ヘルプ";
+var VERSION = "バージョン";
 var SHOW_WHOLE_CLASS_HIEARCHY = "全クラス階層を表示";
 var HIEARCHY = "階層表示";
 var RDF_XML_MESSAGE = "RDF/XMLタブを選択後，検索を行うとソースコードが表示されます．";
@@ -81,6 +82,8 @@ var SEARCH_OPTION_EXACT_MATCH = "完全一致";
 var SEARCH_OPTION_ANY_MATCH = "部分一致";
 var SEARCH_OPTION_STARTS_WITH = "前方一致";
 var SEARCH_OPTION_ENDS_WITH = "後方一致";
+var SEARCH_OPTION_SIBLING_CLASSES = "兄弟クラス";
+var SEARCH_OPTION_SUB_CLASSES = "サブクラス";
 
 function getSearchKeywordLabel(keyword) {
     return keyword + "を検索";

@@ -15,7 +15,9 @@ function addHistoryData() {
     var historyDataStore = Ext.getCmp('HistoryPanel').store;
     var keyword = searchPanel.getForm().findField('keyword').getValue();
     var searchOption = searchOptionSelection.getValue();
-    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI];
+    var versionOptionSelection = Ext.getCmp('Version_Option');
+    var versionOption = versionOptionSelection.getValue();
+    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI, versionOption];
     historyDataArray.push(record);
     saveHistoryDataToWebStorage(historyDataStore);
 }
@@ -55,7 +57,7 @@ function addSelectedHistoriesToBookmark() {
     for (var i = 0; i < records.length; i++) {
         bookmarkArray.push([date, records[i].get("keyword"),
             records[i].get("searchOption"), records[i].get("queryType"),
-            records[i].get("useInfModel"), records[i].get("URL")]);
+            records[i].get("useInfModel"), records[i].get("URL"), records[i].get("version")]);
     }
     saveBookmarksToWebStorage(bookmarkStore);
 }
@@ -98,7 +100,14 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             dataIndex : "URL",
             header : URL,
             hidden : isSidePanel
-        }],
+        }, {
+            id : 'version_id',
+            dataIndex : "version",
+            header : VERSION,
+            hidden : isSidePanel,
+            renderer : renderVersionOption
+        }
+        ],
         defaults : {
             sortable : true
         }
@@ -127,6 +136,9 @@ function getHistoryPanel() {
             },
             {
                 name : 'URL'
+            },
+            {
+                name : 'version'
             }
         ]),
         remoteSort: true,
