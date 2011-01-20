@@ -84,6 +84,8 @@ var SEARCH_OPTION_STARTS_WITH = "前方一致";
 var SEARCH_OPTION_ENDS_WITH = "後方一致";
 var SEARCH_OPTION_SIBLING_CLASSES = "兄弟クラス";
 var SEARCH_OPTION_SUB_CLASSES = "サブクラス";
+var SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS = "定義域クラスのプロパティ";
+var SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS = "値域クラスのプロパティ";
 
 function getSearchKeywordLabel(keyword) {
     return keyword + "を検索";

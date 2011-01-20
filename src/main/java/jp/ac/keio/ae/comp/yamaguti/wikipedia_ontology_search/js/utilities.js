@@ -26,7 +26,9 @@ function getSearchOptionComboBox(name) {
             [SEARCH_OPTION_STARTS_WITH, "starts_with"],
             [SEARCH_OPTION_ENDS_WITH, "ends_with"],
             [SEARCH_OPTION_SIBLING_CLASSES, "siblings"],
-            [SEARCH_OPTION_SUB_CLASSES, "sub_classes"]
+            [SEARCH_OPTION_SUB_CLASSES, "sub_classes"],
+            [SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS, "properties_of_domain_class"],
+            [SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS, "properties_of_range_class"]
         ]
     });
 
@@ -35,7 +37,7 @@ function getSearchOptionComboBox(name) {
         displayField : 'Search_Option',
         valueField : 'Search_Option_Value',
         triggerAction : "all",
-        width : 100,
+        width : 180,
         editable : false,
         mode : "local",
         store : searchOptionList,
@@ -238,6 +240,10 @@ function renderSearchOption(value, metadata, record) {
         return SEARCH_OPTION_SIBLING_CLASSES;
     } else if (searchOption == 'sub_classes') {
         return SEARCH_OPTION_SUB_CLASSES;
+    } else if (searchOption == 'properties_of_domain_class') {
+        return SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS
+    } else if (searchOption == 'properties_of_range_class') {
+        return SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS
     }
     return SEARCH_OPTION_EXACT_MATCH;
 }

@@ -90,12 +90,29 @@ public class ResourcePage extends CommonPage implements Serializable {
                 String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                         "sparql_templates/query_types.tmpl");
                 queryString = SPARQLQueryMaker.getClassQueryString(searchParams, sparqlTemplateString);
+                wikiOntSearch.setQueryResults(lang, queryString);
+            } else if (searchParams.getResourceType() == ResourceType.CLASS
+                    && (searchOptionType == SearchOptionType.PROPERTIES_OF_DOMAIN_CLASS ||
+                    searchOptionType == SearchOptionType.PROPERTIES_OF_RANGE_CLASS)) {
+                String sparqlTemplateString = "";
+                switch (searchOptionType) {
+                    case PROPERTIES_OF_DOMAIN_CLASS:
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
+                                "sparql_templates/query_properties_of_domain_class.tmpl");
+                        break;
+                    case PROPERTIES_OF_RANGE_CLASS:
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
+                                "sparql_templates/query_properties_of_range_class.tmpl");
+                        break;
+                }
+                queryString = SPARQLQueryMaker.getPropertiesOfRegionClassQueryString(searchParams, sparqlTemplateString);
+                wikiOntSearch.setQueryResultsForPropertiesOfRegionClass(queryString);
             } else {
                 String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                         "sparql_templates/query_resource.tmpl");
                 queryString = SPARQLQueryMaker.getResourceQueryString(searchParams, sparqlTemplateString);
+                wikiOntSearch.setQueryResults(lang, queryString);
             }
-            wikiOntSearch.setQueryResults(lang, queryString);
         } else {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                     "sparql_templates/query_types.tmpl");

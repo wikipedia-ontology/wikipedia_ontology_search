@@ -86,6 +86,11 @@ public class SPARQLQueryMaker {
         return queryString;
     }
 
+    public static String getPropertiesOfRegionClassQueryString(SearchParameters searchParameters, String sparqlTemplate) {
+        String resourceName = searchParameters.getResourceName();
+        return sparqlTemplate.replace("$CLASS_NAME", resourceName);
+    }
+
     public static String getResourceQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
         String typeFilter = "";

@@ -102,6 +102,22 @@ public class WikipediaOntologySearch {
         return QueryExecutionFactory.create(query, dbModel);
     }
 
+    public void setQueryResultsForPropertiesOfRegionClass(String queryString) {
+        QueryExecution qexec = getQueryExecution(queryString);
+        ResultSet results = qexec.execSelect();
+        try {
+            while (results.hasNext()) {
+                QuerySolution qs = results.nextSolution();
+                Resource property = (Resource) qs.get("p");
+                resourceSet.add(property);
+                typeSet.add(property);
+                System.out.println(property);
+            }
+        } finally {
+            qexec.close();
+        }
+    }
+
     public void setQueryResults(String lang, String queryString) {
 //        System.out.println(queryString);
         QueryExecution qexec = getQueryExecution(queryString);
@@ -161,11 +177,21 @@ public class WikipediaOntologySearch {
         }
         SearchOptionType searchOption = searchParameters.getSearchOption();
         Model outputModel = ModelFactory.createDefaultModel();
+        String resName = searchParameters.getResourceName();
         for (Resource res : resourceSet) {
-            if (searchOption == SearchOptionType.EXACT_MATCH) {
-                addStatements(res, outputModel);
-            } else {
-                addLabelStatements(res, outputModel);
+            switch (searchOption) {
+                case EXACT_MATCH:
+                    addStatements(res, outputModel);
+                    break;
+                case PROPERTIES_OF_DOMAIN_CLASS:
+                    addStatement(res, RDFS.domain, resName, outputModel);
+                    break;
+                case PROPERTIES_OF_RANGE_CLASS:
+                    addStatement(res, RDFS.range, resName, outputModel);
+                    break;
+                default:
+                    addLabelStatements(res, outputModel);
+                    break;
             }
         }
         if (searchParameters.getTypeSet().size() == 0 && searchParameters.getResourceType() == ResourceType.CLASS
@@ -183,8 +209,7 @@ public class WikipediaOntologySearch {
                 addInstances(type, outputModel);
             }
         }
-        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(
-                outputModel, "RDF/XML-ABBREV"));
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
         return outputModel;
     }
 
@@ -461,6 +486,10 @@ public class WikipediaOntologySearch {
             Statement stmt = stmtIter.nextStatement();
             outputModel.add(stmt);
         }
+    }
+
+    private void addStatement(Resource res, Property p, String resName, Model outputModel) {
+        outputModel.add(res, p, ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + resName));
     }
 
     private void addLabelStatements(Resource res, Model outputModel) {

@@ -113,6 +113,10 @@ public class SearchParameters {
             return SearchOptionType.SIBLINGS;
         } else if (so.equals("sub_classes")) {
             return SearchOptionType.SUB_CLASSES;
+        } else if (so.equals("properties_of_domain_class")) {
+            return SearchOptionType.PROPERTIES_OF_DOMAIN_CLASS;
+        } else if (so.equals("properties_of_range_class")) {
+            return SearchOptionType.PROPERTIES_OF_RANGE_CLASS;
         }
         return SearchOptionType.EXACT_MATCH;
     }

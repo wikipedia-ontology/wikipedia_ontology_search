@@ -27,7 +27,7 @@ var SUBJECT = "Subject";
 var PREDICATE = "Predicate";
 var OBJECT = "Object";
 var SORTING_ORDER = "Sorting order";
-var NUMBER_OF_INSTANCES="Number of Instances";
+var NUMBER_OF_INSTANCES = "Number of Instances";
 var DATE_AND_HOUR = "Date and Hour";
 var URL = "URL";
 var SEARCH_HISTORY = "Search History";
@@ -84,6 +84,8 @@ var SEARCH_OPTION_STARTS_WITH = "Starts with";
 var SEARCH_OPTION_ENDS_WITH = "Ends with";
 var SEARCH_OPTION_SIBLING_CLASSES = "Sibling Classes";
 var SEARCH_OPTION_SUB_CLASSES = "Sub Classes";
+var SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS = "Properties of Domain Class";
+var SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS = "Properties of Range Class";
 
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;

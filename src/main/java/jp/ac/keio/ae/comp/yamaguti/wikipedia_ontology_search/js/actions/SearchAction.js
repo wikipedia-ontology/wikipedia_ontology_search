@@ -46,7 +46,11 @@ function searchWikipediaOntology2(keyword) {
         unescapeQueryURL += "&" + versionOption;
         reloadWikiOntJSONData1(queryURL, unescapeQueryURL, keywords);
     } else {
-        if (searchOptionSelection.getValue() == "siblings" || searchOptionSelection.getValue() == "sub_classes") {
+        if (searchOptionSelection.getValue() == "siblings" ||
+                searchOptionSelection.getValue() == "sub_classes" ||
+                searchOptionSelection.getValue() == "properties_of_domain_class" ||
+                searchOptionSelection.getValue() == "properties_of_range_class"
+                ) {
             queryType = "class";
             Ext.getDom('class_button').checked = true;
         }
