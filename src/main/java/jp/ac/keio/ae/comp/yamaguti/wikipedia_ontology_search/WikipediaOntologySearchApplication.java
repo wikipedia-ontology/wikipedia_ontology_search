@@ -52,6 +52,7 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         }
         MemCachedStorage.HOST = getServletContext().getInitParameter("memcached_host");
         MemCachedStorage.PORT = getServletContext().getInitParameter("memcached_port");
+        WikipediaOntologyStorage.getEntityManager(); // EntityManagerの初期化
     }
 
 }

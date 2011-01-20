@@ -1,6 +1,9 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
 import com.google.common.collect.Lists;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.PropertyStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
@@ -12,6 +15,9 @@ import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntol
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
 import net.java.ao.EntityManager;
 import net.java.ao.Query;
+import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
@@ -69,7 +75,7 @@ public class PropertyListPage extends CommonPage {
                 return new Model<PropertyImpl>(object);
             }
 
-            public Iterator< ? extends PropertyImpl> iterator(int first, int count) {
+            public Iterator<? extends PropertyImpl> iterator(int first, int count) {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 resolveDao();
@@ -122,11 +128,12 @@ public class PropertyListPage extends CommonPage {
                 return new Model<InstanceImpl>(object);
             }
 
-            public Iterator< ? extends InstanceImpl> iterator(int first, int count) {
+            public Iterator<? extends InstanceImpl> iterator(int first, int count) {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 resolveDao();
-                String queryString = SPARQLQueryMaker.getIntancesOfPropertyQueryString(property, count, first);
+                String uri = property.getURI();
+                String queryString = SPARQLQueryMaker.getIntancesOfPropertyQueryString(uri, count, first);
                 List<InstanceImpl> instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, "ja");
                 return instanceList.iterator();
             }
@@ -219,7 +226,116 @@ public class PropertyListPage extends CommonPage {
                 indicator));
     }
 
+
+    private void outputResource(final String outputString) {
+        getRequestCycle().setRequestTarget(new IRequestTarget() {
+            public void respond(RequestCycle requestCycle) {
+                requestCycle.getResponse().setContentType("application/json; charset=utf-8");
+                requestCycle.getResponse().write(outputString);
+            }
+
+            public void detach(RequestCycle requestCycle) {
+            }
+        });
+    }
+
+    private String getPropertyListJSonString(int start, int limit) {
+        try {
+            EntityManager em = WikipediaOntologyStorage.getEntityManager();
+            Query query = Query.select().order("numberOfInstances desc, name").limit(limit).offset(start);
+            JSONObject rootObj = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            for (PropertyStatistics c : em.find(PropertyStatistics.class, query)) {
+                PropertyImpl property = new PropertyImpl(c);
+                try {
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("property", property.getName());
+                    jsonObj.put("count", property.getNumberOfInstances());
+                    jsonArray.put(jsonObj);
+                } catch (JSONException jsonExp) {
+                    jsonExp.printStackTrace();
+                }
+            }
+            rootObj.put("property_list", jsonArray);
+            int numberOfProperties = em.find(PropertyStatistics.class, Query.select()).length;
+            rootObj.put("numberOfProperties", numberOfProperties);
+            return rootObj.toString();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } catch (JSONException jsonexp) {
+            jsonexp.printStackTrace();
+        }
+        return "[]";
+    }
+
+
+    private String getInstanceListJSonString(String propertyName, int start, int limit) {
+        String uri = WikipediaOntologyStorage.PROPERTY_NS + propertyName;
+        String queryString = SPARQLQueryMaker.getIntancesOfPropertyQueryString(uri, limit, start);
+        List<InstanceImpl> instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, "ja");
+        try {
+            JSONObject rootObj = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            for (InstanceImpl i : instanceList) {
+                try {
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("instance", i.getInstanceName());
+                    jsonArray.put(jsonObj);
+                } catch (JSONException jsonExp) {
+                    jsonExp.printStackTrace();
+                }
+            }
+            rootObj.put("instance_list", jsonArray);
+            EntityManager em = WikipediaOntologyStorage.getEntityManager();
+            int numberOfInstances = 0;
+            for (PropertyStatistics p : em.find(PropertyStatistics.class, Query.select().where("URI = ?", WikipediaOntologyStorage.PROPERTY_NS + propertyName))) {
+                numberOfInstances = p.getNumberOfInstances();
+            }
+            rootObj.put("numberOfInstances", numberOfInstances);
+            return rootObj.toString();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "[]";
+    }
+
+    private String getHashCode(int start, int limit, String propertyName) {
+        int hashCode = 0;
+        hashCode += ("start=" + start).hashCode();
+        hashCode += ("limit=" + limit).hashCode();
+        hashCode += ("property=" + propertyName).hashCode();
+        return Integer.toString(hashCode);
+    }
+
+    public PropertyListPage(PageParameters params) {
+        if (params.containsKey("limit") & params.containsKey("start")) {
+            int start = params.getInt("start");
+            int limit = params.getInt("limit");
+            String outputString = null;
+            if (params.containsKey("property")) {
+                String propertyName = params.getString("property");
+                String hashCode = getHashCode(start, limit, propertyName);
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getInstanceListJSonString(propertyName, start, limit);
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            } else {
+                String hashCode = getHashCode(start, limit, "property_list");
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getPropertyListJSonString(start, limit);
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            }
+            outputResource(outputString);
+        }
+    }
+
     public PropertyListPage() {
+        System.out.println("PropertyListPage");
         add(new Label("title", TITLE).setRenderBodyOnly(true));
         add(new Label("h1-title", TITLE));
 

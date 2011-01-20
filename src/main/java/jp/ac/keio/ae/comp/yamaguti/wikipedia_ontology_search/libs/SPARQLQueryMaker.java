@@ -31,19 +31,19 @@ public class SPARQLQueryMaker {
         return queryString;
     }
 
-    public static String getIntancesOfClassQueryString(ClassImpl cls, int limit, int offset) {
+    public static String getIntancesOfClassQueryString(String uri, int limit, int offset) {
         String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                 "sparql_templates/query_instances_of_class.tmpl");
-        String queryString = sparqlTemplateString.replaceAll("\\$CLASS", "<" + escape(cls.getURI()) + ">");
+        String queryString = sparqlTemplateString.replaceAll("\\$CLASS", "<" + escape(uri) + ">");
         queryString = queryString.replaceAll("\\$LIMIT", Integer.toString(limit));
         queryString = queryString.replaceAll("\\$OFFSET", Integer.toString(offset));
         return queryString;
     }
 
-    public static String getIntancesOfPropertyQueryString(PropertyImpl property, int limit, int offset) {
+    public static String getIntancesOfPropertyQueryString(String uri, int limit, int offset) {
         String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                 "sparql_templates/query_instances_of_property.tmpl");
-        String queryString = sparqlTemplateString.replaceAll("\\$PROPERTY", "<" + escape(property.getURI()) + ">");
+        String queryString = sparqlTemplateString.replaceAll("\\$PROPERTY", "<" + escape(uri) + ">");
         queryString = queryString.replaceAll("\\$LIMIT", Integer.toString(limit));
         queryString = queryString.replaceAll("\\$OFFSET", Integer.toString(offset));
         return queryString;
@@ -74,13 +74,13 @@ public class SPARQLQueryMaker {
         String resourceName = searchParameters.getResourceName();
         String typeFilter = "";
         switch (searchParameters.getSearchOption()) {
-        case SIBLINGS:
-            typeFilter = "?resource rdfs:subClassOf ?supTargetCls . ?targetCls rdfs:subClassOf ?supTargetCls . ?targetCls  rdfs:label  \""
-                    + resourceName + "\" .";
-            break;
-        case SUB_CLASSES:
-            typeFilter = "?resource rdfs:subClassOf ?targetCls . ?targetCls  rdfs:label \"" + resourceName + "\" .";
-            break;
+            case SIBLINGS:
+                typeFilter = "?resource rdfs:subClassOf ?supTargetCls . ?targetCls rdfs:subClassOf ?supTargetCls . ?targetCls  rdfs:label  \""
+                        + resourceName + "\" .";
+                break;
+            case SUB_CLASSES:
+                typeFilter = "?resource rdfs:subClassOf ?targetCls . ?targetCls  rdfs:label \"" + resourceName + "\" .";
+                break;
         }
         String queryString = sparqlTemplate.replace("<QueryTypeSet>", typeFilter);
         return queryString;
@@ -90,17 +90,17 @@ public class SPARQLQueryMaker {
         String resourceName = searchParameters.getResourceName();
         String typeFilter = "";
         switch (searchParameters.getResourceType()) {
-        case CLASS:
-            typeFilter = "?resource rdf:type ?type . FILTER (?type = owl:Class) ";
-            break;
-        case PROPERTY:
-            typeFilter = "?resource rdf:type ?type . FILTER (?type = owl:ObjectProperty || ?type = owl:DatatypeProperty) ";
-            break;
-        case INSTANCE:
-            // 検索時間がかかる
-            // typeFilter =
-            // "OPTIONAL { ?resource rdf:type ?type  FILTER (?type != owl:ObjectClass && ?type != owl:ObjectProperty && ?type != owl:DatatypeProperty)} ";
-            break;
+            case CLASS:
+                typeFilter = "?resource rdf:type ?type . FILTER (?type = owl:Class) ";
+                break;
+            case PROPERTY:
+                typeFilter = "?resource rdf:type ?type . FILTER (?type = owl:ObjectProperty || ?type = owl:DatatypeProperty) ";
+                break;
+            case INSTANCE:
+                // 検索時間がかかる
+                // typeFilter =
+                // "OPTIONAL { ?resource rdf:type ?type  FILTER (?type != owl:ObjectClass && ?type != owl:ObjectProperty && ?type != owl:DatatypeProperty)} ";
+                break;
         }
 
         String regexString = "";
@@ -110,18 +110,18 @@ public class SPARQLQueryMaker {
         }
 
         switch (searchParameters.getSearchOption()) {
-        case STARTS_WITH:
-            regexString = "^" + resourceName;
-            break;
-        case ENDS_WITH:
-            regexString = resourceName + "$";
-            break;
-        case ANY_MATCH:
-            regexString = resourceName;
-            break;
-        case EXACT_MATCH:
-            regexString = "^" + resourceName + "$";
-            break;
+            case STARTS_WITH:
+                regexString = "^" + resourceName;
+                break;
+            case ENDS_WITH:
+                regexString = resourceName + "$";
+                break;
+            case ANY_MATCH:
+                regexString = resourceName;
+                break;
+            case EXACT_MATCH:
+                regexString = "^" + resourceName + "$";
+                break;
         }
 
         String queryString = sparqlTemplate.replace("<TypeFilter>", typeFilter);

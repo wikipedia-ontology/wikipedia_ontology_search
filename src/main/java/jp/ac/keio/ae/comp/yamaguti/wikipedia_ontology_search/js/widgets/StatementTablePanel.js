@@ -292,8 +292,7 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
         var keyword = queryURL.split(TABLE_DATA_PATH)[1];
         keyword = decodeURI(keyword);
         queryType = 'instance';
-        var menu = makeInstanceContextMenu(keyword);
-        menu.showAt(e.getXY());
+        makeInstanceContextMenu(keyword).showAt(e.getXY());
     }
 }
 

@@ -3,6 +3,10 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 import com.google.common.collect.Lists;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.ClassStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
@@ -14,7 +18,9 @@ import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntol
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
 import net.java.ao.EntityManager;
 import net.java.ao.Query;
+import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
@@ -136,7 +142,8 @@ public class ClassListPage extends CommonPage {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 resolveDao();
-                String queryString = SPARQLQueryMaker.getIntancesOfClassQueryString(cls, count, first);
+                String uri = cls.getURI();
+                String queryString = SPARQLQueryMaker.getIntancesOfClassQueryString(uri, count, first);
                 List<InstanceImpl> instanceList = null;
                 if (lang.equals("ja+en")) {
                     instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, "ja");
@@ -334,14 +341,118 @@ public class ClassListPage extends CommonPage {
         renderPage(title, "ja+en");
     }
 
-    public ClassListPage(PageParameters params) {
-        String title = TITLE;
-        String lang = params.getString("lang");
-        if (lang.equals("ja")) {
-            title += "（日本語）";
-        } else if (lang.equals("en")) {
-            title += "（英語）";
+    private void outputResource(final String outputString) {
+        getRequestCycle().setRequestTarget(new IRequestTarget() {
+            public void respond(RequestCycle requestCycle) {
+                requestCycle.getResponse().setContentType("application/json; charset=utf-8");
+                requestCycle.getResponse().write(outputString);
+            }
+
+            public void detach(RequestCycle requestCycle) {
+            }
+        });
+    }
+
+    private String getInstanceListJSonString(String clsName, int start, int limit) {
+        String uri = WikipediaOntologyStorage.CLASS_NS + clsName;
+        String queryString = SPARQLQueryMaker.getIntancesOfClassQueryString(uri, limit, start);
+        List<InstanceImpl> instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, "ja");
+        try {
+            JSONObject rootObj = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            for (InstanceImpl i : instanceList) {
+                try {
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("instance", i.getInstanceName());
+                    jsonArray.put(jsonObj);
+                } catch (JSONException jsonExp) {
+                    jsonExp.printStackTrace();
+                }
+            }
+            rootObj.put("instance_list", jsonArray);
+            EntityManager em = WikipediaOntologyStorage.getEntityManager();
+            int numberOfInstances = 0;
+            for (ClassStatistics c : em.find(ClassStatistics.class, Query.select().where("classname = ?", clsName))) {
+                numberOfInstances = c.getInstanceCount();
+            }
+            rootObj.put("numberOfInstances", numberOfInstances);
+            return rootObj.toString();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        renderPage(title, lang);
+        return "[]";
+    }
+
+    private String getClassListJSonString(int start, int limit) {
+        try {
+            EntityManager em = WikipediaOntologyStorage.getEntityManager();
+            Query query = Query.select().order("instanceCount desc").limit(limit).offset(start)
+                    .where("language = ?", "ja");
+            JSONObject rootObj = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            for (ClassStatistics c : em.find(ClassStatistics.class, query)) {
+                ClassImpl cls = new ClassImpl(c);
+                try {
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("class", cls.getClassName());
+                    jsonObj.put("count", cls.getInstanceCount());
+                    jsonArray.put(jsonObj);
+                } catch (JSONException jsonExp) {
+                    jsonExp.printStackTrace();
+                }
+            }
+            rootObj.put("class_list", jsonArray);
+            int numberOfClasses = em.find(ClassStatistics.class, Query.select().where("language = ?", "ja")).length;
+            rootObj.put("numberOfClasses", numberOfClasses);
+            return rootObj.toString();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } catch (JSONException jsonexp) {
+            jsonexp.printStackTrace();
+        }
+        return "[]";
+    }
+
+    private String getHashCode(int start, int limit, String className) {
+        int hashCode = 0;
+        hashCode += ("start=" + start).hashCode();
+        hashCode += ("limit=" + limit).hashCode();
+        hashCode += ("class=" + className).hashCode();
+        return Integer.toString(hashCode);
+    }
+
+    public ClassListPage(PageParameters params) {
+        if (params.containsKey("limit") & params.containsKey("start")) {
+            int start = params.getInt("start");
+            int limit = params.getInt("limit");
+            String outputString = null;
+            if (params.containsKey("class")) {
+                String clsName = params.getString("class");
+                String hashCode = getHashCode(start, limit, clsName);
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getInstanceListJSonString(clsName, start, limit);
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            } else {
+                String hashCode = getHashCode(start, limit, "class_list");
+                if (outputString == null) {
+                    outputString = getClassListJSonString(start, limit);
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            }
+            outputResource(outputString);
+        } else {
+            String title = TITLE;
+            String lang = params.getString("lang");
+            if (lang.equals("ja")) {
+                title += "（日本語）";
+            } else if (lang.equals("en")) {
+                title += "（英語）";
+            }
+            renderPage(title, lang);
+        }
     }
 }

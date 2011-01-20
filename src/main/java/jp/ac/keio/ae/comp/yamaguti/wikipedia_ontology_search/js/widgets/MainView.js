@@ -14,8 +14,21 @@ function getMainView() {
     var sourcePanel = getSourcePanel();
     var statementTabPanel = getStatementTabPanel();
     var classListPanel = getClassListPanel();
+    classListPanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
     var classInstanceListPanel = getInstanceListPanel(CLASS);
+
     var propertyListPanel = getPropertyListPanel();
+    propertyListPanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
     var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
 
     var classListTabPanel = new Ext.Panel({
