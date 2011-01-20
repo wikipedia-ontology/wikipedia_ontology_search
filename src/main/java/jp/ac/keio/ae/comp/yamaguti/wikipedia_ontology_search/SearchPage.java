@@ -37,6 +37,7 @@ public class SearchPage extends WebPage {
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/ClassListPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/PropertyListPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/InstanceListPanel.js"));
+        add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/PropertiesOfRegionClassListPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/MainView.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/NumberOfStatementsSelectionPanel.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/widgets/OptionDialog.js"));

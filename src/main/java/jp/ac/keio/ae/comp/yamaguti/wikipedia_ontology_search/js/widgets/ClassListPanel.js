@@ -109,4 +109,20 @@ function loadClassInstanceData(clsName) {
             limit : RESOURCE_LIST_SIZE_LIMIT
         }
     });
+    var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
+    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option=properties_of_domain_class");
+    propertiesOfDomainClassListTablePanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
+    var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
+    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option=properties_of_range_class");
+    propertiesOfRangeClassListTablePanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
 }

@@ -20,6 +20,8 @@ function getMainView() {
             limit : RESOURCE_LIST_SIZE_LIMIT
         }
     });
+    var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(DOMAIN);
+    var propertiesOfRangeClassListPanel = getPropertiesOfRegionClassListPanel(RANGE);
     var classInstanceListPanel = getInstanceListPanel(CLASS);
 
     var propertyListPanel = getPropertyListPanel();
@@ -31,6 +33,45 @@ function getMainView() {
     });
     var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
 
+    var regionListPanel = new Ext.Panel({
+        layout : 'hbox',
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items:[
+            {
+                flex:1,
+                layout: 'fit',
+                items: propertiesOfDomainClassListPanel
+            },
+            {
+                flex:1,
+                layout: 'fit',
+                items: propertiesOfRangeClassListPanel
+            }
+        ]
+    });
+    
+    var eastSideClassListPanel = new Ext.Panel({
+        layout : 'vbox',
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items:[
+            {
+                flex:1,
+                layout: 'fit',
+                items: regionListPanel
+            },
+            {
+                flex:1,
+                layout: 'fit',
+                items: classInstanceListPanel
+            }
+        ]
+    });
     var classListTabPanel = new Ext.Panel({
         layout : 'hbox',
         title : CLASS_LIST,
@@ -42,15 +83,13 @@ function getMainView() {
         items: [
             {
                 flex: 1,
-                minWidth: 200,
                 layout: 'fit',
                 items: classListPanel
             },
             {
                 flex:2,
-                minWidth: 200,
                 layout: 'fit',
-                items: classInstanceListPanel
+                items: eastSideClassListPanel
             }
         ]
     });
@@ -66,13 +105,11 @@ function getMainView() {
         items: [
             {
                 flex: 1,
-                minWidth: 200,
                 layout: 'fit',
                 items: propertyListPanel
             },
             {
                 flex:2,
-                minWidth: 200,
                 layout: 'fit',
                 items: propertyInstanceListPanel
             }
