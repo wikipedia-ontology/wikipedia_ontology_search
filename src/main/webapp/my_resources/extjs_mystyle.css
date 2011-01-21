@@ -1,0 +1,159 @@
+#header {
+    border: 0 none;
+    background: #1E4176;
+}
+
+#header .app-title {
+    font: normal 16px tahoma, arial, sans-serif;
+    color: white;
+    padding: 8px;
+    background: #1E4176;
+}
+
+.docs-header .x-panel-body {
+    background: transparent;
+}
+
+#loading-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20000;
+    background-color: white;
+}
+
+#loading {
+    position: absolute;
+    left: 45%;
+    top: 40%;
+    padding: 2px;
+    z-index: 20001;
+    height: auto;
+}
+
+#loading .loading-indicator {
+    background-color: white;
+    background-image: none;
+    color: #555;
+    font: bold 13px tahoma, arial, helvetica;
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+    height: auto;
+}
+
+.loading-indicator {
+    font-size: 20px;
+    background-color: #eee;
+    background-image: url('../resources/images/default/shared/large-loading.gif');
+    background-repeat: no-repeat;
+    background-position: top left;
+    padding-left: 40px;
+    height: auto;
+    text-align: left;
+}
+
+.icon-search {
+    background-image: url(icons/search.png) !important;
+}
+
+.icon-option {
+    background-image: url(icons/cog.png) !important;
+}
+
+.icon-newtab {
+    background-image: url(icons/new_tab.gif) !important;
+}
+
+.icon-tab {
+    background-image: url(icons/tabs.gif) !important;
+}
+
+.icon-class {
+    background-image: url(icons/class_icon_s.png) !important;
+}
+
+.icon-property {
+    background-image: url(icons/property_icon_s.png) !important;
+}
+
+.icon-instance {
+    background-image: url(icons/instance_icon_s.png) !important;
+}
+
+.icon-expand-all {
+    background-image: url(icons/expand-all.gif) !important;
+}
+
+.icon-collapse-all {
+    background-image: url(icons/collapse-all.gif) !important;
+}
+
+.icon-book {
+    background-image: url(icons/book.png) !important;
+}
+
+.icon-book_add {
+    background-image: url(icons/book_add.png) !important;
+}
+
+.icon-book_delete {
+    background-image: url(icons/book_delete.png) !important;
+}
+
+.icon-book_open {
+    background-image: url(icons/book_open.png) !important;
+}
+
+.icon-time {
+    background-image: url(icons/time.png) !important;
+}
+
+.icon-time_add {
+    background-image: url(icons/time_add.png) !important;
+}
+
+.icon-time_delete {
+    background-image: url(icons/time_delete.png) !important;
+}
+
+.icon-time_go {
+    background-image: url(icons/time_go.png) !important;
+}
+
+.icon-help {
+    background-image: url(icons/help.png) !important;
+}
+
+.icon-information {
+    background-image: url(icons/information.png) !important;
+}
+
+.icon-rdf {
+    background-image: url(icons/rdf_w3c_icon.16.png) !important;
+}
+
+.icon-table {
+    background-image: url(icons/table.png) !important;
+}
+
+.icon-import {
+    background-image: url(icons/arrow_down.png) !important;
+}
+
+.icon-export {
+    background-image: url(icons/arrow_up.png) !important;
+}
+
+.sort-desc {
+    background-image: url(../resources/images/default/grid/sort_desc.gif) !important;
+    background-position: 4px 7px !important;
+}
+
+.sort-asc {
+    background-image: url(../resources/images/default/grid/sort_asc.gif) !important;
+    background-position: 4px 7px !important;
+}
+

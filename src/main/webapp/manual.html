@@ -1,0 +1,1102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+    <title>マニュアル: 日本語Wikipediaオントロジー検索インタフェース＆Web APIs</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="my_resources/mystyle.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="ext_resources/css/prettify.css" type="text/css" media="all"/>
+</head>
+
+<body onload="prettyPrint()">
+
+<div class="page-title">日本語Wikipediaオントロジー検索インタフェース＆Web APIs</div>
+<div class="menu">
+    <ul>
+        <li><a href="index.html"> ホーム </a></li>
+        <li><a href="classes_ranked_by_number_of_instances"> クラス一覧</a></li>
+        <li><a href="properties_ranked_by_number_of_statements"> プロパティ一覧</a></li>
+        <li><a href="sparql">SPARQLによる検索</a></li>
+        <li><a href="manual.html">マニュアル</a></li>
+        <li><a href="changelog.html">更新履歴</a></li>
+        <li><a href="statistics.html">統計データ</a></li>
+    </ul>
+</div>
+<div class="container">
+
+<h1>マニュアル</h1>
+
+<p class="page_description">
+    以下では，日本語Wikipediaオントロジー検索システム ver. 2011-01-23の使用方法について説明する．
+</p>
+
+<div style="text-align: right; font-size: 80%;">最終更新日: 2010年9月13日</div>
+
+<a name="table_of_contents"></a>
+
+<h2>目次</h2>
+<ul>
+    <li><a href="#operation_environment">動作環境</a></li>
+    <li><a href="#system_overview">システム構成</a></li>
+    <li><a href="#server_side_program">サーバーサイドプログラム</a>
+        <ul>
+            <li><a href="#get_class">クラスの取得</a></li>
+            <li><a href="#get_property">プロパティの取得</a></li>
+            <li><a href="#get_instance">インスタンスの取得</a></li>
+            <li><a href="#get_instance_with_multiple_type">複数のタイプ(rdf:type)を持つインスタンスの取得</a></li>
+            <li><a href="#get_class_and_instance_with_inference_model">推論モデルを用いたクラスおよびインスタンスの取得</a></li>
+            <li><a href="#url_parameters">URLパラメータ</a></li>
+            <li><a href="#resource_uri_and_data_uri">リソース（クラス，プロパティ，インスタンス）のURIとデータのURIの区別について</a></li>
+            <li><a href="#data_structure">データ構造</a></li>
+            <li><a href="#sparql">SPARQLによる検索</a></li>
+        </ul>
+    </li>
+    <li><a href="#search_interface">日本語Wikipediaオントロジー検索インタフェースの構成</a></li>
+    <li><a href="#toolbar">1. ツールバー</a>
+        <ul>
+            <li><a href="#language_menu">「言語」メニュー</a></li>
+            <li><a href="#tool_menu">「ツール」メニュー</a></li>
+            <li><a href="#help_menu">「ヘルプ」メニュー</a></li>
+        </ul>
+    </li>
+    <li><a href="#search_panel">2. 検索パネル</a>
+        <ul>
+            <li><a href="#class_search">クラス検索</a></li>
+            <li><a href="#property_search">プロパティ検索</a></li>
+            <li><a href="#instance_search">インスタンス検索</a></li>
+            <li><a href="#use_inference_model">推論モデルの利用</a></li>
+            <li><a href="#number_of_statements">表示ステートメント数</a></li>
+        </ul>
+    </li>
+    <li><a href="#tree_panel">3. 階層パネル</a>
+        <ul>
+            <li><a href="#class_tree_and_instance_panel">「クラス階層とインスタンス」パネル</a></li>
+            <li><a href="#whole_class_tree_panel">「全クラス階層」パネル</a></li>
+        </ul>
+    </li>
+    <li><a href="#statement_tab_etc">4.
+        ステートメント，ブックマーク，検索履歴，RDF/XMLの各タブ </a>
+        <ul>
+            <li><a href="#statement_tab">「ステートメント」タブ</a></li>
+            <li><a href="#bookmark_tab">「ブックマーク」タブ</a></li>
+            <li><a href="#search_history_tab">「検索履歴」タブ</a></li>
+            <li><a href="#rdf_xml_tab">「RDF/XML」タブ</a></li>
+        </ul>
+    </li>
+    <li><a href="#bookmark_and_search_history_panel">5.
+        ブックマークと検索履歴パネル</a></li>
+    <li><a href="#option">オプション</a></li>
+</ul>
+
+<a name="operation_environment"></a>
+
+<h2>動作環境</h2>
+
+<p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.0</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索システムは実行可能である．
+    以下の環境で動作確認を行っている．</p>
+<ul>
+    <li>Google Chrome 6.0.472.53</li>
+    <li>FireFox 3.6.9</li>
+    <li>Safari 5.0.2</li>
+</ul>
+
+<div style="color: red; font-weight: bold; margin: 1em;">
+    <p>Internet Exploreでは現在正常に動作しない．</p>
+</div>
+
+<div class="to_table_of_contents"><a href="manual.html#table_of_contents">目次へ</a></div>
+
+<a name="system_overview"></a>
+
+<h2>システム構成</h2>
+
+<div style="width: 100%; height: 500px;">
+
+    <div style="text-align: center; float: left; margin: 0 10px;">
+        <img src="./myresources/figures/system_overview.png" alt="日本語Wikipediaオントロジー検索システムのシステム構成" width="350"/>
+
+        <p style="font-weight: bold;">図1-1: 日本語Wikipediaオントロジー<br/>検索システムのシステム構成</p>
+    </div>
+    <div
+            style="text-align: center; float: left; margin: 10px; margin-top: 130px;">
+        <img src="./myresources/figures/server_setting.png" alt="サーバの構成" width="400"/>
+
+        <p style="font-weight: bold;">図1-2: サーバの構成</p>
+    </div>
+</div>
+
+<br/>
+
+<p>
+    図1-1および1-2に日本語Wikipediaオントロジー検索システムとそのサーバの構成を示す．日本語Wikipediaオントロジー検索システムは，検索インターフェース，サーバーサイドプログラム，
+    日本語WikipediaオントロジーDBの3つから構成される．</p>
+
+<p>検索インターフェースは，<a href="http://extjs.co.jp/" rel="external">ExtJS</a>ライブラリを用いて実装されている． サーバーサイドプログラムは，
+    <a rel="external" href="http://wicket.apache.org/">Apache Wicket</a>，
+    <a rel="external" href="http://jena.sourceforge.net/">Jena Semantic
+        Web Framework for Java</a>，<a rel="external" href="https://activeobjects.dev.java.net/">ActiveObjects</a>，
+    <a rel="external" href="http://github.com/gwhalin/Memcached-Java-Client">Memcached Java Client</a>，
+    <a rel="external" href="http://openjena.org/TDB/">TDB - A SPARQL Database for Jena</a>，
+    <a rel="external" href="http://www.h2database.com/html/main.html">H2 DB</a>を用いて実装し，
+    <a href="http://tomcat.apache.org/"
+       rel="external">Apache Tomcat</a>上で動作している． <a
+            href="http://wikipedia-ont.sourceforge.jp/" rel="external">日本語Wikipediaオントロジー</a>DBは，JenaおよびTDBのAPIを用いてあらかじめOWL形式の
+    日本語WikipediaオントロジーおよびインスタンスをTDB形式で格納している．</p>
+
+<p>
+    検索インターフェースでは，はじめにユーザが検索キーワードを入力すると，キーワードに関連する日本語Wikipediaオントロジー内の
+    クラス，プロパティ，インスタンスを識別するURIに変換する．
+    サーバーサイドプログラムでは，クライアントプログラムから問い合わせのあったURIに関連するステートメントを日本語WikipediaオントロジーDBに問い合わせて，
+    検索インターフェースに，RDF/XMLデータとJSONデータ（テーブル用とツリー用）を返す．検索インターフェースは，
+    サーバーサイドプログラムから返されたJSONデータを元に，テーブルやツリーの構造でWikipediaオントロジーのクラス，プロパティ，インスタンスにおける
+    ステートメントや階層関係を表示する．また，ソースコードとしてRDF/XMLデータを表示することもできる．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="server_side_program"></a>
+
+<h2>サーバーサイドプログラム</h2>
+
+<p>サーバーサイドプログラムは以下の仕様に従って，日本語Wikipediaオントロジー内のクラスやインスタンスに関するRDF/XMLデータとJSONデータ
+    (テーブル用とツリー用)を返す．</p>
+
+<a name="get_class"></a>
+
+<h3>クラスの取得</h3>
+
+<p>以下のURIにアクセスすると，ラベル，カテゴリページへのリンク
+    (foaf:pageプロパティの値），対象クラスからルートクラスまでのパス，対象クラスに属するインスタンスを含むRDF/XMLデータが取得できる．</p>
+
+<h4>RDF/XMLデータ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">data</span>/[クラス名].rdf
+</div>
+
+<p>例： <a
+        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf</a>
+</p>
+<br/>
+
+<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
+
+<h4>JSON（テーブル用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">table_data</span>/[クラス名].json
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.json"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/慶應義塾大学の人物.json</a>
+</p>
+
+<h4>JSON（ツリー用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">tree_data</span>/[クラス名].json
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.json"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/慶應義塾大学の人物.json</a>
+</p>
+
+<br/>
+
+<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
+<h4>HTML</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">page</span>/[クラス名].html
+</div>
+<p>例： <a
+        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.html"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/慶應義塾大学の人物.html</a>
+</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_property"></a>
+
+<h3>プロパティの取得</h3>
+
+<p>以下のURIにアクセスすると，プロパティのラベルを含むRDF/XMLデータが取得できる．</p>
+
+<h4>RDF/XMLデータ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">property</span>/<span style="color: red;">data</span>/[プロパティ名].rdf
+</div>
+<p>例： <a
+        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.rdf"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/ジャンル.rdf</a>
+</p>
+<br/>
+
+<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
+
+<h4>JSON（テーブル用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">property</span>/<span style="color: red;">table_data</span>/[プロパティ名].json
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/table_data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.json"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/table_data/ジャンル.json</a>
+</p>
+
+<h4>JSON（ツリー用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">property</span>/<span style="color: red;">tree_data</span>/[プロパティ名].json
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/tree_data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.json"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/tree_data/ジャンル.json</a>
+</p>
+
+<br/>
+
+<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
+<h4>HTML</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">property</span>/<span style="color: red;">page</span>/[プロパティ名].html
+</div>
+<p>例： <a
+        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/page/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.html"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/page/ジャンル.html</a>
+</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_instance"></a>
+
+<h3>インスタンスの取得</h3>
+
+<p>
+    以下のURIにアクセスすると，ラベル，Wikipedia記事へのリンク（foaf:pageプロパティの値），対象インスタンスが属するクラス，
+    対象インスタンスが属するクラスからルートクラスまでのパスを含むRDF/XMLデータが取得できる．</p>
+
+<h4>RDF/XMLデータ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">instance</span>/<span style="color: red;">data</span>/[インスタンス名].rdf
+</div>
+<p>例: <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.rdf"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/福澤諭吉.rdf</a>
+</p>
+
+<br/>
+
+<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
+
+<h4>JSON（テーブル用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">instance</span>/<span style="color: red;">table_data</span>/[インスタンス名].json
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/table_data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.json"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/table_data/福澤諭吉.json</a>
+</p>
+
+<h4>JSON（ツリー用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">instance</span>/<span style="color: red;">tree_data</span>/[インスタンス名].json
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/tree_data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.json"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/tree_data/福澤諭吉.json</a>
+</p>
+
+<br/>
+
+<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
+
+<h4>HTML</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">instance</span>/<span style="color: red;">page</span>/[インスタンス名].html
+</div>
+<p>例: <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/page/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.html"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/page/福澤諭吉.html</a>
+</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_instance_with_multiple_type"></a>
+
+<h3>複数のタイプ(rdf:type)を持つインスタンスの取得</h3>
+
+<p>以下のURIにアクセスすると，複数のタイプ(rdf:type)を持つインスタンス（複数のクラスに属するインスタンス）を取得できる．
+    type=[クラス名]をURLパラメータとして複数指定することで，インスタンスをタイプで絞り込むことができるようになっている．
+    以下の例では，「慶應義塾大学の人物」クラスと「神奈川県出身の人物」クラスの両方に属するインスタンス一覧を取得する．</p>
+
+
+<h4>RDF/XMLデータ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">data/queryString</span>?type=[クラス名]&amp;type=[クラス名]...
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/queryString?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/queryString?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物</a>
+</p>
+
+<br/>
+
+<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
+
+<h4>JSON（テーブル用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">table_data/queryString</span>?type=[クラス名]&amp;type=[クラス名]...
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/queryString?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
+        rel="external">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/queryString?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物
+</a></p>
+
+<h4>JSON（ツリー用）データ</h4>
+
+<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
+        style="color: green;">class</span>/<span style="color: red;">tree_data/queryString</span>?type=[クラス名]&amp;type=[クラス名]...
+</div>
+<p>例： <a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/queryString?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/queryString?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物</a>
+</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_class_and_instance_with_inference_model"></a>
+
+<h3>推論モデルを用いたクラスおよびインスタンスの取得</h3>
+
+<p>RDFS推論ルールにより導きだされたステートメントの集合に対して，クラスおよびインスタンスを取得することができる．</p>
+
+<p>
+    例として，「文学作品」クラスのインスタンス取得について説明する．「文学作品」クラスには，日本語Wikipediaオントロジーにはインスタンスが直接定義されていないため，以下のURIにアクセスしても「文学作品」クラスのインスタンスを取得することはできない．</p>
+<br/>
+
+<p><a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf" rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf</a>
+</p>
+
+<p><a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/文学作品.html"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/文学作品.html</a>
+</p>
+<br/>
+
+<p>
+    しかしながら，「文学作品」クラスの下位クラスには「小説」クラスなどのインスタンスが定義されたクラスが存在し，RDFS推論ルールを用いることで，これら下位クラスで定義されたインスタンスも「文学作品」クラスのインスタンスであることを導き出すことができる．上記の「文学作品」クラスを表すURLに「inference_type=rdfs」オプションを追加することで，
+    RDFS推論ルールを用いて導き出したステートメントを取得することができ，結果として「文学作品」クラスのインスタンスを取得することができる．</p>
+<br/>
+
+<p><a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf?inference_type=rdfs"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf?inference_type=rdfs</a>
+</p>
+
+<p><a
+        href="http://hpcs01.comp.ae.keio.ac.jp:8080/wikipedia_ontology/class/page/文学作品.html?inference_type=rdfs"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/文学作品.html?inference_type=rdfs</a>
+</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+
+<a name="url_parameters"></a>
+
+<h3>URLパラメータ</h3>
+
+<p>サーバーサイドプログラムでは，以下のURLパラメータを実装している．</p>
+<dl>
+    <dt>start</dt>
+    <dd>このパラメータで指定した位置を開始ステートメントとして，limitパラメータで指定した数だけステートメントを返す．</dd>
+    <dt>limit</dt>
+    <dd>一度に返すステートメント数を指定する．</dd>
+    <dt>inference_type</dt>
+    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可能．</dd>
+    <dt>search_option</dt>
+    <dd>完全一致 (exact_match)，部分一致 (any_match)，前方一致 (starts_with)，後方一致
+        (ends_with)，兄弟クラスリスト (siblings)，1階層下のサブクラスリスト (sub_classes) 検索オプションのいずれかを指定できる．
+    </dd>
+</dl>
+
+<p>startとlimitパラメータの使用例として，以下のURLにアクセスすることで，
+    「慶應義塾大学の人物」クラスのインスタンスに関する500番目～600番目までの
+    ステートメントを取得することができる．JSONデータ（テーブル用とツリー用）については，下記URLの「data」を「table_data」または「tree_data」に書き換えることで
+    取得することができる．</p>
+<br/>
+
+<p><a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?start=500&amp;limit=100"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?start=500&amp;limit=100</a>
+</p>
+<br/>
+
+<p>search_optionパラメータの使用例として，「日本」をラベルに含むクラスを完全一致，部分一致，前方一致，後方一致で検索した結果を取得するためのURLを以下に示す．</p>
+<dl>
+    <dt>完全一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=exact_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=exact_match</a>
+    </dd>
+    <dt>部分一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=any_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=any_match</a>
+    </dd>
+    <dt>前方一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=starts_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=starts_with</a>
+    </dd>
+    <dt>後方一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=ends_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=ends_with</a>
+    </dd>
+</dl>
+
+<p>
+    クラス検索を行う際に，search_optionパラメータに，siblingsまたはsub_classesを指定すると，指定したクラスの兄弟クラスのリストまたは1階層下のサブクラスのリストを取得できる．以下に時代小説クラスの兄弟クラスリストおよび受賞者クラスの1階層下のサブクラスリストを示す．</p>
+
+<dl>
+    <dt>兄弟クラスリスト</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/時代小説.rdf?search_option=siblings">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/時代小説.rdf?search_option=siblings</a>
+    </dd>
+    <dt>1階層下のサブクラスリスト</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=sub_classes">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/受賞者.rdf?search_option=sub_classes</a>
+    </dd>
+</dl>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="resource_uri_and_data_uri"></a>
+
+<h3>リソース（クラス，プロパティ，インスタンス）のURIとデータのURIの区別について</h3>
+
+<p>クラスやインスタンスを識別するためのURI（リソースのURI）とRDF/XMLやJSONなどのデータを表すURIは区別している．
+    現状では，以下の形式でリソースのURIを定義している．</p>
+
+<dl>
+    <dt>クラスのURI:</dt>
+    <dd>http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/[クラス名]</dd>
+    <dt>プロパティのURI:</dt>
+    <dd>http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/[プロパティ名]</dd>
+    <dt>インスタンスのURI:</dt>
+    <dd>http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/[インスタンス名]</dd>
+</dl>
+
+<p>現在，Request HeaderのAcceptの値によって，ブラウザからのアクセスかエージェント（プログラム）からのアクセスかを識別し，
+    人間向けのHTMLページやエージェント向けのRDF/XMLデータを返すようにしている．</p>
+
+<p>例えば，
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/[クラス名]にブラウザからアクセスすると，
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/[クラス名].htmlにリダイレクトされる．
+    同様に，http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/[インスタンス名]にブラウザからアクセスすると，
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/page/[インスタンス名].htmlにリダイレクトされる．
+    アクセス時のRequest
+    HeaderのAcceptの値に"text/html"が含まれている場合にはHTMLページにリダイレクトされるようになっている．</p>
+
+<p>また，Request
+    HeaderのAcceptの値に"application/rdf+xml"が含まれている場合にはRDF/XMLデータに，
+    "application/json"が含まれている場合にはJSON(テーブル用)データにリダイレクトされるようになっている．</p>
+
+<p>以下に，Java言語を用いてHTML，RDF/XML，JSONデータを取得するためのサンプルプログラムを示す．</p>
+<pre class="prettyprint java">
+public static void main(String[] args) throws Exception {
+    String keyword = "慶應義塾大学の人物";
+    //String keyword = "福沢諭吉";
+     String ns = "http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/";
+    //String ns = "http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/";
+    keyword = URLEncoder.encode(keyword, "UTF-8");
+    URL url = new URL(ns + keyword);
+    URLConnection urlConnection = url.openConnection();
+    //urlConnection.addRequestProperty("Accept", "text/html");
+     urlConnection.addRequestProperty("Accept", "application/rdf+xml");
+     //urlConnection.addRequestProperty("Accept", "application/json");
+    BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+    while (reader.ready()) {
+          System.out.println(reader.readLine());
+    }
+}
+</pre>
+<br/>
+
+<p style="color: gray; font-size: 80%;">※
+    厳密には，http://hpcs01.comp.ae.keio.ac.jp/でサーバーサイドプログラムは動作しているため，
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/からリダイレクトで
+    http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/に飛ばしている．
+    将来的にサーバーサイドプログラムの場所は変更になる可能性がある．
+    また，リソースのURIについても，試験的に設定しているため，将来変更になる可能性がある．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="data_structure"></a>
+
+<h3>データ構造</h3>
+<h4>RDF/XMLのデータ構造</h4>
+
+<p>主に利用しているプロパティは以下の通り．</p>
+<dl>
+    <dt>rdfs:label</dt>
+    <dd>クラスまたはプロパティのラベルを表す．</dd>
+    <dt>rdf:type</dt>
+    <dd>インスタンスのタイプ（属するクラス）を表す．</dd>
+    <dt>foaf:page</dt>
+    <dd>Wikipedia記事ページまたはカテゴリページへのリンクを表す．</dd>
+    <dt>rdfs:subClassOf</dt>
+    <dd>クラスの上位・下位関係を表す．</dd>
+</dl>
+<br/>
+
+<p>主に利用している名前空間接頭辞と名前空間の対応付けは以下の通り．</p>
+<dl>
+    <dt>wikiont_class</dt>
+    <dd>http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/</dd>
+    <dt>wikiont_property</dt>
+    <dd>http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/proprety/</dd>
+    <dt>wikiont_instance</dt>
+    <dd>http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/</dd>
+    <dt>rdf</dt>
+    <dd>http://www.w3.org/1999/02/22-rdf-syntax-ns#</dd>
+    <dt>rdfs</dt>
+    <dd>http://www.w3.org/2000/01/rdf-schema#</dd>
+    <dt>owl</dt>
+    <dd>http://www.w3.org/2002/07/owl#</dd>
+    <dt>foaf</dt>
+    <dd>http://xmlns.com/foaf/0.1/</dd>
+
+</dl>
+
+<h4>JSON（テーブル用）のデータ構造</h4>
+<pre class="prettyprint js">
+{"statement":[{"subject":"[主語URI]","predicate":"[述語URI]","object":"[目的語URI]"},
+                   {"subject":"[主語URI]","predicate":"[述語URI]","object":"[目的語URI]"},
+                   ...], ,"numberOfStatements": [ステートメント数]}
+</pre>
+
+<p style="color: gray; font-size: 80%;">※
+    numberOfStatements属性の値となるステートメント数は，limitとstartを指定した時に返されるデータのステートメント数とは
+    異なっている．常に，あるクラスまたはインスタンスに関連するすべてのステートメント数を返すようになっている．
+    日本語Wikipediaオントロジー検索システムにおける<a href="#search_panel">検索パネル</a>で表示ステートメント数を指定した場合にも，
+    全体としてのステートメント数を把握できるようにするためにnumberOfStatements属性は用意されている．</p>
+
+<h4>JSON（ツリー用）のデータ構造</h4>
+<pre class="prettyprint js">
+[{"id":"[クラスURI]","text":"[クラスラベル]（[インスタンス数]）",
+  "children":[{"id":"[サブクラスURI]または[インスタンスURI]",
+  "text":"[クラスラベル]または[インスタンスラベル]","leaf":true,"iconCls":"icon-instance"}],"
+  leaf":false,"iconCls":"icon-class"}, ...]
+</pre>
+
+<p>children属性の値として，クラスまたはインスタンスの配列を指定することで，階層構造を定義している．
+    leaf属性は，そのノードが葉ノードの場合にtrueとなり，そうでない場合にはfalseとなる．iconClsには，ノードを表示するために必要なCSSクラスを指定する．
+    日本語Wikipediaオントロジー検索システムでは，クラスを表示するためのCSSクラスとしてicon-classクラスを，インスタンスを表示するためのCSSクラスとして，
+    icon-instanceクラスを用意している．スタイルシートは以下のURLから取得できる．</p>
+
+<a
+        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/myresources/mystyle.css"
+        rel="external">http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/myresources/mystyle.css</a>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="sparql"></a>
+
+<h3>SPARQLによる検索</h3>
+
+<p>
+    以下のURLにqueryパラメータの値としてUTF-8エンコードしたSPARQLクエリを与えると，SPARQLによる検索結果を得ることができる．
+</p>
+
+<div style="widt: 600px; text-align: center; padding: 10px;">
+    <a href="http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology/sparql">
+        http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology/sparql
+    </a>
+</div>
+
+<p>query以外のURLパラメータには以下が指定できる．</p>
+
+<dl>
+    <dt>inference_type</dt>
+    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可能．</dd>
+    <dt>output</dt>
+    <dd>「xml」または「txt」を指定できる．</dd>
+</dl>
+
+<p>例として，「福澤諭吉」をラベルとして持つインスタンスとそのタイプをXML形式で得るためのURLを以下に示す．</p>
+
+<div style="widt: 600px; text-align: center; padding: 10px;">
+    <a href="http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/sparql?query=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none">
+        http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/sparql?query=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none
+    </a>
+</div>
+
+<a name="search_interface"></a>
+
+<h2>日本語Wikipediaオントロジー検索インタフェースの構成</h2>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/search_interface_overview.png" alt="日本語Wikipediaオントロジー検索インタフェース" width="600"/>
+
+    <p style="font-weight: bold;">図2: 日本語Wikipediaオントロジー検索インタフェース</p>
+</div>
+
+<br/>
+
+<p>図2に日本語Wikipediaオントロジー検索インタフェースを示す．図2の各数字が表す領域は以下の通りである．</p>
+
+<ol>
+    <li>ツールバー</li>
+    <li>検索パネル</li>
+    <li>階層パネル</li>
+    <li>ステートメント，ブックマーク，検索履歴，RDF/XMLの各タブ</li>
+    <li>ブックマークと検索履歴パネル</li>
+    <li>ステータスバー</li>
+</ol>
+
+<p>6. ステータスバーには検索パネルで検索したクラスまたはインスタンスを識別するURIが表示される．</p>
+
+<p>以下では，6. ステータスバー以外の各領域について説明する．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="toolbar"></a>
+
+<h2>1. ツールバー</h2>
+
+<a name="language_menu"></a>
+
+<h3>「言語」メニュー</h3>
+<dl>
+    <dt>英語</dt>
+    <dd>英語表示の検索インタフェースを表示．</dd>
+    <dt>日本語</dt>
+    <dd>日本語表示の検索インタフェースを表示．</dd>
+</dl>
+
+<a name="tool_menu"></a>
+
+<h3>「ツール」メニュー</h3>
+<dl>
+    <dt>全クラス階層を表示</dt>
+    <dd>「全クラス階層」パネルに日本語Wikipediaオントロジーの全クラス階層を読み込み表示する．</dd>
+    <dt>オプション</dt>
+    <dd>オプションダイアログを表示する．</dd>
+</dl>
+
+<a name="help_menu"></a>
+
+<h3>「ヘルプ」メニュー</h3>
+<dl>
+    <dt>マニュアル</dt>
+    <dd>マニュアルページ（本Webページ）を表示する．</dd>
+    <dt>バージョン情報</dt>
+    <dd>バージョン情報ダイアログを表示する．</dd>
+</dl>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="search_panel"></a>
+
+<h2>2. 検索パネル</h2>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/search_panel.png" alt="検索パネル" width="600"/>
+
+    <p style="font-weight: bold;">図3: 検索パネル</p>
+</div>
+
+<br/>
+
+<a name="class_search"></a>
+
+<h3>クラス検索</h3>
+
+<p>「キーワード」テキストフィールドにクラス名（日本語Wikipediaオントロジー内のクラスが持つラベル（rdfs:labelプロパティの値））を入力し，
+    検索対象としてクラスを選択し，検索ボタンを押すと<a href="#statement_tab">「ステートメント」タブ</a>と <a
+            href="#class_tree_and_instance_panel">「クラス階層とインスタンス」パネル</a>に
+    結果が表示される．検索結果として対象クラスからルートクラスまでのパスおよび対象クラスのインスタンス一覧を取得する．</p>
+<br/>
+
+<p>「キーワード」テキストフィールドに複数のクラス名をスペース区切りで入力し，検索ボタンを押すと，
+    複数のタイプ(rdf:type)を持つインスタンス（複数のクラスに属するインスタンス）一覧を取得することができる．</p>
+
+<a name="property_search"></a>
+
+<h3>プロパティ検索</h3>
+
+<p>「キーワード」テキストフィールドにプロパティ名（日本語Wikipediaオントロジー内のクラスが持つラベル（rdfs:labelプロパティの値））を入力し，
+    検索対象としてプロパティを選択し，検索ボタンを押すと「ステートメント」タブと「クラス階層とインスタンス」パネルに
+    結果が表示される．検索結果として対象プロパティに関連するステートメントを取得する．</p>
+<br/>
+
+<a name="instance_search"></a>
+
+<h3>インスタンス検索</h3>
+
+<p>「キーワード」テキストフィールドに日本語Wikipediaオントロジー内のインスタンスが持つラベル（rdfs:labelプロパティの値）を入力し，
+    検索対象としてインスタンスを選択し，検索ボタンを押すと「ステートメント」タブと「クラス階層とインスタンス」パネルに
+    結果が表示される．検索結果として，対象インスタンスとそれがタイプとして持つクラス(rdf:typeの値）とそれぞれのクラスからルートまでのパスを取得する．</p>
+
+<a name="use_inference_model"></a>
+
+<h3>推論モデルの利用</h3>
+
+<p>
+    「推論モデルの利用」チェックボタンにチェックを入れると，RDFS推論ルールにより導き出されたステートメントも検索対象として検索を行うことができる．
+    例えば，アナウンサークラスを検索すると直接インスタンスは定義されていないため，検索結果としてインスタンス数はゼロ（ステートメント数は78）となる．
+    推論モデルの利用にチェックを入れて再度検索を行うとアナウンサークラスのサブクラスに定義された「日本のアナウンサー」クラスなどのインスタンスも
+    アナウンサークラスのインスタンスとして導きだされるため，検索結果としてインスタンス数は375（ステートメント数は9176）となる．</p>
+
+<a name="number_of_statements"></a>
+
+<h3>表示ステートメント数</h3>
+
+<p>ステートメントタブに表示するステートメント数を設定することができる．コンボボックスに用意されている値の他，
+    テキストを編集することで任意の表示ステートメント数を設定することができる．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="tree_panel"></a>
+
+<h2>3. 階層パネル</h2>
+
+<p>階層パネルには，「クラス階層とインスタンス」パネルと「全クラス階層」パネルをそれぞれ選択し，表示することができる．
+    「クラス階層とインスタンス」パネルには，検索したクラスまたはインスタンスに関連する階層関係が表示される．
+    「全クラス階層」パネルには，日本語Wikipediaオントロジーにおける全クラス階層が表示される． 以下では，それぞれについて説明する．</p>
+
+<a name="class_tree_and_instance_panel"></a>
+
+<h3>「クラス階層とインスタンス」パネル</h3>
+
+<div style="width: 100%; height: 440px;">
+
+    <div style="text-align: center; float: left; margin: 0 30px;">
+        <img src="./myresources/figures/class_tree_and_instances_panel.png" alt="「クラス階層とインスタンス」パネル" width="300"/>
+
+        <p style="font-weight: bold;">図4: 「クラス階層とインスタンス」パネル</p>
+    </div>
+
+    <div
+            style="text-align: center; float: left; margin: 30px; margin-top: 180px;">
+        <img src="./myresources/figures/class_and_instance_node_context_menu.png" alt=" コンテキストメニュー" width="300"/>
+
+        <p style="font-weight: bold;">図5: コンテキストメニュー</p>
+    </div>
+
+</div>
+
+<p>図4に「クラス階層とインスタンス」パネルを示す．図4の各数字が示す領域は以下のとおりである．</p>
+
+<ol>
+    <li>検索フィールドと検索ボタン．クラスまたはインスタンスをキーワードで絞り込んで検索することができる．</li>
+    <li>階層をすべて開くボタン</li>
+    <li>階層をすべて閉じるボタン</li>
+    <li>クラスおよびインスタンス階層を表示する領域．図4の例では「日本のアナウンサー」クラスで検索した際の
+        「日本のアナウンサー」クラスからルートクラスまでの階層関係および「日本のアナウンサー」クラスのインスタンスが表示されている．
+        「日本のアナウンサー」クラスノードの末尾に括弧内で示している数値（375）は，「日本のアナウンサー」クラスに属するインスタンス数を示している．
+        クラスまたはインスタンスを左クリックすると，選択したクラスまたはインスタンスを検索した結果が表示される．
+    </li>
+</ol>
+
+<p>図5にクラスまたはインスタンスノードを右クリックした際に表示されるコンテキストメニューを示す．</p>
+
+<h4>クラスノードのコンテキストメニュー</h4>
+
+<p>図5上部は，「日本のアナウンサー」
+    クラスノードを右クリックした際に表示されるコンテキストメニューを示している．クラスノードのコンテキストメニューでは，
+    「選択したクラスノードで検索を行う」，「選択したクラスノードで絞り込む」，「選択したクラスノードをブックマークに追加する」という
+    ３つの機能を実行できる．「選択したクラスノードで絞り込む」メニューを選択した場合，現在の検索キーワードに加えて，選択したクラスを
+    キーワードに加えて検索を行う．つまり，複数タイプを持つインスタンスの検索を行うことができる．ブックマーク機能については， <a
+            href="#bookmark_tab">「ブックマーク」タブ</a>で詳細を説明する．</p>
+
+<h4>インスタンスノードのコンテキストメニュー</h4>
+
+<p>
+    図5下部は，「日本のアナウンサー」クラスのインスタンスである「三宅正治」ノードを右クリックした際に表示されるコンテキストメニューを示している．
+    インスタンスノードのコンテキストメニューでは，「選択したインスタンスノードで検索を行う」，「選択したインスタンスノードをブックマークに追加する」の
+    ２つの機能を実行できる．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="whole_class_tree_panel"></a>
+
+<h3>「全クラス階層」パネル</h3>
+
+<p>「全クラス階層」パネルは，日本語Wikipediaオントロジー内の全クラス階層を表示するパネルである．
+    初期状態では表示されず，ツールの「全クラス階層を表示」メニューを実行することで表示することが可能となっている．</p>
+
+<p style="color: gray; font-size: 80%;">※
+    現時点の実装では，すべての階層関係を一度に読み込ませるようになっているため，
+    ある程度高速なネットワーク回線とJavaScriptを高速に動作させることができる ハイスペックなパソコンやブラウザの利用を推奨する．</p>
+
+<br/>
+
+<div style="width: 100%; height: 440px;">
+
+    <div style="text-align: center; float: left; margin: 0 30px;">
+        <img src="./myresources/figures/whole_class_tree_panel.png" alt="「全クラス階層」パネル" width="300"/>
+
+        <p style="font-weight: bold;">図6: 「全クラス階層」パネル</p>
+    </div>
+
+    <div style="float: left; margin: 0 30px; width: 380px;">
+        <p>図6に「全クラス階層」パネルを示す．図6の各数字が示す領域は以下のとおりである．</p>
+
+        <ol>
+            <li>検索フィールドと検索ボタン．クラスを絞り込んで検索することができる．初回検索時に全ノードを展開する必要があるため，
+                非常に時間がかかるので注意．
+            </li>
+            <li>階層をすべて開くボタン．全クラス階層をすべて展開すると非常に時間がかかるため注意．</li>
+            <li>階層をすべて閉じるボタン</li>
+            <li>全クラス階層を表示する領域．マウスの左クリックおよび右クリックの動作は，<a
+                    href="#class_tree_and_instance_panel"> 「クラス階層とインスタンス」パネル</a>と同様．
+            </li>
+        </ol>
+
+    </div>
+
+</div>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="statement_tab_etc"></a>
+
+<h2>4. ステートメント，ブックマーク，検索履歴，RDF/XMLの各タブ</h2>
+
+<a name="statement_tab"></a>
+
+<h3>「ステートメント」タブ</h3>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/statement_tab.png" alt=" 「ステートメント」タブ" width="700"/>
+
+    <p style="font-weight: bold;">図7: 「ステートメント」タブ</p>
+</div>
+<br/>
+
+<p>図7に「ステートメント」タブを示す．「ステートメント」タブには，検索パネルで検索したクラスまたはインスタンスに
+    関連するステートメントのリストが表示される．図7の各数字が示す領域は以下のとおりである．</p>
+
+<ol>
+    <li>ステートメントにおける主語を表す列．この部分を左クリックすることで，ステートメントリストを主語のラベルでソート（降順または昇順）することができる．</li>
+    <li>ステートメントにおける述語を表す列．この部分を左クリックすることで，ステートメントリストを述語のラベルでソート（降順または昇順）することができる．</li>
+    <li>ステートメントにおける目的語を表す列．この部分を左クリックすることで，ステートメントリストを目的語のラベルでソート（降順または昇順）することができる．</li>
+    <li>ステートメントリストを表示する領域．初期状態では主語リソースでグルーピングされて表示される．各行の左端にあるプラスボタンを左クリックし展開することで，
+        選択した主語リソースでグルーピングされていたステートメントリストを表示することができる．図7は，「日本の小説家」クラスのインスタンスに関連する
+        ステートメントリストを表示している．また，「wikiont_instance:よしもとばなな」を主語リソースとするステートメントリストを展開して表示している．
+    </li>
+    <li>左右にある矢印ボタンをクリックすることで，検索パネルで指定した表示ステートメント数ごとに「ステートメント」タブの内容を切り替えることができる．
+        また，スライダーをドラッグすることで同様に表示するステートメントリストを切り替えることができる．
+    </li>
+    <li>検索したインスタンスまたはクラスに関連する全ステートメント数および現在表示しているステートメントリストが全体の何番目から何番目までかを表示する．
+        5と同様，適当な位置で左マウスクリックすると，表示するステートメントリストを切り替えることができる．
+    </li>
+</ol>
+
+<p>wikiont_classまたはwikiont_instance接頭辞がついている主語または目的語リソースについては，
+    セル（アイコン部分またはハイパーリンク以外の部分）を左クリックをすることで， 選択したクラスまたはインスタンスで再検索を行うことができる．
+    また，クラスまたはインスタンスのセル部分を右クリックすることで，図5と同様のコンテキストメニューが表示される．
+    ハイパーリンクをクリックすると，そのリソースに関するステートメントリストをRDF/XML形式で表示する．
+    foaf:pageプロパティの値となっている目的語リソースについては，ハイパーリンクをクリックすると，
+    Wikipediaにおけるカテゴリページまたは記事ページにアクセスすることができる．</p>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/statement_tab_option.png" alt="「ステートメント」タブ 表示設定" width="600"/>
+
+    <p style="font-weight: bold;">図8: 「ステートメント」タブ 表示設定</p>
+</div>
+<br/>
+
+<p>主語，述語，目的語各列名を表すボタンの右端にある下向きの三角ボタンをクリックすると，
+    図8に示すように「ステートメント」タブの表示内容を変更するためのメニューが表示される．
+    「昇順」，「降順」メニューにより，選択した列のソート方向を決めることができる．
+    「カラム」メニューでは，主語，述語，目的語列の表示・非表示を切り替えることができる．
+    「このカラムでグルーピング」メニューを選択すると，選択した列でグルーピングすることができる．
+    「グルーピング」チェックボックスのチェックをはずすことで，グルーピングを解除することができる．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="bookmark_tab"></a>
+
+<h3>「ブックマーク」タブ</h3>
+
+<div style="text-align: center;">
+    <img alt=" 「ブックマーク」タブ" src="./myresources/figures/bookmark_tab.png" width="700"/>
+
+    <p style="font-weight: bold;">図9: 「ブックマーク」タブ</p>
+</div>
+<br/>
+
+<p>図9に「ブックマーク」タブを示す．「ブックマーク」タブでは，登録されたクラスまたはインスタンスの管理を行うことができる．
+    キーワード，推論モデルの利用，URL，日時，検索対象の5項目が保存される．日時と検索対象は初期状態では
+    表示されない．各列名を示すボタン右端の下向き三角ボタンをクリックし，カラムメニューからそれぞれの
+    項目に対応するチェックボックスにチェックを入れることで非表示項目も表示することができる．</p>
+
+<p>「ブックマーク」タブに表示されるクラスおよびインスタンスリストにはそれぞれの行の左端にチェックボックスがついている．
+    このチェックボックスにチェックをいれると，「ブックマーク」タブ上部にある「選択したブックマークを開く」，
+    「選択したブックマークを削除」メニューを実行することができる．また，「現在のキーワードをブックマークに追加」メニューを
+    実行すると，直前に検索パネルでクラスまたはインスタンスを検索した結果をブックマークとして保存することができる．</p>
+
+<p>ブックマークを開くためには，「選択したブックマークを開く」メニューを実行する他，クラスまたはインスタンスを <span
+        style="font-weight: bold;">ダブルクリック</span>することで開くこともできる．</p>
+
+<p>各行を右クリックした際に表示されるコンテキストメニューは図5と同様である．</p>
+
+
+<h4>インポートとエクスポート</h4>
+
+<div style="text-align: center;">
+    <img alt="「インポート/エクスポート」ダイアログ" src="./myresources/figures/import_export_dialog.png" width="500"/>
+
+    <p style="font-weight: bold;">図10: 「インポート/エクスポート」ダイアログ</p>
+</div>
+<br/>
+
+<p>保存されたブックマークは日本語Wikipediaオントロジー検索システムのページを再読込するとリセットされてしまう．
+    「エクスポート」メニューを実行することで，図10に示すように「インポート/エクスポート」ダイアログが表示され，
+    現在のブックマークの状態をCSV形式で出力することができる．出力されたCSV形式のテキストデータをファイルに保存しておくことで，
+    日本語Wikipediaオントロジー検索システムを再度実行した際に，「ブックマーク」タブから「インポート」メニューを実行し，
+    ブックマークをインポートすることができる．「インポート/エクスポート」ダイアログのテキストエリアに保存しておいたCSV形式の
+    ブックマークデータをテキストとして貼り付け，インポートボタンを押すと，ブックマークがインポートされる．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="search_history_tab"></a>
+
+<h3>「検索履歴」タブ</h3>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/search_history_tab.png" alt="「検索履歴」タブ" width="700"/>
+
+    <p style="font-weight: bold;">図11: 「検索履歴」タブ</p>
+</div>
+<br/>
+
+<p>
+    図11に「検索履歴」タブを示す．検索パネル，「ステートメント」タブ，「クラス階層とインスタンス」パネル，「全クラス階層」パネル，「ブックマーク」タブから
+    検索されたクラスまたはインスタンスは，「検索履歴」パネルに検索履歴として自動的に保存される．
+    「検索履歴」タブの表示項目は「ブックマーク」タブの表示項目と同様である．メニューもほぼ「ブックマーク」タブと同様であるが，「選択した履歴をブックマークに追加」と
+    「すべての履歴を削除」メニューが独自に用意されている．</p>
+
+<p>
+    各行を右クリックした際に表示されるコンテキストメニューは図5とほぼ同様であるが，「クラスまたはインスタンスを検索履歴から削除」するメニューが
+    独自に用意されている．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="rdf_xml_tab"></a>
+
+<h3>「RDF/XML」タブ</h3>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/rdf_xml_tab.png" alt="「RDF/XML」タブ" width="700"/>
+
+    <p style="font-weight: bold;">図12: 「RDF/XML」タブ</p>
+</div>
+<br/>
+
+<p>「RDF/XML」タブには，検索したクラスまたはインスタンスに関連するステートメントがRDF/XML形式で表示される．
+    「RDF/XML」タブを一度も選択していない状態では，RDF/XML形式でソースは表示されないので注意．</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="bookmark_and_search_history_panel"></a>
+
+<h2>5. ブックマークと検索履歴パネル</h2>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/bookmark_and_search_history_panel.png" alt="「ブックマークと検索履歴」パネル" width="700"/>
+
+    <p style="font-weight: bold;">図13: 「ブックマークと検索履歴」パネル</p>
+</div>
+<br/>
+
+<p>図13に「ブックマーク」パネルと「検索履歴」パネルを示す．基本的には「ブックマーク」タブと「検索履歴」タブと同様であるが，
+    「ステートメント」タブを開いた状態でもブックマークや検索履歴にアクセスすることができるようにするために用意されている．
+    初期状態の表示項目はキーワードのみとなっている．また，左クリックで選択したブックマークを開くことができるようになっている．
+    （「ブックマーク」タブと「検索履歴」タブでは左ダブルクリックで開くように設定されている．）</p>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="option"></a>
+
+<h2>オプション</h2>
+
+<div style="text-align: center;">
+    <img src="./myresources/figures/option_dialog.png" alt="「オプション」ダイアログ" width="500"/>
+
+    <p style="font-weight: bold;">図14: 「オプション」ダイアログ</p>
+</div>
+<br/>
+
+<p>図14に「オプション」ダイアログを示す．「オプション」ダイアログは，ツールのオプションメニューを実行すると表示される．
+    ここでは以下に示す４つの項目について設定を行うことができる．なお，この設定はクッキーに保存されるため，
+    日本語Wikipediaオントロジー検索システムを再読込した場合にも設定は保持される．</p>
+
+<dl>
+    <dt>クラス階層とインスタンスを表示</dt>
+    <dd>「クラス階層とインスタンス」パネルに階層関係を表示するかどうかを設定する．初期状態では有効．</dd>
+    <dt>クラス階層とインスタンスをすべて展開して表示する</dt>
+    <dd>クラスまたはインスタンス検索時に階層関係をすべて展開して表示するかどうかを設定する．
+        初期状態では無効になっており，ルート直下の子ノードのみが展開されるようになっている．
+    </dd>
+    <dt>RDF/XMLを表示</dt>
+    <dd>「RDF/XML」タブにソースコードを表示するかどうかを設定する．初期状態では有効．</dd>
+    <dt>グルーピングをすべて閉じた状態で表示</dt>
+    <dd>「ステートメント」タブでステートメントのリストを表示する際に，
+        主語リソースでグルーピングした内容を閉じた状態で表示するかどうかを設定する．初期状態では有効．
+        無効にすると，グルーピングされた行左端のプラスボタンを押してステートメントが展開された状態で表示されるようになる．
+    </dd>
+</dl>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+</div>
+<div class="footer">
+    <div class="copyright">Copyright &copy; 2009-2010 慶應義塾大学 理工学部 管理工学科
+        <a style="color: white;" href="http://www.yamaguti.comp.ae.keio.ac.jp/">山口研究室</a>．
+        All Rights Reserved.
+    </div>
+</div>
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-11577244-1");
+        pageTracker._trackPageview();
+    } catch(err) {
+    }
+</script>
+
+</body>
+</html>
+

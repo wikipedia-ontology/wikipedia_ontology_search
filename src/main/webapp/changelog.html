@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+    <title>更新履歴: 日本語Wikipediaオントロジー検索インタフェース&Web APIs</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="my_resources/mystyle.css" type="text/css" media="all"/>
+</head>
+
+<body>
+
+<div class="page-title">日本語Wikipediaオントロジー検索インタフェース＆Web APIs</div>
+<div class="menu">
+    <ul>
+        <li><a href="index.html"> ホーム </a></li>
+        <li><a href="classes_ranked_by_number_of_instances"> クラス一覧</a></li>
+        <li><a href="properties_ranked_by_number_of_statements"> プロパティ一覧</a></li>
+        <li><a href="sparql">SPARQLによる検索</a></li>
+        <li><a href="manual.html">マニュアル</a></li>
+        <li><a href="changelog.html">更新履歴</a></li>
+        <li><a href="statistics.html">統計データ</a></li>
+    </ul>
+</div>
+<div class="container">
+
+<h1>更新履歴</h1>
+
+<h2>2011年1月XX日</h2>
+<ul>
+    <li>ExtJsのバージョンを3.3.1にアップ</li>
+    <li>APIのURIを変更（queryを取り除いた．json_table -> table_data, json_tree -> tree_dataに変更．）</li>
+    <li>ステートメント検索結果をタブに表示できるようにした．</li>
+    <li>ステートメントテーブルの各リソースリンクをクリックした際に，アプリケーション内でリソース検索結果を表示するように変更．（リンクをクリックした際にRDFデータをブラウザで表示しないようにした．）</li>
+</ul>
+
+<h2>2010年9月11日</h2>
+<ul>
+    <li>SPARQLによる検索機能を実装した</li>
+    <li>説明，SPARQLクエリ，作成者情報を保存し，検索できるようにした</li>
+</ul>
+
+<h2>2010年4月12日</h2>
+<ul>
+    <li>ブックマークと履歴データをWeb Storageに保存するようにした</li>
+    <li>ExtJsのバージョンを3.2にアップ</li>
+</ul>
+
+<h2>2010年2月11日</h2>
+<ul>
+    <li>classes_ranked_by_number_of_instancesとproperties_ranked_by_number_of_statementsをclass_listとproperty_listに変更</li>
+    <li>class_listとproperty_listのページでRDFへのリンクにqueryが抜けていたのを修正</li>
+    <li>ResourcePageの各種データへのリンクが間違っていたのを修正</li>
+    <li>検索インタフェースで，マニュアルや英語，日本語版の検索インタフェースへのリンクが間違っていたのを修正</li>
+    <li>Memcachedへのデータの格納と取得の部分で，searchParametersクラスのインスタンスのハッシュ値をキーとするように修正．</li>
+    <li>json_treeとjson_table，typeを指定した場合にもキャッシュするように修正</li>
+    <li>インスタンスとプロパティの場合にも「インスタンス一覧」が見出しとしてHTMLページに表示されていたのを修正</li>
+    <li>英語ラベルを検索した際に，英語Wikipediaオントロジーのみ検索対象としていたのを修正（英語Wikipediaオントロジーで検索できなかった場合には，日本語Wikipediaオントロジーに検索をかえなおすようにした）
+    </li>
+    <li> jsonのキャッシュを返す際に，contentTypeの設定がapplication/xmlとなっていたのを修正</li>
+</ul>
+
+<h2>2010年2月9日</h2>
+<ul>
+    <li>Apache Wicket, ActiveObjects, Memcached, TDB, H2 Database Engineを利用して，プログラムを書きなおした．</li>
+    <li>クラス一覧とプロパティ一覧ページを作成し，動的にクラス-インスタンス-インスタンスが持つプロパティとプロパティ値，プロパティ-インスタンス-インスタンスのタイプを表示できるようにした．</li>
+</ul>
+
+<h2>2010年1月28日</h2>
+<ul>
+    <li>infoboxトリプルとプロパティのDBデータを2010年1月26日のものに更新</li>
+    <li>サブクラスと兄弟クラス（1階層下のみ）のリストをsearch_optionにsubClasses，siblingsをそれぞれ指定することで取得できるようにした．</li>
+</ul>
+
+<h2>2009年12月2日</h2>
+<ul>
+    <li>英語Wikipediaの一覧ページから構築したオントロジー＋インスタンスを検索できるようにした．</li>
+</ul>
+
+<h2>2009年11月23日</h2>
+<ul>
+    <li>Wikipediaオントロジー＆インスタンスのDBを更新</li>
+    <li>プロパティを検索できるようにした．</li>
+    <li>クラス階層とステートメントテーブルとソースコードを同時に更新できるようになった．</li>
+    <li>[BUG FIX] 同時アクセスがあった場合にうまく処理ができなかったのを修正．</li>
+    <li>[BUG FIX] 正規表現で用いられる記号（括弧など）がキーワードに含まれている場合にヒットしなかったのを修正．</li>
+</ul>
+
+
+<h2>2009年11月22日</h2>
+<ul>
+    <li>widgetsごとにJavaScriptのファイルを分割した．</li>
+</ul>
+
+<h2>2009年11月19日</h2>
+<ul>
+    <li>ブックマークと履歴で，検索オプションも保存するように修正．</li>
+    <li>階層検索についても，完全一致，前方一致，後方一致，部分一致を選択して検索できるようにした．</li>
+</ul>
+
+<h2>2009年11月18日</h2>
+<ul>
+    <li>クラスとインスタンスの検索を行う際に，完全一致，前方一致，後方一致，部分一致を選択して検索できるようにした．</li>
+</ul>
+
+<h2>2009年11月11日</h2>
+<ul>
+    <li>推論モデルを利用する場合のURIを変更．?useInfModelオプションを廃止して，URIのパス中のrdfs_inferenceの有無で推論モデルを利用するかどうかを決定するように変更．</li>
+    <li>リダイレクトの処理は，apacheのrewriteruleで行うように変更．</li>
+    <li>ApacheとTomcatを連携させることで，パフォーマンスを向上させた．</li>
+</ul>
+
+<h2>2009年11月7日</h2>
+<ul>
+    <li>Apache2.2のmod_proxy_balancerとmod_proxy_ajpを用いて，3台のマシンで負荷分散できるようにした．</li>
+    <li>URLをhttp://hpcs01.comp.ae.keio.ac.jp:8080/からhttp://hpcs01.comp.ae.keio.ac.jp/に変更．</li>
+</ul>
+
+<h2>2009年10月26日</h2>
+<ul>
+    <li>統計データのページを作成（インスタンス数でソートしたクラスのリスト）．</li>
+    <li>人間向けのHTMLページを生成するようにした．</li>
+    <li>マニュアルを更新．</li>
+</ul>
+
+<h2>2009年10月22日</h2>
+<ul>
+    <li>更新履歴ページ（本Webページ）を作成．</li>
+</ul>
+
+<h2>2009年10月21日</h2>
+<ul>
+    <li>日本語Wikipediaオントロジー検索システム ver.2009-10-18の<a
+            href="http://hpcs01.comp.ae.keio.ac.jp:8080/wikipedia_ontology/manual.html"
+            rel="external">マニュアル</a>を作成．
+    </li>
+</ul>
+
+<h2>2009年10月18日</h2>
+<ul>
+    <li>全階層の検索速度が少し向上した．</li>
+    <li>ステートメントテーブルのローディング中の表示が画面全体になっていたのを修正．</li>
+    <li>英語版のバージョン情報ページを作成．</li>
+</ul>
+
+<h2>2009年10月17日</h2>
+<ul>
+    <li>resources/en_resources.jsと
+        ja_resources.jsで表示用のラベルを用意して，表示言語を切り替えられるようにした．
+    </li>
+    <li>parameters.jsでサーバーとベースURI等を設定できるようにした．</li>
+    <li>言語メニューから英語と日本語表示を切り替えられるようにした．</li>
+    <li>クラス階層を読み込み中の時に，パネルをmaskするようにした．</li>
+    <li>サーバー側で，生成したRDF，JSONデータをファイルとして保存して，二度目以降はファイルを返すようにした．
+        （全クラス階層についても同様）
+    </li>
+</ul>
+
+<h2>2009年10月12日</h2>
+<ul>
+    <li>階層，ステートメントテーブル，検索履歴，ブックマークのそれぞれについて，クラスとインスタンスノード（セル）にコンテキストメニューを設定した．</li>
+    <li>ステートメントテーブルについて，読み込み中を表示するようにした(loadMask:true)．</li>
+    <li>ブックマークのインポートとエクスポート機能を実装した．</li>
+    <li>レイアウトが低い解像度のディスプレイで見た場合に崩れていたのを修正．</li>
+</ul>
+
+<h2>2009年10月11日</h2>
+<ul>
+    <li>クラス階層とインスタンスを検索できるようにした．</li>
+    <li>検索履歴とブックマークはクッキーにデータを保存しないようにした（4kbまでしか保存できないため）</li>
+    <li>ブックマークと検索履歴もサイドバーからアクセスできるようにした．</li>
+    <li>その他，ツリーの更新をTreeLoaderから行えるように実装を変更．</li>
+</ul>
+
+<h2>2009年10月9日</h2>
+<ul>
+    <li>検索履歴とブックマークの機能を実装．</li>
+</ul>
+
+<h2>2009年10月8日</h2>
+<ul>
+    <li>ステートメントを表示するテーブルで，クラス，インスタンス，Wikipedia記事，ラベルについてそれぞれアイコンを表示するようにした．</li>
+    <li>ヘルプの利用しているライブラリ等に，MySQL Connector/JとEscape Codec Library:
+        ecl.jsを追加．
+    </li>
+    <li>オプションダイアログで，クラス階層，RDF/XML，ステートメントテーブルの表示状態に関してパラメータを設定できるようにした．</li>
+    <li>ツールバーのメニューを整理した．</li>
+    <li>Ext.state.Managerを利用して，ステートメントテーブルとオプションの状態を保存できるようにした．</li>
+</ul>
+
+<h2>2009年10月7日</h2>
+<ul>
+    <li>全階層を表示できるようにした．</li>
+</ul>
+
+<h2>2009年10月5日</h2>
+<ul>
+    <li>テーブルデータの表示数をコンボボックスから選択・変更できるようにした．</li>
+    <li>Isa階層でインスタンス数を表示するようにした．</li>
+    <li>推論モデルを利用して検索できるようにした．</li>
+</ul>
+
+<h2>2009年10月2日</h2>
+<ul>
+    <li>テーブルデータの表示数を最大100までにして，ページを切り替えることができるようにした．</li>
+</ul>
+
+<h2>2009年9月30日</h2>
+<ul>
+    <li>複数のタイプを指定して，検索結果を絞り込むことができるようにした．</li>
+</ul>
+
+<h2>2009年9月16日</h2>
+<ul>
+    <li>Ext.Viewportクラス等を利用してレイアウトを整えた．</li>
+</ul>
+
+<h2>2009年9月15日</h2>
+<ul>
+    <li>サーバーサイドプログラムでJSON形式（ツリー用）のデータを取得できるようにした．</li>
+    <li>クラス階層とインスタンスの階層関係を表示できるようにした．</li>
+</ul>
+
+<h2>2009年9月13日</h2>
+<ul>
+    <li>クライアントプログラム（検索インタフェース）の実装．</li>
+    <li>クラスとインスタンスを検索し，ステートメントパネルに表示できるようにした．</li>
+    <li>RDF/XML形式のソースコードを表示できるようにした．</li>
+</ul>
+
+<h2>2009年9月12日</h2>
+<ul>
+    <li>サーバーサイドプログラムでJSON形式（テーブル用）のデータを取得できるようにした．</li>
+</ul>
+
+<h2>2009年9月11日</h2>
+<ul>
+    <li>サーバサイドプログラムでRDF/XML形式のデータをクラスとインスタンスのURIにアクセスして取得できるようにした．</li>
+</ul>
+
+<h2>2009年9月10日</h2>
+<ul>
+    <li>実装開始．</li>
+    <li>日本語WikipediaオントロジーとインスタンスをJenaを利用してMySQLデータベースに格納．</li>
+</ul>
+
+</div>
+<div class="footer">
+    <div class="copyright">Copyright &copy; 2009-2010 慶應義塾大学 理工学部 管理工学科
+        <a style="color: white;" href="http://www.yamaguti.comp.ae.keio.ac.jp/">山口研究室</a>．
+        All Rights Reserved.
+    </div>
+</div>
+
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-11577244-1");
+        pageTracker._trackPageview();
+    } catch(err) {
+    }</script>
+
+</body>
+</html>
+

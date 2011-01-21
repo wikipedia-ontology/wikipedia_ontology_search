@@ -4,20 +4,19 @@ import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.MemCachedStora
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
 import org.apache.wicket.Page;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.target.coding.MixedParamUrlCodingStrategy;
 import org.apache.wicket.request.target.coding.QueryStringUrlCodingStrategy;
 
 public class WikipediaOntologySearchApplication extends WebApplication {
-    /**
-     * Constructor
-     */
+
     public WikipediaOntologySearchApplication() {
     }
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return IndexPage.class;
+        return HomePage.class;
     }
 
     @Override
@@ -25,14 +24,7 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         getDebugSettings().setComponentUseCheck(false);
         getMarkupSettings().setDefaultMarkupEncoding("UTF-8");
         getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-        mountBookmarkablePage("/index.html", IndexPage.class);
-        mountBookmarkablePage("/manual.html", ManualPage.class);
-        mountBookmarkablePage("/changelog.html", ChangeLogPage.class);
         mountBookmarkablePage("/statistics.html", StatisticsPage.class);
-        mountBookmarkablePage("/help.html", HelpJaPage.class);
-        mountBookmarkablePage("/en_help.html", HelpEnPage.class);
-        mountBookmarkablePage("/search.html", SearchJaPage.class);
-        mountBookmarkablePage("/en_search.html", SearchEnPage.class);
         mountBookmarkablePage("/error.html", ErrorPage.class);
         mount(new QueryStringUrlCodingStrategy("/sparql", SPARQLQueryPage.class));
         mount(new MixedParamUrlCodingStrategy("/class_list", ClassListPage.class, new String[]{"lang"}));
