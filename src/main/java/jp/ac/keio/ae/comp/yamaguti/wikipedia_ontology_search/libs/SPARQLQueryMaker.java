@@ -100,7 +100,7 @@ public class SPARQLQueryMaker {
         return sparqlTemplate.replace("$RESOURCE", resource);
     }
 
-    public static String getResourceQueryString(SearchParameters searchParameters, String sparqlTemplate) {
+    public static String getResourceByLabelQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
         String typeFilter = "";
         switch (searchParameters.getResourceType()) {
@@ -111,9 +111,6 @@ public class SPARQLQueryMaker {
                 typeFilter = "?resource rdf:type ?type . FILTER (?type = owl:ObjectProperty || ?type = owl:DatatypeProperty) ";
                 break;
             case INSTANCE:
-                // 検索時間がかかる
-                // typeFilter =
-                // "OPTIONAL { ?resource rdf:type ?type  FILTER (?type != owl:ObjectClass && ?type != owl:ObjectProperty && ?type != owl:DatatypeProperty)} ";
                 break;
         }
 

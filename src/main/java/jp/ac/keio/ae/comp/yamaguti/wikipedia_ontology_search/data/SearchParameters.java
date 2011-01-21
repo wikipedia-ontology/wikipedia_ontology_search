@@ -213,6 +213,8 @@ public class SearchParameters {
         for (String type : typeSet) {
             hashCode += type.hashCode();
         }
+
+        hashCode += searchTarget.toString().hashCode();
         hashCode += searchOption.toString().hashCode();
         hashCode += inferenceType.toString().hashCode();
 

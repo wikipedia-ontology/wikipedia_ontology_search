@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.util.FileUtils;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.ClassStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
@@ -156,9 +155,9 @@ public class ResourcePage extends CommonPage implements Serializable {
                 return wikiOntSearch.getTypesOfInstanceQueryResults(uri, typeList);
             } else {
                 if (searchParams.getSearchTarget() == SearchTargetType.LABEL) {
-                    String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource.tmpl");
-                    queryString = SPARQLQueryMaker.getResourceQueryString(searchParams, sparqlTemplateString);
-                    wikiOntSearch.setQueryResults(lang, queryString);
+                    String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource_by_label.tmpl");
+                    queryString = SPARQLQueryMaker.getResourceByLabelQueryString(searchParams, sparqlTemplateString);
+                    return wikiOntSearch.getResourceByLabelQueryResults(lang, queryString);
                 } else {
                     String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource_by_uri.tmpl");
                     queryString = SPARQLQueryMaker.getResourceByURIQueryString(searchParams, sparqlTemplateString);

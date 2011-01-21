@@ -61,12 +61,13 @@ function searchWikipediaOntology2(keyword) {
             Ext.getDom('instance_button').checked = true;
         }
         queryURL += queryType + '/' + TABLE_DATA_PATH + keyword;
-        if (searchOptionValue != EXACT_MATCH_SEARCH_OPTION) {
-            queryURL += '?' + searchOption;
-            queryURL += '&' + versionOption;
-        } else {
-            queryURL += '?' + versionOption;
+        if (Ext.getCmp("uri_radio_button").checked) {
+            queryURL += '?search_target=uri';
+        } else if (Ext.getCmp("label_radio_button").checked) {
+            queryURL += '?search_target=label';
         }
+        queryURL += '&' + searchOption;
+        queryURL += '&' + versionOption;
         reloadWikiOntJSONData2(queryURL, keyword);
     }
 }

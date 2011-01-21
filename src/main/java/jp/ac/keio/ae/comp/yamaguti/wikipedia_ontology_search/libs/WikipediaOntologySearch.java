@@ -193,48 +193,23 @@ public class WikipediaOntologySearch {
         return outputModel;
     }
 
-    public void setQueryResults(String lang, String queryString) {
+    public Model getResourceByLabelQueryResults(String lang, String queryString) {
 //        System.out.println(queryString);
+        Model outputModel = ModelFactory.createDefaultModel();
         QueryExecution qexec = getQueryExecution(queryString);
         ResultSet results = qexec.execSelect();
         try {
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
-                Resource resource = (Resource) qs.get("resource");
-                Resource type = (Resource) qs.get("type");
-
-                resourceSet.add(resource);
-                if (searchParameters.getResourceType() == ResourceType.INSTANCE
-                        && searchParameters.getSearchOption() != SearchOptionType.EXACT_MATCH) {
-                    // インスタンス検索時に完全照合以外のオプションが指定されている場合には，typeSetに全インスタンス検索結果を保存
-                    typeSet.add(resource);
-                    continue;
-                }
-                if (type != null) {
-                    if (type.equals(OWL.Class) || type.equals(OWL.ObjectProperty) || type.equals(OWL.DatatypeProperty)) {
-                        typeSet.add(resource);
-                    } else {
-                        typeSet.add(type);
-                    }
-                }
+                Resource resource = qs.getResource("resource");
+                RDFNode label = qs.get("label");
+                outputModel.add(resource, RDFS.label, label);
             }
         } finally {
             qexec.close();
         }
-        // 英語名らしきラベルがついているが，日本語Wikipediaオントロジーで定義されている場合の処理
-        if (lang.equals("en") && resourceSet.size() == 0) {
-            dbModel = getWikipediaOntologyAndInstanceModel("ja", "");
-            setQueryResults("ja", queryString);
-        }
-        if (searchParameters.getResourceType() == ResourceType.INSTANCE
-                && searchParameters.getSearchOption() == SearchOptionType.EXACT_MATCH) {
-            for (Resource res : resourceSet) {
-                for (NodeIterator i = dbModel.listObjectsOfProperty(res, RDF.type); i.hasNext();) {
-                    Resource type = (Resource) i.nextNode();
-                    typeSet.add(type);
-                }
-            }
-        }
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+        return outputModel;
     }
 
     private Set<Resource> supClassSet = null;

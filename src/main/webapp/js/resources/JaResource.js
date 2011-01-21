@@ -79,6 +79,12 @@ var MANUAL_HTML = "manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
+// 検索対象オプション関連の定数
+var URI = "URI";
+var URI_SEARCH_TARGET_OPTION = "uri";
+var LABEL = "ラベル";
+var LABEL_SEARCH_TARGET_OPTION = "label";
+
 // 検索オプション関連の定数
 var SEARCH_OPTION = "検索オプション";
 var EXACT_MATCH = "完全一致";

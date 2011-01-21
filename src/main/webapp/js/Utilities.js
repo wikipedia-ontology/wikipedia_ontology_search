@@ -17,27 +17,54 @@ function getProxy(json_url) {
     });
 }
 
-function getSearchOptionComboBox(name) {
-    var searchOptionList = new Ext.data.ArrayStore({
-        fields : ["Search_Option", "Search_Option_Value"],
-        data : [
+function getSearchOptionList(resType, searchTargetType) {
+    if (searchTargetType == URI) {
+        if (resType == CLASS) {
+            return [
+                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+                [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
+                [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
+                [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
+                [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
+                [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION]
+            ];
+        } else if (resType == PROPERTY) {
+            return [
+                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+                [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
+                [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION]
+            ];
+        } else if (resType == INSTANCE) {
+            return [
+                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+                [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION]
+            ];
+        }
+    } else if (searchTargetType == LABEL) {
+        return [
             [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
             [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
             [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
             [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
+        ];
+    }
+}
+
+function getSearchOptionComboBox(id) {
+    var searchOptionList = new Ext.data.ArrayStore({
+        fields : ["Search_Option", "Search_Option_Value"],
+        data : [
+            [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
             [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
             [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
             [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
             [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
-            [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-            [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-            [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION],
-            [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION]
+            [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION]
         ]
     });
 
     var comboBox = new Ext.form.ComboBox({
-        id : name,
+        id : id,
         displayField : 'Search_Option',
         valueField : 'Search_Option_Value',
         triggerAction : "all",
@@ -50,7 +77,7 @@ function getSearchOptionComboBox(name) {
             select: function(combo, value) {
                 var selectedValue = combo.getValue();
                 if (selectedValue == SIBLING_CLASSES_SEARCH_OPTION || selectedValue == SUB_CLASSES_SEARCH_OPTION ||
-                        selectedValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || selectedValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION||
+                        selectedValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || selectedValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION ||
                         selectedValue == INSTANCES_OF_CLASS_SEARCH_OPTION) {
                     Ext.getDom('class_button').checked = true;
                 } else if (selectedValue == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION || selectedValue == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {

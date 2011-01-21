@@ -323,6 +323,7 @@ function reloadWikiOntJSONData(queryJSONTableURL) {
     reloadStatementTable(queryJSONTableURL);
     reloadTree(queryURL);
     reloadRDFSource(queryURL);
+    resetSearchOptionList();
 }
 
 function renderLink(value) {
@@ -384,6 +385,7 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
     if (url == null) {
         url = e.getTarget().children.item(1).toString();
     }
+    Ext.getDom('uri_radio_button').checked = true;
     if (url.indexOf("wikiont_class") != -1) {
         var queryURL = url.replace("wikiont_class:", CLASS_PATH + TABLE_DATA_PATH);
         var keyword = queryURL.split(TABLE_DATA_PATH)[1];

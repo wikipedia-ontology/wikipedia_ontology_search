@@ -79,6 +79,11 @@ var MANUAL_HTML = "en_manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
+var URI = "URI";
+var URI_SEARCH_TARGET_OPTION = "uri";
+var LABEL = "Label";
+var LABEL_SEARCH_TARGET_OPTION = "label";
+
 var SEARCH_OPTION = "Search Option";
 var EXACT_MATCH = "Exact match";
 var EXACT_MATCH_SEARCH_OPTION = "exact_match";
