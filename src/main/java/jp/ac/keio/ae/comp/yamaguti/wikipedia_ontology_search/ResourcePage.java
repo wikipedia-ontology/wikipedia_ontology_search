@@ -87,35 +87,42 @@ public class ResourcePage extends CommonPage implements Serializable {
             String queryString = "";
             if (searchParams.getResourceType() == ResourceType.CLASS
                     && (searchOptionType == SearchOptionType.SIBLINGS || searchOptionType == SearchOptionType.SUB_CLASSES)) {
-                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
-                        "sparql_templates/query_types.tmpl");
+                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types.tmpl");
                 queryString = SPARQLQueryMaker.getClassQueryString(searchParams, sparqlTemplateString);
                 wikiOntSearch.setQueryResults(lang, queryString);
             } else if (searchParams.getResourceType() == ResourceType.CLASS
-                    && (searchOptionType == SearchOptionType.PROPERTIES_OF_DOMAIN_CLASS ||
-                    searchOptionType == SearchOptionType.PROPERTIES_OF_RANGE_CLASS)) {
+                    && (searchOptionType == SearchOptionType.PROPERTIES_OF_DOMAIN_CLASS || searchOptionType == SearchOptionType.PROPERTIES_OF_RANGE_CLASS)) {
                 String sparqlTemplateString = "";
                 switch (searchOptionType) {
                     case PROPERTIES_OF_DOMAIN_CLASS:
-                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
-                                "sparql_templates/query_properties_of_domain_class.tmpl");
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_properties_of_domain_class.tmpl");
                         break;
                     case PROPERTIES_OF_RANGE_CLASS:
-                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
-                                "sparql_templates/query_properties_of_range_class.tmpl");
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_properties_of_range_class.tmpl");
                         break;
                 }
                 queryString = SPARQLQueryMaker.getPropertiesOfRegionClassQueryString(searchParams, sparqlTemplateString);
                 wikiOntSearch.setQueryResultsForPropertiesOfRegionClass(queryString);
+            } else if (searchParams.getResourceType() == ResourceType.PROPERTY
+                    && (searchOptionType == SearchOptionType.DOMAIN_CLASSES_OF_PROPERTY || searchOptionType == SearchOptionType.RANGE_CLASSES_OF_PROPERTY)) {
+                String sparqlTemplateString = "";
+                switch (searchOptionType) {
+                    case DOMAIN_CLASSES_OF_PROPERTY:
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_domain_classes_of_property.tmpl");
+                        break;
+                    case RANGE_CLASSES_OF_PROPERTY:
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_range_classes_of_property.tmpl");
+                        break;
+                }
+                queryString = SPARQLQueryMaker.getRegionClassesOfPropertyQueryString(searchParams, sparqlTemplateString);
+                wikiOntSearch.setQueryResultsForDomainClassesOfProperty(queryString);
             } else {
-                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
-                        "sparql_templates/query_resource.tmpl");
+                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource.tmpl");
                 queryString = SPARQLQueryMaker.getResourceQueryString(searchParams, sparqlTemplateString);
                 wikiOntSearch.setQueryResults(lang, queryString);
             }
         } else {
-            String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
-                    "sparql_templates/query_types.tmpl");
+            String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types.tmpl");
             String queryString = SPARQLQueryMaker.getTypeSetQueryString(searchParams, sparqlTemplateString);
             wikiOntSearch.setQueryResults2(queryString);
         }

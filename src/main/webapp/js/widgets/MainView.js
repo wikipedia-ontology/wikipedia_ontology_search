@@ -31,10 +31,14 @@ function getMainView() {
             limit : RESOURCE_LIST_SIZE_LIMIT
         }
     });
+
+    var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(DOMAIN);
+    var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(RANGE);
     var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
 
-    var regionListPanel = new Ext.Panel({
+    var regionListOfClassPanel = new Ext.Panel({
         layout : 'hbox',
+        frame: true,
         layoutConfig: {
             align : 'stretch',
             pack  : 'start'
@@ -55,6 +59,7 @@ function getMainView() {
 
     var eastSideClassListPanel = new Ext.Panel({
         layout : 'vbox',
+        frame: true,
         layoutConfig: {
             align : 'stretch',
             pack  : 'start'
@@ -63,7 +68,7 @@ function getMainView() {
             {
                 flex:1,
                 layout: 'fit',
-                items: regionListPanel
+                items: regionListOfClassPanel
             },
             {
                 flex:1,
@@ -74,6 +79,7 @@ function getMainView() {
     });
     var classListTabPanel = new Ext.Panel({
         layout : 'hbox',
+        frame: true,
         title : CLASS_LIST,
         iconCls: 'icon-class',
         layoutConfig: {
@@ -94,8 +100,52 @@ function getMainView() {
         ]
     });
 
+
+    var regionListOfPropertyPanel = new Ext.Panel({
+        layout : 'hbox',
+        frame: true,
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items:[
+            {
+                flex:1,
+                layout: 'fit',
+                items: domainClassesOfPropertyListPanel
+            },
+            {
+                flex:1,
+                layout: 'fit',
+                items: rangeClassesOfPropertyListPanel
+            }
+        ]
+    });
+
+    var eastSidePropertyListPanel = new Ext.Panel({
+        layout : 'vbox',
+        frame: true,
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items:[
+            {
+                flex:1,
+                layout: 'fit',
+                items: regionListOfPropertyPanel
+            },
+            {
+                flex:1,
+                layout: 'fit',
+                items: propertyInstanceListPanel
+            }
+        ]
+    });
+
     var propertyListTabPanel = new Ext.Panel({
         layout : 'hbox',
+        frame: true,
         title : PROPERTY_LIST,
         iconCls: 'icon-property',
         layoutConfig: {
@@ -111,7 +161,7 @@ function getMainView() {
             {
                 flex:2,
                 layout: 'fit',
-                items: propertyInstanceListPanel
+                items: eastSidePropertyListPanel
             }
         ]
     });

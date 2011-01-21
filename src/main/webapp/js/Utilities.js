@@ -21,14 +21,16 @@ function getSearchOptionComboBox(name) {
     var searchOptionList = new Ext.data.ArrayStore({
         fields : ["Search_Option", "Search_Option_Value"],
         data : [
-            [SEARCH_OPTION_EXACT_MATCH, "exact_match"],
-            [SEARCH_OPTION_ANY_MATCH, "any_match"],
-            [SEARCH_OPTION_STARTS_WITH, "starts_with"],
-            [SEARCH_OPTION_ENDS_WITH, "ends_with"],
-            [SEARCH_OPTION_SIBLING_CLASSES, "siblings"],
-            [SEARCH_OPTION_SUB_CLASSES, "sub_classes"],
-            [SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS, "properties_of_domain_class"],
-            [SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS, "properties_of_range_class"]
+            [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+            [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
+            [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
+            [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
+            [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
+            [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
+            [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
+            [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
+            [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
+            [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION]
         ]
     });
 
@@ -45,14 +47,16 @@ function getSearchOptionComboBox(name) {
         {
             select: function(combo, value) {
                 var selectedValue = combo.getValue();
-                if (selectedValue == "siblings" || selectedValue == "sub_classes" ||
-                        selectedValue == "properties_of_domain_class" || selectedValue == "properties_of_range_class") {
+                if (selectedValue == SIBLING_CLASSES_SEARCH_OPTION || selectedValue == SUB_CLASSES_SEARCH_OPTION ||
+                        selectedValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || selectedValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION) {
                     Ext.getDom('class_button').checked = true;
+                } else if (selectedValue == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION || selectedValue == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
+                    Ext.getDom('property_button').checked = true;
                 }
             }
         }
     });
-    comboBox.setValue('exact_match');
+    comboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
     return comboBox;
 }
 
@@ -229,24 +233,28 @@ function renderVersionOption(value, metadata, record) {
 
 function renderSearchOption(value, metadata, record) {
     var searchOption = record.get('searchOption');
-    if (searchOption == 'exact_match') {
-        return SEARCH_OPTION_EXACT_MATCH;
-    } else if (searchOption == 'any_match') {
-        return SEARCH_OPTION_ANY_MATCH;
-    } else if (searchOption == 'starts_with') {
-        return SEARCH_OPTION_STARTS_WITH;
-    } else if (searchOption == 'ends_with') {
-        return SEARCH_OPTION_ENDS_WITH;
-    } else if (searchOption == 'siblings') {
-        return SEARCH_OPTION_SIBLING_CLASSES;
-    } else if (searchOption == 'sub_classes') {
-        return SEARCH_OPTION_SUB_CLASSES;
-    } else if (searchOption == 'properties_of_domain_class') {
-        return SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS
-    } else if (searchOption == 'properties_of_range_class') {
-        return SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS
+    if (searchOption == EXACT_MATCH_SEARCH_OPTION) {
+        return EXACT_MATCH;
+    } else if (searchOption == ANY_MATCH_SEARCH_OPTION) {
+        return ANY_MATCH;
+    } else if (searchOption == STARTS_WITH_SEARCH_OPTION) {
+        return STARTS_WITH;
+    } else if (searchOption == ENDS_WITH_SEARCH_OPTION) {
+        return ENDS_WITH;
+    } else if (searchOption == SIBLING_CLASSES_SEARCH_OPTION) {
+        return SIBLING_CLASSES;
+    } else if (searchOption == SUB_CLASSES_SEARCH_OPTION) {
+        return SUB_CLASSES;
+    } else if (searchOption == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION) {
+        return PROPERTIES_OF_DOMAIN_CLASS;
+    } else if (searchOption == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION) {
+        return PROPERTIES_OF_RANGE_CLASS;
+    } else if (searchOption == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
+        return DOMAIN_CLASSES_OF_PROPERTY;
+    } else if (searchOption == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
+        return RANGE_CLASSES_OF_PROPERTY;
     }
-    return SEARCH_OPTION_EXACT_MATCH;
+    return EXACT_MATCH;
 }
 
 function openHistoryAndBookmarkData(record) {

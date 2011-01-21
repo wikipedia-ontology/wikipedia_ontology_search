@@ -102,6 +102,22 @@ public class WikipediaOntologySearch {
         return QueryExecutionFactory.create(query, dbModel);
     }
 
+    public void setQueryResultsForDomainClassesOfProperty(String queryString) {
+        QueryExecution qexec = getQueryExecution(queryString);
+        ResultSet results = qexec.execSelect();
+        try {
+            while (results.hasNext()) {
+                QuerySolution qs = results.nextSolution();
+                Resource cls = (Resource) qs.get("c");
+                resourceSet.add(cls);
+                typeSet.add(cls);
+//                System.out.println(cls);
+            }
+        } finally {
+            qexec.close();
+        }
+    }
+
     public void setQueryResultsForPropertiesOfRegionClass(String queryString) {
         QueryExecution qexec = getQueryExecution(queryString);
         ResultSet results = qexec.execSelect();
@@ -111,7 +127,6 @@ public class WikipediaOntologySearch {
                 Resource property = (Resource) qs.get("p");
                 resourceSet.add(property);
                 typeSet.add(property);
-                System.out.println(property);
             }
         } finally {
             qexec.close();
@@ -184,10 +199,16 @@ public class WikipediaOntologySearch {
                     addStatements(res, outputModel);
                     break;
                 case PROPERTIES_OF_DOMAIN_CLASS:
-                    addStatement(res, RDFS.domain, resName, outputModel);
+                    outputModel.add(res, RDFS.domain, ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + resName));
                     break;
                 case PROPERTIES_OF_RANGE_CLASS:
-                    addStatement(res, RDFS.range, resName, outputModel);
+                    outputModel.add(res, RDFS.range, ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + resName));
+                    break;
+                case DOMAIN_CLASSES_OF_PROPERTY:
+                    outputModel.add(ResourceFactory.createResource(WikipediaOntologyStorage.PROPERTY_NS + resName), RDFS.domain, res);
+                    break;
+                case RANGE_CLASSES_OF_PROPERTY:
+                    outputModel.add(ResourceFactory.createResource(WikipediaOntologyStorage.PROPERTY_NS + resName), RDFS.range, res);
                     break;
                 default:
                     addLabelStatements(res, outputModel);
@@ -486,10 +507,6 @@ public class WikipediaOntologySearch {
             Statement stmt = stmtIter.nextStatement();
             outputModel.add(stmt);
         }
-    }
-
-    private void addStatement(Resource res, Property p, String resName, Model outputModel) {
-        outputModel.add(res, p, ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + resName));
     }
 
     private void addLabelStatements(Resource res, Model outputModel) {

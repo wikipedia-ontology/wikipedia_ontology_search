@@ -80,16 +80,26 @@ var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
 var SEARCH_OPTION = "Search Option";
-var SEARCH_OPTION_EXACT_MATCH = "Exact match";
-var SEARCH_OPTION_ANY_MATCH = "Any match";
-var SEARCH_OPTION_STARTS_WITH = "Starts with";
-var SEARCH_OPTION_ENDS_WITH = "Ends with";
-var SEARCH_OPTION_SIBLING_CLASSES = "Sibling Classes";
-var SEARCH_OPTION_SUB_CLASSES = "Sub Classes";
-var SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS = "Properties of Domain Class";
-var PROPERTIES_OF_DOMAIN_CLASS = SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS;
-var SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS = "Properties of Range Class";
-var PROPERTIES_OF_RANGE_CLASS = SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS;
+var EXACT_MATCH = "Exact match";
+var EXACT_MATCH_SEARCH_OPTION = "exact_match";
+var ANY_MATCH = "Any match";
+var ANY_MATCH_SEARCH_OPTION = "any_match";
+var STARTS_WITH = "Starts with";
+var STARTS_WITH_SEARCH_OPTION = "starts_with";
+var ENDS_WITH = "Ends with";
+var ENDS_WITH_SEARCH_OPTION = "ends_with";
+var SIBLING_CLASSES = "Sibling Classes";
+var SIBLING_CLASSES_SEARCH_OPTION = "sibling_classes";
+var SUB_CLASSES = "Sub Classes";
+var SUB_CLASSES_SEARCH_OPTION = "sub_classes";
+var PROPERTIES_OF_DOMAIN_CLASS = "Properties of a Domain Class";
+var PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION = "properties_of_domain_class";
+var PROPERTIES_OF_RANGE_CLASS = "Properties of a Range Class";
+var PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION = "properties_of_range_class";
+var DOMAIN_CLASSES_OF_PROPERTY = "Domain Classes of a Property";
+var DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION = "domain_classes_of_property";
+var RANGE_CLASSES_OF_PROPERTY = "Range Classes of a Property";
+var RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION = "range_classes_of_property";
 
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;

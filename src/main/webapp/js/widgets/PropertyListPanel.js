@@ -108,5 +108,23 @@ function loadPropertyInstanceData(propertyName) {
             limit : RESOURCE_LIST_SIZE_LIMIT
         }
     });
+    var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
+    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
+            + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
+    domainClassesOfPropertyListTablePanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
+    var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
+    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
+            + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
+    rangeClassesOfPropertyListTablePanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
 }
 

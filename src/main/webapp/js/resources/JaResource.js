@@ -79,17 +79,28 @@ var MANUAL_HTML = "manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
+// 検索オプション関連の定数
 var SEARCH_OPTION = "検索オプション";
-var SEARCH_OPTION_EXACT_MATCH = "完全一致";
-var SEARCH_OPTION_ANY_MATCH = "部分一致";
-var SEARCH_OPTION_STARTS_WITH = "前方一致";
-var SEARCH_OPTION_ENDS_WITH = "後方一致";
-var SEARCH_OPTION_SIBLING_CLASSES = "兄弟クラス";
-var SEARCH_OPTION_SUB_CLASSES = "サブクラス";
-var SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS = "定義域クラスのプロパティ";
-var PROPERTIES_OF_DOMAIN_CLASS = SEARCH_OPTION_PROPERTIES_OF_DMAIN_CLASS;
-var SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS = "値域クラスのプロパティ";
-var PROPERTIES_OF_RANGE_CLASS = SEARCH_OPTION_PROPERTIES_OF_RANGE_CLASS;
+var EXACT_MATCH = "完全一致";
+var EXACT_MATCH_SEARCH_OPTION = "exact_match";
+var ANY_MATCH = "部分一致";
+var ANY_MATCH_SEARCH_OPTION = "any_match";
+var STARTS_WITH = "前方一致";
+var STARTS_WITH_SEARCH_OPTION = "starts_with";
+var ENDS_WITH = "後方一致";
+var ENDS_WITH_SEARCH_OPTION = "ends_with";
+var SIBLING_CLASSES = "兄弟クラス";
+var SIBLING_CLASSES_SEARCH_OPTION = "sibling_classes";
+var SUB_CLASSES = "下位クラス";
+var SUB_CLASSES_SEARCH_OPTION = "sub_classes";
+var PROPERTIES_OF_DOMAIN_CLASS = "定義域クラスのプロパティ";
+var PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION = "properties_of_domain_class";
+var PROPERTIES_OF_RANGE_CLASS = "値域クラスのプロパティ";
+var PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION = "properties_of_range_class";
+var DOMAIN_CLASSES_OF_PROPERTY = "プロパティの定義域";
+var DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION = "domain_classes_of_property";
+var RANGE_CLASSES_OF_PROPERTY = "プロパティの値域";
+var RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION = "range_classes_of_property";
 
 function getSearchKeywordLabel(keyword) {
     return keyword + "を検索";

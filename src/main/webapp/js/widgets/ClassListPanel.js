@@ -110,7 +110,8 @@ function loadClassInstanceData(clsName) {
         }
     });
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
-    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option=properties_of_domain_class");
+    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option="
+            + PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION);
     propertiesOfDomainClassListTablePanel.store.load({
         params : {
             start : 0,
@@ -118,7 +119,8 @@ function loadClassInstanceData(clsName) {
         }
     });
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
-    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option=properties_of_range_class");
+    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option="
+            + PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION);
     propertiesOfRangeClassListTablePanel.store.load({
         params : {
             start : 0,
