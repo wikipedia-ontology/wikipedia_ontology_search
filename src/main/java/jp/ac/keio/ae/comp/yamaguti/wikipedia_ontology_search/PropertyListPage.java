@@ -141,7 +141,7 @@ public class PropertyListPage extends CommonPage {
     }
 
     private List<ClassImpl> getTypeList(InstanceImpl instance) {
-        String queryString = SPARQLQueryMaker.getTypesOfInstanceQueryString(instance);
+        String queryString = SPARQLQueryMaker.getTypesOfInstanceQueryString(instance.getURI());
         List<ClassImpl> typeList = WikipediaOntologyUtils.getClassImplList(queryString, "ja");
         return typeList;
     }

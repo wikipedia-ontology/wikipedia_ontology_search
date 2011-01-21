@@ -5,9 +5,7 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.ResourcePage;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.SearchParameters;
 
 import java.util.Set;
@@ -49,10 +47,10 @@ public class SPARQLQueryMaker {
         return queryString;
     }
 
-    public static String getTypesOfInstanceQueryString(InstanceImpl instance) {
+    public static String getTypesOfInstanceQueryString(String uri) {
         String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class,
                 "sparql_templates/query_types_of_instance.tmpl");
-        String queryString = sparqlTemplateString.replaceAll("\\$INSTANCE", "<" + escape(instance.getURI()) + ">");
+        String queryString = sparqlTemplateString.replaceAll("\\$INSTANCE", "<" + escape(uri) + ">");
         return queryString;
     }
 
@@ -70,20 +68,10 @@ public class SPARQLQueryMaker {
         return sparqlTemplate.replace("<QueryTypeSet>", queryTypeSetString);
     }
 
-    public static String getClassQueryString(SearchParameters searchParameters, String sparqlTemplate) {
+
+    public static String getSiblingAndSubClassesQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
-        String typeFilter = "";
-        switch (searchParameters.getSearchOption()) {
-            case SIBLINGS:
-                typeFilter = "?resource rdfs:subClassOf ?supTargetCls . ?targetCls rdfs:subClassOf ?supTargetCls . ?targetCls  rdfs:label  \""
-                        + resourceName + "\" .";
-                break;
-            case SUB_CLASSES:
-                typeFilter = "?resource rdfs:subClassOf ?targetCls . ?targetCls  rdfs:label \"" + resourceName + "\" .";
-                break;
-        }
-        String queryString = sparqlTemplate.replace("<QueryTypeSet>", typeFilter);
-        return queryString;
+        return sparqlTemplate.replace("$CLASS_NAME", resourceName);
     }
 
     public static String getPropertiesOfRegionClassQueryString(SearchParameters searchParameters, String sparqlTemplate) {
@@ -94,6 +82,22 @@ public class SPARQLQueryMaker {
     public static String getRegionClassesOfPropertyQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
         return sparqlTemplate.replace("$PROPERTY_NAME", resourceName);
+    }
+
+    public static String getResourceByURIQueryString(SearchParameters searchParameters, String sparqlTemplate) {
+        String resource = searchParameters.getResourceName();
+        switch (searchParameters.getResourceType()) {
+            case CLASS:
+                resource = "wikiont_class:" + resource;
+                break;
+            case PROPERTY:
+                resource = "wikiont_property:" + resource;
+                break;
+            case INSTANCE:
+                resource = "wikiont_instance:" + resource;
+                break;
+        }
+        return sparqlTemplate.replace("$RESOURCE", resource);
     }
 
     public static String getResourceQueryString(SearchParameters searchParameters, String sparqlTemplate) {

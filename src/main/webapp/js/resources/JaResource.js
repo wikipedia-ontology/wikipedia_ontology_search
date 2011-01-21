@@ -101,6 +101,10 @@ var DOMAIN_CLASSES_OF_PROPERTY = "プロパティの定義域";
 var DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION = "domain_classes_of_property";
 var RANGE_CLASSES_OF_PROPERTY = "プロパティの値域";
 var RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION = "range_classes_of_property";
+var INSTANCES_OF_CLASS = "クラスのインスタンス";
+var INSTANCES_OF_CLASS_SEARCH_OPTION = "instances_of_class";
+var TYPES_OF_INSTANCE = "インスタンスのタイプ";
+var TYPES_OF_INSTANCE_SEARCH_OPTION = "types_of_instance";
 
 function getSearchKeywordLabel(keyword) {
     return keyword + "を検索";

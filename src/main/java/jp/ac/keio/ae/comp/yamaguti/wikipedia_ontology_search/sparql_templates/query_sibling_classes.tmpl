@@ -1,0 +1,11 @@
+PREFIX  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  wikiont_class:  <http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/>
+
+SELECT ?c
+WHERE
+{
+   ?c rdfs:subClassOf ?supTargetCls.
+   wikiont_class:$CLASS_NAME rdfs:subClassOf ?supTargetCls.
+}
+

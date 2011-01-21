@@ -92,14 +92,18 @@ var SIBLING_CLASSES = "Sibling Classes";
 var SIBLING_CLASSES_SEARCH_OPTION = "sibling_classes";
 var SUB_CLASSES = "Sub Classes";
 var SUB_CLASSES_SEARCH_OPTION = "sub_classes";
-var PROPERTIES_OF_DOMAIN_CLASS = "Properties of a Domain Class";
+var PROPERTIES_OF_DOMAIN_CLASS = "Properties of a domain class";
 var PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION = "properties_of_domain_class";
-var PROPERTIES_OF_RANGE_CLASS = "Properties of a Range Class";
+var PROPERTIES_OF_RANGE_CLASS = "Properties of a range class";
 var PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION = "properties_of_range_class";
-var DOMAIN_CLASSES_OF_PROPERTY = "Domain Classes of a Property";
+var DOMAIN_CLASSES_OF_PROPERTY = "Domain classes of a property";
 var DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION = "domain_classes_of_property";
-var RANGE_CLASSES_OF_PROPERTY = "Range Classes of a Property";
+var RANGE_CLASSES_OF_PROPERTY = "Range classes of a property";
 var RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION = "range_classes_of_property";
+var INSTANCES_OF_CLASS = "Instances of a class";
+var INSTANCES_OF_CLASS_SEARCH_OPTION = "instances_of_class";
+var TYPES_OF_INSTANCE = "Types of a instance";
+var TYPES_OF_INSTANCE_SEARCH_OPTION = "types_of_instance";
 
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;

@@ -9,8 +9,11 @@ import com.google.common.collect.Maps;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.util.FileUtils;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.ClassStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
+import net.java.ao.EntityManager;
+import net.java.ao.Query;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RequestCycle;
@@ -30,6 +33,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -70,7 +74,19 @@ public class ResourcePage extends CommonPage implements Serializable {
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParams);
         Model outputModel = getOutputModel(wikiOntSearch, searchParams);
         long numberOfStatements = outputModel.size();
-        outputModel = getSubOutputModel(outputModel, wikiOntSearch.getSearchParameters());
+        if (searchParams.getSearchOption() == SearchOptionType.INSTANCES_OF_CLASS) {
+            try {
+                String clsName = searchParams.getResourceName();
+                EntityManager em = WikipediaOntologyStorage.getEntityManager();
+                for (ClassStatistics c : em.find(ClassStatistics.class, Query.select().where("classname = ?", clsName))) {
+                    numberOfStatements = c.getInstanceCount();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            outputModel = getSubOutputModel(outputModel, wikiOntSearch.getSearchParameters());
+        }
         wikiOntSearch.closeDB();
         output(outputModel, wikiOntSearch, numberOfStatements);
     }
@@ -87,9 +103,25 @@ public class ResourcePage extends CommonPage implements Serializable {
             String queryString = "";
             if (searchParams.getResourceType() == ResourceType.CLASS
                     && (searchOptionType == SearchOptionType.SIBLINGS || searchOptionType == SearchOptionType.SUB_CLASSES)) {
-                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types.tmpl");
-                queryString = SPARQLQueryMaker.getClassQueryString(searchParams, sparqlTemplateString);
-                wikiOntSearch.setQueryResults(lang, queryString);
+                String sparqlTemplateString = "";
+                switch (searchOptionType) {
+                    case SUB_CLASSES:
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_sub_classes.tmpl");
+                        break;
+                    case SIBLINGS:
+                        sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_sibling_classes.tmpl");
+                        break;
+                }
+                queryString = SPARQLQueryMaker.getSiblingAndSubClassesQueryString(searchParams, sparqlTemplateString);
+                wikiOntSearch.setQueryResultsForClasses(queryString);
+            } else if (searchParams.getResourceType() == ResourceType.CLASS && searchOptionType == SearchOptionType.INSTANCES_OF_CLASS) {
+                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_instances_of_class.tmpl");
+                int limit = searchParams.getLimit();
+                int start = searchParams.getStart();
+                String uri = WikipediaOntologyStorage.CLASS_NS + searchParams.getResourceName();
+                queryString = SPARQLQueryMaker.getIntancesOfClassQueryString(uri, limit, start);
+                List<InstanceImpl> instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, "ja");
+                return wikiOntSearch.getInstancesOfClassQueryResults(uri, instanceList);
             } else if (searchParams.getResourceType() == ResourceType.CLASS
                     && (searchOptionType == SearchOptionType.PROPERTIES_OF_DOMAIN_CLASS || searchOptionType == SearchOptionType.PROPERTIES_OF_RANGE_CLASS)) {
                 String sparqlTemplateString = "";
@@ -102,7 +134,7 @@ public class ResourcePage extends CommonPage implements Serializable {
                         break;
                 }
                 queryString = SPARQLQueryMaker.getPropertiesOfRegionClassQueryString(searchParams, sparqlTemplateString);
-                wikiOntSearch.setQueryResultsForPropertiesOfRegionClass(queryString);
+                wikiOntSearch.setQueryResultsForProperties(queryString);
             } else if (searchParams.getResourceType() == ResourceType.PROPERTY
                     && (searchOptionType == SearchOptionType.DOMAIN_CLASSES_OF_PROPERTY || searchOptionType == SearchOptionType.RANGE_CLASSES_OF_PROPERTY)) {
                 String sparqlTemplateString = "";
@@ -115,11 +147,23 @@ public class ResourcePage extends CommonPage implements Serializable {
                         break;
                 }
                 queryString = SPARQLQueryMaker.getRegionClassesOfPropertyQueryString(searchParams, sparqlTemplateString);
-                wikiOntSearch.setQueryResultsForDomainClassesOfProperty(queryString);
+                wikiOntSearch.setQueryResultsForClasses(queryString);
+            } else if (searchParams.getResourceType() == ResourceType.INSTANCE && searchOptionType == SearchOptionType.TYPES_OF_INSTANCE) {
+                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types_of_instance.tmpl");
+                String uri = WikipediaOntologyStorage.INSTANCE_NS + searchParams.getResourceName();
+                queryString = SPARQLQueryMaker.getTypesOfInstanceQueryString(uri);
+                List<ClassImpl> typeList = WikipediaOntologyUtils.getClassImplList(queryString, "ja");
+                return wikiOntSearch.getTypesOfInstanceQueryResults(uri, typeList);
             } else {
-                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource.tmpl");
-                queryString = SPARQLQueryMaker.getResourceQueryString(searchParams, sparqlTemplateString);
-                wikiOntSearch.setQueryResults(lang, queryString);
+                if (searchParams.getSearchTarget() == SearchTargetType.LABEL) {
+                    String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource.tmpl");
+                    queryString = SPARQLQueryMaker.getResourceQueryString(searchParams, sparqlTemplateString);
+                    wikiOntSearch.setQueryResults(lang, queryString);
+                } else {
+                    String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource_by_uri.tmpl");
+                    queryString = SPARQLQueryMaker.getResourceByURIQueryString(searchParams, sparqlTemplateString);
+                    return wikiOntSearch.getResourceByURIQueryResults(queryString);
+                }
             }
         } else {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types.tmpl");

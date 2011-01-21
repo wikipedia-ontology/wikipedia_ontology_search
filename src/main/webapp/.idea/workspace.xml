@@ -42,37 +42,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SearchAction.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/actions/SearchAction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="0" selection-start="1069" selection-end="1069" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="RegionClassesOfPropertyListPanel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/widgets/RegionClassesOfPropertyListPanel.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="52" column="0" selection-start="1673" selection-end="1673" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PropertyListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/PropertyListPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="96" column="0" selection-start="3247" selection-end="3247" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClassListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/ClassListPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="0" selection-start="3088" selection-end="3088" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -87,10 +60,55 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainView.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MainView.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/widgets/MainView.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="22" selection-start="2529" selection-end="2529" vertical-scroll-proportion="0.64506173">
+            <state line="62" column="0" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SearchPanel.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/widgets/SearchPanel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utilities.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/Utilities.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="147" column="0" selection-start="5724" selection-end="5724" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SearchAction.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/actions/SearchAction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="50" column="68" selection-start="1955" selection-end="1955" vertical-scroll-proportion="0.20952381">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JaResource.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/resources/JaResource.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="81" column="0" selection-start="2573" selection-end="2573" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnResource.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/resources/EnResource.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="78" column="0" selection-start="2974" selection-end="2974" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -115,10 +133,6 @@
         <option value="$PROJECT_DIR$/manual.html" />
         <option value="$PROJECT_DIR$/my_resources/extjs_mystyle.css" />
         <option value="$PROJECT_DIR$/js/widgets/ClassListPanel.js" />
-        <option value="$PROJECT_DIR$/js/resources/JaResource.js" />
-        <option value="$PROJECT_DIR$/js/resources/EnResource.js" />
-        <option value="$PROJECT_DIR$/js/Utilities.js" />
-        <option value="$PROJECT_DIR$/js/actions/SearchAction.js" />
         <option value="$PROJECT_DIR$/js/widgets/PropertyListPanel.js" />
         <option value="$PROJECT_DIR$/js/widgets/RegionClassesOfPropertyListPanel.js" />
         <option value="$PROJECT_DIR$/js/lib/SplitVBoxLayout.js" />
@@ -126,6 +140,10 @@
         <option value="$PROJECT_DIR$/search.html" />
         <option value="$PROJECT_DIR$/en_search.html" />
         <option value="$PROJECT_DIR$/js/widgets/MainView.js" />
+        <option value="$PROJECT_DIR$/js/resources/JaResource.js" />
+        <option value="$PROJECT_DIR$/js/resources/EnResource.js" />
+        <option value="$PROJECT_DIR$/js/Utilities.js" />
+        <option value="$PROJECT_DIR$/js/actions/SearchAction.js" />
       </list>
     </option>
   </component>
@@ -385,41 +403,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/resources/JaResource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="0" selection-start="2442" selection-end="2442" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/resources/EnResource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="0" selection-start="2938" selection-end="2938" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/SearchPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Utilities.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="287" column="0" selection-start="10376" selection-end="10376" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/actions/SearchAction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="1069" selection-end="1069" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/widgets/ClassListPanel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="95" column="0" selection-start="3088" selection-end="3088" vertical-scroll-proportion="0.0">
@@ -464,7 +447,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/widgets/MainView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="22" selection-start="2529" selection-end="2529" vertical-scroll-proportion="0.64506173">
+        <state line="62" column="0" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/widgets/SearchPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/resources/EnResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="0" selection-start="2974" selection-end="2974" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/resources/JaResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="0" selection-start="2573" selection-end="2573" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Utilities.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="147" column="0" selection-start="5724" selection-end="5724" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/actions/SearchAction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="68" selection-start="1955" selection-end="1955" vertical-scroll-proportion="0.20952381">
           <folding />
         </state>
       </provider>

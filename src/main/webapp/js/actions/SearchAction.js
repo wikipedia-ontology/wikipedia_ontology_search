@@ -48,13 +48,17 @@ function searchWikipediaOntology2(keyword) {
     } else {
         var searchOptionValue = searchOptionSelection.getValue();
         if (searchOptionValue == SIBLING_CLASSES_SEARCH_OPTION || searchOptionValue == SUB_CLASSES_SEARCH_OPTION ||
-                searchOptionValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || searchOptionValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION) {
+                searchOptionValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || searchOptionValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION ||
+                searchOptionValue == INSTANCES_OF_CLASS_SEARCH_OPTION) {
             queryType = "class";
             Ext.getDom('class_button').checked = true;
         } else if (searchOptionValue == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION ||
                 searchOptionValue == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
             queryType = "property";
             Ext.getDom('property_button').checked = true;
+        } else if (searchOptionValue == TYPES_OF_INSTANCE_SEARCH_OPTION) {
+            queryType = "instance";
+            Ext.getDom('instance_button').checked = true;
         }
         queryURL += queryType + '/' + TABLE_DATA_PATH + keyword;
         if (searchOptionValue != EXACT_MATCH_SEARCH_OPTION) {

@@ -11,7 +11,7 @@ import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.CommonPage;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.IndexPage;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.HomePage;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
@@ -51,7 +51,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getClassIconSReference() {
-        return new ResourceReference(IndexPage.class, "myresources/icons/class_icon_s.png");
+        return new ResourceReference(HomePage.class, "myresources/icons/class_icon_s.png");
     }
 
     public static Image getClassIconS(String id) {
@@ -59,7 +59,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getPropertyIconSReference() {
-        return new ResourceReference(IndexPage.class, "myresources/icons/property_icon_s.png");
+        return new ResourceReference(HomePage.class, "myresources/icons/property_icon_s.png");
     }
 
     public static Image getPropertyIconS(String id) {
@@ -67,7 +67,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getInstanceIconSReference() {
-        return new ResourceReference(IndexPage.class, "myresources/icons/instance_icon_s.png");
+        return new ResourceReference(HomePage.class, "myresources/icons/instance_icon_s.png");
     }
 
     public static Image getInstanceIconS(String id) {
@@ -75,7 +75,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getMinusIconReference() {
-        return new ResourceReference(IndexPage.class, "myresources/icons/elbow-minus-nl.gif");
+        return new ResourceReference(HomePage.class, "myresources/icons/elbow-minus-nl.gif");
     }
 
     public static Image getMinusIcon(String id) {
@@ -83,7 +83,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getPlusIconReference() {
-        return new ResourceReference(IndexPage.class, "myresources/icons/elbow-end-plus-nl.gif");
+        return new ResourceReference(HomePage.class, "myresources/icons/elbow-end-plus-nl.gif");
     }
 
     public static Image getPlusIcon(String id) {
@@ -91,7 +91,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getRDFIconReference() {
-        return new ResourceReference(IndexPage.class, "myresources/icons/rdf_w3c_icon.16.png");
+        return new ResourceReference(HomePage.class, "myresources/icons/rdf_w3c_icon.16.png");
     }
 
     public static Image getRDFIcon(String id) {
@@ -107,6 +107,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static List<InstanceImpl> getInstanceImplList(String queryString, String lang) {
+        System.out.println(queryString);
         Query query = QueryFactory.create(queryString);
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
         Model dbModel = wikiOntStrage.getTDBModel();

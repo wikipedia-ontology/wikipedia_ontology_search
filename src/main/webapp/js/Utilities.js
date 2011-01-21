@@ -30,7 +30,9 @@ function getSearchOptionComboBox(name) {
             [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
             [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
             [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-            [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION]
+            [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION],
+            [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION],
+            [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION]
         ]
     });
 
@@ -48,10 +50,13 @@ function getSearchOptionComboBox(name) {
             select: function(combo, value) {
                 var selectedValue = combo.getValue();
                 if (selectedValue == SIBLING_CLASSES_SEARCH_OPTION || selectedValue == SUB_CLASSES_SEARCH_OPTION ||
-                        selectedValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || selectedValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION) {
+                        selectedValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || selectedValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION||
+                        selectedValue == INSTANCES_OF_CLASS_SEARCH_OPTION) {
                     Ext.getDom('class_button').checked = true;
                 } else if (selectedValue == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION || selectedValue == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
                     Ext.getDom('property_button').checked = true;
+                } else if (selectedValue == TYPES_OF_INSTANCE_SEARCH_OPTION) {
+                    Ext.getDom('instance_button').checked = true;
                 }
             }
         }

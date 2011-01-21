@@ -22,6 +22,7 @@ public class SearchParameters {
     private ResourceType resourceType;
     private DataType dataType;
     private Set<String> typeSet;
+    private SearchTargetType searchTarget;
     private SearchOptionType searchOption;
     private InferenceType inferenceType;
 
@@ -31,6 +32,7 @@ public class SearchParameters {
         version = getVersion(params.getString("version"));
         resourceName = getResourceName(params.getString("resource_name"));
         typeSet = getTypeSet(params.getStringArray("type"));
+        searchTarget = getSearchTargetType(params.getString("search_target", "uri"));
         searchOption = getSearchOptionType(params.getString("search_option", "exact_match"));
         inferenceType = getInferenceType(params.getString("inference_type", "none"));
         start = params.getInt("start", 0);
@@ -100,6 +102,15 @@ public class SearchParameters {
         return typeSet;
     }
 
+    private SearchTargetType getSearchTargetType(String st) {
+        if (st.equals("uri")) {
+            return SearchTargetType.URI;
+        } else if (st.equals("label")) {
+            return SearchTargetType.LABEL;
+        }
+        return SearchTargetType.URI;
+    }
+
     private SearchOptionType getSearchOptionType(String so) {
         if (so.equals("exact_match")) {
             return SearchOptionType.EXACT_MATCH;
@@ -121,6 +132,10 @@ public class SearchParameters {
             return SearchOptionType.DOMAIN_CLASSES_OF_PROPERTY;
         } else if (so.equals("range_classes_of_property")) {
             return SearchOptionType.RANGE_CLASSES_OF_PROPERTY;
+        } else if (so.equals("instances_of_class")) {
+            return SearchOptionType.INSTANCES_OF_CLASS;
+        } else if (so.equals("types_of_instance")) {
+            return SearchOptionType.TYPES_OF_INSTANCE;
         }
         return SearchOptionType.EXACT_MATCH;
     }
@@ -138,6 +153,10 @@ public class SearchParameters {
 
     public int getLimit() {
         return limit;
+    }
+
+    public SearchTargetType getSearchTarget() {
+        return searchTarget;
     }
 
     public SearchOptionType getSearchOption() {
