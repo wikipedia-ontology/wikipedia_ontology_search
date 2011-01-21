@@ -11,24 +11,11 @@
 
 body {
     margin: auto;
-    filter: progid :
-        DXImageTransform.Microsoft.Gradient (
-                 GradientType =                       0, StartColorStr =
-
-             gray, EndColorStr =
-                     #eee );
-    background-image:
-        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAJYCAYAAACjC4yfAAAAVElEQVRIiWNoaGj4z8TAwMCARDAyMjKgi+GUwKmYTPNoYijdHDmYQoNuoTskHDm0PT0aGsPM0wPvyMEUGqNF1WD19GhojKZTki2itqcHU+gODkcCAEOmCHg0DmlYAAAAAElFTkSuQmCC")
-        ;
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType = 0, StartColorStr = gray, EndColorStr = #eee);
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAJYCAYAAACjC4yfAAAAVElEQVRIiWNoaGj4z8TAwMCARDAyMjKgi+GUwKmYTPNoYijdHDmYQoNuoTskHDm0PT0aGsPM0wPvyMEUGqNF1WD19GhojKZTki2itqcHU+gODkcCAEOmCHg0DmlYAAAAAElFTkSuQmCC");
     background-repeat: repeat-x;
     background-color: #eee;
-    filter: progid :
-        DXImageTransform.Microsoft.Gradient (
-
-                 GradientType =                       0, StartColorStr =
-
-             gray, EndColorStr =
-                     #eee );
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType = 0, StartColorStr = gray, EndColorStr = #eee);
 }
 
 .container {
@@ -91,7 +78,7 @@ body {
     padding: 0 20px;
 }
 
-.menu ul li a:hover,.menu_ul1 ul li a.selected {
+.menu ul li a:hover, .menu_ul1 ul li a.selected {
     color: #A52A2A;
     text-decoration: underline;
 }
@@ -123,7 +110,7 @@ ol li {
     font-size: 90%;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: arial, sans-serif;
 }
 
@@ -189,7 +176,7 @@ table {
     border-spacing: 0;
 }
 
-td,th {
+td, th {
     border-style: solid;
     border-width: 1px;
     border-color: #E3E3E3;
@@ -205,29 +192,29 @@ th {
 }
 
 .sparql_query_info_container {
-   text-align: center;
-   margin-left: auto;
-   margin-right: auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-table.sparql_query_info_table  {
-   width: 100%;
-   margin: 1em 0;
+table.sparql_query_info_table {
+    width: 100%;
+    margin: 1em 0;
 }
 
-table.sparql_query_info_table td,th {
+table.sparql_query_info_table td, th {
     padding: 3px 3px;
     text-align: center;
     font-size: 80%;
 }
 
 table.sparql_query_info_table td.description {
-   text-align: left;
+    text-align: left;
 }
 
 .error_message {
-  color: red;
-  font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
 
 pre {
@@ -279,7 +266,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.show_types_style,.show_instances_style {
+.show_types_style, .show_instances_style {
     background-color: #eee;
     font-size: 90%;
     margin-right: 0.5em;
@@ -302,11 +289,12 @@ a:hover {
 }
 
 .server_name_style {
-    color: #gray;
+    color: gray;
     background-color: lightgray;
     padding: 0.1em 1em;
     margin-left: 2em;
-    border-color: lightgray border-style :    solid;
+    border-color: lightgray;
+    border-style: solid;
     border-width: thin;
 }
 
@@ -324,46 +312,41 @@ a img {
     border-width: thin 0 0 0;
 }
 
-label
-{
-margin-right: 0.5em;
+label {
+    margin-right: 0.5em;
 }
 
-.submit input
-{
-margin-left: 4.5em;
+.submit input {
+    margin-left: 4.5em;
 }
 
-input, textarea
-{
+input, textarea {
     background: #F5F5F5;
-border: 1px solid gray
+    border: 1px solid gray
 }
 
-input.submit
-{
+input.submit {
     color: #000;
     background: #F5F5F5;
-    border: 2px outset #d7b9c9
+    border: 2px;
+    outset: #d7b9c9;
     font-size: 120%;
     width: 5em;
 }
 
-fieldset
-{
-border: 1px solid gray;
-width: 820px;
+fieldset {
+    border: 1px solid gray;
+    width: 820px;
 }
 
-legend
-{
-color: black;
-font-weight:bold;
-background: lightgray;
-border: 1px solid gray;
-padding: 2px 6px
+legend {
+    color: black;
+    font-weight: bold;
+    background: lightgray;
+    border: 1px solid gray;
+    padding: 2px 6px
 }
 
 form p {
- text-indent: 0;
+    text-indent: 0;
 }
