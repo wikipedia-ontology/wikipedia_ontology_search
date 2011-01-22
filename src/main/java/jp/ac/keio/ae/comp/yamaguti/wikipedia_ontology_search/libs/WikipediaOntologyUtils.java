@@ -166,21 +166,21 @@ public class WikipediaOntologyUtils {
         QueryExecution qexec = QueryExecutionFactory.create(query, dbModel);
         com.hp.hpl.jena.query.ResultSet results = qexec.execSelect();
 
-        List<ClassImpl> instanceList = Lists.newArrayList();
+        List<ClassImpl> clsList = Lists.newArrayList();
         try {
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
                 Resource resource = (Resource) qs.get("type");
                 Literal label = (Literal) qs.get("label");
                 ClassImpl cls = new ClassImpl(lang, resource.getURI(), label.toString());
-                if (!instanceList.contains(cls)) {
-                    instanceList.add(cls);
+                if (!clsList.contains(cls)) {
+                    clsList.add(cls);
                 }
             }
         } finally {
             qexec.close();
         }
-        return instanceList;
+        return clsList;
     }
 
     public static HeaderContributor getJsPackageResource(String path) {
@@ -403,7 +403,11 @@ public class WikipediaOntologyUtils {
         } else if (res.getURI().contains(WikipediaOntologyStorage.PROPERTY_NS)) {
             localName = res.getURI().split("property/")[1];
         } else if (res.getURI().contains(WikipediaOntologyStorage.INSTANCE_NS)) {
-            localName = res.getURI().split("instance/")[1];
+            if (res.getURI().split("instance/").length == 2) {
+                localName = res.getURI().split("instance/")[1];
+            } else {
+                return null;
+            }
         } else {
             return null;
         }

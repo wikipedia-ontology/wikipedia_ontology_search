@@ -28,18 +28,22 @@ function getSearchOptionList() {
                         [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
                         [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
                         [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
-                        [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION]
+                        [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION],
+                        [PATH_TO_ROOT_CLASS, PATH_TO_ROOT_CLASS_SEARCH_OPTION],
+                        [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
                     ];
                 case QTYPE_PROPERTY:
                     return [
                         [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
                         [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-                        [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION]
+                        [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION],
+                        [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
                     ];
                 case QTYPE_INSTANCE:
                     return [
                         [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                        [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION]
+                        [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION],
+                        [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
                     ];
             }
             break;
@@ -63,7 +67,9 @@ function getSearchOptionComboBox(id) {
             [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
             [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
             [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
-            [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION]
+            [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION],
+            [PATH_TO_ROOT_CLASS, PATH_TO_ROOT_CLASS_SEARCH_OPTION],
+            [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
         ]
     });
 
@@ -85,6 +91,7 @@ function getSearchOptionComboBox(id) {
                     case PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION:
                     case PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION:
                     case INSTANCES_OF_CLASS_SEARCH_OPTION:
+                    case PATH_TO_ROOT_CLASS_SEARCH_OPTION:
                         Ext.getDom('class_button').checked = true;
                         break;
                     case DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION:
@@ -138,7 +145,6 @@ function renderKeyword(value, metadata, record) {
 }
 
 function makeClassContextMenu(keyword) {
-    searchTargetType = URI_SEARCH_TARGET_OPTION;
     return new Ext.menu.Menu({
         style : {
             overflow : 'visible'
@@ -198,7 +204,6 @@ function searchKeyWord(keyword) {
 }
 
 function makeInstanceAndPropertyContextMenu(keyword, type) {
-    searchTargetType = URI_SEARCH_TARGET_OPTION;
     return new Ext.menu.Menu({
         style : {
             overflow : 'visible'
@@ -308,6 +313,10 @@ function renderSearchOption(value, metadata, record) {
             return INSTANCES_OF_CLASS;
         case TYPES_OF_INSTANCE_SEARCH_OPTION:
             return TYPES_OF_INSTANCE;
+        case INVERSE_STATEMENTS_SEARCH_OPTION:
+            return INVERSE_STATEMENTS;
+        case PATH_TO_ROOT_CLASS_SEARCH_OPTION:
+            return PATH_TO_ROOT_CLASS;
     }
     return EXACT_MATCH;
 }

@@ -17,12 +17,19 @@ function getInstanceListTableDataStore(type) {
     });
     var panelName = "";
     var dataURL = "";
-    if (type == CLASS) {
-        panelName = "ClassInstanceListTablePanel";
-        dataURL = CLASS_LIST_DATA_URL;
-    } else if (type == PROPERTY) {
-        panelName = "PropertyInstanceListTablePanel";
-        dataURL = PROPERTY_LIST_DATA_URL;
+    switch (type) {
+        case CLASS:
+            panelName = "ClassInstanceListTablePanel";
+            dataURL = CLASS_LIST_DATA_URL;
+            break;
+        case PROPERTY:
+            panelName = "PropertyInstanceListTablePanel";
+            dataURL = PROPERTY_LIST_DATA_URL;
+            break;
+        case INSTANCE:
+            panelName = "InstanceListTablePanel";
+            dataURL = INSTANCE_LIST_DATA_URL;
+            break;
     }
     return new Ext.data.Store({
         reader : reader,
@@ -44,10 +51,18 @@ function getInstanceListTableDataStore(type) {
 
 function getInstanceListPanel(type) {
     var panelIdLabel = "";
-    if (type == CLASS) {
-        panelIdLabel = "ClassInstance";
-    } else if (type == PROPERTY) {
-        panelIdLabel = "PropertyInstance";
+    var cellClickListener = openInstanceByCellClick;
+    switch (type) {
+        case CLASS:
+            panelIdLabel = "ClassInstance";
+            break;
+        case PROPERTY:
+            panelIdLabel = "PropertyInstance";
+            break;
+        case INSTANCE:
+            panelIdLabel = "Instance";
+            cellClickListener = loadInstanceTypeByCellClick
+            break;
     }
     var instanceListTableDataStore = getInstanceListTableDataStore(type);
 
@@ -78,7 +93,7 @@ function getInstanceListPanel(type) {
         bbar : pagingToolBar,
         stripeRows : true,
         listeners : {
-            cellclick : openInstanceByCellClick,
+            cellclick : cellClickListener,
             cellcontextmenu : showInstanceContextMenu
         }
     });
@@ -90,6 +105,19 @@ function showInstanceContextMenu(grid, rowIndex, cellIndex, e) {
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
     queryType = QTYPE_INSTANCE;
     makeInstanceContextMenu(keyword).showAt(e.getXY());
+}
+
+function loadInstanceTypeByCellClick(grid, rowIndex, columnIndex, e) {
+    var uri = e.getTarget().children.item(1).toString();
+    var instanceName = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var instanceTypeListPanel = Ext.getCmp("InstanceTypeListTablePanel");
+    instanceTypeListPanel.store.proxy = getProxy(INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
+    instanceTypeListPanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
 }
 
 function openInstanceByCellClick(grid, rowIndex, columnIndex, e) {

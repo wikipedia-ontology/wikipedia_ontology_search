@@ -50,6 +50,8 @@ public class WikipediaOntologyStorage {
             + "refined_wikipedia_ontology_english_instance_2009_10_27.owl";
     private static final String JA_WIKIPEDIA_ONTOLOGY_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
             + "refined_wikipedia_ontology_20101114ja.owl";
+    private static final String JA_WIKIPEDIA_INSTANCE_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH
+            + "wikipediaontology_instance_20101114ja.rdf";
 
     public WikipediaOntologyStorage() {
     }
@@ -58,8 +60,8 @@ public class WikipediaOntologyStorage {
         if (em == null) {
             try {
                 em = new EntityManager(new H2DatabaseProvider("jdbc:h2:" + H2_DB_PROTOCOL + H2_DB_PATH
-                        + "/wikipedia_ontology_statistics", "wikipedia_ontology", "wikiont"));
-                em.migrate(ClassStatistics.class, PropertyStatistics.class, TripleStatistics.class);
+                        + "/wikipedia_ontology_statistics_" + VERSION, "wikipedia_ontology", "wikiont"));
+                em.migrate(ClassStatistics.class, PropertyStatistics.class, InstanceStatistics.class, TripleStatistics.class);
             } catch (SQLException sqle) {
                 sqle.printStackTrace();
             }
@@ -107,21 +109,13 @@ public class WikipediaOntologyStorage {
     }
 
     public static void storeWikipediaOntologyAndInstanceMemModel(boolean isInfModel, String lang, Model tdbModel) {
-        Model instanceModel = ModelFactory.createDefaultModel();
-        Model ontModel = ModelFactory.createDefaultModel();
+        Model ontModel = null;
+        Model instanceModel = null;
         if (lang.equals("ja")) {
-            Model ontologyAndInstanceModel = FileManager.get().loadModel(JA_WIKIPEDIA_ONTOLOGY_FILE_PATH);
-            for (StmtIterator stmtIter = ontologyAndInstanceModel.listStatements(); stmtIter.hasNext();) {
-                Statement stmt = stmtIter.nextStatement();
-                String subjectURI = stmt.getSubject().getURI();
-                if (subjectURI.contains(CLASS_NS) || subjectURI.contains(PROPERTY_NS)) {
-                    ontModel.add(stmt);
-                } else {
-                    instanceModel.add(stmt);
-                }
-            }
+            ontModel = FileManager.get().loadModel(JA_WIKIPEDIA_ONTOLOGY_FILE_PATH);
+            instanceModel = FileManager.get().loadModel(JA_WIKIPEDIA_INSTANCE_FILE_PATH);
         } else if (lang.equals("en")) {
-            instanceModel.add(FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH));
+            instanceModel = FileManager.get().loadModel(ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH);
         }
 
         Model model = null;
@@ -141,8 +135,8 @@ public class WikipediaOntologyStorage {
             System.out.println("wikipedia ontology and instance (inference) triple size: " + stmtCnt);
         } else {
             model = ModelFactory.createDefaultModel();
-            model.add(instanceModel);
             model.add(ontModel);
+            model.add(instanceModel);
             int stmtCnt = 0;
             for (StmtIterator stmtIter = model.listStatements(); stmtIter.hasNext();) {
                 stmtCnt++;
@@ -295,7 +289,7 @@ public class WikipediaOntologyStorage {
 
     public static void main(String[] args) {
 //        storeWikipediaOntologyAndInstanceToTDB("ja", false);
-        storeWikipediaOntologyAndInstanceToTDB("ja", true);
+//        storeWikipediaOntologyAndInstanceToTDB("ja", true);
         // storeWikipediaOntologyAndInstanceToTDB("en", false);
         // storeWikipediaOntologyAndInstanceToDB(isInfModel, lang);
         // storeEnglishWikipediaInstanceToDB();

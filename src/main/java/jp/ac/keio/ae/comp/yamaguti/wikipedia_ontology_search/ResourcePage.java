@@ -68,7 +68,7 @@ public class ResourcePage extends CommonPage implements Serializable {
             }
             return;
         } else {
-            System.out.println("memcached null");
+            System.out.println("memcached: cash does not exist.");
         }
         WikipediaOntologySearch wikiOntSearch = new WikipediaOntologySearch(searchParams);
         Model outputModel = getOutputModel(wikiOntSearch, searchParams);
@@ -90,6 +90,8 @@ public class ResourcePage extends CommonPage implements Serializable {
         output(outputModel, wikiOntSearch, numberOfStatements);
     }
 
+    private static final String ALL_CLASSES = "E:/Users/t_morita/wikipedia_ontology/ALLClasses.owl";
+
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
         String lang = wikiOntSearch.setTDBModel();
         String rdfString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getRDFKey());
@@ -98,6 +100,10 @@ public class ResourcePage extends CommonPage implements Serializable {
         }
         Set<String> typeSet = searchParams.getTypeSet();
         SearchOptionType searchOptionType = searchParams.getSearchOption();
+        if (searchParams.getResourceName().equals("ALLClasses")) {
+            System.out.println("ALLClasses");
+            return FileManager.get().loadModel(ALL_CLASSES);
+        }
         if (typeSet.size() == 0) {
             String queryString = "";
             if (searchParams.getResourceType() == ResourceType.CLASS
@@ -114,7 +120,6 @@ public class ResourcePage extends CommonPage implements Serializable {
                 queryString = SPARQLQueryMaker.getSiblingAndSubClassesQueryString(searchParams, sparqlTemplateString);
                 wikiOntSearch.setQueryResultsForClasses(queryString);
             } else if (searchParams.getResourceType() == ResourceType.CLASS && searchOptionType == SearchOptionType.INSTANCES_OF_CLASS) {
-                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_instances_of_class.tmpl");
                 int limit = searchParams.getLimit();
                 int start = searchParams.getStart();
                 String uri = WikipediaOntologyStorage.CLASS_NS + searchParams.getResourceName();
@@ -134,6 +139,8 @@ public class ResourcePage extends CommonPage implements Serializable {
                 }
                 queryString = SPARQLQueryMaker.getPropertiesOfRegionClassQueryString(searchParams, sparqlTemplateString);
                 wikiOntSearch.setQueryResultsForProperties(queryString);
+            } else if (searchParams.getResourceType() == ResourceType.CLASS && searchOptionType == SearchOptionType.PATH_TO_ROOT_CLASS) {
+                return wikiOntSearch.getPathToRootClassQueryResults();
             } else if (searchParams.getResourceType() == ResourceType.PROPERTY
                     && (searchOptionType == SearchOptionType.DOMAIN_CLASSES_OF_PROPERTY || searchOptionType == SearchOptionType.RANGE_CLASSES_OF_PROPERTY)) {
                 String sparqlTemplateString = "";
@@ -153,6 +160,10 @@ public class ResourcePage extends CommonPage implements Serializable {
                 queryString = SPARQLQueryMaker.getTypesOfInstanceQueryString(uri);
                 List<ClassImpl> typeList = WikipediaOntologyUtils.getClassImplList(queryString, "ja");
                 return wikiOntSearch.getTypesOfInstanceQueryResults(uri, typeList);
+            } else if (searchOptionType == SearchOptionType.INVERSE) {
+                String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_inverse_statements.tmpl");
+                queryString = SPARQLQueryMaker.getInverseStatementsQueryString(searchParams, sparqlTemplateString);
+                return wikiOntSearch.getInverseStatementsQueryResults(queryString);
             } else {
                 if (searchParams.getSearchTarget() == SearchTargetType.LABEL) {
                     String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_resource_by_label.tmpl");
@@ -167,7 +178,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         } else {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types.tmpl");
             String queryString = SPARQLQueryMaker.getTypeSetQueryString(searchParams, sparqlTemplateString);
-            wikiOntSearch.setQueryResults2(queryString);
+            return wikiOntSearch.getTypesResults(queryString);
         }
         return wikiOntSearch.getOutputModel();
     }

@@ -54,33 +54,27 @@ public class WikipediaOntologySearch {
         return wikiOntStrage.getTDBModel();
     }
 
-    public void setQueryResults2(String queryString) {
-        Set<String> typeNameSet = searchParameters.getTypeSet();
-        QueryExecution qexec = getQueryExecution(queryString);
-        ResultSet results = qexec.execSelect();
+    public Model getTypesResults(String queryString) {
+        Model outputModel = ModelFactory.createDefaultModel();
+        QueryExecution qexec = null;
         try {
+            qexec = getQueryExecution(queryString);
+            ResultSet results = qexec.execSelect();
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
-                Resource resource = (Resource) qs.get("resource");
-                resourceSet.add(resource);
+                Resource resource = qs.getResource("resource");
+                RDFNode label = qs.get("label");
+                outputModel.add(resource, RDFS.label, label);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            qexec.close();
-        }
-
-        Set<String> typeStringSet = Sets.newHashSet();
-        for (String keyWord : typeNameSet) {
-            typeStringSet.add(WikipediaOntologyStorage.CLASS_NS + keyWord);
-        }
-
-        for (Resource res : resourceSet) {
-            for (NodeIterator nodeIter = dbModel.listObjectsOfProperty(res, RDF.type); nodeIter.hasNext();) {
-                Resource type = (Resource) nodeIter.nextNode();
-                if (typeStringSet.contains(type.getURI())) {
-                    typeSet.add(type);
-                }
+            if (qexec == null) {
+                qexec.close();
             }
         }
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+        return outputModel;
     }
 
     public String setTDBModel() {
@@ -103,9 +97,10 @@ public class WikipediaOntologySearch {
     }
 
     public void setQueryResultsForClasses(String queryString) {
-        QueryExecution qexec = getQueryExecution(queryString);
-        ResultSet results = qexec.execSelect();
+        QueryExecution qexec = null;
         try {
+            qexec = getQueryExecution(queryString);
+            ResultSet results = qexec.execSelect();
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
                 Resource cls = (Resource) qs.get("c");
@@ -113,26 +108,55 @@ public class WikipediaOntologySearch {
                 typeSet.add(cls);
 //                System.out.println(cls);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            qexec.close();
+            if (qexec != null) {
+                qexec.close();
+            }
+        }
+    }
+
+    public Model getPathToRootClassQueryResults() {
+        Model outputModel = ModelFactory.createDefaultModel();
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+        String clsName = searchParameters.getResourceName();
+        Resource clsResource = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + clsName);
+        Model ontModel = wikiOntStrage.getTDBModel();
+        addSuperClasses(ontModel, clsResource, outputModel);
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+        return outputModel;
+    }
+
+    private void addSuperClasses(Model ontModel, Resource clsResource, Model outputModel) {
+        for (NodeIterator nodeIter = ontModel.listObjectsOfProperty(clsResource, RDFS.subClassOf); nodeIter.hasNext();) {
+            RDFNode supClass = nodeIter.nextNode();
+            outputModel.add(clsResource, RDFS.subClassOf, supClass);
+            if (supClass.isResource()) {
+                addSuperClasses(ontModel, (Resource) supClass, outputModel);
+            }
         }
     }
 
     public void setQueryResultsForProperties(String queryString) {
-        QueryExecution qexec = getQueryExecution(queryString);
-        ResultSet results = qexec.execSelect();
+        QueryExecution qexec = null;
         try {
+            qexec = getQueryExecution(queryString);
+            ResultSet results = qexec.execSelect();
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
                 Resource property = (Resource) qs.get("p");
                 resourceSet.add(property);
                 typeSet.add(property);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            qexec.close();
+            if (qexec != null) {
+                qexec.close();
+            }
         }
     }
-
 
     public Model getTypesOfInstanceQueryResults(String instanceURI, List<ClassImpl> typeList) {
         Model outputModel = ModelFactory.createDefaultModel();
@@ -158,68 +182,103 @@ public class WikipediaOntologySearch {
         return outputModel;
     }
 
-    public Model getResourceByURIQueryResults(String queryString) {
-        ResourceType resourceType = searchParameters.getResourceType();
-        String resName = searchParameters.getResourceName();
+    public Model getInverseStatementsQueryResults(String queryString) {
         Model outputModel = ModelFactory.createDefaultModel();
-        Resource subject = null;
+        QueryExecution qexec = null;
+        try {
+            qexec = getQueryExecution(queryString);
+            ResourceType resourceType = searchParameters.getResourceType();
+            Resource resource = getResourceByType(resourceType);
+            ResultSet results = qexec.execSelect();
+            while (results.hasNext()) {
+                QuerySolution qs = results.nextSolution();
+                Resource s = qs.getResource("s");
+                Resource p = qs.getResource("p");
+                outputModel.add(s, ResourceFactory.createProperty(p.getURI()), resource);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (qexec != null) {
+                qexec.close();
+            }
+        }
+        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
+        return outputModel;
+    }
+
+    private Resource getResourceByType(ResourceType resourceType) {
+        String resName = searchParameters.getResourceName();
+        Resource resource = null;
         switch (resourceType) {
             case CLASS:
-                subject = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + resName);
+                resource = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + resName);
                 break;
             case PROPERTY:
-                subject = ResourceFactory.createResource(WikipediaOntologyStorage.PROPERTY_NS + resName);
+                resource = ResourceFactory.createResource(WikipediaOntologyStorage.PROPERTY_NS + resName);
                 break;
             case INSTANCE:
-                subject = ResourceFactory.createResource(WikipediaOntologyStorage.INSTANCE_NS + resName);
+                resource = ResourceFactory.createResource(WikipediaOntologyStorage.INSTANCE_NS + resName);
                 break;
         }
-        QueryExecution qexec = getQueryExecution(queryString);
-        ResultSet results = qexec.execSelect();
+        return resource;
+    }
+
+    public Model getResourceByURIQueryResults(String queryString) {
+//        System.out.println("URI");
+//        System.out.println(queryString);
+        Model outputModel = ModelFactory.createDefaultModel();
+        QueryExecution qexec = null;
         try {
+            qexec = getQueryExecution(queryString);
+            ResourceType resourceType = searchParameters.getResourceType();
+            Resource resource = getResourceByType(resourceType);
+            ResultSet results = qexec.execSelect();
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
                 Resource p = qs.getResource("p");
                 RDFNode o = qs.get("o");
-                outputModel.add(subject, ResourceFactory.createProperty(p.getURI()), o);
-                if (resourceType == ResourceType.INSTANCE && p.getURI().equals(RDF.type.getURI())) {
-                    typeSet.add((Resource) o);
-                }
+                outputModel.add(resource, ResourceFactory.createProperty(p.getURI()), o);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            qexec.close();
+            if (qexec != null) {
+                qexec.close();
+            }
         }
         WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
         return outputModel;
     }
 
     public Model getResourceByLabelQueryResults(String lang, String queryString) {
+//        System.out.println("Label");
 //        System.out.println(queryString);
         Model outputModel = ModelFactory.createDefaultModel();
-        QueryExecution qexec = getQueryExecution(queryString);
-        ResultSet results = qexec.execSelect();
+        QueryExecution qexec = null;
         try {
+            qexec = getQueryExecution(queryString);
+            ResultSet results = qexec.execSelect();
             while (results.hasNext()) {
                 QuerySolution qs = results.nextSolution();
                 Resource resource = qs.getResource("resource");
                 RDFNode label = qs.get("label");
                 outputModel.add(resource, RDFS.label, label);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            qexec.close();
+            if (qexec != null) {
+                qexec.close();
+            }
         }
         WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
         return outputModel;
     }
 
     private Set<Resource> supClassSet = null;
-    private static final String ALL_CLASSES = "E:/Users/t_morita/wikipedia_ontology/ALLClasses.owl";
 
     public Model getOutputModel() {
-        if (searchParameters.getResourceName().equals("ALLClasses")) {
-            System.out.println("ALLClasses");
-            return FileManager.get().loadModel(ALL_CLASSES);
-        }
         SearchOptionType searchOption = searchParameters.getSearchOption();
         Model outputModel = ModelFactory.createDefaultModel();
         String resName = searchParameters.getResourceName();

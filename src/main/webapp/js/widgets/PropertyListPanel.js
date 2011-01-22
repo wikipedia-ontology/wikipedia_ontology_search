@@ -109,6 +109,7 @@ function loadPropertyInstanceData(propertyName) {
         }
     });
     var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
+    alert(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option=" + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
             + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     domainClassesOfPropertyListTablePanel.store.load({
@@ -118,6 +119,7 @@ function loadPropertyInstanceData(propertyName) {
         }
     });
     var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
+    alert(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option=" + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
             + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     rangeClassesOfPropertyListTablePanel.store.load({

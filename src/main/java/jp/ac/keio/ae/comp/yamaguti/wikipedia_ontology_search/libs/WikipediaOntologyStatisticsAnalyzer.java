@@ -43,6 +43,43 @@ public class WikipediaOntologyStatisticsAnalyzer {
         }
     }
 
+    private static void storeInstancesToDB(String lang) {
+        EntityManager em = WikipediaOntologyStorage.getEntityManager();
+        Model ontModel = WikipediaOntologyStorage.getInstanceMemModel(lang);
+        Set<String> instanceSet = new HashSet<String>();
+        for (StmtIterator stmtIter = ontModel.listStatements(); stmtIter.hasNext();) {
+            Statement stmt = stmtIter.nextStatement();
+            Resource subject = stmt.getSubject();
+            if (subject.getNameSpace().equals(WikipediaOntologyStorage.INSTANCE_NS)) {
+                String localName = WikipediaOntologyUtils.getLocalName(subject);
+                if (localName != null && !localName.equals("null")) {
+                    instanceSet.add(localName);
+                }
+            }
+            RDFNode object = stmt.getObject();
+            if (object.isResource()) {
+                Resource objectRes = (Resource) object;
+                if (objectRes.getNameSpace().equals(WikipediaOntologyStorage.INSTANCE_NS)) {
+                    String localName = WikipediaOntologyUtils.getLocalName(objectRes);
+                    if (localName != null && !localName.equals("null")) {
+                        instanceSet.add(localName);
+                    }
+                }
+            }
+        }
+        for (String instance : instanceSet) {
+            try {
+                InstanceStatistics insStatistics = em.create(InstanceStatistics.class);
+                insStatistics.setName(instance);
+                insStatistics.setURI(WikipediaOntologyStorage.INSTANCE_NS + instance);
+                insStatistics.save();
+                System.out.println(instance);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
+    }
+
     /**
      * 現在，利用していない
      *
@@ -184,7 +221,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
     }
 
     public static void countAllSortsOfTriplesAndStoreDB(String lang, String inferenceType) {
-        WikipediaOntologyStorage storage = new WikipediaOntologyStorage(lang,  inferenceType);
+        WikipediaOntologyStorage storage = new WikipediaOntologyStorage(lang, inferenceType);
         Model ontModel = storage.getTDBModel();
 
         int classCount = 0;
@@ -193,12 +230,12 @@ public class WikipediaOntologyStatisticsAnalyzer {
             resIter.nextResource();
         }
         int objectPropertyCount = 0;
-        for(ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.ObjectProperty); resIter.hasNext();) {
-           objectPropertyCount++;
+        for (ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.ObjectProperty); resIter.hasNext();) {
+            objectPropertyCount++;
             resIter.nextResource();
         }
         int datatypePropertyCount = 0;
-        for(ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.DatatypeProperty);resIter.hasNext();) {
+        for (ResIterator resIter = ontModel.listSubjectsWithProperty(RDF.type, OWL.DatatypeProperty); resIter.hasNext();) {
             datatypePropertyCount++;
             resIter.nextResource();
         }
@@ -240,7 +277,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
         int instanceCount = instanceSet.size();
         int propertyCount = propertySet.size();
         int statementCount = 0;
-        for (StmtIterator stmtIter = ontModel.listStatements();stmtIter.hasNext();) {
+        for (StmtIterator stmtIter = ontModel.listStatements(); stmtIter.hasNext();) {
             statementCount++;
             stmtIter.nextStatement();
         }
@@ -270,15 +307,18 @@ public class WikipediaOntologyStatisticsAnalyzer {
     public static void main(String[] args) {
         WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
         WikipediaOntologyStorage.H2_DB_PROTOCOL = "tcp://localhost/";
-//        countAllSortsOfTriplesAndStoreDB("ja", "none");
+
+//        storeClassStatisticsToDB("ja");
+//        storePropertyStatisticsToDB("ja");
+        storeInstancesToDB("ja");
+//        storeClassStatisticsToDB("en");
+//        storePropertyStatisticsToDB("en");
+
+        countAllSortsOfTriplesAndStoreDB("ja", "none");
 //        countAllSortsOfTriplesAndStoreDB("en", "none");
 //        countAllSortsOfTriplesAndStoreDB("ja", "rdfs");
 //        countAllSortsOfTriplesAndStoreDB("en", "rdfs");
 
-//        storeClassStatisticsToDB("ja");
-//        storePropertyStatisticsToDB("ja");
-//        storeClassStatisticsToDB("en");
-//        storePropertyStatisticsToDB("en");
     }
 
 }

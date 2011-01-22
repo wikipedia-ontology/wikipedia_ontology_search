@@ -117,6 +117,10 @@ var INSTANCES_OF_CLASS = "Instances of a class";
 var INSTANCES_OF_CLASS_SEARCH_OPTION = "instances_of_class";
 var TYPES_OF_INSTANCE = "Types of a instance";
 var TYPES_OF_INSTANCE_SEARCH_OPTION = "types_of_instance";
+var INVERSE_STATEMENTS = "Inverse statements";
+var INVERSE_STATEMENTS_SEARCH_OPTION = "inverse";
+var PATH_TO_ROOT_CLASS = "Path to root class";
+var PATH_TO_ROOT_CLASS_SEARCH_OPTION = "path_to_root_class";
 
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;

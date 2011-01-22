@@ -118,6 +118,10 @@ var INSTANCES_OF_CLASS = "クラスのインスタンス";
 var INSTANCES_OF_CLASS_SEARCH_OPTION = "instances_of_class";
 var TYPES_OF_INSTANCE = "インスタンスのタイプ";
 var TYPES_OF_INSTANCE_SEARCH_OPTION = "types_of_instance";
+var INVERSE_STATEMENTS = "逆関係のステートメント";
+var INVERSE_STATEMENTS_SEARCH_OPTION = "inverse";
+var PATH_TO_ROOT_CLASS = "ルートクラスまでのパス";
+var PATH_TO_ROOT_CLASS_SEARCH_OPTION = "path_to_root_class";
 
 function getSearchKeywordLabel(keyword) {
     return keyword + "を検索";

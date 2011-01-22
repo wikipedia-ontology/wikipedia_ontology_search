@@ -73,6 +73,7 @@ function searchWikipediaOntology2(keyword) {
         }
         queryURL += '&' + searchOption;
         queryURL += '&' + versionOption;
+        //        alert(queryURL);
         reloadWikiOntJSONData2(queryURL, keyword);
     }
 }
@@ -106,6 +107,7 @@ function reloadWikiOntJSONData1(queryURL, unescapeQueryURL, keywords) {
 function reloadWikiOntJSONData2(queryURL, keyword) {
     var searchPanel = Ext.getCmp('SearchPanel');
     queryURL = setUseInfModelOption(queryURL);
+    currentURI = queryURL;
     statementTabPanel.getActiveTab().setTitle(keyword);
     if (queryType == QTYPE_CLASS) {
         searchPanel.getForm().findField('keyword').setValue(keyword);

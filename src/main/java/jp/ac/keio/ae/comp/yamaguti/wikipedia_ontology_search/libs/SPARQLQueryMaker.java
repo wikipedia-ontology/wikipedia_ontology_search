@@ -62,7 +62,7 @@ public class SPARQLQueryMaker {
             if (WikipediaOntologyUtils.isEnglishTerm(type)) {
                 type = type.replaceAll("_", " ");
             }
-            queryTypeSetString.append("?resource rdf:type ?type" + i + ". ?type" + i + " rdfs:label \"" + type + "\".");
+            queryTypeSetString.append("?resource rdf:type wikiont_class:" + type + ". ?resource rdfs:label ?label.");
             i++;
         }
         return sparqlTemplate.replace("<QueryTypeSet>", queryTypeSetString);
@@ -98,6 +98,10 @@ public class SPARQLQueryMaker {
                 break;
         }
         return sparqlTemplate.replace("$RESOURCE", resource);
+    }
+
+    public static String getInverseStatementsQueryString(SearchParameters searchParameters, String sparqlTemplate) {
+        return getResourceByURIQueryString(searchParameters, sparqlTemplate);
     }
 
     public static String getResourceByLabelQueryString(SearchParameters searchParameters, String sparqlTemplate) {

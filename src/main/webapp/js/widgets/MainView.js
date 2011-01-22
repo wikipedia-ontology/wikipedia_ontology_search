@@ -31,10 +31,28 @@ function getMainView() {
             limit : RESOURCE_LIST_SIZE_LIMIT
         }
     });
-
     var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(DOMAIN);
     var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(RANGE);
     var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
+
+    alert(BASE_SERVER_PROPERTY_TABLE_DATA_URL + "制作国" + "?search_option=" + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
+    domainClassesOfPropertyListPanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + "制作国" + "?search_option="
+            + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
+    domainClassesOfPropertyListPanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
+
+    var instanceListPanel = getInstanceListPanel(INSTANCE);
+    instanceListPanel.store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
+    var instanceTypeListPanel = getInstanceTypeListPanel();
 
     var regionListOfClassPanel = new Ext.Panel({
         layout : 'hbox',
@@ -166,13 +184,37 @@ function getMainView() {
         ]
     });
 
+
+    var instanceListTabPanel = new Ext.Panel({
+        layout: 'hbox',
+        frame: true,
+        title: INSTANCE_LIST,
+        iconCls: 'icon-instance',
+        layoutConfig: {
+            align : 'stretch',
+            pack  : 'start'
+        },
+        items: [
+            {
+                flex: 1,
+                layout: 'fit',
+                items: instanceListPanel
+            },
+            {
+                flex:2,
+                layout: 'fit',
+                items: instanceTypeListPanel
+            }
+        ]
+    })
+
     var wikiOntContentsTab = new Ext.TabPanel({
         activeTab : 0,
         frame : true,
         defaults: {autoScroll:true},
         enableTabScroll: true,
         title : 'Contents',
-        items : [statementTabPanel, classListTabPanel, propertyListTabPanel, bookmarkPanel, historyPanel, sourcePanel]
+        items : [statementTabPanel, classListTabPanel, propertyListTabPanel, instanceListTabPanel, bookmarkPanel, historyPanel, sourcePanel]
     });
 
     var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree");
