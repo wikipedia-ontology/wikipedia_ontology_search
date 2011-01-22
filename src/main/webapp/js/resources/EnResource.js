@@ -15,6 +15,7 @@ var PROPERTY = "Property";
 var PROPERTY_LIST = "Property List";
 var INSTANCE = "Instance";
 var INSTANCE_LIST = "Instance List";
+var RESOURCE_TYPE = "Type of Resource";
 var SEARCH_TARGET = "Search Target";
 var USE_INFERENCE_MODEL = "Use Inference Model";
 var NUMBER_OF_STATEMENTS = "Number of Statements";
@@ -32,6 +33,7 @@ var SORTING_ORDER = "Sorting order";
 var NUMBER_OF_INSTANCES = "Number of Instances";
 var DATE_AND_HOUR = "Date and Hour";
 var URL = "URL";
+var URI = "URI";
 var SEARCH_HISTORY = "Search History";
 var OPEN_SELECTED_HISTORY = "Open Selected History";
 var ADD_SELECTED_HISTORIES_TO_BOOKMARK = "Add Selected Histories to Bookmark";
@@ -79,6 +81,12 @@ var MANUAL_HTML = "en_manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
+// queryType
+var QTYPE_CLASS = 'class';
+var QTYPE_PROPERTY = 'property';
+var QTYPE_INSTANCE = 'instance';
+
+//searchTarget
 var URI = "URI";
 var URI_SEARCH_TARGET_OPTION = "uri";
 var LABEL = "Label";

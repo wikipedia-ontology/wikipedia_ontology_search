@@ -51,7 +51,7 @@ function exportBookmarks() {
     for (var i = 0; i < bookmarkStore.getCount(); i++) {
         var record = bookmarkStore.getAt(i);
         var str = [record.get("date"), record.get("keyword"),
-            record.get("searchOption"), record.get("queryType"),
+            record.get("searchOption"), record.get("queryType"), record.get("searchTargetType"),
             record.get("useInfModel"), record.get("URL")].join(",");
         exportText += str + "\n";
     }

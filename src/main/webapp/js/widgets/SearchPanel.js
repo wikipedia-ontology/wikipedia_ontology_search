@@ -3,27 +3,29 @@
  * Contact: t_morita@ae.keio.ac.jp
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
-function resetSearchOptionList() {
-    var resType = CLASS;
+
+function setQueryType() {
     if (Ext.getCmp("class_button").checked) {
-        resType = CLASS;
+        queryType = QTYPE_CLASS;
     } else if (Ext.getCmp("property_button").checked) {
-        resType = PROPERTY;
+        queryType = QTYPE_PROPERTY;
     } else if (Ext.getCmp("instance_button").checked) {
-        resType = INSTANCE;
+        queryType = QTYPE_INSTANCE;
     }
-    var searchTargetType = URI;
+    resetSearchOptionList();
+}
+
+function setSearchTargetType() {
     if (Ext.getCmp("uri_radio_button").checked) {
-        searchTargetType = URI;
+        searchTargetType = URI_SEARCH_TARGET_OPTION;
     } else if (Ext.getCmp("label_radio_button").checked) {
-        searchTargetType = LABEL;
+        searchTargetType = LABEL_SEARCH_TARGET_OPTION;
     }
-    alert(Ext.getCmp("class_button").checked);
-    alert(Ext.getCmp("property_button").checked);
-    alert(Ext.getCmp("instance_button").checked);
-    alert(resType);
-    alert(searchTargetType);
-    var searchOptionList = getSearchOptionList(resType, searchTargetType);
+    resetSearchOptionList();
+}
+
+function resetSearchOptionList() {
+    var searchOptionList = getSearchOptionList();
     Ext.getCmp("Resource_Search_Option").store.loadData(searchOptionList);
     Ext.getCmp("Resource_Search_Option").setValue(EXACT_MATCH);
 }
@@ -74,7 +76,7 @@ function getSearchPanel() {
             }
         ],
         listeners :{
-            change: resetSearchOptionList
+            change: setSearchTargetType
         }
     });
 
@@ -125,7 +127,7 @@ function getSearchPanel() {
         ],
         listeners:
         {
-            change: resetSearchOptionList
+            change: setQueryType
         }
     });
 

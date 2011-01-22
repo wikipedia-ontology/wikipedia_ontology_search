@@ -21,7 +21,7 @@ function getTreePanel(title, treeType) {
         items : []
     });
     var searchOptionComboBox = getSearchOptionComboBox(treeType + '_Search_Option');
-    searchOptionComboBox.setValue("any_match");
+    searchOptionComboBox.setValue(ANY_MATCH_SEARCH_OPTION);
     var treePanel = new Ext.tree.TreePanel({
         id : treePanelId,
         title : title,
@@ -93,16 +93,16 @@ function getTreePanel(title, treeType) {
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
                     queryURL = qname.replace("wikiont_class:", BASE_SERVER_CLASS_TABLE_DATA_URL);
-                    queryType = 'class';
+                    queryType = QTYPE_CLASS;
                 } else if (qname.indexOf("wikiont_property") != -1) {
                     queryURL = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_TABLE_DATA_URL);
-                    queryType = 'property';
+                    queryType = QTYPE_PROPERTY;
                 } else if (qname.indexOf("wikiont_instance") != -1) {
                     queryURL = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_TABLE_DATA_URL);
-                    queryType = 'instance';
+                    queryType = QTYPE_INSTANCE;
                 }
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                searchOptionSelection.setValue('exact_match');
+                searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
                 reloadWikiOntJSONData2(queryURL, keyword);
             },
             contextmenu : showTreePanelContextMenu
@@ -144,11 +144,11 @@ function filterTreeNode(view) {
     hiddenNodes = [];
     treePanel.expandAll();
     var re = new RegExp('^' + Ext.escapeRe(text) + '$', 'i');
-    if (searchOption == 'any_match') {
+    if (searchOption == ANY_MATCH_SEARCH_OPTION) {
         re = new RegExp('.*' + Ext.escapeRe(text) + '.*', 'i');
-    } else if (searchOption == 'starts_with') {
+    } else if (searchOption == STARTS_WITH_SEARCH_OPTION) {
         re = new RegExp('^' + Ext.escapeRe(text) + '.*', 'i');
-    } else if (searchOption == 'ends_with') {
+    } else if (searchOption == ENDS_WITH_SEARCH_OPTION) {
         re = new RegExp(Ext.escapeRe(text) + '$', 'i');
     }
     setShowNodes(treePanel, re, view);
@@ -204,17 +204,17 @@ function showTreePanelContextMenu(node, e) {
     var queryURL = "";
     var keyword = qname.split(":")[1];
     if (qname.indexOf("wikiont_class") != -1) {
-        queryType = 'class';
+        queryType = QTYPE_CLASS;
         var classContextMenu = makeClassContextMenu(keyword);
         classContextMenu.contextNode = node;
         classContextMenu.showAt(e.getXY());
     } else if (qname.indexOf("wikiont_property") != -1) {
-        queryType = 'property';
+        queryType = QTYPE_PROPERTY;
         var classContextMenu = makePropertyContextMenu(keyword);
         classContextMenu.contextNode = node;
         classContextMenu.showAt(e.getXY());
     } else if (qname.indexOf("wikiont_instance") != -1) {
-        queryType = 'instance';
+        queryType = QTYPE_INSTANCE;
         var instanceContextMenu = makeInstanceContextMenu(keyword);
         instanceContextMenu.contextNode = node;
         instanceContextMenu.showAt(e.getXY());

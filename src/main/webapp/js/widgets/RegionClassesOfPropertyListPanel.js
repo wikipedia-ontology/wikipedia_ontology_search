@@ -88,17 +88,18 @@ function showClassContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = 'class';
-    makePropertyContextMenu(keyword).showAt(e.getXY());
+    queryType = QTYPE_CLASS;
+    makeClassContextMenu(keyword).showAt(e.getXY());
 }
 
 function openClassByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    openWikiOntRDFData(keyword);
+    openWikiOntRDFData("wikiont_class:" + keyword);
 }
 
-function renderClass(clsName) {
+function renderClass(qname) {
+    var propertyName = qname.split("wikiont_class:")[1];
     return "<img alt='" + clsName + "' src='" + BASE_ICON_URL + "class_icon_s.png'/> " +
-            '<a href="' + clsName + '" onclick="openWikiOntRDFData(\'' + clsName + '\'); return false;">' + clsName + "</a>";
+            '<a href="' + clsName + '" onclick="openWikiOntRDFData(\'' + qname + '\'); return false;">' + clsName + "</a>";
 }

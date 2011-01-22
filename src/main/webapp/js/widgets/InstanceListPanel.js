@@ -88,7 +88,7 @@ function showInstanceContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = 'instance';
+    queryType = QTYPE_INSTANCE;
     makeInstanceContextMenu(keyword).showAt(e.getXY());
 }
 

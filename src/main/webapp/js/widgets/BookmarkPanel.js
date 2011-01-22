@@ -11,49 +11,65 @@ if (localStorage.bookmark != undefined) {
 
 function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
     return new Ext.grid.ColumnModel({
-        columns : [bookmarkCheckboxSelectionModel, {
-            id : 'date_id',
-            dataIndex : "date",
-            header : DATE_AND_HOUR,
-            hidden : true,
-            width : 150
-        }, {
-            id : 'keyword_id',
-            dataIndex : "keyword",
-            header : KEYWORD,
-            width : 200,
-            renderer : renderKeyword
-        }, {
-            id : 'search_option_id',
-            dataIndex : "searchOption",
-            header : SEARCH_OPTION,
-            width : 100,
-            hidden : isSidePanel,
-            renderer : renderSearchOption
-        }, {
-            id : 'query_type_id',
-            dataIndex : "queryType",
-            header : SEARCH_TARGET,
-            hidden : true,
-            width : 100
-        }, {
-            id : 'useInfModel_id',
-            dataIndex : "useInfModel",
-            header : USE_INFERENCE_MODEL,
-            hidden : isSidePanel,
-            width : 100
-        }, {
-            id : 'url_id',
-            dataIndex : "URL",
-            header : URL,
-            hidden : isSidePanel
-        }, {
-            id : 'version_id',
-            dataIndex : "version",
-            header : VERSION,
-            hidden : isSidePanel,
-            renderer : renderVersionOption
-        }
+        columns : [bookmarkCheckboxSelectionModel,
+            {
+                id : 'date_id',
+                dataIndex : "date",
+                header : DATE_AND_HOUR,
+                hidden : true,
+                width : 150
+            },
+            {
+                id : 'keyword_id',
+                dataIndex : "keyword",
+                header : KEYWORD,
+                renderer : renderKeyword,
+                width : 200
+            },
+            {
+                id : 'query_type_id',
+                dataIndex : "queryType",
+                header : RESOURCE_TYPE,
+                hidden : true,
+                renderer: renderResourceType,
+                width : 100
+            },
+            {
+                id : 'search_target_type_id',
+                dataIndex : "searchTargetType",
+                header : SEARCH_TARGET,
+                hidden : isSidePanel,
+                renderer: renderSearchTargetType,
+                width : 100
+            },
+            {
+                id : 'search_option_id',
+                dataIndex : "searchOption",
+                header : SEARCH_OPTION,
+                hidden : isSidePanel,
+                renderer : renderSearchOption,
+                width : 100
+            },
+            {
+                id : 'useInfModel_id',
+                dataIndex : "useInfModel",
+                header : USE_INFERENCE_MODEL,
+                hidden : isSidePanel,
+                width : 100
+            },
+            {
+                id : 'uri_id',
+                dataIndex : "URI",
+                header : URI,
+                hidden : isSidePanel
+            },
+            {
+                id : 'version_id',
+                dataIndex : "version",
+                header : VERSION,
+                hidden : isSidePanel,
+                renderer : renderVersionOption
+            }
         ],
         defaults : {
             sortable : true
@@ -73,16 +89,19 @@ function getBookmarkPanel() {
                 name : 'keyword'
             },
             {
-                name : 'searchOption'
+                name : 'queryType'
             },
             {
-                name : 'queryType'
+                name : 'searchTargetType'
+            },
+            {
+                name : 'searchOption'
             },
             {
                 name : 'useInfModel'
             },
             {
-                name : 'URL'
+                name : 'URI'
             },
             {
                 name : 'version'
@@ -271,7 +290,7 @@ function getBookmarkPanel() {
         title : BOOKMARK,
         stripeRows : true,
         frame : true,
-        autoExpandColumn : 'url_id',
+        autoExpandColumn : 'uri_id',
         sm : bookmarkCheckboxSelectionModel,
         iconCls: 'icon-book',
         listeners : {
@@ -376,7 +395,7 @@ function addBookmark() {
     var searchOption = searchOptionSelection.getValue();
     var versionOptionSelection = Ext.getCmp('Version_Option');
     var versionOption = versionOptionSelection.getValue();
-    var record = [new Date().toLocaleString(), keyword, searchOption, queryType, useInfModel, currentURI, versionOption];
+    var record = [new Date().toLocaleString(), keyword, queryType, searchTargetType, searchOption, useInfModel, currentURI, versionOption];
     bookmarkArray.push(record);
     saveBookmarksToWebStorage(bookmarkStore);
 }
@@ -408,12 +427,16 @@ function showBookmarkContextMenu(grid, rowIndex, cellIndex, e) {
     bookmarkCheckboxSelectionModel.selectRow(rowIndex);
     var record = bookmarkCheckboxSelectionModel.getSelected();
     var queryType = record.get("queryType");
-    if (queryType == 'class') {
-        makeBookmarkClassContextMenu(record).showAt(e.getXY());
-    } else if (queryType == 'property') {
-        makeBookmarkPropertyContextMenu(record).showAt(e.getXY());
-    } else if (queryType == 'instance') {
-        makeBookmarkInstanceContextMenu(record).showAt(e.getXY());
+    switch (queryType) {
+        case QTYPE_CLASS:
+            makeBookmarkClassContextMenu(record).showAt(e.getXY());
+            break;
+        case QTYPE_PROPERTY:
+            makeBookmarkPropertyContextMenu(record).showAt(e.getXY());
+            break;
+        case QTYPE_INSTANCE:
+            makeBookmarkInstanceContextMenu(record).showAt(e.getXY());
+            break;
     }
 }
 
@@ -438,15 +461,13 @@ function makeBookmarkClassContextMenu(record) {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    var searchPanel = Ext.getCmp('SearchPanel');
-                    var currentKeyword = searchPanel.getForm().findField('keyword').getValue();
-                    searchPanel.getForm().findField('keyword').setValue(currentKeyword + " " + keyword);
                     queryType = record.get('queryType');
-                    setQueryType();
+                    selectResourceTypeRadioButton();
                     useInfModel = record.get('useInfModel');
                     Ext.getDom('use_inf_model').checked = useInfModel;
+                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                     searchOptionSelection.setValue(record.get('searchOption'));
-                    searchWikipediaOntology();
+                    searchWikipediaOntologyByContextMenu(currentkeyword + " " + keyword);
                 }
             },
             {

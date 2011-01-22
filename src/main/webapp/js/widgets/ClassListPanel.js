@@ -85,7 +85,7 @@ function showClassContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = 'class';
+    queryType = QTYPE_CLASS;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 

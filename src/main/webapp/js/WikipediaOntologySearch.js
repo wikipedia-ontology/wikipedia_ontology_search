@@ -8,7 +8,8 @@
  */
 
 var useInfModel = false;
-var queryType = 'class';
+var queryType = QTYPE_CLASS;
+var searchTargetType = URI_SEARCH_TARGET_OPTION;
 var currentURI = "";
 var queryURL = "";
 var show_isa_tree_and_instance = true;

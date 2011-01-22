@@ -89,18 +89,19 @@ function showPropertyContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = 'property';
+    queryType = QTYPE_PROPERTY;
     makePropertyContextMenu(keyword).showAt(e.getXY());
 }
 
 function openPropertyByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    openWikiOntRDFData(keyword);
+    openWikiOntRDFData("wikiont_property:" + keyword);
 }
 
-function renderProperty(propertyName) {
+function renderProperty(qname) {
+    var propertyName = qname.split("wikiont_property:")[1];
     return "<img alt='" + propertyName + "' src='" + BASE_ICON_URL + "property_icon_s.png'/> " +
-            '<a href="' + propertyName + '" onclick="openWikiOntRDFData(\'' + propertyName + '\'); return false;">' + propertyName + "</a>";
+            '<a href="' + propertyName + '" onclick="openWikiOntRDFData(\'' + qname + '\'); return false;">' + propertyName + "</a>";
 }
 

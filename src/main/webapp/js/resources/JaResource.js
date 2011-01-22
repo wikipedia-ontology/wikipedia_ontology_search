@@ -15,6 +15,7 @@ var PROPERTY = "プロパティ";
 var PROPERTY_LIST = "プロパティ一覧";
 var INSTANCE = "インスタンス";
 var INSTANCE_LIST = "インスタンス一覧";
+var RESOURCE_TYPE = "リソースのタイプ";
 var SEARCH_TARGET = "検索対象";
 var USE_INFERENCE_MODEL = "推論モデルの利用";
 var NUMBER_OF_STATEMENTS = "表示ステートメント数";
@@ -32,6 +33,7 @@ var SORTING_ORDER = "ソート順";
 var NUMBER_OF_INSTANCES = "インスタンス数";
 var DATE_AND_HOUR = "日時";
 var URL = "URL";
+var URI = "URI";
 var SEARCH_HISTORY = "検索履歴";
 var OPEN_SELECTED_HISTORY = "選択した履歴を開く";
 var ADD_SELECTED_HISTORIES_TO_BOOKMARK = "選択した履歴をブックマークに追加";
@@ -78,6 +80,11 @@ var MANUAL = "マニュアル";
 var MANUAL_HTML = "manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
+
+// queryType
+var QTYPE_CLASS = 'class';
+var QTYPE_PROPERTY = 'property';
+var QTYPE_INSTANCE = 'instance';
 
 // 検索対象オプション関連の定数
 var URI = "URI";

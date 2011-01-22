@@ -17,36 +17,40 @@ function getProxy(json_url) {
     });
 }
 
-function getSearchOptionList(resType, searchTargetType) {
-    if (searchTargetType == URI) {
-        if (resType == CLASS) {
+function getSearchOptionList() {
+    switch (searchTargetType) {
+        case URI_SEARCH_TARGET_OPTION:
+            switch (queryType) {
+                case QTYPE_CLASS:
+                    return [
+                        [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+                        [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
+                        [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
+                        [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
+                        [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
+                        [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION]
+                    ];
+                case QTYPE_PROPERTY:
+                    return [
+                        [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+                        [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
+                        [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION]
+                    ];
+                case QTYPE_INSTANCE:
+                    return [
+                        [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+                        [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION]
+                    ];
+            }
+            break;
+        case LABEL_SEARCH_TARGET_OPTION:
             return [
                 [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
-                [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
-                [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
-                [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
-                [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION]
+                [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
+                [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
+                [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
             ];
-        } else if (resType == PROPERTY) {
-            return [
-                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-                [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION]
-            ];
-        } else if (resType == INSTANCE) {
-            return [
-                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION]
-            ];
-        }
-    } else if (searchTargetType == LABEL) {
-        return [
-            [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-            [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
-            [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
-            [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
-        ];
+            break;
     }
 }
 
@@ -75,15 +79,21 @@ function getSearchOptionComboBox(id) {
         listeners:
         {
             select: function(combo, value) {
-                var selectedValue = combo.getValue();
-                if (selectedValue == SIBLING_CLASSES_SEARCH_OPTION || selectedValue == SUB_CLASSES_SEARCH_OPTION ||
-                        selectedValue == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION || selectedValue == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION ||
-                        selectedValue == INSTANCES_OF_CLASS_SEARCH_OPTION) {
-                    Ext.getDom('class_button').checked = true;
-                } else if (selectedValue == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION || selectedValue == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
-                    Ext.getDom('property_button').checked = true;
-                } else if (selectedValue == TYPES_OF_INSTANCE_SEARCH_OPTION) {
-                    Ext.getDom('instance_button').checked = true;
+                switch (combo.getValue()) {
+                    case SIBLING_CLASSES_SEARCH_OPTION:
+                    case SUB_CLASSES_SEARCH_OPTION:
+                    case PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION:
+                    case PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION:
+                    case INSTANCES_OF_CLASS_SEARCH_OPTION:
+                        Ext.getDom('class_button').checked = true;
+                        break;
+                    case DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+                    case RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+                        Ext.getDom('property_button').checked = true;
+                        break
+                    case TYPES_OF_INSTANCE_SEARCH_OPTION:
+                        Ext.getDom('instance_button').checked = true;
+                        break;
                 }
             }
         }
@@ -116,17 +126,19 @@ function getVersionOptionComboBox(name) {
 }
 
 function renderKeyword(value, metadata, record) {
-    if (record.get("queryType") == 'class') {
-        return "<img src='" + BASE_ICON_URL + "class_icon_s.png'/> " + value;
-    } else if (record.get("queryType") == 'property') {
-        return "<img src='" + BASE_ICON_URL + "property_icon_s.png'/> " + value;
-    } else if (record.get("queryType") == 'instance') {
-        return "<img src='" + BASE_ICON_URL + "instance_icon_s.png'/> " + value;
+    switch (record.get("queryType")) {
+        case QTYPE_CLASS:
+            return "<img src='" + BASE_ICON_URL + "class_icon_s.png'/> " + value;
+        case QTYPE_PROPERTY:
+            return "<img src='" + BASE_ICON_URL + "property_icon_s.png'/> " + value;
+        case QTYPE_INSTANCE:
+            return "<img src='" + BASE_ICON_URL + "instance_icon_s.png'/> " + value;
     }
     return value;
 }
 
 function makeClassContextMenu(keyword) {
+    searchTargetType = URI_SEARCH_TARGET_OPTION;
     return new Ext.menu.Menu({
         style : {
             overflow : 'visible'
@@ -136,12 +148,7 @@ function makeClassContextMenu(keyword) {
                 text : getSearchKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    setQueryType();
-                    var searchPanel = Ext.getCmp("SearchPanel");
-                    searchPanel.getForm().findField('keyword').setValue(keyword);
-                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue('exact_match');
-                    searchWikipediaOntology()
+                    searchWikipediaOntologyByContextMenu(keyword);
                 }
             },
             {
@@ -149,20 +156,14 @@ function makeClassContextMenu(keyword) {
                 iconCls: 'icon-newtab',
                 handler: function() {
                     addTab();
-                    searchKeyWord(keyword);
+                    searchWikipediaOntologyByContextMenu(keyword);
                 }
             },
             {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    setQueryType();
-                    var searchPanel = Ext.getCmp("SearchPanel");
-                    var currentKeyword = searchPanel.getForm().findField('keyword').getValue();
-                    searchPanel.getForm().findField('keyword').setValue(currentKeyword + " " + keyword);
-                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue('exact_match');
-                    searchWikipediaOntology()
+                    searchWikipediaOntologyByContextMenu(currentKeyword + " " + keyword);
                 }
             },
             {
@@ -177,12 +178,9 @@ function makeClassContextMenu(keyword) {
                 text : getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
-                    setQueryType();
                     var searchPanel = Ext.getCmp("SearchPanel");
                     searchPanel.getForm().findField('keyword').setValue(keyword);
-                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue('exact_match');
-                    searchWikipediaOntology();
+                    searchWikipediaOntologyByContextMenu();
                     addBookmark();
                 }
             }
@@ -191,15 +189,16 @@ function makeClassContextMenu(keyword) {
 }
 
 function searchKeyWord(keyword) {
-    setQueryType();
+    selectResourceTypeRadioButton();
     var searchPanel = Ext.getCmp("SearchPanel");
     searchPanel.getForm().findField('keyword').setValue(keyword);
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    searchOptionSelection.setValue('exact_match');
+    //    searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
     searchWikipediaOntology();
 }
 
 function makeInstanceAndPropertyContextMenu(keyword, type) {
+    searchTargetType = URI_SEARCH_TARGET_OPTION;
     return new Ext.menu.Menu({
         style : {
             overflow : 'visible'
@@ -209,7 +208,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 text : getSearchKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    searchKeyWord(keyword);
+                    searchWikipediaOntologyByContextMenu(keyword);
                 }
             },
             {
@@ -217,7 +216,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 iconCls: 'icon-newtab',
                 handler: function() {
                     addTab();
-                    searchKeyWord(keyword);
+                    searchWikipediaOntologyByContextMenu(keyword);
                 }
             },
             {
@@ -238,7 +237,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 text : getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
-                    searchKeyWord(keyword);
+                    searchWikipediaOntologyByContextMenu(keyword);
                     addBookmark();
                 }
             }
@@ -263,28 +262,52 @@ function renderVersionOption(value, metadata, record) {
     }
 }
 
+function renderSearchTargetType(value, metadata, record) {
+    switch (record.get('searchTargetType')) {
+        case URI_SEARCH_TARGET_OPTION:
+            return URI;
+        case LABEL_SEARCH_TARGET_OPTION:
+            return LABEL;
+    }
+}
+
+function renderResourceType(value, metadata, record) {
+    switch (record.get('queryType')) {
+        case QTYPE_CLASS:
+            return CLASS;
+        case QTYPE_PROPERTY:
+            return PROPERTY;
+        case QTYPE_INSTANCE:
+            return INSTANCE;
+    }
+}
+
 function renderSearchOption(value, metadata, record) {
-    var searchOption = record.get('searchOption');
-    if (searchOption == EXACT_MATCH_SEARCH_OPTION) {
-        return EXACT_MATCH;
-    } else if (searchOption == ANY_MATCH_SEARCH_OPTION) {
-        return ANY_MATCH;
-    } else if (searchOption == STARTS_WITH_SEARCH_OPTION) {
-        return STARTS_WITH;
-    } else if (searchOption == ENDS_WITH_SEARCH_OPTION) {
-        return ENDS_WITH;
-    } else if (searchOption == SIBLING_CLASSES_SEARCH_OPTION) {
-        return SIBLING_CLASSES;
-    } else if (searchOption == SUB_CLASSES_SEARCH_OPTION) {
-        return SUB_CLASSES;
-    } else if (searchOption == PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION) {
-        return PROPERTIES_OF_DOMAIN_CLASS;
-    } else if (searchOption == PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION) {
-        return PROPERTIES_OF_RANGE_CLASS;
-    } else if (searchOption == DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
-        return DOMAIN_CLASSES_OF_PROPERTY;
-    } else if (searchOption == RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION) {
-        return RANGE_CLASSES_OF_PROPERTY;
+    switch (record.get('searchOption')) {
+        case EXACT_MATCH_SEARCH_OPTION:
+            return EXACT_MATCH;
+        case  ANY_MATCH_SEARCH_OPTION:
+            return ANY_MATCH;
+        case STARTS_WITH_SEARCH_OPTION:
+            return STARTS_WITH;
+        case ENDS_WITH_SEARCH_OPTION:
+            return ENDS_WITH;
+        case SIBLING_CLASSES_SEARCH_OPTION:
+            return SIBLING_CLASSES;
+        case SUB_CLASSES_SEARCH_OPTION:
+            return SUB_CLASSES;
+        case PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION:
+            return PROPERTIES_OF_DOMAIN_CLASS;
+        case PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION:
+            return PROPERTIES_OF_RANGE_CLASS;
+        case DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+            return DOMAIN_CLASSES_OF_PROPERTY;
+        case RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+            return RANGE_CLASSES_OF_PROPERTY;
+        case INSTANCES_OF_CLASS_SEARCH_OPTION:
+            return INSTANCES_OF_CLASS;
+        case TYPES_OF_INSTANCE_SEARCH_OPTION:
+            return TYPES_OF_INSTANCE;
     }
     return EXACT_MATCH;
 }
@@ -292,7 +315,8 @@ function renderSearchOption(value, metadata, record) {
 function openHistoryAndBookmarkData(record) {
     var keyword = record.get('keyword');
     queryType = record.get('queryType');
-    setQueryType();
+    selectResourceTypeRadioButton();
+    searchTargetType = record.get('searchTargetType');
     useInfModel = record.get('useInfModel');
     Ext.getDom('use_inf_model').checked = useInfModel;
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
@@ -304,15 +328,20 @@ function openHistoryAndBookmarkData(record) {
     var versionOptionSelection = Ext.getCmp('Version_Option');
     versionOptionSelection.setValue(version);
     searchWikipediaOntology2(keyword);
+    resetSearchOptionList();
 }
 
-function setQueryType() {
-    if (queryType == 'class') {
-        Ext.getDom('class_button').checked = true;
-    } else if (queryType == 'property') {
-        Ext.getDom('property_button').checked = true;
-    } else if (queryType == 'instance') {
-        Ext.getDom('instance_button').checked = true;
+function selectResourceTypeRadioButton() {
+    switch (queryType) {
+        case QTYPE_CLASS:
+            Ext.getDom('class_button').checked = true;
+            break;
+        case QTYPE_PROPERTY:
+            Ext.getDom('property_button').checked = true;
+            break;
+        case QTYPE_INSTANCE:
+            Ext.getDom('instance_button').checked = true;
+            break;
     }
 }
 
