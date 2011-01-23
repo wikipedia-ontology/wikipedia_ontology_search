@@ -13,45 +13,21 @@ function getMainView() {
     var sideBookmarkPanel = getSideBookmarkPanel();
     var sourcePanel = getSourcePanel();
     var statementTabPanel = getStatementTabPanel();
+    
     var classListPanel = getClassListPanel();
-    classListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(classListPanel.store);
     var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(DOMAIN);
     var propertiesOfRangeClassListPanel = getPropertiesOfRegionClassListPanel(RANGE);
     var classInstanceListPanel = getInstanceListPanel(CLASS);
 
     var propertyListPanel = getPropertyListPanel();
-    propertyListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(propertyListPanel.store);
     var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(DOMAIN);
     var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(RANGE);
     var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
 
-    alert(BASE_SERVER_PROPERTY_TABLE_DATA_URL + "制作国" + "?search_option=" + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
-    domainClassesOfPropertyListPanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + "制作国" + "?search_option="
-            + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
-    domainClassesOfPropertyListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
-
     var instanceListPanel = getInstanceListPanel(INSTANCE);
-    instanceListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(instanceListPanel.store);
     var instanceTypeListPanel = getInstanceTypeListPanel();
 
     var regionListOfClassPanel = new Ext.Panel({

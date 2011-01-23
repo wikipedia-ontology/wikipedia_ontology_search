@@ -103,28 +103,16 @@ function loadClassInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
 function loadClassInstanceData(clsName) {
     var instanceListPanel = Ext.getCmp("ClassInstanceListTablePanel");
     instanceListPanel.store.proxy = getProxy(CLASS_LIST_DATA_URL + "?class=" + clsName);
-    instanceListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(instanceListPanel.store);
+
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
     propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option="
             + PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION);
-    propertiesOfDomainClassListTablePanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(propertiesOfDomainClassListTablePanel.store);
+
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
     propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option="
             + PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION);
-    propertiesOfRangeClassListTablePanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(propertiesOfRangeClassListTablePanel.store);
+    
 }

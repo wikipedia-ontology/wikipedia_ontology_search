@@ -102,31 +102,17 @@ function loadPropertyInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
 function loadPropertyInstanceData(propertyName) {
     var instanceListPanel = Ext.getCmp("PropertyInstanceListTablePanel");
     instanceListPanel.store.proxy = getProxy(PROPERTY_LIST_DATA_URL + "?property=" + propertyName);
-    instanceListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(instanceListPanel.store);
+
     var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
-    alert(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option=" + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
             + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
-    domainClassesOfPropertyListTablePanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(domainClassesOfPropertyListTablePanel.store);
+
     var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
-    alert(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option=" + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
             + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
-    rangeClassesOfPropertyListTablePanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(rangeClassesOfPropertyListTablePanel.store);
+
 }
 

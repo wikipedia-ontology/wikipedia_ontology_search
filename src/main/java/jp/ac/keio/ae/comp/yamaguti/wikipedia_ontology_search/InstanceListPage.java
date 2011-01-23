@@ -69,7 +69,8 @@ public class InstanceListPage extends CommonPage {
     private String getInstanceListJSonString(int start, int limit) {
         try {
             EntityManager em = WikipediaOntologyStorage.getEntityManager();
-            Query query = Query.select().order("name desc").limit(limit).offset(start);
+//            Query query = Query.select().order("name desc").limit(limit).offset(start);
+            Query query = Query.select().limit(limit).offset(start);
             JSONObject rootObj = new JSONObject();
             JSONArray jsonArray = new JSONArray();
             for (InstanceStatistics i : em.find(InstanceStatistics.class, query)) {
@@ -116,6 +117,7 @@ public class InstanceListPage extends CommonPage {
             int start = params.getInt("start");
             int limit = params.getInt("limit");
             String hashCode = getHashCode(start, limit, "instance_list");
+            outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
             if (outputString == null) {
                 outputString = getInstanceListJSonString(start, limit);
                 WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);

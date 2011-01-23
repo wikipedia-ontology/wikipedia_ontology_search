@@ -4,28 +4,10 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 function getStatementTableDataStore() {
-    var reader = new Ext.data.JsonReader({
-        root : "statement",
-        totalProperty : 'numberOfStatements',
-        fields : [
-            {
-                name : "subject",
-                type : "string"
-            },
-            {
-                name : "predicate",
-                type : "string"
-            },
-            {
-                name : "object",
-                type : "string"
-            }
-        ]
-    });
 
     return new Ext.data.GroupingStore({
         id : 'StatementTableDataStore' + tabIndex,
-        reader : reader,
+        reader : getStatementJsonReader(),
         proxy : getProxy(NULL_TABLE_DATA),
         sortInfo : {
             field : 'subject',

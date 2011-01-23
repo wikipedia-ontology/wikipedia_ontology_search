@@ -17,6 +17,36 @@ function getProxy(json_url) {
     });
 }
 
+function loadStore(store) {
+    store.load({
+        params : {
+            start : 0,
+            limit : RESOURCE_LIST_SIZE_LIMIT
+        }
+    });
+}
+
+function getStatementJsonReader() {
+    return new Ext.data.JsonReader({
+        root : "statement",
+        totalProperty : 'numberOfStatements',
+        fields : [
+            {
+                name : "subject",
+                type : "string"
+            },
+            {
+                name : "predicate",
+                type : "string"
+            },
+            {
+                name : "object",
+                type : "string"
+            }
+        ]
+    });
+}
+
 function getSearchOptionList() {
     switch (searchTargetType) {
         case URI_SEARCH_TARGET_OPTION:

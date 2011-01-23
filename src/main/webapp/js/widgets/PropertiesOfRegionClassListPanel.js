@@ -5,25 +5,14 @@
  */
 
 function getPropertiesOfRegionClassListTableDataStore(type) {
-    var reader = new Ext.data.JsonReader({
-        root : "statement",
-        totalProperty : 'numberOfStatements',
-        fields : [
-            {
-                name : "subject",
-                type : "string"
-            }
-        ]
-    });
     var panelName = "";
-    var dataURL = "";
     if (type == DOMAIN) {
         panelName = "PropertiesOfDomainClassListTablePanel";
     } else if (type == RANGE) {
         panelName = "PropertiesOfRangeClassListTablePanel";
     }
     return new Ext.data.Store({
-        reader : reader,
+        reader : getStatementJsonReader(),
         proxy : getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL),
         listeners : {
             beforeload : function() {

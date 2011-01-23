@@ -438,6 +438,7 @@ public class ClassListPage extends CommonPage {
                 }
             } else {
                 String hashCode = getHashCode(start, limit, "class_list");
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
                 if (outputString == null) {
                     outputString = getClassListJSonString(start, limit);
                     WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);

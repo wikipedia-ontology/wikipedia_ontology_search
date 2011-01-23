@@ -112,12 +112,7 @@ function loadInstanceTypeByCellClick(grid, rowIndex, columnIndex, e) {
     var instanceName = decodeURI(uri.split(BASE_SERVER_URL)[1]);
     var instanceTypeListPanel = Ext.getCmp("InstanceTypeListTablePanel");
     instanceTypeListPanel.store.proxy = getProxy(INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
-    instanceTypeListPanel.store.load({
-        params : {
-            start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
-        }
-    });
+    loadStore(instanceTypeListPanel.store);
 }
 
 function openInstanceByCellClick(grid, rowIndex, columnIndex, e) {

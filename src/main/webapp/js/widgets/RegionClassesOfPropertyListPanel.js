@@ -5,16 +5,6 @@
  */
 
 function getRegionClassesOfPropertyListTableDataStore(type) {
-    var reader = new Ext.data.JsonReader({
-        root : "statement",
-        totalProperty : 'numberOfStatements',
-        fields : [
-            {
-                name : "object",
-                type : "string"
-            }
-        ]
-    });
     var panelName = "";
     if (type == DOMAIN) {
         panelName = "DomainClassesOfPropertyListTablePanel";
@@ -22,7 +12,7 @@ function getRegionClassesOfPropertyListTableDataStore(type) {
         panelName = "RangeClassesOfPropertyListTablePanel";
     }
     return new Ext.data.Store({
-        reader : reader,
+        reader : getStatementJsonReader(),
         proxy : getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL),
         listeners : {
             beforeload : function() {
@@ -99,7 +89,7 @@ function openClassByCellClick(grid, rowIndex, columnIndex, e) {
 }
 
 function renderClass(qname) {
-    var propertyName = qname.split("wikiont_class:")[1];
+    var clsName = qname.split("wikiont_class:")[1];
     return "<img alt='" + clsName + "' src='" + BASE_ICON_URL + "class_icon_s.png'/> " +
             '<a href="' + clsName + '" onclick="openWikiOntRDFData(\'' + qname + '\'); return false;">' + clsName + "</a>";
 }
