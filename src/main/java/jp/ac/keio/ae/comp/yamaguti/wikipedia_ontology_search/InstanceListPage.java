@@ -69,8 +69,7 @@ public class InstanceListPage extends CommonPage {
     private String getInstanceListJSonString(int start, int limit) {
         try {
             EntityManager em = WikipediaOntologyStorage.getEntityManager();
-//            Query query = Query.select().order("name desc").limit(limit).offset(start);
-            Query query = Query.select().limit(limit).offset(start);
+            Query query = Query.select().order("name").limit(limit).offset(start);
             JSONObject rootObj = new JSONObject();
             JSONArray jsonArray = new JSONArray();
             for (InstanceStatistics i : em.find(InstanceStatistics.class, query)) {
@@ -84,7 +83,7 @@ public class InstanceListPage extends CommonPage {
                 }
             }
             rootObj.put("instance_list", jsonArray);
-            int numberOfInstances = em.find(InstanceStatistics.class, Query.select()).length;
+            int numberOfInstances = em.count(InstanceStatistics.class);
             rootObj.put("numberOfInstances", numberOfInstances);
             return rootObj.toString();
         } catch (SQLException sqle) {

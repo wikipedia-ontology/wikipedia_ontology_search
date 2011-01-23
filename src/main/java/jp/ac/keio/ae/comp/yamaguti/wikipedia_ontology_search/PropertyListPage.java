@@ -62,7 +62,7 @@ public class PropertyListPage extends CommonPage {
                 resolveDao();
                 try {
                     Query query = Query.select();
-                    int size = em.find(PropertyStatistics.class, query).length;
+                    int size = em.count(PropertyStatistics.class, query);
                     pagingData.setSize(size);
                     return size;
                 } catch (SQLException sqle) {
@@ -257,7 +257,7 @@ public class PropertyListPage extends CommonPage {
                 }
             }
             rootObj.put("property_list", jsonArray);
-            int numberOfProperties = em.find(PropertyStatistics.class, Query.select()).length;
+            int numberOfProperties = em.count(PropertyStatistics.class, Query.select());
             rootObj.put("numberOfProperties", numberOfProperties);
             return rootObj.toString();
         } catch (SQLException sqle) {

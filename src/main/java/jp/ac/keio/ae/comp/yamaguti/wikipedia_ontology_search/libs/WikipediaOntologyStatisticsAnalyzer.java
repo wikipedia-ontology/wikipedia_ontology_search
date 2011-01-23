@@ -310,7 +310,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
 
 //        storeClassStatisticsToDB("ja");
 //        storePropertyStatisticsToDB("ja");
-        storeInstancesToDB("ja");
+//        storeInstancesToDB("ja");
 //        storeClassStatisticsToDB("en");
 //        storePropertyStatisticsToDB("en");
 

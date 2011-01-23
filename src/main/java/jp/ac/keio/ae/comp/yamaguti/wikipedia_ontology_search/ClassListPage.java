@@ -69,7 +69,7 @@ public class ClassListPage extends CommonPage {
                     if (!lang.equals("ja+en")) {
                         query = query.where("language = ?", lang);
                     }
-                    int size = em.find(ClassStatistics.class, query).length;
+                    int size = em.count(ClassStatistics.class, query);
                     classPagingData.setSize(size);
                     return size;
                 } catch (SQLException sqle) {
@@ -388,7 +388,7 @@ public class ClassListPage extends CommonPage {
     private String getClassListJSonString(int start, int limit) {
         try {
             EntityManager em = WikipediaOntologyStorage.getEntityManager();
-            Query query = Query.select().order("instanceCount desc").limit(limit).offset(start)
+            Query query = Query.select().order("instanceCount desc, classname").limit(limit).offset(start)
                     .where("language = ?", "ja");
             JSONObject rootObj = new JSONObject();
             JSONArray jsonArray = new JSONArray();
@@ -404,7 +404,7 @@ public class ClassListPage extends CommonPage {
                 }
             }
             rootObj.put("class_list", jsonArray);
-            int numberOfClasses = em.find(ClassStatistics.class, Query.select().where("language = ?", "ja")).length;
+            int numberOfClasses = em.count(ClassStatistics.class, Query.select().where("language = ?", "ja"));
             rootObj.put("numberOfClasses", numberOfClasses);
             return rootObj.toString();
         } catch (SQLException sqle) {
