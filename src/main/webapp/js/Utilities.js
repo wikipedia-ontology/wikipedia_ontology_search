@@ -88,6 +88,32 @@ function getSearchOptionList() {
     }
 }
 
+
+function getTreeSearchOptionComboBox(id) {
+    var searchOptionList = new Ext.data.ArrayStore({
+        fields : ["Search_Option", "Search_Option_Value"],
+        data : [
+            [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
+            [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
+            [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
+            [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
+        ]
+    });
+
+    var comboBox = new Ext.form.ComboBox({
+        id : id,
+        displayField : 'Search_Option',
+        valueField : 'Search_Option_Value',
+        triggerAction : "all",
+        width : 180,
+        editable : false,
+        mode : "local",
+        store : searchOptionList
+    });
+    comboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
+    return comboBox;
+}
+
 function getSearchOptionComboBox(id) {
     var searchOptionList = new Ext.data.ArrayStore({
         fields : ["Search_Option", "Search_Option_Value"],

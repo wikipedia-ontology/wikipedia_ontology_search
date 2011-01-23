@@ -5,15 +5,12 @@
  */
 
 function getMainView() {
-    var searchPanel = getSearchPanel();
     var historyPanel = getHistoryPanel();
-    var sideHistoryPanel = getSideHistoryPanel();
     var bookmarkPanel = getBookmarkPanel();
     var bookmarkImportAndExportDialog = getBookmarkImportAndExportDialog(); // new BookmarkImportAndExportDialog
-    var sideBookmarkPanel = getSideBookmarkPanel();
     var sourcePanel = getSourcePanel();
     var statementTabPanel = getStatementTabPanel();
-    
+
     var classListPanel = getClassListPanel();
     loadStore(classListPanel.store);
     var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(DOMAIN);
@@ -184,56 +181,18 @@ function getMainView() {
         ]
     })
 
+    var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree");
+    var wholeClassTreePanel = getTreePanel(WHOLE_CLASS_HIEARCHY, "wholeClassTree");
+
     var wikiOntContentsTab = new Ext.TabPanel({
         activeTab : 0,
         frame : true,
         defaults: {autoScroll:true},
         enableTabScroll: true,
         title : 'Contents',
-        items : [statementTabPanel, classListTabPanel, propertyListTabPanel, instanceListTabPanel, bookmarkPanel, historyPanel, sourcePanel]
+        items : [statementTabPanel, classAndInstanceTreePanel, wholeClassTreePanel, classListTabPanel, propertyListTabPanel, instanceListTabPanel, bookmarkPanel, historyPanel, sourcePanel]
     });
 
-    var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree");
-    var wholeClassTreePanel = getTreePanel(WHOLE_CLASS_HIEARCHY, "wholeClassTree");
-
-    var westSideNorthPanel = new Ext.Panel({
-        frame : true,
-        autoScroll : true,
-        collapsible : false,
-        layout : "accordion",
-        items : [classAndInstanceTreePanel, wholeClassTreePanel]
-    });
-
-    var westSideSouthPanel = new Ext.Panel({
-        frame : true,
-        autoScroll : true,
-        collapsible : false,
-        layout : "accordion",
-        items : [sideBookmarkPanel, sideHistoryPanel]
-    });
-
-    var westSidePanel = new Ext.Panel({
-        layout : 'border',
-        items : [
-            {
-                region : 'center',
-                collapsible : false,
-                layout : 'fit',
-                split : true,
-                items : westSideNorthPanel
-            },
-            {
-                title : BOOKMARK_AND_SEARCH_HISTORY,
-                region : 'south',
-                collapsible : true,
-                layout : 'fit',
-                minHeight : 300,
-                height : 300,
-                split : true,
-                items : westSideSouthPanel
-            }
-        ]
-    });
 
     var statusBarPanel = new Ext.Panel({
         bbar : new Ext.ux.StatusBar({
@@ -242,31 +201,6 @@ function getMainView() {
         })
     });
 
-    var mainPanel = new Ext.Panel({
-        layout : 'border',
-        hideBorders : true,
-        items : [
-            {
-                title : SEARCH,
-                region : 'north',
-                layout : 'fit',
-                height : 150,
-                minHeight : 150,
-                split : true,
-                animate : true,
-                collapsible : true,
-                iconCls: 'icon-search',
-                items : searchPanel
-            },
-            {
-                region : 'center',
-                layout : 'fit',
-                width : "80%",
-                collapsible : false,
-                items : wikiOntContentsTab
-            }
-        ]
-    });
 
     var optionDialog = getOptionDialog(); // new OptionDialog
     var versionInfoDialog = getVersionInfoDialog(); // new VersionInfoDialog
@@ -356,19 +290,7 @@ function getMainView() {
                 layout : 'fit',
                 width : "80%",
                 collapsible : false,
-                items : mainPanel
-            },
-            {
-                title : HIEARCHY,
-                iconCls: 'icon-expand-all',
-                region : 'west',
-                layout : 'fit',
-                width : 300,
-                minWidth : 300,
-                split : true,
-                animate : true,
-                collapsible : true,
-                items : westSidePanel
+                items : wikiOntContentsTab
             },
             {
                 region : 'south',

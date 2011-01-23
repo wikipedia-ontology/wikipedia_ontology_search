@@ -6,7 +6,7 @@
 
 function getSourcePanel() {
     return new Ext.Panel({
-        title : "RDF/XML",
+        //        title : "RDF/XML",
         iconCls: 'icon-rdf',
         hideBorders : true,
         autoScroll : true,
@@ -14,7 +14,7 @@ function getSourcePanel() {
         items : [
             {
                 id : "xml_source",
-                html : "<h1>" + RDF_XML_MESSAGE + "</h1>"
+                html : ""
             }
         ]
     });

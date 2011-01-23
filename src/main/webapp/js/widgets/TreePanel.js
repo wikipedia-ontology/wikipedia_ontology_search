@@ -20,17 +20,17 @@ function getTreePanel(title, treeType) {
         height : 50,
         items : []
     });
-    var searchOptionComboBox = getSearchOptionComboBox(treeType + '_Search_Option');
-    searchOptionComboBox.setValue(ANY_MATCH_SEARCH_OPTION);
+    var searchOptionComboBox = getTreeSearchOptionComboBox(treeType + '_Search_Option');
+    searchOptionComboBox.setValue(EXACT_MATCH);
     var treePanel = new Ext.tree.TreePanel({
         id : treePanelId,
-        title : title,
+        //        title : title,
         layout : 'fit',
         border : false,
         animate : false,
         enableDD : false,
-        collapsible : true,
         autoScroll : true,
+        iconCls: 'icon-expand-all',
         tbar : [' ', new Ext.form.TextField({
             id : treePanelSearchFieldlId,
             width : 160,

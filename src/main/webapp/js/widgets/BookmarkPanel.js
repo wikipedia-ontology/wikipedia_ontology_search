@@ -287,7 +287,7 @@ function getBookmarkPanel() {
         stateEvents : ['columnresize', 'columnmove', 'columnvisible', 'columnsort'],
         store : bookmarkStore,
         colModel : bookmarkColumnModel,
-        title : BOOKMARK,
+//        title : BOOKMARK,
         stripeRows : true,
         frame : true,
         autoExpandColumn : 'uri_id',
@@ -372,11 +372,8 @@ function getSideBookmarkPanel() {
         store : bookmarkStore,
         colModel : sideBookmarkColumnModel,
         sm : bookmarkCheckboxSelectionModel,
-        title : BOOKMARK,
         stripeRows : true,
-        frame : true,
         autoExpandColumn : 'keyword_id',
-        iconCls: 'icon-book',
         bbar: bbar,
         listeners : {
             cellclick : function() {

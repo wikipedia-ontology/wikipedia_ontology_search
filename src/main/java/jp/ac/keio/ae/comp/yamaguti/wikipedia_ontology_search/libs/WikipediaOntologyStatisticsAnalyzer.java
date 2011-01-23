@@ -28,7 +28,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
             Resource cls = resIter.nextResource();
             String clsName = WikipediaOntologyUtils.getLocalName(cls);
             int numberOfInstances = cls.getProperty(WikipediaOntologyStorage.INSTANCE_COUNT_PROPERTY).getLiteral().getInt();
-            if (0 < clsName.length()) {
+            if (clsName != null && !clsName.equals("null") && 0 < clsName.length()) {
                 try {
                     ClassStatistics clsStatistics = em.create(ClassStatistics.class);
                     clsStatistics.setClassName(clsName);
@@ -43,39 +43,35 @@ public class WikipediaOntologyStatisticsAnalyzer {
         }
     }
 
+    private static void addInstanceToDB(EntityManager em, String instance) {
+        try {
+            InstanceStatistics insStatistics = em.create(InstanceStatistics.class);
+            insStatistics.setName(instance);
+            insStatistics.setURI(WikipediaOntologyStorage.INSTANCE_NS + instance);
+            insStatistics.save();
+            System.out.println(instance);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
     private static void storeInstancesToDB(String lang) {
         EntityManager em = WikipediaOntologyStorage.getEntityManager();
         Model ontModel = WikipediaOntologyStorage.getInstanceMemModel(lang);
-        Set<String> instanceSet = new HashSet<String>();
         for (StmtIterator stmtIter = ontModel.listStatements(); stmtIter.hasNext();) {
             Statement stmt = stmtIter.nextStatement();
             Resource subject = stmt.getSubject();
-            if (subject.getNameSpace().equals(WikipediaOntologyStorage.INSTANCE_NS)) {
-                String localName = WikipediaOntologyUtils.getLocalName(subject);
-                if (localName != null && !localName.equals("null")) {
-                    instanceSet.add(localName);
-                }
+            String localName = WikipediaOntologyUtils.getLocalName(subject);
+            if (localName != null && !localName.equals("null") && 0 < localName.length()) {
+                addInstanceToDB(em, localName);
             }
             RDFNode object = stmt.getObject();
             if (object.isResource()) {
                 Resource objectRes = (Resource) object;
-                if (objectRes.getNameSpace().equals(WikipediaOntologyStorage.INSTANCE_NS)) {
-                    String localName = WikipediaOntologyUtils.getLocalName(objectRes);
-                    if (localName != null && !localName.equals("null")) {
-                        instanceSet.add(localName);
-                    }
+                localName = WikipediaOntologyUtils.getLocalName(objectRes);
+                if (localName != null && !localName.equals("null") && 0 < localName.length()) {
+                    addInstanceToDB(em, localName);
                 }
-            }
-        }
-        for (String instance : instanceSet) {
-            try {
-                InstanceStatistics insStatistics = em.create(InstanceStatistics.class);
-                insStatistics.setName(instance);
-                insStatistics.setURI(WikipediaOntologyStorage.INSTANCE_NS + instance);
-                insStatistics.save();
-                System.out.println(instance);
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
             }
         }
     }
@@ -98,14 +94,14 @@ public class WikipediaOntologyStatisticsAnalyzer {
         setPropertyInstanceMap(ontologyAndInstanceModel, propertyInstanceMap, OWL.ObjectProperty);
         setPropertyInstanceMap(ontologyAndInstanceModel, propertyInstanceMap, OWL.DatatypeProperty);
 
-        setProperty(propertyInstanceMap, ontologyAndInstanceModel);
+        storePropertyToDB(propertyInstanceMap);
     }
 
-    private static void setProperty(Map<Property, Set<Resource>> propertyInstanceMap, Model ontModel) {
+    private static void storePropertyToDB(Map<Property, Set<Resource>> propertyInstanceMap) {
         for (Entry<Property, Set<Resource>> entry : propertyInstanceMap.entrySet()) {
             Property property = entry.getKey();
             Set<Resource> resSet = entry.getValue();
-            setProperty(ontModel, property, resSet.size());
+            storePropertyToDB(property, resSet.size());
         }
     }
 
@@ -160,24 +156,25 @@ public class WikipediaOntologyStatisticsAnalyzer {
         }
     }
 
-    private static PropertyStatistics setProperty(Model ontModel, Property property, int instanceCount) {
-        Literal propertyLiteral = (Literal) ontModel.listObjectsOfProperty(property, RDFS.label).toList().get(0);
-        String propertyLabel = propertyLiteral.getString();
-        try {
-            PropertyStatistics p = WikipediaOntologyStorage.getEntityManager().create(PropertyStatistics.class);
-            p.setName(propertyLabel);
-            if (property.getURI().length() < 250) {
-                p.setURI(property.getURI());
-            } else {
-                System.out.println("over 250 char property:" + property.getURI());
-                p.setURI(WikipediaOntologyStorage.PROPERTY_NS);
+    private static PropertyStatistics storePropertyToDB(Property property, int instanceCount) {
+        String localName = WikipediaOntologyUtils.getLocalName(property);
+        if (localName != null && !localName.equals("null") && 0 < localName.length()) {
+            try {
+                PropertyStatistics p = WikipediaOntologyStorage.getEntityManager().create(PropertyStatistics.class);
+                p.setName(localName);
+                if (property.getURI().length() < 250) {
+                    p.setURI(property.getURI());
+                } else {
+                    System.out.println("over 250 char property:" + property.getURI());
+                    p.setURI(WikipediaOntologyStorage.PROPERTY_NS);
+                }
+                p.setNumberOfInstances(instanceCount);
+                p.save();
+                System.out.println("Property: " + localName);
+                return p;
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            p.setNumberOfInstances(instanceCount);
-            p.save();
-            System.out.println("Property: " + propertyLabel);
-            return p;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -240,8 +237,9 @@ public class WikipediaOntologyStatisticsAnalyzer {
             resIter.nextResource();
         }
 
-        Set<Resource> instanceSet = new HashSet<Resource>();
-        Set<Resource> propertySet = new HashSet<Resource>();
+        Set<String> instanceLocalNameSet = Sets.newHashSet();
+        Set<Resource> instanceSet = Sets.newHashSet();
+        Set<Resource> propertySet = Sets.newHashSet();
         int typeCount = 0;
         int isaCount = 0;
         for (StmtIterator i = ontModel.listStatements(); i.hasNext();) {
@@ -261,6 +259,12 @@ public class WikipediaOntologyStatisticsAnalyzer {
 
             if (subject.getURI().contains("wikipedia_ontology/instance/")) {
                 instanceSet.add(subject);
+                String localName = WikipediaOntologyUtils.getLocalName(subject);
+                if (localName != null && !localName.equals("null")) {
+                    instanceLocalNameSet.add(localName);
+                } else {
+                    System.out.println(subject);
+                }
             }
 
             if (predicate.getURI().contains("wikipedia_ontology/property/")) {
@@ -271,10 +275,17 @@ public class WikipediaOntologyStatisticsAnalyzer {
                 Resource res = (Resource) object;
                 if (res.getURI().contains("wikipedia_ontology/instance/")) {
                     instanceSet.add(res);
+                    String localName = WikipediaOntologyUtils.getLocalName(subject);
+                    if (localName != null && !localName.equals("null")) {
+                        instanceLocalNameSet.add(localName);
+                    } else {
+                        System.out.println(res);
+                    }
                 }
             }
         }
         int instanceCount = instanceSet.size();
+        System.out.println("instance_count: " + instanceLocalNameSet.size());
         int propertyCount = propertySet.size();
         int statementCount = 0;
         for (StmtIterator stmtIter = ontModel.listStatements(); stmtIter.hasNext();) {
@@ -308,9 +319,9 @@ public class WikipediaOntologyStatisticsAnalyzer {
         WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
         WikipediaOntologyStorage.H2_DB_PROTOCOL = "tcp://localhost/";
 
-//        storeClassStatisticsToDB("ja");
-//        storePropertyStatisticsToDB("ja");
-//        storeInstancesToDB("ja");
+        storeClassStatisticsToDB("ja");
+        storePropertyStatisticsToDB("ja");
+        storeInstancesToDB("ja");
 //        storeClassStatisticsToDB("en");
 //        storePropertyStatisticsToDB("en");
 

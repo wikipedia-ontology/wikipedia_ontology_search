@@ -330,7 +330,7 @@ function getHistoryPanel() {
         stateEvents : ['columnresize', 'columnmove', 'columnvisible', 'columnsort'],
         store : historyDataStore,
         colModel : historyDataColumnModel,
-        title : SEARCH_HISTORY,
+//        title : SEARCH_HISTORY,
         stripeRows : true,
         frame : true,
         autoExpandColumn : 'uri_id',
@@ -407,12 +407,9 @@ function getSideHistoryPanel() {
         stateEvents : ['columnresize', 'columnmove', 'columnvisible', 'columnsort'],
         store : historyDataStore,
         colModel : sideHistoryDataColumnModel,
-        title : SEARCH_HISTORY,
         stripeRows : true,
-        frame : true,
         autoExpandColumn : 'keyword_id',
         sm : historyDataCheckboxSelectionModel,
-        iconCls: 'icon-time',
         bbar: bbar,
         listeners : {
             cellclick : function() {

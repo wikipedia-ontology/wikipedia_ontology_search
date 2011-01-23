@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="ext_resources/css/ext-all.css" type="text/css" media="all"/>
     <link rel="stylesheet" href="ext_resources/css/xtheme-midnight.css" type="text/css"/>
     <link rel="stylesheet" href="ext_resources/css/statusbar.css" type="text/css"/>
+    <link rel="stylesheet" href="ext_resources/css/desktop.css" type="text/css"/>
     <link rel="stylesheet" href="my_resources/extjs_mystyle.css" type="text/css" media="all"/>
 
     <!-- extjs libs-->
@@ -24,6 +25,11 @@
     <script type="text/javascript" src="js/lib/ToolbarReorderer.js"></script>
     <script type="text/javascript" src="js/lib/ToolbarDroppable.js"></script>
     <script type="text/javascript" src="js/lib/PagingMemoryProxy.js"></script>
+    <script type="text/javascript" src="js/lib/StartMenu.js"></script>
+    <script type="text/javascript" src="js/lib/TaskBar.js"></script>
+    <script type="text/javascript" src="js/lib/Desktop.js"></script>
+    <script type="text/javascript" src="js/lib/App.js"></script>
+    <script type="text/javascript" src="js/lib/Module.js"></script> 
     <!-- my libs-->
     <script type="text/javascript" src="js/resources/JaResource.js"></script>
     <script type="text/javascript" src="js/Parameters.js"></script>
@@ -50,19 +56,68 @@
     <script type="text/javascript" src="js/widgets/VersionInfoDialog.js"></script>
     <script type="text/javascript" src="js/WikipediaOntologySearch.js"></script>
 </head>
-<body>
+<body scroll="no">
 
-<div id="loading-mask"/>
-<div id="loading">
-    <div class="loading-indicator">
-        <img src="./my_resources/icons/extanim32.gif" class="loading-indicator_img" align="absmiddle"/>
-        <span>日本語Wikipediaオントロジー検索インタフェース 読み込み中・・・</span>
-    </div>
+<!--<div id="loading-mask"/>-->
+<!--<div id="loading">-->
+    <!--<div class="loading-indicator">-->
+        <!--<img src="./my_resources/icons/extanim32.gif" class="loading-indicator_img" align="absmiddle"/>-->
+        <!--<span>日本語Wikipediaオントロジー検索インタフェース 読み込み中・・・</span>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div id="header">-->
+    <!--<div class="app-title" id="title">日本語Wikipediaオントロジー検索インタフェース</div>-->
+<!--</div>-->
+
+<div id="x-desktop">
+
+    <dl id="x-shortcuts">
+        <dt id="statement-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+            <div>ステートメント</div></a>
+        </dt>
+        <dt id="class-list-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>クラス一覧</div></a>
+        </dt>
+        <dt id="property-list-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>プロパティ一覧</div></a>
+        </dt>
+        <dt id="instance-list-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>インスタンス一覧</div></a>
+        </dt>
+        <dt id="tree-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>クラス階層</div></a>
+        </dt>
+        <dt id="whole-tree-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>全クラス階層</div></a>
+        </dt>
+        <dt id="bookmark-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>ブックマーク</div></a>
+        </dt>
+        <dt id="history-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>履歴</div></a>
+        </dt>
+        <dt id="source-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif" />
+                <div>ソースコード</div></a>
+        </dt>
+    </dl>
 </div>
 
-<div id="header">
-    <div class="app-title" id="title">日本語Wikipediaオントロジー検索インタフェース</div>
+<div id="ux-taskbar">
+	<div id="ux-taskbar-start"></div>
+	<div id="ux-taskbuttons-panel"></div>
+	<div class="x-clear"></div>
 </div>
+
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

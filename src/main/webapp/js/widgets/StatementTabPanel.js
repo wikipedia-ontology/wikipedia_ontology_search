@@ -13,8 +13,6 @@ function getStatementTabPanel() {
         frame : true,
         defaults: {autoScroll:true},
         enableTabScroll: true,
-        title : STATEMENT,
-        iconCls: 'icon-table',
         items :[
             {
                 title:  "　",
@@ -28,6 +26,77 @@ function getStatementTabPanel() {
         ],
         plugins:  new Ext.ux.TabCloseMenu()
     });
+
+    var westSidePanel = new Ext.Panel({
+        layout : 'vbox',
+        items : [
+            {
+                title : BOOKMARK,
+                iconCls: 'icon-book',
+                layout : 'fit',
+                flex: 1,
+                items : getSideBookmarkPanel()
+            },
+            {
+                title : SEARCH_HISTORY,
+                iconCls: 'icon-time',
+                layout : 'fit',
+                flex: 1,
+                items : getSideHistoryPanel()
+            }
+        ]
+    });
+
+    var centerPanel = new Ext.Panel({
+        layout : 'border',
+        hideBorders : true,
+        items : [
+            {
+                region : 'north',
+                layout : 'fit',
+                title: SEARCH,
+                iconCls: 'icon-search',
+                height: 180,
+                animate: true,
+                collapsible : true,
+                split: true,
+                items: getSearchPanel()
+            },
+            {
+                region : 'center',
+                layout : 'fit',
+                collapsible : false,
+                items : statementTabPanel
+            }
+        ]
+    });
+
+    return new Ext.Panel({
+        layout : 'border',
+        hideBorders : true,
+//        title : STATEMENT,
+        iconCls: 'icon-table',
+        items : [
+            {
+                region : 'center',
+                layout : 'fit',
+                collapsible : false,
+                items : centerPanel
+            },
+            {
+                title : BOOKMARK_AND_SEARCH_HISTORY,
+                region : 'west',
+                layout : 'fit',
+                width : 300,
+                minWidth : 300,
+                split : true,
+                animate : true,
+                collapsible : true,
+                items : westSidePanel
+            }
+        ]
+    });
+
     return statementTabPanel;
 }
 

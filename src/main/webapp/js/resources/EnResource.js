@@ -69,7 +69,7 @@ var HELP = "Help";
 var VERSION = "Version";
 var SHOW_WHOLE_CLASS_HIEARCHY = "Show Whole Class Hiearchy";
 var HIEARCHY = "Hiearchy";
-var RDF_XML_MESSAGE = "RDF/XMLタブを選択後，検索を行うとソースコードが表示されます．";
+
 var LANGUAGE = "Language";
 var ENGLISH = "English";
 var JAPANESE = "Japanese";
