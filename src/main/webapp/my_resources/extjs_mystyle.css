@@ -81,6 +81,10 @@
     background-image: url(icons/class_icon_s.png) !important;
 }
 
+.icon-class-tree {
+    background-image: url(icons/class_tree_icon_16x16.png) !important;
+}
+
 .icon-property {
     background-image: url(icons/property_icon_s.png) !important;
 }
@@ -97,6 +101,10 @@
     background-image: url(icons/collapse-all.gif) !important;
 }
 
+.icon-bookmark{
+    background-image: url(icons/bookmark_icon_16x16.png) !important;
+}
+
 .icon-book {
     background-image: url(icons/book.png) !important;
 }
@@ -111,6 +119,10 @@
 
 .icon-book_open {
     background-image: url(icons/book_open.png) !important;
+}
+
+.icon-history {
+    background-image: url(icons/history_icon_16x16.png) !important;
 }
 
 .icon-time {
@@ -139,6 +151,10 @@
 
 .icon-rdf {
     background-image: url(icons/rdf_w3c_icon.16.png) !important;
+}
+
+.icon-statement {
+    background-image: url(icons/statement_icon_16x16.png) !important;
 }
 
 .icon-table {

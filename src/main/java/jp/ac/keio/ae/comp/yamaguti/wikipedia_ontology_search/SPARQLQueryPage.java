@@ -374,11 +374,11 @@ public class SPARQLQueryPage extends CommonPage{
                 item.add(queryLink);
 
                 ExternalLink htmlLink = new ExternalLink("html_url", getSPARQLQueryURL(query, inferenceType, "text"));
-                htmlLink.add(new Image("html_icon", new ResourceReference(SPARQLQueryPage.class, "myresources/icons/html.png")));
+                htmlLink.add(new Image("html_icon", new ResourceReference(SPARQLQueryPage.class, "my_resources/icons/html.png")));
                 item.add(htmlLink);
 
                 ExternalLink rdfLink = new ExternalLink("rdf_url", getSPARQLQueryURL(query, inferenceType, "xml"));
-                rdfLink.add(new Image("rdf_icon", new ResourceReference(SPARQLQueryPage.class, "myresources/icons/rdf_w3c_icon.16.png")));
+                rdfLink.add(new Image("rdf_icon", new ResourceReference(SPARQLQueryPage.class, "my_resources/icons/rdf_w3c_icon.16.png")));
                 item.add(rdfLink);
 
                 item.add(new Label("create_userId", uid));

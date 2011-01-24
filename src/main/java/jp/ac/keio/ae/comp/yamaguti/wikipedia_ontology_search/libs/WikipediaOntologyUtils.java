@@ -51,7 +51,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getClassIconSReference() {
-        return new ResourceReference(HomePage.class, "myresources/icons/class_icon_s.png");
+        return new ResourceReference(HomePage.class, "my_resources/icons/class_icon_s.png");
     }
 
     public static Image getClassIconS(String id) {
@@ -59,7 +59,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getPropertyIconSReference() {
-        return new ResourceReference(HomePage.class, "myresources/icons/property_icon_s.png");
+        return new ResourceReference(HomePage.class, "my_resources/icons/property_icon_s.png");
     }
 
     public static Image getPropertyIconS(String id) {
@@ -67,7 +67,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getInstanceIconSReference() {
-        return new ResourceReference(HomePage.class, "myresources/icons/instance_icon_s.png");
+        return new ResourceReference(HomePage.class, "my_resources/icons/instance_icon_s.png");
     }
 
     public static Image getInstanceIconS(String id) {
@@ -75,7 +75,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getMinusIconReference() {
-        return new ResourceReference(HomePage.class, "myresources/icons/elbow-minus-nl.gif");
+        return new ResourceReference(HomePage.class, "my_resources/icons/elbow-minus-nl.gif");
     }
 
     public static Image getMinusIcon(String id) {
@@ -83,7 +83,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getPlusIconReference() {
-        return new ResourceReference(HomePage.class, "myresources/icons/elbow-end-plus-nl.gif");
+        return new ResourceReference(HomePage.class, "my_resources/icons/elbow-end-plus-nl.gif");
     }
 
     public static Image getPlusIcon(String id) {
@@ -91,7 +91,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ResourceReference getRDFIconReference() {
-        return new ResourceReference(HomePage.class, "myresources/icons/rdf_w3c_icon.16.png");
+        return new ResourceReference(HomePage.class, "my_resources/icons/rdf_w3c_icon.16.png");
     }
 
     public static Image getRDFIcon(String id) {

@@ -693,8 +693,8 @@ td.ux-taskButtons-edge {
 #statement-win-shortcut img {
     width: 48px;
     height: 48px;
-    background-image: url(../../my_resources/icons/table_48x48.png);
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = '../../my_rsources/icons/table_48x48.png', sizingMethod = 'scale');
+    background-image: url(../../my_resources/icons/statement_icon_48x48.png);
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = '../../my_rsources/icons/statement_icon_48x48.png', sizingMethod = 'scale');
 }
 
 #class-list-win-shortcut img {
@@ -721,14 +721,14 @@ td.ux-taskButtons-edge {
 #tree-win-shortcut img {
     width: 48px;
     height: 48px;
-    background-image: url(../../my_resources/icons/expand-all_48x48.png);
+    background-image: url(../../my_resources/icons/class_tree_icon_48x48.png);
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = 'images/im48x48.png', sizingMethod = 'scale');
 }
 
 #whole-tree-win-shortcut img {
     width: 48px;
     height: 48px;
-    background-image: url(../../my_resources/icons/expand-all_48x48.png);
+    background-image: url(../../my_resources/icons/class_tree_icon_48x48.png);
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = 'images/im48x48.png', sizingMethod = 'scale');
 }
 
@@ -736,14 +736,14 @@ td.ux-taskButtons-edge {
 #bookmark-win-shortcut img {
     width: 48px;
     height: 48px;
-    background-image: url(../../my_resources/icons/book_48x48.png);
+    background-image: url(../../my_resources/icons/bookmark_icon_48x48.png);
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = 'images/im48x48.png', sizingMethod = 'scale');
 }
 
 #history-win-shortcut img {
     width: 48px;
     height: 48px;
-    background-image: url(../../my_resources/icons/time_48x48.png);
+    background-image: url(../../my_resources/icons/history_icon_48x48.png);
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = 'images/im48x48.png', sizingMethod = 'scale');
 }
 

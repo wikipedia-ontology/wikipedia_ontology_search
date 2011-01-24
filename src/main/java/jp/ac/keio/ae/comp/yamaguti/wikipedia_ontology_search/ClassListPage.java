@@ -209,8 +209,7 @@ public class ClassListPage extends CommonPage {
                 propertyListContainer.setVisible(false);
                 item.add(propertyListContainer);
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "property"));
-                final Image plusOrMinusImage = new Image("plus_or_minus_icon", WikipediaOntologyUtils
-                        .getPlusIconReference());
+                final Image plusOrMinusImage = new Image("plus_or_minus_icon", WikipediaOntologyUtils.getPlusIconReference());
                 plusOrMinusImage.setOutputMarkupId(true);
                 final Image indicator = WikipediaOntologyUtils.getIndicator("indicator");
                 item.add(indicator);

@@ -302,6 +302,7 @@ function reloadStatementTable(queryJSONTableURI) {
     var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
     var statementURIField = Ext.getCmp("StatementTabURIField" + tabId);
     statementURIField.setValue(queryJSONTableURI);
+    Ext.getCmp("StatementURIField").setValue(queryJSONTableURI);
     var statementTableDataStore = statementTablePanel.store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
     var pagingToolBar = statementTablePanel.bbar;

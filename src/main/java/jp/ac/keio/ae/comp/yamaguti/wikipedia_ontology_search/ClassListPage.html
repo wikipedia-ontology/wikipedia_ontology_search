@@ -1,79 +1,93 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title></title>
 </head>
 <body>
 
 <wicket:extend>
 
-<h1 wicket:id = "h1-title">H1 Title</h1>
-<div  style="text-align: right; font-size: 80%;">最終更新日: 2010-02-08</div>
+    <h1 wicket:id="h1-title">H1 Title</h1>
 
-<p class="page_description">
-以下は，クラスが持つインスタンス数でソートしたクラス一覧である．()内は，クラスが持つインスタンス数を示している．
-クラスの<img src="#" wicket:id="plus_icon" />をクリックすると，そのクラスのインスタンス一覧が表示される．
-さらに，インスタンスの<img src="#" wicket:id="plus_icon" />を
-クリックすると，そのインスタンスが持つプロパティおよびプロパティ値が表形式で表示される．<img src="#" wicket:id="minus_icon" />をクリックすると，
-表示を折りたたむことができる．
-クラス，インスタンス，プロパティ，オブジェクトプロパティ値
-については，各リソースのHTMLページへリンクが張られている．また，<img src="#" wicket:id="rdf_icon" />をクリックすると，各リソースについてRDF/XML形式のデータが
-ダウンロードできる．
-</p>
-<div class = "sub_menu">
-[<a   wicket:id = "classes_ranked_by_number_of_instances" href="#">日本語＋英語</a>]
-[<a  wicket:id = "ja_classes_ranked_by_number_of_instances" href="#">日本語</a>]
-[<a  wicket:id = "en_classes_ranked_by_number_of_instances" href="#">英語</a>]
-</div>
-<br/>
+    <div style="text-align: right; font-size: 80%;">最終更新日: 2010-02-08</div>
 
-<div style="padding-left: 2em;"  wicket:id = "class_list_container">
-Results: <span wicket:id = "class_start">1</span> – <span wicket:id = "class_end">50</span> of <span wicket:id = "class_count">50</span>
-<img src="#" wicket:id="top_indicator" style="display:none"/>
-<br/><br/>
-<div wicket:id="top_class_paging">1,2</div>
+    <p class="page_description">
+        以下は，クラスが持つインスタンス数でソートしたクラス一覧である．()内は，クラスが持つインスタンス数を示している．
+        クラスの<img src="#" wicket:id="plus_icon"/>をクリックすると，そのクラスのインスタンス一覧が表示される．
+        さらに，インスタンスの<img src="#" wicket:id="plus_icon"/>を
+        クリックすると，そのインスタンスが持つプロパティおよびプロパティ値が表形式で表示される．<img src="#" wicket:id="minus_icon"/>をクリックすると，
+        表示を折りたたむことができる．
+        クラス，インスタンス，プロパティ，オブジェクトプロパティ値
+        については，各リソースのHTMLページへリンクが張られている．また，<img src="my_resources/icons/rdf_w3c_icon.16.png"/>をクリックすると，各リソースについてRDF/XML形式のデータが
+        ダウンロードできる．
+    </p>
 
-<ul class="class_list_style">
-	<li wicket:id = "class_list">
-	    <img wicket:id = "plus_or_minus_icon" src="#" alt = "plus or minus"/>
-	   <a style="padding-right: 0.5em;" wicket:id = "class_rdf_url" href="#"><img wicket:id = "rdf_icon" src="#" alt = "RDF Icon"/></a>
-	  <a wicket:id = "class" href="#">Class Name</a> (<span wicket:id = "instance_count"/>)
-	  <img src="#" wicket:id="indicator" style="display:none"/>
-	 <div wicket:id = "instance_list_container">
-	Results: <span wicket:id = "instance_start">1</span> – <span wicket:id = "instance_end">50</span> of <span wicket:id = "instance_count">50</span>
-	<img src="#" wicket:id="indicator" style="display:none"/>
+    <div class="sub_menu">
+        [<a wicket:id="classes_ranked_by_number_of_instances" href="#">日本語＋英語</a>]
+        [<a wicket:id="ja_classes_ranked_by_number_of_instances" href="#">日本語</a>]
+        [<a wicket:id="en_classes_ranked_by_number_of_instances" href="#">英語</a>]
+    </div>
     <br/>
 
-	<ul  class="instance_list_style">
-		<li wicket:id = "instance_list">
-		    <img wicket:id = "plus_or_minus_icon" src="#" alt = "plus or minus"/>
-		    <a style="padding-right: 0.5em;" wicket:id = "instance_rdf_url" href="#"><img wicket:id = "rdf_icon" src="#" alt = "RDF Icon"/></a>
-		    <a wicket:id = "instance" href="#">Instance Name</a>
-		    <img src="#" wicket:id="indicator" style="display:none"/>
-		    <table wicket:id = "property_and_value_list_container" style="margin-left: 5em;">
-		    <tr wicket:id = "property_list">
-		        <th style="text-align: left;"> <img wicket:id = "property_icon_s" src="#" alt = "property"/>
-		         <a style="padding-right: 0.5em;" wicket:id = "property_rdf_url" href="#"><img wicket:id = "rdf_icon" src="#" alt = "RDF Icon"/></a>
-		         <a wicket:id = "property" href="#"></a>
-		         </th>
-		         <td><span wicket:id= "datatype_property_value"/><a href="#" wicket:id = "object_property_value"></a></td>
-		      </tr>
-		      </table>
-		</li>
-	</ul>
-	<div wicket:id="instance_paging">1,2</div>
-	<hr class="separator"/>
-	 </div>
-	</li>
-</ul>
+    <div style="padding-left: 2em;" wicket:id="class_list_container">
+        Results: <span wicket:id="class_start">1</span> – <span wicket:id="class_end">50</span> of <span
+            wicket:id="class_count">50</span>
+        <img src="#" wicket:id="top_indicator" style="display:none"/>
+        <br/><br/>
 
-Results: <span wicket:id = "class_start">1</span> – <span wicket:id = "class_end">50</span> of <span wicket:id = "class_count">50</span>
-<img src="#" wicket:id="bottom_indicator" style="display:none"/>
-<br/><br/>
-<div wicket:id="bottom_class_paging">1,2</div>
-</div>
+        <div wicket:id="top_class_paging">1,2</div>
+
+        <ul class="class_list_style">
+            <li wicket:id="class_list">
+                <img wicket:id="plus_or_minus_icon" src="#" alt="plus or minus"/>
+                <a style="padding-right: 0.5em;" wicket:id="class_rdf_url" href="#"><img
+                        src="my_resources/icons/rdf_w3c_icon.16.png" alt="RDF Icon"/></a>
+                <a wicket:id="class" href="#">Class Name</a> (<span wicket:id="instance_count"/>)
+                <img src="#" wicket:id="indicator" style="display:none"/>
+
+                <div wicket:id="instance_list_container">
+                    Results: <span wicket:id="instance_start">1</span> – <span wicket:id="instance_end">50</span> of
+                    <span wicket:id="instance_count">50</span>
+                    <img src="#" wicket:id="indicator" style="display:none"/>
+                    <br/>
+
+                    <ul class="instance_list_style">
+                        <li wicket:id="instance_list">
+                            <img wicket:id="plus_or_minus_icon" src="#" alt="plus or minus"/>
+                            <a style="padding-right: 0.5em;" wicket:id="instance_rdf_url" href="#"><img
+                                    src="my_resources/icons/rdf_w3c_icon.16.png" alt="RDF Icon"/></a>
+                            <a wicket:id="instance" href="#">Instance Name</a>
+                            <img src="#" wicket:id="indicator" style="display:none"/>
+                            <table wicket:id="property_and_value_list_container" style="margin-left: 5em;">
+                                <tr wicket:id="property_list">
+                                    <th style="text-align: left;"><img wicket:id="property_icon_s" src="#"
+                                                                       alt="property"/>
+                                        <a style="padding-right: 0.5em;" wicket:id="property_rdf_url" href="#"><img
+                                                src="my_resources/icons/rdf_w3c_icon.16.png" alt="RDF Icon"/></a>
+                                        <a wicket:id="property" href="#"></a>
+                                    </th>
+                                    <td><span wicket:id="datatype_property_value"/><a href="#"
+                                                                                      wicket:id="object_property_value"></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                    <div wicket:id="instance_paging">1,2</div>
+                    <hr class="separator"/>
+                </div>
+            </li>
+        </ul>
+
+        Results: <span wicket:id="class_start">1</span> – <span wicket:id="class_end">50</span> of <span
+            wicket:id="class_count">50</span>
+        <img src="#" wicket:id="bottom_indicator" style="display:none"/>
+        <br/><br/>
+
+        <div wicket:id="bottom_class_paging">1,2</div>
+    </div>
 
 </wicket:extend>
 

@@ -66,7 +66,7 @@ WikipediaOntologySearch.BookmarkWindow = Ext.extend(Ext.app.Module, {
     init : function() {
         this.launcher = {
             text: BOOKMARK,
-            iconCls:'icon-book',
+            iconCls:'icon-bookmark',
             handler : this.createWindow,
             scope: this
         }
@@ -81,7 +81,7 @@ WikipediaOntologySearch.BookmarkWindow = Ext.extend(Ext.app.Module, {
                 title:BOOKMARK,
                 width:800,
                 height:600,
-                iconCls: 'icon-book',
+                iconCls: 'icon-bookmark',
                 shim:false,
                 closable: false,
                 animCollapse:false,
@@ -99,7 +99,7 @@ WikipediaOntologySearch.HistoryWindow = Ext.extend(Ext.app.Module, {
     init : function() {
         this.launcher = {
             text: SEARCH_HISTORY,
-            iconCls:'icon-time',
+            iconCls:'icon-history',
             handler : this.createWindow,
             scope: this
         }
@@ -114,7 +114,7 @@ WikipediaOntologySearch.HistoryWindow = Ext.extend(Ext.app.Module, {
                 title:SEARCH_HISTORY,
                 width:800,
                 height:600,
-                iconCls: 'icon-time',
+                iconCls: 'icon-history',
                 closable: false,
                 shim:false,
                 animCollapse:false,
@@ -131,7 +131,7 @@ WikipediaOntologySearch.StatementWindow = Ext.extend(Ext.app.Module, {
     init : function() {
         this.launcher = {
             text: STATEMENT,
-            iconCls:'icon-table',
+            iconCls:'icon-statement',
             handler : this.createWindow,
             scope: this
         }
@@ -146,7 +146,7 @@ WikipediaOntologySearch.StatementWindow = Ext.extend(Ext.app.Module, {
                 title:STATEMENT,
                 width:1024,
                 height:768,
-                iconCls: 'icon-table',
+                iconCls: 'icon-statement',
                 shim:false,
                 closable: false,
                 animCollapse:false,
@@ -268,7 +268,7 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
     init : function() {
         this.launcher = {
             text: CLASS_HIERARCHY_AND_INSTANCES,
-            iconCls:'icon-expand-all',
+            iconCls:'icon-class-tree',
             handler : this.createWindow,
             scope: this
         }
@@ -283,7 +283,7 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
                 title:CLASS_HIERARCHY_AND_INSTANCES,
                 width:500,
                 height:600,
-                iconCls: 'icon-expand-all',
+                iconCls: 'icon-class-tree',
                 shim:false,
                 closable: true,
                 animCollapse:false,
@@ -301,7 +301,7 @@ WikipediaOntologySearch.WholeTreeWindow = Ext.extend(Ext.app.Module, {
     init : function() {
         this.launcher = {
             text: WHOLE_CLASS_HIEARCHY,
-            iconCls:'icon-expand-all',
+            iconCls:'icon-class-tree',
             handler : this.createWindow,
             scope: this
         }
@@ -316,7 +316,7 @@ WikipediaOntologySearch.WholeTreeWindow = Ext.extend(Ext.app.Module, {
                 title:WHOLE_CLASS_HIEARCHY,
                 width:500,
                 height:600,
-                iconCls: 'icon-expand-all',
+                iconCls: 'icon-class-tree',
                 shim:false,
                 closable: true,
                 animCollapse:false,
@@ -511,7 +511,7 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
                 title:INSTANCE_LIST,
                 width:1024,
                 height:768,
-                iconCls: 'icon-table',
+                iconCls: 'icon-instance',
                 shim:false,
                 closable: true,
                 animCollapse:false,
