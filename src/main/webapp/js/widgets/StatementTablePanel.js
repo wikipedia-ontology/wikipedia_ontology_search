@@ -231,11 +231,8 @@ function getStatementTablePanel(title, tabIndex) {
         tbar: tbar,
         bbar : pagingToolBar,
         view : groupingStatementTableView,
-        title : title,
         autoExpandColumn : 'object',
         stripeRows : true,
-        closable: true,
-        iconCls: 'icon-tab',
         listeners : {
             scope: this,
             cellclick : openWikiOntJSONData,
@@ -248,7 +245,32 @@ function getStatementTablePanel(title, tabIndex) {
             }
         }
     });
-    return statementTablePanel;
+    return new Ext.Panel({
+        id : 'StatementPanel' + tabIndex,
+        title : title,
+        iconCls: 'icon-tab',
+        layout: 'border',
+        closable: true,
+        items: [
+            {
+                region: 'north',
+                height: 40,
+                items: getURIPanel('StatementTabURIField' + tabIndex)
+            },
+            {
+                region: 'center',
+                layout: 'fit',
+                items: statementTablePanel
+            }
+        ],
+        listeners: {
+            'activate' : function(tabPanel, tab) {
+                var uri = getCurrentStatementTabURI();
+                var searchParams = extractParametersFromURI(uri);
+                setSearchParams(searchParams);
+            }
+        }
+    });
 }
 
 function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
@@ -279,10 +301,13 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
 }
 
 function reloadStatementTable(queryJSONTableURL) {
-    var statementTableDataStore = statementTabPanel.getActiveTab().store;
+    var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
+    var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
+    var statementURIField = Ext.getCmp("StatementTabURIField" + tabId);
+    statementURIField.setValue(queryJSONTableURL);
+    var statementTableDataStore = statementTablePanel.store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
-    var pagingToolBar = statementTabPanel.getActiveTab().bbar;
-    //    alert(queryJSONTableURL);
+    var pagingToolBar = statementTablePanel.bbar;
     statementTableDataStore.proxy = getProxy(queryJSONTableURL);
     var limitSize = 100;
     if (!isNaN(numberOfStatementsSelection.getValue())) {

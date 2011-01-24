@@ -59,7 +59,6 @@ var ABOUT_CLASS_HIEARCHY_AND_INSTANCE = "クラス階層とインスタンス関
 var SHOW_CLASS_HIERARCHY_AND_INSTANCES = "クラス階層とインスタンスを表示";
 var EXPAND_ALL_CLASS_HIEARCHY_AND_INSTANCES = "クラス階層とインスタンスをすべて展開して表示する";
 var ABOUT_RDF_XML = "RDF/XML関連";
-var SHOW_RDF_XML = "RDF/XMLを表示";
 var ABOUT_STATEMENT_TABLE = "ステートメントテーブル関連";
 var CLOSE_GROUPING_STATEMENTS = "グルーピングをすべて閉じた状態で表示";
 var OPTION = "オプション";
@@ -80,6 +79,19 @@ var MANUAL = "マニュアル";
 var MANUAL_HTML = "manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
+
+// parameter keys
+var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
+var SEARCH_TARGET_PARAMETER_KEY = "search_target";
+var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
+var SEARCH_OPTION_PARAMETER_KEY = "search_option";
+var VERSION_PARAMETER_KEY = "version";
+var URI_PARAMETER_KEY = "uri";
+var INFERNCE_TYPE_PARAMETER_KEY = "inference_type";
+
+//inference type
+var NONE_INFERENCE_OPTION = "none";
+var RDFS_INFERENCE_OPTION = "rdfs";
 
 // queryType
 var QTYPE_CLASS = 'class';

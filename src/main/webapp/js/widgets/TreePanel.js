@@ -231,9 +231,11 @@ function reloadTree(queryJSONTableURL) {
             return;
         }
         var classAndInstanceTreePanel = Ext.getCmp('classAndInstanceTreePanel');
-        classAndInstanceTreePanel.loader.dataUrl = queryJSONTreeURL;
-        //        classAndInstanceTreePanel.loader.proxy = getProxy(queryJSONTableURL);
-        classAndInstanceTreePanel.loader.load(classAndInstanceTreePanel.getRootNode());
+        if (classAndInstanceTreePanel != null) {
+            classAndInstanceTreePanel.loader.dataUrl = queryJSONTreeURL;
+            //        classAndInstanceTreePanel.loader.proxy = getProxy(queryJSONTableURL);
+            classAndInstanceTreePanel.loader.load(classAndInstanceTreePanel.getRootNode());
+        }
     }
 }
 

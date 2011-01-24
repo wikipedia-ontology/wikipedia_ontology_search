@@ -46,9 +46,14 @@ public class WikipediaOntologyStatisticsAnalyzer {
     private static void addInstanceToDB(EntityManager em, String instance) {
         try {
             InstanceStatistics insStatistics = em.create(InstanceStatistics.class);
-            insStatistics.setName(instance);
-            insStatistics.setURI(WikipediaOntologyStorage.INSTANCE_NS + instance);
-            insStatistics.save();
+            String uri = WikipediaOntologyStorage.INSTANCE_NS + instance;
+            if (uri.length() < 250) {
+                insStatistics.setName(instance);
+                insStatistics.setURI(uri);
+                insStatistics.save();
+            } else {
+                System.out.println("over 250 chars " + instance);
+            }
             System.out.println(instance);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -319,8 +324,8 @@ public class WikipediaOntologyStatisticsAnalyzer {
         WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
         WikipediaOntologyStorage.H2_DB_PROTOCOL = "tcp://localhost/";
 
-        storeClassStatisticsToDB("ja");
-        storePropertyStatisticsToDB("ja");
+//        storeClassStatisticsToDB("ja");
+//        storePropertyStatisticsToDB("ja");
         storeInstancesToDB("ja");
 //        storeClassStatisticsToDB("en");
 //        storePropertyStatisticsToDB("en");

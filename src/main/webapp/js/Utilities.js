@@ -17,6 +17,144 @@ function getProxy(json_url) {
     });
 }
 
+function setSearchParams(params) {
+    for (var key in params) {
+        //        alert("key: " + key + "->" + "value: " + params[key]);
+        var value = params[key];
+        switch (key) {
+            case RESOURCE_TYPE_PARAMETER_KEY:
+                queryType = value;
+                selectResourceTypeRadioButton();
+                break;
+            case RESOURCE_NAME_PARAMETER_KEY:
+                var searchPanel = Ext.getCmp("SearchPanel");
+                searchPanel.getForm().findField('keyword').setValue(value);
+                break;
+            case SEARCH_TARGET_PARAMETER_KEY:
+                searchTargetType = value;
+                switch (value) {
+                    case URI_SEARCH_TARGET_OPTION:
+                        Ext.getCmp("uri_radio_button").checked = true;
+                        break;
+                    case LABEL_SEARCH_TARGET_OPTION:
+                        Ext.getCmp("label_radio_button").checked = true;
+                        break;
+                }
+                break;
+            case SEARCH_OPTION_PARAMETER_KEY:
+                Ext.getCmp("Resource_Search_Option").setValue(value);
+                break;
+            case VERSION_PARAMETER_KEY:
+                var versionOptionSelection = Ext.getCmp('Version_Option');
+                versionOptionSelection.setValue(value);
+                break;
+            case INFERNCE_TYPE_PARAMETER_KEY:
+                switch (value) {
+                    case RDFS_INFERENCE_OPTION:
+                        useInfModel = true;
+                        Ext.getDom('use_inf_model').checked = useInfModel;
+                        break;
+                }
+                break;
+        }
+    }
+}
+
+function extractParametersFromURI(uri) {
+    var params = {};
+    var baseURI = uri;
+    var paramString = "&";
+    if (uri.indexOf("?") != -1) {
+        var uriElements = uri.split("?");
+        baseURI = uriElements[0];
+        paramString = uriElements[1];
+    }
+    var baseURIElems = baseURI.split("/");
+    params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4];
+    params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6];
+    if (paramString != '&') {
+        var paramSet = paramString.split("&");
+        for (var i = 0; i < paramSet.length; i++) {
+            var param = paramSet[i].split("=");
+            params[param[0]] = param[1];
+        }
+    } else {
+        // default parameters
+        params[SEARCH_TARGET_PARAMETER_KEY] = URI_SEARCH_TARGET_OPTION;
+        params[SEARCH_OPTION_PARAMETER_KEY] = EXACT_MATCH_SEARCH_OPTION;
+        params[INFERNCE_TYPE_PARAMETER_KEY] = NONE_INFERENCE_OPTION;
+        params[VERSION_PARAMETER_KEY] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+    }
+    params[URI_PARAMETER_KEY] = uri;
+
+//    for (var key in params) {
+//        alert("key: " + key + "->" + "value: " + params[key]);
+//    }
+    return params;
+}
+
+function getCurrentStatementTabURI() {
+    var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
+    var statementURIField = Ext.getCmp("StatementTabURIField" + tabId);
+    return statementURIField.getValue();
+}
+
+function getURIPanel(id) {
+    var buttonPanel = {
+        xtype: 'compositefield',
+        items: [
+            {
+                xtype: 'button',
+                iconCls: 'icon-book_add',
+                listeners: {
+                    "click": function() {
+                        var uri = getCurrentStatementTabURI();
+                        var searchParams = extractParametersFromURI(uri);
+                        addBookmark(searchParams);
+                    }
+                }
+            },
+            {
+                xtype: 'button',
+                iconCls: 'icon-rdf',
+                listeners: {
+                    "click": function() {
+                        var uri = getCurrentStatementTabURI();
+                        uri = uri.replace("table_data", "data");
+                        reloadRDFSource(uri);
+                    }
+                }
+            }
+        ]
+    };
+
+    return new Ext.Panel({
+        frame : true,
+        height: 30,
+        bodyStyle : 'padding: 10px;',
+        layout: 'border',
+        items : [
+            {
+                region: 'west',
+                xtype: 'label',
+                text: URI,
+                width: 30
+            },
+            {
+                id: id,
+                region: 'center',
+                xtype: 'textfield',
+                editable: false
+            },
+            {
+                region: 'east' ,
+                width: 50,
+                items: buttonPanel
+            }
+        ]
+    });
+}
+
 function loadStore(store) {
     store.load({
         params : {
@@ -233,7 +371,7 @@ function makeClassContextMenu(keyword) {
                 iconCls: 'icon-rdf',
                 handler: function() {
                     var queryURL = BASE_SERVER_CLASS_DATA_URL + encodeURI(keyword) + ".rdf";
-                    window.open(queryURL);
+                    reloadRDFSource(queryURL);
                 }
             },
             {
@@ -291,7 +429,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                         baseDataURL = BASE_SERVER_PROPERTY_DATA_URL;
                     }
                     var queryURL = baseDataURL + encodeURI(keyword) + ".rdf";
-                    window.open(queryURL);
+                    reloadRDFSource(queryURL);
                 }
             },
             {

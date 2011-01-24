@@ -16,6 +16,7 @@ var PROPERTY_LIST = "Property List";
 var INSTANCE = "Instance";
 var INSTANCE_LIST = "Instance List";
 var RESOURCE_TYPE = "Type of Resource";
+var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
 var SEARCH_TARGET = "Search Target";
 var USE_INFERENCE_MODEL = "Use Inference Model";
 var NUMBER_OF_STATEMENTS = "Number of Statements";
@@ -59,7 +60,6 @@ var ABOUT_CLASS_HIEARCHY_AND_INSTANCE = "About Class Hiearchy and Instance";
 var SHOW_CLASS_HIERARCHY_AND_INSTANCES = "Show Class Hiearchy and Instances";
 var EXPAND_ALL_CLASS_HIEARCHY_AND_INSTANCES = "Expand All Class Hiearchy and Instances";
 var ABOUT_RDF_XML = "About RDF/XML";
-var SHOW_RDF_XML = "Show RDF/XML";
 var ABOUT_STATEMENT_TABLE = "About Statement Table";
 var CLOSE_GROUPING_STATEMENTS = "Close Grouping Statements";
 var OPTION = "Option";
@@ -80,6 +80,19 @@ var MANUAL = "manual";
 var MANUAL_HTML = "en_manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
+
+// parameter keys
+var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
+var SEARCH_TARGET_PARAMETER_KEY = "search_target";
+var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
+var SEARCH_OPTION_PARAMETER_KEY = "search_option";
+var VERSION_PARAMETER_KEY = "version";
+var URI_PARAMETER_KEY = "uri";
+var INFERNCE_TYPE_PARAMETER_KEY = "inference_type";
+
+//inference type
+var NONE_INFERENCE_OPTION = "none";
+var RDFS_INFERENCE_OPTION = "rdfs";
 
 // queryType
 var QTYPE_CLASS = 'class';

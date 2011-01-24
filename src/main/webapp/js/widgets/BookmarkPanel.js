@@ -287,7 +287,7 @@ function getBookmarkPanel() {
         stateEvents : ['columnresize', 'columnmove', 'columnvisible', 'columnsort'],
         store : bookmarkStore,
         colModel : bookmarkColumnModel,
-//        title : BOOKMARK,
+        //        title : BOOKMARK,
         stripeRows : true,
         frame : true,
         autoExpandColumn : 'uri_id',
@@ -382,6 +382,15 @@ function getSideBookmarkPanel() {
             cellcontextmenu : showBookmarkContextMenu
         }
     });
+}
+
+function addBookmark(params) {
+    var record = [new Date().toLocaleString(), params[RESOURCE_NAME_PARAMETER_KEY],
+        params[RESOURCE_TYPE_PARAMETER_KEY],params[SEARCH_TARGET_PARAMETER_KEY],
+        params[SEARCH_OPTION_PARAMETER_KEY], useInfModel,
+        params[URI_PARAMETER_KEY],  params[VERSION_PARAMETER_KEY]];
+    bookmarkArray.push(record);
+    saveBookmarksToWebStorage(bookmarkStore);
 }
 
 function addBookmark() {

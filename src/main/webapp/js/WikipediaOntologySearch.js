@@ -14,7 +14,6 @@ var currentURI = "";
 var queryURL = "";
 var show_isa_tree_and_instance = true;
 var expand_all_class_and_instance = false;
-var show_rdf_xml = true;
 var start_collapsed_group = true;
 
 var bookmarkPanel;

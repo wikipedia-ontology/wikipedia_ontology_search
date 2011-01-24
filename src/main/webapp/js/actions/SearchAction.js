@@ -97,7 +97,7 @@ function reloadWikiOntJSONData1(queryURL, unescapeQueryURL, keywords) {
     Ext.getDom('class_button').checked = true;
     currentURI = unescapeQueryURL;
     currentURI = setUseInfModelOption(currentURI);
-//    writeStatusBar();
+    //    writeStatusBar();
     addHistoryData();
     statementTabPanel.getActiveTab().setTitle(keywords.join("＆"));
     statementTabPanel.getActiveTab().setIconClass('icon-class');
@@ -115,28 +115,20 @@ function reloadWikiOntJSONData2(queryURL, keyword) {
         currentURI = BASE_CLASS_URI + keyword;
         currentURI = setUseInfModelOption(currentURI);
         statementTabPanel.getActiveTab().setIconClass('icon-class');
-//        writeStatusBar();
     } else if (queryType == QTYPE_PROPERTY) {
         searchPanel.getForm().findField('keyword').setValue(keyword);
         Ext.getDom('property_button').checked = true;
         currentURI = BASE_PROPERTY_URI + keyword;
         currentURI = setUseInfModelOption(currentURI);
         statementTabPanel.getActiveTab().setIconClass('icon-property');
-//        writeStatusBar();
     } else if (queryType == QTYPE_INSTANCE) {
         searchPanel.getForm().findField('keyword').setValue(keyword);
         Ext.getDom('instance_button').checked = true;
         currentURI = BASE_INSTANCE_URI + keyword;
         currentURI = setUseInfModelOption(currentURI);
         statementTabPanel.getActiveTab().setIconClass('icon-instance');
-//        writeStatusBar();
     }
     addHistoryData();
     reloadWikiOntJSONData(queryURL);
 }
 
-function writeStatusBar() {
-    Ext.getCmp('statusBar').setStatus({
-        text : '<span style="color: white; font-weight: bold;">URI: ' + currentURI + '</span>'
-    });
-}

@@ -85,29 +85,6 @@ function getOptionPanel() {
                 ]
             },
             {
-                fieldLabel : ABOUT_RDF_XML,
-                items : [
-                    {
-                        id : 'show_rdf_xml',
-                        stateId : 'show_rdf_xml_state',
-                        statefule : true,
-                        stateEvents : ['check'],
-                        xtype : 'checkbox',
-                        boxLabel : SHOW_RDF_XML,
-                        getState : function() {
-                            return {
-                                checked : this.getValue()
-                            }
-                        },
-                        applyState : function(state) {
-                            show_rdf_xml = state.checked;
-                            this.setValue(state.checked);
-                        },
-                        handler : applyNewOptionState
-                    }
-                ]
-            },
-            {
                 fieldLabel : ABOUT_STATEMENT_TABLE,
                 items : [
                     {
@@ -143,12 +120,7 @@ function applyOptionState() {
         classAndInstanceTreePanel.loader.dataUrl = NULL_TREE_DATA;
         classAndInstanceTreePanel.loader.load(classAndInstanceTreePanel.getRootNode());
     }
-    if (!show_rdf_xml) {
-        var xml_source = Ext.getDom("xml_source");
-        if (xml_source != null) {
-            xml_source.innerHTML = "";
-        }
-    }
+    
     groupingStatementTableView.startCollapsed = start_collapsed_group;
     if (start_collapsed_group) {
         groupingStatementTableView.collapseAllGroups();
@@ -161,7 +133,6 @@ function setOptionChecks() {
     if (Ext.getDom('show_isa_tree_and_instance') != null) {
         Ext.getDom('show_isa_tree_and_instance').checked = show_isa_tree_and_instance;
         Ext.getDom('expand_all_class_and_instance').checked = expand_all_class_and_instance;
-        Ext.getDom('show_rdf_xml').checked = show_rdf_xml;
         Ext.getDom('start_collapsed_group').checked = start_collapsed_group;
     }
 }
@@ -170,7 +141,6 @@ function applyNewOptionState() {
     if (Ext.getDom('show_isa_tree_and_instance') != null) {
         show_isa_tree_and_instance = Ext.getDom('show_isa_tree_and_instance').checked;
         expand_all_class_and_instance = Ext.getDom('expand_all_class_and_instance').checked;
-        show_rdf_xml = Ext.getDom('show_rdf_xml').checked;
         start_collapsed_group = Ext.getDom('start_collapsed_group').checked;
         applyOptionState();
     }

@@ -74,7 +74,7 @@ function getStatementTabPanel() {
     return new Ext.Panel({
         layout : 'border',
         hideBorders : true,
-//        title : STATEMENT,
+        //        title : STATEMENT,
         iconCls: 'icon-table',
         items : [
             {

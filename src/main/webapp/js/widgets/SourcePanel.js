@@ -5,14 +5,45 @@
  */
 
 function getSourcePanel() {
+
+    var uriPanel = new Ext.Panel({
+        frame : true,
+        height: 30,
+        bodyStyle : 'padding: 10px;',
+        layout: 'border',
+        items : [
+            {
+                region: 'west',
+                xtype: 'label',
+                text: URI,
+                width: 30
+            },
+            {
+                id: "SourceURIField",
+                region: 'center',
+                xtype: 'textfield',
+                editable: false
+            }
+        ]
+    });
+
     return new Ext.Panel({
         //        title : "RDF/XML",
         iconCls: 'icon-rdf',
         hideBorders : true,
-        autoScroll : true,
         bodyStyle : 'font-size: 80%; padding: 10px;',
+        layout: 'border',
         items : [
             {
+                region: 'north',
+                height: 40,
+                items: uriPanel
+            },
+            {
+                region:'center',
+                layout: 'fit',
+                autoScroll : true,
+                xtype: 'textarea',
                 id : "xml_source",
                 html : ""
             }
@@ -20,17 +51,14 @@ function getSourcePanel() {
     });
 }
 
-function reloadRDFSource(queryJSONTreeURL) {
-    if (!show_rdf_xml) {
-        return;
-    }
-    var queryDataURL = queryJSONTreeURL.replace("tree_data", "data");
+function reloadRDFSource(queryDataURL) {
+    Ext.getCmp("SourceURIField").setValue(queryDataURL);
     Ext.Ajax.request({
         url : queryDataURL,
         success : function(res, opt) {
             var xml_source = Ext.getDom("xml_source");
             if (xml_source != null) {
-                xml_source.innerHTML = htmlEscape(res.responseText.toString());
+                xml_source.innerHTML = res.responseText.toString();
             }
         },
         failure : function(res, opt) {
