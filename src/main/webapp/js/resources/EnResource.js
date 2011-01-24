@@ -42,7 +42,6 @@ var REMOVE_SELECTED_HISTORIES = "Remove Selected Histories";
 var REMOVE_ALL_HISTORY = "Remove All History";
 var BOOKMARK = "Bookmark";
 var OPEN_SELECTED_BOOKMARK = "Open Selected Bookmark";
-var ADD_CURRENT_KEYWORD_TO_BOOKMARK = "Add Current Keyword to Bookmark";
 var REMOVE_SELECTED_BOOKMARKS = "Remove Selected Bookmarks";
 var IMPORT = "Import";
 var EXPORT = "Export";
@@ -91,7 +90,9 @@ var URI_PARAMETER_KEY = "uri";
 var INFERNCE_TYPE_PARAMETER_KEY = "inference_type";
 
 //inference type
+var NONE_INFERENCE = "None";
 var NONE_INFERENCE_OPTION = "none";
+var RDFS_INFERENCE = "RDFS";
 var RDFS_INFERENCE_OPTION = "rdfs";
 
 // queryType

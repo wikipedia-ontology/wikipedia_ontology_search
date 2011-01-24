@@ -46,13 +46,20 @@ function getBookmarkImportAndExportDialog() {
 }
 
 function exportBookmarks() {
-    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var exportText = "";
+    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
+
     for (var i = 0; i < bookmarkStore.getCount(); i++) {
         var record = bookmarkStore.getAt(i);
-        var str = [record.get("date"), record.get("keyword"),
-            record.get("searchOption"), record.get("queryType"), record.get("searchTargetType"),
-            record.get("useInfModel"), record.get("URL")].join(",");
+        var str = [
+            record.get(DATE_PARAMETER_KEY),
+            record.get(RESOURCE_NAME_PARAMETER_KEY),
+            record.get(RESOURCE_TYPE_PARAMETER_KEY),
+            record.get(SEARCH_TARGET_PARAMETER_KEY),
+            record.get(SEARCH_OPTION_PARAMETER_KEY),
+            record.get(INFERNCE_TYPE_PARAMETER_KEY),
+            record.get(URI_PARAMETER_KEY),
+            record.get(VERSION_PARAMETER_KEY)].join(",");
         exportText += str + "\n";
     }
     Ext.getCmp('bookmark_source_text_area').setValue(exportText);

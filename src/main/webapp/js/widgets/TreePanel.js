@@ -21,7 +21,7 @@ function getTreePanel(title, treeType) {
         items : []
     });
     var searchOptionComboBox = getTreeSearchOptionComboBox(treeType + '_Search_Option');
-    searchOptionComboBox.setValue(EXACT_MATCH);
+    searchOptionComboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
     var treePanel = new Ext.tree.TreePanel({
         id : treePanelId,
         //        title : title,
@@ -92,18 +92,18 @@ function getTreePanel(title, treeType) {
                 var queryURL = "";
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
-                    queryURL = qname.replace("wikiont_class:", BASE_SERVER_CLASS_TABLE_DATA_URL);
                     queryType = QTYPE_CLASS;
+                    queryURL = qname.replace("wikiont_class:", BASE_SERVER_CLASS_TABLE_DATA_URL);
                 } else if (qname.indexOf("wikiont_property") != -1) {
-                    queryURL = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_TABLE_DATA_URL);
                     queryType = QTYPE_PROPERTY;
+                    queryURL = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_TABLE_DATA_URL);
                 } else if (qname.indexOf("wikiont_instance") != -1) {
-                    queryURL = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_TABLE_DATA_URL);
                     queryType = QTYPE_INSTANCE;
+                    queryURL = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_TABLE_DATA_URL);
                 }
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                 searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
-                reloadWikiOntJSONData2(queryURL, keyword);
+                reloadStatements(queryURL, keyword);
             },
             contextmenu : showTreePanelContextMenu
         }
@@ -222,9 +222,7 @@ function showTreePanelContextMenu(node, e) {
 }
 
 var isRenderTree = true;
-function reloadTree(queryJSONTableURL) {
-    var queryJSONTreeURL = queryJSONTableURL.replace("table_data", "tree_data");
-    queryURL = queryJSONTreeURL;
+function reloadTree(queryJSONTreeURL) {
     //    alert("tree:" + queryJSONTreeURL);
     if (show_isa_tree_and_instance) {
         if (!isRenderTree) {

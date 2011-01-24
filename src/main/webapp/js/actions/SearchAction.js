@@ -4,46 +4,31 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
-function searchWikipediaOntology() {
-    var keyword = Ext.getCmp('SearchPanel').getForm().findField('keyword').getValue();
-    if (0 < keyword.length) {
-        searchWikipediaOntology2(keyword);
+function getDefaultKeyword(keyword) {
+    if (Ext.getCmp('SearchPanel') != undefined && keyword == "") {
+        keyword = Ext.getCmp('SearchPanel').getForm().findField('keyword').getValue();
     }
+    return keyword;
 }
 
-function searchWikipediaOntologyByContextMenu(keyword) {
-    var searchPanel = Ext.getCmp("SearchPanel");
-    searchPanel.getForm().findField('keyword').setValue(keyword);
-    searchTargetType = URI_SEARCH_TARGET_OPTION;
-    Ext.getCmp("uri_radio_button").checked = true;
-    selectResourceTypeRadioButton();
-    searchWikipediaOntology();
-    resetSearchOptionList();
-}
-
-function searchWikipediaOntology2(keyword) {
+function getQueryURI(keyword) {
+    keyword = getDefaultKeyword(keyword);
     var keywords = keyword.split(/\s+/);
-    var queryURL = BASE_SERVER_URL;
-    var unescapeQueryURL = BASE_URI;
+    var queryURI = BASE_SERVER_URL;
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     var searchOption = "search_option=" + searchOptionSelection.getValue();
     var versionOptionSelection = Ext.getCmp('Version_Option');
     var versionOption = "version=" + versionOptionSelection.getValue();
 
     if (1 < keywords.length) {
-        queryURL += CLASS_PATH + TABLE_DATA_PATH + "queryString?";
-        unescapeQueryURL += CLASS_PATH + DATA_PATH + "queryString?";
+        queryURI += CLASS_PATH + TABLE_DATA_PATH + "queryString?";
         for (var i = 0; i < keywords.length; i++) {
-            queryURL += "type=" + keywords[i];
-            unescapeQueryURL += "type=" + keywords[i];
+            queryURI += "type=" + keywords[i];
             if (i != keywords.length - 1) {
-                queryURL += "&";
-                unescapeQueryURL += "&";
+                queryURI += "&";
             }
         }
-        queryURL += "&" + versionOption;
-        unescapeQueryURL += "&" + versionOption;
-        reloadWikiOntJSONData1(queryURL, unescapeQueryURL, keywords);
+        queryURI += "&" + versionOption;
     } else {
         var searchOptionValue = searchOptionSelection.getValue();
         switch (searchOptionValue) {
@@ -65,70 +50,96 @@ function searchWikipediaOntology2(keyword) {
                 Ext.getDom('instance_button').checked = true;
                 break;
         }
-        queryURL += queryType + '/' + TABLE_DATA_PATH + keyword;
+        if (queryType == undefined) {
+            queryType = QTYPE_CLASS;
+        }
+        queryURI += queryType + '/' + TABLE_DATA_PATH + keyword;
         if (Ext.getCmp("uri_radio_button").checked) {
-            queryURL += '?search_target=uri';
+            queryURI += '?search_target=uri';
         } else if (Ext.getCmp("label_radio_button").checked) {
-            queryURL += '?search_target=label';
+            queryURI += '?search_target=label';
         }
-        queryURL += '&' + searchOption;
-        queryURL += '&' + versionOption;
-        //        alert(queryURL);
-        reloadWikiOntJSONData2(queryURL, keyword);
+        queryURI += '&' + searchOption;
+        queryURI += '&' + versionOption;
+    }
+    queryURI = setInferenceTypeOption(queryURI);
+    return queryURI;
+}
+
+function searchStatementsByContextMenu(keyword) {
+    var searchPanel = Ext.getCmp("SearchPanel");
+    searchPanel.getForm().findField('keyword').setValue(keyword);
+    searchTargetType = URI_SEARCH_TARGET_OPTION;
+    Ext.getCmp("uri_radio_button").checked = true;
+    selectResourceTypeRadioButton();
+    searchStatements(keyword);
+    resetSearchOptionList();
+}
+
+function searchStatements(keyword) {
+    keyword = getDefaultKeyword(keyword);
+    if (keyword.length == 0) {
+        return;
+    }
+    var queryURI = getQueryURI(keyword);
+    var keywords = keyword.split(/\s+/);
+    if (1 < keywords.length) {
+        reloadStatementsByTypesOfInstances(queryURI, keywords);
+    } else {
+        reloadStatements(queryURI, keyword);
     }
 }
 
-function setUseInfModelOption(queryURL) {
-    if (useInfModel) {
-        if (queryURL.indexOf("?") == -1) {
-            queryURL += "?";
+function setInferenceTypeOption(queryURI) {
+    if (inferenceType == RDFS_INFERENCE_OPTION) {
+        if (queryURI.indexOf("?") == -1) {
+            queryURI += "?";
         } else {
-            queryURL += "&";
+            queryURI += "&";
         }
-        queryURL += "inference_type=rdfs";
+        queryURI += "inference_type=rdfs";
     }
-    return queryURL;
+    return queryURI;
 }
 
-function reloadWikiOntJSONData1(queryURL, unescapeQueryURL, keywords) {
+function reloadStatementsByTypesOfInstances(queryURI, keywords) {
     var searchPanel = Ext.getCmp('SearchPanel');
-    queryURL = setUseInfModelOption(queryURL);
     searchPanel.getForm().findField('keyword').setValue(keywords.join(" "));
     Ext.getDom('class_button').checked = true;
-    currentURI = unescapeQueryURL;
-    currentURI = setUseInfModelOption(currentURI);
-    //    writeStatusBar();
-    addHistoryData();
+    addHistoryData(queryURI);
     statementTabPanel.getActiveTab().setTitle(keywords.join("＆"));
     statementTabPanel.getActiveTab().setIconClass('icon-class');
-    reloadWikiOntJSONData(queryURL);
+    reloadStatementTable(queryJSONTableURL);
 }
 
-function reloadWikiOntJSONData2(queryURL, keyword) {
+function reloadStatements(queryURI, keyword) {
     var searchPanel = Ext.getCmp('SearchPanel');
-    queryURL = setUseInfModelOption(queryURL);
-    currentURI = queryURL;
+    searchPanel.getForm().findField('keyword').setValue(keyword);
     statementTabPanel.getActiveTab().setTitle(keyword);
-    if (queryType == QTYPE_CLASS) {
-        searchPanel.getForm().findField('keyword').setValue(keyword);
-        Ext.getDom('class_button').checked = true;
-        currentURI = BASE_CLASS_URI + keyword;
-        currentURI = setUseInfModelOption(currentURI);
-        statementTabPanel.getActiveTab().setIconClass('icon-class');
-    } else if (queryType == QTYPE_PROPERTY) {
-        searchPanel.getForm().findField('keyword').setValue(keyword);
-        Ext.getDom('property_button').checked = true;
-        currentURI = BASE_PROPERTY_URI + keyword;
-        currentURI = setUseInfModelOption(currentURI);
-        statementTabPanel.getActiveTab().setIconClass('icon-property');
-    } else if (queryType == QTYPE_INSTANCE) {
-        searchPanel.getForm().findField('keyword').setValue(keyword);
-        Ext.getDom('instance_button').checked = true;
-        currentURI = BASE_INSTANCE_URI + keyword;
-        currentURI = setUseInfModelOption(currentURI);
-        statementTabPanel.getActiveTab().setIconClass('icon-instance');
+    var searchParams = extractParametersFromURI(queryURI);
+    switch (searchParams[RESOURCE_TYPE_PARAMETER_KEY]) {
+        case QTYPE_CLASS:
+            Ext.getDom('class_button').checked = true;
+            statementTabPanel.getActiveTab().setIconClass('icon-class');
+            break;
+        case QTYPE_PROPERTY:
+            Ext.getDom('property_button').checked = true;
+            statementTabPanel.getActiveTab().setIconClass('icon-property');
+            break;
+        case QTYPE_INSTANCE:
+            Ext.getDom('instance_button').checked = true;
+            statementTabPanel.getActiveTab().setIconClass('icon-instance');
+            break;
     }
-    addHistoryData();
-    reloadWikiOntJSONData(queryURL);
+    addHistoryData(queryURI);
+    isRenderTree = true;
+    reloadStatementTable(queryURI);
+    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
+    if (queryType == QTYPE_CLASS &&
+            searchTargetType == URI_SEARCH_TARGET_OPTION &&
+            searchOptionSelection.getValue() == EXACT_MATCH_SEARCH_OPTION) {
+        var queryTreeDataURI = queryURI.replace("table_data", "tree_data");
+        reloadTree(queryTreeDataURI);
+    }
 }
 

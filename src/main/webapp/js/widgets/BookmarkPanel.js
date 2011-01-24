@@ -14,21 +14,21 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
         columns : [bookmarkCheckboxSelectionModel,
             {
                 id : 'date_id',
-                dataIndex : "date",
+                dataIndex : DATE_PARAMETER_KEY,
                 header : DATE_AND_HOUR,
                 hidden : true,
                 width : 150
             },
             {
-                id : 'keyword_id',
-                dataIndex : "keyword",
+                id : 'resource_name_id',
+                dataIndex : RESOURCE_NAME_PARAMETER_KEY,
                 header : KEYWORD,
                 renderer : renderKeyword,
                 width : 200
             },
             {
-                id : 'query_type_id',
-                dataIndex : "queryType",
+                id : 'resource_type_id',
+                dataIndex : RESOURCE_TYPE_PARAMETER_KEY,
                 header : RESOURCE_TYPE,
                 hidden : true,
                 renderer: renderResourceType,
@@ -36,7 +36,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             },
             {
                 id : 'search_target_type_id',
-                dataIndex : "searchTargetType",
+                dataIndex : SEARCH_TARGET_PARAMETER_KEY,
                 header : SEARCH_TARGET,
                 hidden : isSidePanel,
                 renderer: renderSearchTargetType,
@@ -44,28 +44,29 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             },
             {
                 id : 'search_option_id',
-                dataIndex : "searchOption",
+                dataIndex : SEARCH_OPTION_PARAMETER_KEY,
                 header : SEARCH_OPTION,
                 hidden : isSidePanel,
                 renderer : renderSearchOption,
                 width : 100
             },
             {
-                id : 'useInfModel_id',
-                dataIndex : "useInfModel",
+                id : 'inference_type_id',
+                dataIndex : INFERNCE_TYPE_PARAMETER_KEY,
                 header : USE_INFERENCE_MODEL,
                 hidden : isSidePanel,
+                renderer : renderInferenceType,
                 width : 100
             },
             {
                 id : 'uri_id',
-                dataIndex : "URI",
+                dataIndex : URI_PARAMETER_KEY,
                 header : URI,
                 hidden : isSidePanel
             },
             {
                 id : 'version_id',
-                dataIndex : "version",
+                dataIndex : VERSION_PARAMETER_KEY,
                 header : VERSION,
                 hidden : isSidePanel,
                 renderer : renderVersionOption
@@ -83,33 +84,33 @@ function getBookmarkPanel() {
         proxy: new Ext.ux.data.PagingMemoryProxy(bookmarkArray),
         reader: new Ext.data.ArrayReader({}, [
             {
-                name : 'date'
+                name : DATE_PARAMETER_KEY
             },
             {
-                name : 'keyword'
+                name : RESOURCE_NAME_PARAMETER_KEY
             },
             {
-                name : 'queryType'
+                name : RESOURCE_TYPE_PARAMETER_KEY
             },
             {
-                name : 'searchTargetType'
+                name : SEARCH_TARGET_PARAMETER_KEY
             },
             {
-                name : 'searchOption'
+                name : SEARCH_OPTION_PARAMETER_KEY
             },
             {
-                name : 'useInfModel'
+                name : INFERNCE_TYPE_PARAMETER_KEY
             },
             {
-                name : 'URI'
+                name : URI_PARAMETER_KEY
             },
             {
-                name : 'version'
+                name : VERSION_PARAMETER_KEY
             }
         ]),
         remoteSort: true,
         sortInfo : {
-            field : 'keyword',
+            field : RESOURCE_NAME_PARAMETER_KEY,
             direction : "ASC"
         }
     });
@@ -242,7 +243,7 @@ function getBookmarkPanel() {
     tbar.add(createSorterButton({
         text: KEYWORD,
         sortData: {
-            field: 'keyword',
+            field: RESOURCE_NAME_PARAMETER_KEY,
             direction: 'ASC'
         }
     }));
@@ -250,7 +251,7 @@ function getBookmarkPanel() {
     tbar.add(createSorterButton({
         text: SEARCH_OPTION,
         sortData: {
-            field: 'searchOption',
+            field: SEARCH_OPTION_PARAMETER_KEY,
             direction: 'ASC'
         }
     }));
@@ -258,7 +259,7 @@ function getBookmarkPanel() {
     tbar.add(createSorterButton({
         text: DATE_AND_HOUR,
         sortData: {
-            field: 'date',
+            field: DATE_PARAMETER_KEY,
             direction: 'ASC'
         }
     }));
@@ -266,7 +267,7 @@ function getBookmarkPanel() {
     tbar.add(createSorterButton({
         text: VERSION,
         sortData: {
-            field: 'version',
+            field: VERSION_PARAMETER_KEY,
             direction: 'ASC'
         }
     }));
@@ -324,13 +325,6 @@ function getBookmarkPanel() {
                     '-',
                     {
                         xtype : 'button',
-                        iconCls: 'icon-book_add',
-                        text : ADD_CURRENT_KEYWORD_TO_BOOKMARK,
-                        handler : addBookmark
-                    },
-                    '-',
-                    {
-                        xtype : 'button',
                         iconCls: 'icon-book_delete',
                         text : REMOVE_SELECTED_BOOKMARKS,
                         handler : removeSelectedBookmarks
@@ -373,7 +367,7 @@ function getSideBookmarkPanel() {
         colModel : sideBookmarkColumnModel,
         sm : bookmarkCheckboxSelectionModel,
         stripeRows : true,
-        autoExpandColumn : 'keyword_id',
+        autoExpandColumn : 'resource_name_id',
         bbar: bbar,
         listeners : {
             cellclick : function() {
@@ -385,32 +379,22 @@ function getSideBookmarkPanel() {
 }
 
 function addBookmark(params) {
-    var record = [new Date().toLocaleString(), params[RESOURCE_NAME_PARAMETER_KEY],
-        params[RESOURCE_TYPE_PARAMETER_KEY],params[SEARCH_TARGET_PARAMETER_KEY],
-        params[SEARCH_OPTION_PARAMETER_KEY], useInfModel,
-        params[URI_PARAMETER_KEY],  params[VERSION_PARAMETER_KEY]];
+    var record = [
+        new Date().toLocaleString(),
+        params[RESOURCE_NAME_PARAMETER_KEY],
+        params[RESOURCE_TYPE_PARAMETER_KEY],
+        params[SEARCH_TARGET_PARAMETER_KEY],
+        params[SEARCH_OPTION_PARAMETER_KEY],
+        params[INFERNCE_TYPE_PARAMETER_KEY],
+        params[URI_PARAMETER_KEY],
+        params[VERSION_PARAMETER_KEY]];
     bookmarkArray.push(record);
-    saveBookmarksToWebStorage(bookmarkStore);
-}
-
-function addBookmark() {
-    var searchPanel = Ext.getCmp('SearchPanel');
-    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
-    var keyword = searchPanel.getForm().findField('keyword').getValue();
-    var searchOption = searchOptionSelection.getValue();
-    var versionOptionSelection = Ext.getCmp('Version_Option');
-    var versionOption = versionOptionSelection.getValue();
-    var record = [new Date().toLocaleString(), keyword, queryType, searchTargetType, searchOption, useInfModel, currentURI, versionOption];
-    bookmarkArray.push(record);
-    saveBookmarksToWebStorage(bookmarkStore);
+    saveBookmarksToWebStorage();
 }
 
 function removeSelectedBookmarks() {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
-    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var selectedRecords = bookmarkCheckboxSelectionModel.getSelections();
-
     var newBookmarkDataArray = [];
     for (var h = 0; h < bookmarkArray.length; h++) {
         var isDelete = false;
@@ -424,7 +408,7 @@ function removeSelectedBookmarks() {
         }
     }
     bookmarkArray = newBookmarkDataArray;
-    saveBookmarksToWebStorage(bookmarkStore);
+    saveBookmarksToWebStorage();
 }
 
 function showBookmarkContextMenu(grid, rowIndex, cellIndex, e) {
@@ -432,8 +416,8 @@ function showBookmarkContextMenu(grid, rowIndex, cellIndex, e) {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     bookmarkCheckboxSelectionModel.selectRow(rowIndex);
     var record = bookmarkCheckboxSelectionModel.getSelected();
-    var queryType = record.get("queryType");
-    switch (queryType) {
+    var resourceType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
+    switch (resourceType) {
         case QTYPE_CLASS:
             makeBookmarkClassContextMenu(record).showAt(e.getXY());
             break;
@@ -449,7 +433,7 @@ function showBookmarkContextMenu(grid, rowIndex, cellIndex, e) {
 function makeBookmarkClassContextMenu(record) {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     var record = bookmarkCheckboxSelectionModel.getSelected();
-    var keyword = record.get('keyword');
+    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
 
     return new Ext.menu.Menu({
         style : {
@@ -467,13 +451,13 @@ function makeBookmarkClassContextMenu(record) {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    queryType = record.get('queryType');
+                    queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
                     selectResourceTypeRadioButton();
-                    useInfModel = record.get('useInfModel');
+                    inferenceType = record.get(INFERNCE_TYPE_PARAMETER_KEY);
                     Ext.getDom('use_inf_model').checked = useInfModel;
                     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue(record.get('searchOption'));
-                    searchWikipediaOntologyByContextMenu(currentkeyword + " " + keyword);
+                    searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
+                    searchStatementsByContextMenu(currentkeyword + " " + keyword);
                 }
             },
             {
@@ -498,7 +482,7 @@ function makeBookmarkInstanceContextMenu() {
 function makeBookmarkInstanceAndPropertyContextMenu() {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     var record = bookmarkCheckboxSelectionModel.getSelected();
-    var keyword = record.get('keyword');
+    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
 
     return new Ext.menu.Menu({
         style : {

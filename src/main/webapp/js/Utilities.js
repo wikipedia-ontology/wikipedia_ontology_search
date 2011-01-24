@@ -51,8 +51,8 @@ function setSearchParams(params) {
             case INFERNCE_TYPE_PARAMETER_KEY:
                 switch (value) {
                     case RDFS_INFERENCE_OPTION:
-                        useInfModel = true;
-                        Ext.getDom('use_inf_model').checked = useInfModel;
+                        inferenceType = RDFS_INFERENCE_OPTION;
+                        Ext.getDom('use_inf_model').checked = true;
                         break;
                 }
                 break;
@@ -87,9 +87,9 @@ function extractParametersFromURI(uri) {
     }
     params[URI_PARAMETER_KEY] = uri;
 
-//    for (var key in params) {
-//        alert("key: " + key + "->" + "value: " + params[key]);
-//    }
+    //    for (var key in params) {
+    //        alert("key: " + key + "->" + "value: " + params[key]);
+    //    }
     return params;
 }
 
@@ -296,6 +296,7 @@ function getSearchOptionComboBox(id) {
                         Ext.getDom('instance_button').checked = true;
                         break;
                 }
+                Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
             }
         }
     });
@@ -320,14 +321,19 @@ function getVersionOptionComboBox(name) {
         width : 100,
         editable : false,
         mode : "local",
-        store : versionOptionList
+        store : versionOptionList,
+        listeners: {
+            select: function() {
+                Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+            }
+        }
     });
     comboBox.setValue('2010_11_14');
     return comboBox;
 }
 
 function renderKeyword(value, metadata, record) {
-    switch (record.get("queryType")) {
+    switch (record.get(RESOURCE_TYPE_PARAMETER_KEY)) {
         case QTYPE_CLASS:
             return "<img src='" + BASE_ICON_URL + "class_icon_s.png'/> " + value;
         case QTYPE_PROPERTY:
@@ -348,7 +354,7 @@ function makeClassContextMenu(keyword) {
                 text : getSearchKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    searchWikipediaOntologyByContextMenu(keyword);
+                    searchStatementsByContextMenu(keyword);
                 }
             },
             {
@@ -356,14 +362,14 @@ function makeClassContextMenu(keyword) {
                 iconCls: 'icon-newtab',
                 handler: function() {
                     addTab();
-                    searchWikipediaOntologyByContextMenu(keyword);
+                    searchStatementsByContextMenu(keyword);
                 }
             },
             {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    searchWikipediaOntologyByContextMenu(currentKeyword + " " + keyword);
+                    searchStatementsByContextMenu(currentKeyword + " " + keyword);
                 }
             },
             {
@@ -380,7 +386,7 @@ function makeClassContextMenu(keyword) {
                 handler : function() {
                     var searchPanel = Ext.getCmp("SearchPanel");
                     searchPanel.getForm().findField('keyword').setValue(keyword);
-                    searchWikipediaOntologyByContextMenu();
+                    searchStatementsByContextMenu();
                     addBookmark();
                 }
             }
@@ -393,8 +399,7 @@ function searchKeyWord(keyword) {
     var searchPanel = Ext.getCmp("SearchPanel");
     searchPanel.getForm().findField('keyword').setValue(keyword);
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    //    searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
-    searchWikipediaOntology();
+    searchStatements(keyword);
 }
 
 function makeInstanceAndPropertyContextMenu(keyword, type) {
@@ -407,7 +412,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 text : getSearchKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    searchWikipediaOntologyByContextMenu(keyword);
+                    searchStatementsByContextMenu(keyword);
                 }
             },
             {
@@ -415,7 +420,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 iconCls: 'icon-newtab',
                 handler: function() {
                     addTab();
-                    searchWikipediaOntologyByContextMenu(keyword);
+                    searchStatementsByContextMenu(keyword);
                 }
             },
             {
@@ -436,7 +441,7 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 text : getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
-                    searchWikipediaOntologyByContextMenu(keyword);
+                    searchStatementsByContextMenu(keyword);
                     addBookmark();
                 }
             }
@@ -453,7 +458,7 @@ function makeInstanceContextMenu(keyword) {
 }
 
 function renderVersionOption(value, metadata, record) {
-    var versionOption = record.get('version');
+    var versionOption = record.get(VERSION_PARAMETER_KEY);
     if (versionOption == '') {
         return CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     } else {
@@ -462,7 +467,7 @@ function renderVersionOption(value, metadata, record) {
 }
 
 function renderSearchTargetType(value, metadata, record) {
-    switch (record.get('searchTargetType')) {
+    switch (record.get(SEARCH_TARGET_PARAMETER_KEY)) {
         case URI_SEARCH_TARGET_OPTION:
             return URI;
         case LABEL_SEARCH_TARGET_OPTION:
@@ -471,7 +476,7 @@ function renderSearchTargetType(value, metadata, record) {
 }
 
 function renderResourceType(value, metadata, record) {
-    switch (record.get('queryType')) {
+    switch (record.get(RESOURCE_TYPE_PARAMETER_KEY)) {
         case QTYPE_CLASS:
             return CLASS;
         case QTYPE_PROPERTY:
@@ -481,8 +486,17 @@ function renderResourceType(value, metadata, record) {
     }
 }
 
+function renderInferenceType(value, metadata, record) {
+    switch (record.get(INFERNCE_TYPE_PARAMETER_KEY)) {
+        case RDFS_INFERENCE_OPTION:
+            return RDFS_INFERENCE;
+        default:
+            return NONE_INFERENCE;
+    }
+}
+
 function renderSearchOption(value, metadata, record) {
-    switch (record.get('searchOption')) {
+    switch (record.get(SEARCH_OPTION_PARAMETER_KEY)) {
         case EXACT_MATCH_SEARCH_OPTION:
             return EXACT_MATCH;
         case  ANY_MATCH_SEARCH_OPTION:
@@ -516,21 +530,25 @@ function renderSearchOption(value, metadata, record) {
 }
 
 function openHistoryAndBookmarkData(record) {
-    var keyword = record.get('keyword');
-    queryType = record.get('queryType');
+    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
+    queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
     selectResourceTypeRadioButton();
-    searchTargetType = record.get('searchTargetType');
-    useInfModel = record.get('useInfModel');
-    Ext.getDom('use_inf_model').checked = useInfModel;
+    searchTargetType = record.get(SEARCH_TARGET_PARAMETER_KEY);
+    inferenceType = record.get(INFERNCE_TYPE_PARAMETER_KEY);
+    if (inferenceType == RDFS_INFERENCE) {
+        Ext.getDom('use_inf_model').checked = true;
+    } else {
+        Ext.getDom('use_inf_model').checked = false;
+    }
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    searchOptionSelection.setValue(record.get('searchOption'));
-    var version = record.get('version');
-    if (version == '') {
+    searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
+    var version = record.get(VERSION_PARAMETER_KEY);
+    if (version == "") {
         version = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
     var versionOptionSelection = Ext.getCmp('Version_Option');
     versionOptionSelection.setValue(version);
-    searchWikipediaOntology2(keyword);
+    searchStatements(keyword);
     resetSearchOptionList();
 }
 
@@ -558,18 +576,20 @@ function getDataFromWebStorage(storage) {
 /**
  * Web Storageにブックマークを保存
  */
-function saveBookmarksToWebStorage(bookmarkData) {
+function saveBookmarksToWebStorage() {
     localStorage.bookmark = JSON.stringify(bookmarkArray);
-    bookmarkData.proxy = new Ext.ux.data.PagingMemoryProxy(bookmarkArray);
-    bookmarkData.reload();
+    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
+    bookmarkStore.proxy = new Ext.ux.data.PagingMemoryProxy(bookmarkArray);
+    bookmarkStore.reload();
 }
 
 /**
  * Web Storageに履歴データを保存
  */
-function saveHistoryDataToWebStorage(historyData) {
+function saveHistoryDataToWebStorage() {
     localStorage.history = JSON.stringify(historyDataArray);
-    historyData.proxy = new Ext.ux.data.PagingMemoryProxy(historyDataArray);
-    historyData.reload();
+    var historyDataStore = Ext.getCmp('HistoryPanel').store;
+    historyDataStore.proxy = new Ext.ux.data.PagingMemoryProxy(historyDataArray);
+    historyDataStore.reload();
 }
 

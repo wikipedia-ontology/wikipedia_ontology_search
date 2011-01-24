@@ -78,6 +78,11 @@ function getStatementTabPanel() {
         iconCls: 'icon-table',
         items : [
             {
+                region: 'north',
+                height: 40,
+                items: getURIPanel('StatementURIField')
+            },
+            {
                 region : 'center',
                 layout : 'fit',
                 collapsible : false,

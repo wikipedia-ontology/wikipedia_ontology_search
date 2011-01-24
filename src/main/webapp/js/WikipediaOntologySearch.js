@@ -7,11 +7,9 @@
  *
  */
 
-var useInfModel = false;
+var inferenceType = NONE_INFERENCE_OPTION;
 var queryType = QTYPE_CLASS;
 var searchTargetType = URI_SEARCH_TARGET_OPTION;
-var currentURI = "";
-var queryURL = "";
 var show_isa_tree_and_instance = true;
 var expand_all_class_and_instance = false;
 var start_collapsed_group = true;
@@ -28,6 +26,7 @@ WikipediaOntologySearch = new Ext.app.App({
         Ext.state.Manager.setProvider(cookieProvider);
         bookmarkPanel = getBookmarkPanel();
         historyPanel = getHistoryPanel();
+        getBookmarkImportAndExportDialog(); // new BookmarkImportAndExportDialog
         //        applyOptionState();
         //        setTimeout(function() {
         //            Ext.get('loading').remove();

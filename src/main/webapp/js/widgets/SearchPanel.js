@@ -13,6 +13,7 @@ function setQueryType() {
         queryType = QTYPE_INSTANCE;
     }
     resetSearchOptionList();
+    Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
 }
 
 function setSearchTargetType() {
@@ -22,12 +23,13 @@ function setSearchTargetType() {
         searchTargetType = LABEL_SEARCH_TARGET_OPTION;
     }
     resetSearchOptionList();
+    Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
 }
 
 function resetSearchOptionList() {
     var searchOptionList = getSearchOptionList();
     Ext.getCmp("Resource_Search_Option").store.loadData(searchOptionList);
-    Ext.getCmp("Resource_Search_Option").setValue(EXACT_MATCH);
+    Ext.getCmp("Resource_Search_Option").setValue(EXACT_MATCH_SEARCH_OPTION);
 }
 
 function getSearchPanel() {
@@ -43,19 +45,25 @@ function getSearchPanel() {
             {
                 xtype : 'textfield',
                 name : 'keyword',
-                width : 250
+                width : 250,
+                listeners: {
+                    change: function() {
+                        Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+                    }
+                }
             },
             {
                 xtype : 'button',
                 iconCls: 'icon-search',
                 text : SEARCH,
                 name : 'search-button',
-                // searchWikipediaOntology function is defined in SearchAction.js
-                handler : searchWikipediaOntology
+                // searchStatements function is defined in SearchAction.js
+                handler : function() {
+                    searchStatements("")
+                }
             }
         ]
     };
-
     var searchOptionRadioGroup = new Ext.form.RadioGroup({
         width: 160,
         items:[
@@ -95,7 +103,7 @@ function getSearchPanel() {
                 xtype : 'checkbox',
                 boxLabel : USE_INFERENCE_MODEL,
                 id : 'use_inf_model',
-                handler : setUseInfModel
+                handler : setInferenceType
             }
         ]
     }
@@ -131,8 +139,13 @@ function getSearchPanel() {
         }
     });
 
-    function setUseInfModel() {
-        useInfModel = Ext.getDom('use_inf_model').checked;
+    function setInferenceType() {
+        if (Ext.getDom('use_inf_model').checked) {
+            inferenceType = RDFS_INFERENCE_OPTION;
+        } else {
+            inferenceType = NONE_INFERENCE_OPTION;
+        }
+        Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
     }
 
     return new Ext.FormPanel({

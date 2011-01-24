@@ -16,11 +16,9 @@ function getStatementTableDataStore() {
         groupField : 'subject',
         listeners : {
             beforeload : function() {
-                //                Ext.getCmp("StatementTablePanel").body.mask(LOADING, "loading-indicator");
                 statementTabPanel.getActiveTab().body.mask(LOADING, "loading-indicator");
             },
             load : function() {
-                //                Ext.getCmp("StatementTablePanel").body.unmask();
                 statementTabPanel.getActiveTab().body.unmask();
             }
         }
@@ -28,7 +26,6 @@ function getStatementTableDataStore() {
 }
 
 function getStatementTablePanel(title, tabIndex) {
-
     var groupingStatementTableView = new Ext.grid.GroupingView({
         enableGrouping : false,
         forceFit : true,
@@ -300,15 +297,15 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
     }
 }
 
-function reloadStatementTable(queryJSONTableURL) {
+function reloadStatementTable(queryJSONTableURI) {
     var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
     var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
     var statementURIField = Ext.getCmp("StatementTabURIField" + tabId);
-    statementURIField.setValue(queryJSONTableURL);
+    statementURIField.setValue(queryJSONTableURI);
     var statementTableDataStore = statementTablePanel.store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
     var pagingToolBar = statementTablePanel.bbar;
-    statementTableDataStore.proxy = getProxy(queryJSONTableURL);
+    statementTableDataStore.proxy = getProxy(queryJSONTableURI);
     var limitSize = 100;
     if (!isNaN(numberOfStatementsSelection.getValue())) {
         limitSize = parseInt(numberOfStatementsSelection.getValue());
@@ -322,19 +319,6 @@ function reloadStatementTable(queryJSONTableURL) {
             limit : limitSize
         }
     });
-}
-
-function reloadWikiOntJSONData(queryJSONTableURL) {
-    isRenderTree = true;
-    queryURL = queryJSONTableURL;
-    reloadStatementTable(queryJSONTableURL);
-    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    if (queryType == QTYPE_CLASS &&
-            searchTargetType == URI_SEARCH_TARGET_OPTION &&
-            searchOptionSelection.getValue() == EXACT_MATCH) {
-        reloadTree(queryURL);
-    }
-    //    reloadRDFSource(queryURL);
 }
 
 function renderLink(value) {
@@ -367,23 +351,24 @@ function openWikiOntRDFData(value) {
     var values = value.split(":");
     if (values.length == 2) {
         var prefix = values[0];
-        var id = values[1];
+        var localName = values[1];
         searchTargetType = URI_SEARCH_TARGET_OPTION;
-        if (prefix == "wikiont_class") {
-            var keyword = id;
-            var queryURL = BASE_SERVER_CLASS_TABLE_DATA_URL + encodeURI(keyword);
-            queryType = QTYPE_CLASS;
-            reloadWikiOntJSONData2(queryURL, keyword);
-        } else if (prefix == "wikiont_property") {
-            var keyword = id;
-            var queryURL = BASE_SERVER_PROPERTY_TABLE_DATA_URL + encodeURI(keyword);
-            queryType = QTYPE_PROPERTY;
-            reloadWikiOntJSONData2(queryURL, keyword);
-        } else if (prefix == "wikiont_instance") {
-            var keyword = id;
-            var queryURL = BASE_SERVER_INSTANCE_TABLE_DATA_URL + encodeURI(keyword);
-            queryType = QTYPE_INSTANCE;
-            reloadWikiOntJSONData2(queryURL, keyword);
+        switch (prefix) {
+            case "wikiont_class":
+                queryType = QTYPE_CLASS;
+                var queryURI = BASE_SERVER_CLASS_TABLE_DATA_URL + encodeURI(localName);
+                reloadStatements(queryURI, localName);
+                break;
+            case "wikiont_property":
+                queryType = QTYPE_PROPERTY;
+                var queryURI = BASE_SERVER_PROPERTY_TABLE_DATA_URL + encodeURI(localName);
+                reloadStatements(queryURI, localName);
+                break;
+            case "wikiont_instance":
+                queryType = QTYPE_INSTANCE;
+                var queryURI = BASE_SERVER_INSTANCE_TABLE_DATA_URL + encodeURI(localName);
+                reloadStatements(queryURI, localName);
+                break;
         }
         resetSearchOptionList();
     } else {
@@ -399,25 +384,23 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
     if (url == null) {
         url = e.getTarget().children.item(1).toString();
     }
+    url = decodeURI(url);
     Ext.getDom('uri_radio_button').checked = true;
     if (url.indexOf("wikiont_class") != -1) {
-        var queryURL = url.replace("wikiont_class:", CLASS_PATH + TABLE_DATA_PATH);
-        var keyword = queryURL.split(TABLE_DATA_PATH)[1];
-        keyword = decodeURI(keyword);
+        var queryURI = url.replace("wikiont_class:", CLASS_PATH + TABLE_DATA_PATH);
+        var keyword = queryURI.split(TABLE_DATA_PATH)[1];
         queryType = QTYPE_CLASS;
-        reloadWikiOntJSONData2(queryURL, keyword);
+        reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_property") != -1) {
-        var queryURL = url.replace("wikiont_property:", PROPERTY_PATH + TABLE_DATA_PATH);
-        var keyword = queryURL.split(TABLE_DATA_PATH)[1];
-        keyword = decodeURI(keyword);
+        var queryURI = url.replace("wikiont_property:", PROPERTY_PATH + TABLE_DATA_PATH);
+        var keyword = queryURI.split(TABLE_DATA_PATH)[1];
         queryType = QTYPE_PROPERTY;
-        reloadWikiOntJSONData2(queryURL, keyword);
+        reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_instance") != -1) {
-        var queryURL = url.replace("wikiont_instance:", INSTANCE_PATH + TABLE_DATA_PATH);
-        var keyword = queryURL.split(TABLE_DATA_PATH)[1];
-        keyword = decodeURI(keyword);
+        var queryURI = url.replace("wikiont_instance:", INSTANCE_PATH + TABLE_DATA_PATH);
+        var keyword = queryURI.split(TABLE_DATA_PATH)[1];
         queryType = QTYPE_INSTANCE;
-        reloadWikiOntJSONData2(queryURL, keyword);
+        reloadStatements(queryURI, keyword);
     }
     resetSearchOptionList();
 }

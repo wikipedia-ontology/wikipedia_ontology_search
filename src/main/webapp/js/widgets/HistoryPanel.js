@@ -9,27 +9,28 @@ if (localStorage.history != undefined) {
     historyDataArray = getDataFromWebStorage(localStorage.history);
 }
 
-function addHistoryData() {
-    var searchPanel = Ext.getCmp('SearchPanel');
-    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    var historyDataStore = Ext.getCmp('HistoryPanel').store;
-    var keyword = searchPanel.getForm().findField('keyword').getValue();
-    var searchOption = searchOptionSelection.getValue();
-    var versionOptionSelection = Ext.getCmp('Version_Option');
-    var versionOption = versionOptionSelection.getValue();
-    var record = [new Date().toLocaleString(), keyword,  queryType, searchTargetType, searchOption, useInfModel, currentURI, versionOption];
+function addHistoryData(queryURI) {
+    var params = extractParametersFromURI(queryURI);
+    var record = [
+        new Date().toLocaleString(),
+        params[RESOURCE_NAME_PARAMETER_KEY],
+        params[RESOURCE_TYPE_PARAMETER_KEY],
+        params[SEARCH_TARGET_PARAMETER_KEY],
+        params[SEARCH_OPTION_PARAMETER_KEY],
+        params[INFERNCE_TYPE_PARAMETER_KEY],
+        params[URI_PARAMETER_KEY],
+        params[VERSION_PARAMETER_KEY]
+    ];
     historyDataArray.push(record);
-    saveHistoryDataToWebStorage(historyDataStore);
+    saveHistoryDataToWebStorage();
 }
 
 function removeAllHistoryData() {
-    var historyDataStore = Ext.getCmp('HistoryPanel').store;
     historyDataArray = [];
-    saveHistoryDataToWebStorage(historyDataStore);
+    saveHistoryDataToWebStorage();
 }
 
 function removeSelectedHistories() {
-    var historyDataStore = Ext.getCmp('HistoryPanel').store;
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var selectedRecords = historyDataCheckboxSelectionModel.getSelections();
     var newHistoryDataArray = [];
@@ -45,19 +46,24 @@ function removeSelectedHistories() {
         }
     }
     historyDataArray = newHistoryDataArray;
-    saveHistoryDataToWebStorage(historyDataStore);
+    saveHistoryDataToWebStorage();
 }
 
 function addSelectedHistoriesToBookmark() {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
-    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     var records = historyDataCheckboxSelectionModel.getSelections();
-    var date = new Date().toLocaleString();
     for (var i = 0; i < records.length; i++) {
-        bookmarkArray.push([date, records[i].get("keyword"), records[i].get("queryType"), records[i].get("searchTargetType"),
-            records[i].get("searchOption"), records[i].get("useInfModel"), records[i].get("URI"), records[i].get("version")]);
+        bookmarkArray.push([
+            new Date().toLocaleString(),
+            records[i].get(RESOURCE_NAME_PARAMETER_KEY),
+            records[i].get(RESOURCE_TYPE_PARAMETER_KEY),
+            records[i].get(SEARCH_TARGET_PARAMETER_KEY),
+            records[i].get(SEARCH_OPTION_PARAMETER_KEY),
+            records[i].get(INFERNCE_TYPE_PARAMETER_KEY),
+            records[i].get(URI_PARAMETER_KEY),
+            records[i].get(VERSION_PARAMETER_KEY)]);
     }
-    saveBookmarksToWebStorage(bookmarkStore);
+    saveBookmarksToWebStorage();
 }
 
 function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionModel) {
@@ -65,21 +71,21 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
         columns : [historyDataCheckboxSelectionModel,
             {
                 id : 'date_id',
-                dataIndex : "date",
+                dataIndex : DATE_PARAMETER_KEY,
                 header : DATE_AND_HOUR,
                 hidden : isSidePanel,
                 width : 150
             },
             {
-                id : 'keyword_id',
-                dataIndex : "keyword",
+                id : 'resource_name_id',
+                dataIndex : RESOURCE_NAME_PARAMETER_KEY,
                 header : KEYWORD,
                 renderer : renderKeyword,
                 width : 200
             },
             {
-                id : 'query_type_id',
-                dataIndex : "queryType",
+                id : 'resource_type_id',
+                dataIndex : RESOURCE_TYPE_PARAMETER_KEY,
                 header : RESOURCE_TYPE,
                 hidden : isSidePanel,
                 renderer : renderResourceType,
@@ -87,7 +93,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'search_target_type_id',
-                dataIndex : "searchTargetType",
+                dataIndex : SEARCH_TARGET_PARAMETER_KEY,
                 header : SEARCH_TARGET,
                 hidden : isSidePanel,
                 renderer : renderSearchTargetType,
@@ -95,28 +101,29 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'search_option_id',
-                dataIndex : "searchOption",
+                dataIndex : SEARCH_OPTION_PARAMETER_KEY,
                 header : SEARCH_OPTION,
                 hidden : isSidePanel,
                 renderer : renderSearchOption,
                 width : 100
             },
             {
-                id : 'useInfModel_id',
-                dataIndex : "useInfModel",
+                id : 'inference_type_id',
+                dataIndex : INFERNCE_TYPE_PARAMETER_KEY,
                 header : USE_INFERENCE_MODEL,
                 hidden : isSidePanel,
+                renderer : renderInferenceType,
                 width : 100
             },
             {
                 id : 'uri_id',
-                dataIndex : "URI",
+                dataIndex : URI_PARAMETER_KEY,
                 header : URI,
                 hidden : isSidePanel
             },
             {
                 id : 'version_id',
-                dataIndex : "version",
+                dataIndex : VERSION_PARAMETER_KEY,
                 header : VERSION,
                 hidden : isSidePanel,
                 renderer : renderVersionOption
@@ -134,33 +141,33 @@ function getHistoryPanel() {
         proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
         reader: new Ext.data.ArrayReader({}, [
             {
-                name : 'date'
+                name : DATE_PARAMETER_KEY
             },
             {
-                name : 'keyword'
+                name : RESOURCE_NAME_PARAMETER_KEY
             },
             {
-                name : 'queryType'
+                name : RESOURCE_TYPE_PARAMETER_KEY
             },
             {
-                name : 'searchTargetType'
+                name : SEARCH_TARGET_PARAMETER_KEY
             },
             {
-                name : 'searchOption'
+                name : SEARCH_OPTION_PARAMETER_KEY
             },
             {
-                name : 'useInfModel'
+                name : INFERNCE_TYPE_PARAMETER_KEY
             },
             {
-                name : 'URI'
+                name : URI_PARAMETER_KEY
             },
             {
-                name : 'version'
+                name : VERSION_PARAMETER_KEY
             }
         ]),
         remoteSort: true,
         sortInfo : {
-            field : 'date',
+            field : DATE_PARAMETER_KEY,
             direction : "DESC"
         }
     });
@@ -292,7 +299,7 @@ function getHistoryPanel() {
     tbar.add(createSorterButton({
         text: DATE_AND_HOUR,
         sortData: {
-            field: 'date',
+            field: DATE_PARAMETER_KEY,
             direction: 'DESC'
         }
     }));
@@ -300,7 +307,7 @@ function getHistoryPanel() {
     tbar.add(createSorterButton({
         text: KEYWORD,
         sortData: {
-            field: 'keyword',
+            field: RESOURCE_NAME_PARAMETER_KEY,
             direction: 'ASC'
         }
     }));
@@ -308,7 +315,7 @@ function getHistoryPanel() {
     tbar.add(createSorterButton({
         text: SEARCH_OPTION,
         sortData: {
-            field: 'searchOption',
+            field: SEARCH_OPTION_PARAMETER_KEY,
             direction: 'ASC'
         }
     }));
@@ -330,7 +337,7 @@ function getHistoryPanel() {
         stateEvents : ['columnresize', 'columnmove', 'columnvisible', 'columnsort'],
         store : historyDataStore,
         colModel : historyDataColumnModel,
-//        title : SEARCH_HISTORY,
+        //        title : SEARCH_HISTORY,
         stripeRows : true,
         frame : true,
         autoExpandColumn : 'uri_id',
@@ -408,7 +415,7 @@ function getSideHistoryPanel() {
         store : historyDataStore,
         colModel : sideHistoryDataColumnModel,
         stripeRows : true,
-        autoExpandColumn : 'keyword_id',
+        autoExpandColumn : 'resource_name_id',
         sm : historyDataCheckboxSelectionModel,
         bbar: bbar,
         listeners : {
@@ -425,8 +432,8 @@ function showHistoryContextMenu(grid, rowIndex, cellIndex, e) {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     historyDataCheckboxSelectionModel.selectRow(rowIndex);
     var record = historyDataCheckboxSelectionModel.getSelected();
-    var queryType = record.get("queryType");
-    switch (queryType) {
+    var resourceType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
+    switch (resourceType) {
         case QTYPE_CLASS:
             makeHistoryClassContextMenu(record).showAt(e.getXY());
             break;
@@ -442,7 +449,7 @@ function showHistoryContextMenu(grid, rowIndex, cellIndex, e) {
 function makeHistoryClassContextMenu(record) {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var record = historyDataCheckboxSelectionModel.getSelected();
-    var keyword = record.get('keyword');
+    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
 
     return new Ext.menu.Menu({
@@ -461,12 +468,12 @@ function makeHistoryClassContextMenu(record) {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    queryType = record.get('queryType');
+                    queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
                     selectResourceTypeRadioButton();
-                    useInfModel = record.get('useInfModel');
+                    inferenceType = record.get(INFERNCE_TYPE_PARAMETER_KEY);
                     Ext.getDom('use_inf_model').checked = useInfModel;
-                    searchOptionSelection.setValue(record.get('searchOption'));
-                    searchWikipediaOntologyByContextMenu(currentkeyword + " " + keyword);
+                    searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
+                    searchStatementsByContextMenu(currentkeyword + " " + keyword);
                 }
             },
             {
@@ -497,7 +504,7 @@ function makeHistoryInstanceContextMenu(record) {
 function makeHistoryInstanceAndPropertyContextMenu(record) {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var record = historyDataCheckboxSelectionModel.getSelected();
-    var keyword = record.get('keyword');
+    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
 
     return new Ext.menu.Menu({
         style : {

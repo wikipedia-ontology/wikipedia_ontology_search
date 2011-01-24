@@ -41,7 +41,6 @@ var REMOVE_SELECTED_HISTORIES = "選択した履歴を削除";
 var REMOVE_ALL_HISTORY = "すべての履歴を削除";
 var BOOKMARK = "ブックマーク";
 var OPEN_SELECTED_BOOKMARK = "選択したブックマークを開く";
-var ADD_CURRENT_KEYWORD_TO_BOOKMARK = "現在のキーワードをブックマークに追加";
 var REMOVE_SELECTED_BOOKMARKS = "選択したブックマークを削除";
 var IMPORT = "インポート";
 var EXPORT = "エクスポート";
@@ -81,6 +80,7 @@ var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
 // parameter keys
+var DATE_PARAMETER_KEY = "date";
 var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
 var SEARCH_TARGET_PARAMETER_KEY = "search_target";
 var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
@@ -90,7 +90,9 @@ var URI_PARAMETER_KEY = "uri";
 var INFERNCE_TYPE_PARAMETER_KEY = "inference_type";
 
 //inference type
+var NONE_INFERENCE = "なし";
 var NONE_INFERENCE_OPTION = "none";
+var RDFS_INFERENCE = "RDFS";
 var RDFS_INFERENCE_OPTION = "rdfs";
 
 // queryType
