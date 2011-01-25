@@ -175,6 +175,7 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('class-list-win');
 
+        var resourceSearchPanel = getResourceSearchPanel(CLASS);
         var classListPanel = getClassListPanel();
         loadStore(classListPanel.store);
         var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(DOMAIN);
@@ -222,22 +223,27 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
                 }
             ]
         });
+
         var classListWindowPanel = new Ext.Panel({
-            layout : 'hbox',
+            layout : 'border',
             frame: true,
             iconCls: 'icon-class',
-            layoutConfig: {
-                align : 'stretch',
-                pack  : 'start'
-            },
             items: [
                 {
-                    flex: 1,
+                    region: 'north',
                     layout: 'fit',
+                    height: 100,
+                    items: resourceSearchPanel
+                },
+                {
+                    region: 'west',
+                    layout: 'fit',
+                    width: 400,
+                    split: true,
                     items: classListPanel
                 },
                 {
-                    flex:2,
+                    region: 'center',
                     layout: 'fit',
                     items: eastSideClassListPanel
                 }
@@ -377,8 +383,9 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('property-list-win');
 
+        var resourceSearchPanel = getResourceSearchPanel(PROPERTY);
         var propertyListPanel = getPropertyListPanel();
-        //        loadStore(propertyListPanel.store);
+        loadStore(propertyListPanel.store);
         var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(DOMAIN);
         var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(RANGE);
         var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
@@ -426,21 +433,25 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
         });
 
         var propertyListWindowPanel = new Ext.Panel({
-            layout : 'hbox',
+            layout : 'border',
             frame: true,
             iconCls: 'icon-property',
-            layoutConfig: {
-                align : 'stretch',
-                pack  : 'start'
-            },
             items: [
                 {
-                    flex: 1,
+                    region: 'north',
                     layout: 'fit',
+                    height: 100,
+                    items: resourceSearchPanel
+                },
+                {
+                    region: 'west',
+                    layout: 'fit',
+                    width: 400,
+                    split: true,
                     items: propertyListPanel
                 },
                 {
-                    flex:2,
+                    region: 'center',
                     layout: 'fit',
                     items: eastSidePropertyListPanel
                 }
@@ -481,25 +492,30 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('instance-list-win');
 
+        var resourceSearchPanel = getResourceSearchPanel(INSTANCE);
         var instanceListPanel = getInstanceListPanel(INSTANCE);
-        //        loadStore(instanceListPanel.store);
+        loadStore(instanceListPanel.store);
         var instanceTypeListPanel = getInstanceTypeListPanel();
         var instanceListWindowPanel = new Ext.Panel({
-            layout: 'hbox',
+            layout: 'border',
             frame: true,
             iconCls: 'icon-instance',
-            layoutConfig: {
-                align : 'stretch',
-                pack  : 'start'
-            },
             items: [
                 {
-                    flex: 1,
+                    region: 'north',
                     layout: 'fit',
+                    height: 100,
+                    items: resourceSearchPanel
+                },
+                {
+                    region: 'west',
+                    layout: 'fit',
+                    width: 400,
+                    split: true,
                     items: instanceListPanel
                 },
                 {
-                    flex:2,
+                    region: 'center',
                     layout: 'fit',
                     items: instanceTypeListPanel
                 }

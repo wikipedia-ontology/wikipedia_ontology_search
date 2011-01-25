@@ -136,6 +136,16 @@ var INVERSE_STATEMENTS_SEARCH_OPTION = "inverse";
 var PATH_TO_ROOT_CLASS = "Path to root class";
 var PATH_TO_ROOT_CLASS_SEARCH_OPTION = "path_to_root_class";
 
+// order by 関連の定数
+var NAME_ASC = "Name (ASC)";
+var NAME_ASC_OPTION = "name_asc";
+var NAME_DESC = "Name (DESC)";
+var NAME_DESC_OPTION = "name_desc";
+var INSTANCE_COUNT_ASC = "Number of instances (ASC)";
+var INSTANCE_COUNT_ASC_OPTION = "instance_count_asc";
+var INSTANCE_COUNT_DESC = "Number of instances (DESC)";
+var INSTANCE_COUNT_DESC_OPTION = "instance_count_desc";
+
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;
 }

@@ -86,7 +86,6 @@ public class InstanceListPage extends CommonPage {
                     orderBy = "name desc";
                     break;
             }
-            System.out.println("order_by: " + orderBy);
             query = query.order(orderBy);
 
             String clause = "name like ?";
@@ -110,8 +109,7 @@ public class InstanceListPage extends CommonPage {
                     break;
             }
 
-            System.out.println("search_option: " + clause + value);
-            if (clause.isEmpty()) {
+            if (clause.isEmpty() || keyword.isEmpty()) {
                 numberOfInstances = em.count(InstanceStatistics.class, Query.select());
             } else {
                 query = query.where(clause, value);

@@ -60,7 +60,7 @@ function getStatementTabPanel() {
                 animate: true,
                 collapsible : true,
                 split: true,
-                items: getSearchPanel()
+                items: getStatementSearchPanel()
             },
             {
                 region : 'center',
@@ -101,8 +101,6 @@ function getStatementTabPanel() {
             }
         ]
     });
-
-    return statementTabPanel;
 }
 
 function addTab() {

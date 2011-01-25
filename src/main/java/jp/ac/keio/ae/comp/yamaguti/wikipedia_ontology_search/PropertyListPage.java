@@ -255,7 +255,6 @@ public class PropertyListPage extends CommonPage {
                     orderBy = "numberOfInstances desc, name";
                     break;
             }
-            System.out.println("order_by: " + orderBy);
             query = query.order(orderBy);
 
             String clause = "name like ?";
@@ -279,8 +278,7 @@ public class PropertyListPage extends CommonPage {
                     break;
             }
 
-            System.out.println("search_option: " + clause + value);
-            if (clause.isEmpty()) {
+            if (clause.isEmpty() || keyword.isEmpty()) {
                 numberOfProperties = em.count(PropertyStatistics.class, Query.select());
             } else {
                 query = query.where(clause, value);
@@ -383,7 +381,6 @@ public class PropertyListPage extends CommonPage {
     }
 
     public PropertyListPage() {
-        System.out.println("PropertyListPage");
         add(new Label("title", TITLE).setRenderBodyOnly(true));
         add(new Label("h1-title", TITLE));
 

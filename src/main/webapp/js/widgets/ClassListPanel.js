@@ -79,6 +79,7 @@ function getClassListPanel() {
             cellcontextmenu : showClassContextMenu
         }
     });
+
 }
 
 function showClassContextMenu(grid, rowIndex, cellIndex, e) {
@@ -114,5 +115,4 @@ function loadClassInstanceData(clsName) {
     propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_TABLE_DATA_URL + clsName + "?search_option="
             + PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION);
     loadStore(propertiesOfRangeClassListTablePanel.store);
-    
 }

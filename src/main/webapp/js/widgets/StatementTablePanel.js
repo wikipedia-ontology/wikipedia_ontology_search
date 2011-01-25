@@ -357,17 +357,17 @@ function openWikiOntRDFData(value) {
         switch (prefix) {
             case "wikiont_class":
                 queryType = QTYPE_CLASS;
-                var queryURI = BASE_SERVER_CLASS_TABLE_DATA_URL + encodeURI(localName);
+                var queryURI = BASE_SERVER_CLASS_TABLE_DATA_URL + localName;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_property":
                 queryType = QTYPE_PROPERTY;
-                var queryURI = BASE_SERVER_PROPERTY_TABLE_DATA_URL + encodeURI(localName);
+                var queryURI = BASE_SERVER_PROPERTY_TABLE_DATA_URL + localName;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_instance":
                 queryType = QTYPE_INSTANCE;
-                var queryURI = BASE_SERVER_INSTANCE_TABLE_DATA_URL + encodeURI(localName);
+                var queryURI = BASE_SERVER_INSTANCE_TABLE_DATA_URL + localName;
                 reloadStatements(queryURI, localName);
                 break;
         }

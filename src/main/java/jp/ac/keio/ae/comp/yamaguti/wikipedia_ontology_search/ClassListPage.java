@@ -399,7 +399,6 @@ public class ClassListPage extends CommonPage {
                     orderBy = "instanceCount desc, classname";
                     break;
             }
-            System.out.println("order_by: " + orderBy);
             query = query.order(orderBy);
 
             String clause = "classname like ?";
@@ -423,8 +422,7 @@ public class ClassListPage extends CommonPage {
                     break;
             }
 
-            System.out.println("search_option: " + clause + value);
-            if (clause.isEmpty()) {
+            if (clause.isEmpty() || keyword.isEmpty()) {
                 numberOfClasses = em.count(ClassStatistics.class, Query.select());
             } else {
                 query = query.where(clause, value);
