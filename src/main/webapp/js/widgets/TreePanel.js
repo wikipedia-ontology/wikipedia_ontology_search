@@ -59,7 +59,7 @@ function getTreePanel(title, treeType) {
             }
         }, '- ', searchOptionComboBox],
         loader : new Ext.tree.TreeLoader({
-            dataUrl : NULL_TABLE_DATA,
+            dataUrl : NULL_TREE_DATA,
             //            proxy: getProxy(NULL_TABLE_DATA),
             requestMethod : 'GET',
             listeners : {
@@ -93,13 +93,13 @@ function getTreePanel(title, treeType) {
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
                     queryType = QTYPE_CLASS;
-                    queryURI = qname.replace("wikiont_class:", BASE_SERVER_CLASS_TABLE_DATA_URL);
+                    queryURI = qname.replace("wikiont_class:", BASE_SERVER_CLASS_DATA_URL);
                 } else if (qname.indexOf("wikiont_property") != -1) {
                     queryType = QTYPE_PROPERTY;
-                    queryURI = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_TABLE_DATA_URL);
+                    queryURI = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_DATA_URL);
                 } else if (qname.indexOf("wikiont_instance") != -1) {
                     queryType = QTYPE_INSTANCE;
-                    queryURI = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_TABLE_DATA_URL);
+                    queryURI = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_DATA_URL);
                 }
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                 searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);

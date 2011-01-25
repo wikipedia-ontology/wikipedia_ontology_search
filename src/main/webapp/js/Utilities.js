@@ -70,8 +70,10 @@ function extractParametersFromURI(uri) {
         paramString = uriElements[1];
     }
     var baseURIElems = baseURI.split("/");
-    params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4];
-    params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6];
+    if (7 <= baseURIElems.length) {
+        params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4]
+        params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace("\.json", "");
+    }
     if (paramString != '&') {
         var paramSet = paramString.split("&");
         for (var i = 0; i < paramSet.length; i++) {
@@ -87,9 +89,9 @@ function extractParametersFromURI(uri) {
     }
     params[URI_PARAMETER_KEY] = uri;
 
-    //    for (var key in params) {
-    //        alert("key: " + key + "->" + "value: " + params[key]);
-    //    }
+//        for (var key in params) {
+    //            alert("key: " + key + "->" + "value: " + params[key]);
+    //        }
     return params;
 }
 
@@ -120,7 +122,6 @@ function getURIPanel(id) {
                 listeners: {
                     "click": function() {
                         var uri = getCurrentStatementTabURI();
-                        uri = uri.replace("table_data", "data");
                         reloadRDFSource(uri);
                     }
                 }

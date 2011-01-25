@@ -8,5 +8,5 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data;
  * @author takeshi morita
  */
 public enum DataType {
-    PAGE, RDF_XML, RDF_TURTLE, JSON_TABLE, JSON_TREE
+    PAGE, XML, N3, NTRIPLE, JSON, JSONP, NONE
 }

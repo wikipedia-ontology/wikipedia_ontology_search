@@ -100,17 +100,18 @@ function loadPropertyInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
 }
 
 function loadPropertyInstanceData(propertyName) {
+    var extension = ".json";
     var instanceListPanel = Ext.getCmp("PropertyInstanceListTablePanel");
     instanceListPanel.store.proxy = getProxy(PROPERTY_LIST_DATA_URL + "?property=" + propertyName);
     loadStore(instanceListPanel.store);
 
     var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
-    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
+    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_DATA_URL + propertyName + extension + "?search_option="
             + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     loadStore(domainClassesOfPropertyListTablePanel.store);
 
     var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
-    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL + propertyName + "?search_option="
+    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_DATA_URL + propertyName + extension + "?search_option="
             + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
     loadStore(rangeClassesOfPropertyListTablePanel.store);
 

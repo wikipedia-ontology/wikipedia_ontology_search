@@ -61,11 +61,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         String outputString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getKey());
         if (outputString != null) {
             System.out.println("Memcached: " + searchParams.getKey() + ": " + outputString.length());
-            if (searchParams.getDataType() == DataType.RDF_XML) {
-                outputResource("application/rdf+xml", outputString);
-            } else {
-                outputResource("application/json", outputString);
-            }
+            outputResource(searchParams.getMIMEHeader(), outputString);
             return;
         } else {
             System.out.println("memcached: cash does not exist.");
@@ -237,7 +233,7 @@ public class ResourcePage extends CommonPage implements Serializable {
     }
 
     private void addIconImageWithAlt(String icon, String altLabel) {
-        Image resIcon = getImage("resource_icon", "myresources/icons/" + icon + ".png");
+        Image resIcon = getImage("resource_icon", "my_resources/icons/" + icon + ".png");
         resIcon.add(new SimpleAttributeModifier("alt", altLabel));
         add(resIcon);
     }
@@ -264,19 +260,30 @@ public class ResourcePage extends CommonPage implements Serializable {
         ExternalLink inferenceTypeLink = new ExternalLink("inference_type", inferenceURL, inferenceTypeLabel);
         add(inferenceTypeLink);
         ExternalLink htmlLink = getExternalLink("html_url", htmlURL + inferenceType);
-        htmlLink.add(getImage("html_icon", "myresources/icons/html.png"));
+        htmlLink.add(getImage("html_icon", "my_resources/icons/html.png"));
         add(htmlLink);
         String dataURL = baseURL + "data/" + resName + ".rdf";
-        ExternalLink rdfLink = getExternalLink("rdf_url", dataURL + inferenceType);
-        rdfLink.add(getImage("rdf_icon", "myresources/icons/rdf_w3c_icon.16.png"));
+        ExternalLink rdfLink = getExternalLink("xml_url", dataURL + inferenceType);
+        rdfLink.add(getImage("rdf_icon", "my_resources/icons/rdf_w3c_icon.16.png"));
         add(rdfLink);
-        String jsonTableURL = baseURL + "table_data/" + resName + ".json";
-        ExternalLink jsonTableLink = getExternalLink("json_table_url", jsonTableURL + inferenceType);
-        jsonTableLink.add(getImage("table_icon", "myresources/icons/table.png"));
+
+        dataURL = baseURL + "data/" + resName + ".n3";
+        rdfLink = getExternalLink("n3_url", dataURL + inferenceType);
+        rdfLink.add(getImage("rdf_icon", "my_resources/icons/rdf_w3c_icon.16.png"));
+        add(rdfLink);
+
+        dataURL = baseURL + "data/" + resName + ".nt";
+        rdfLink = getExternalLink("nt_url", dataURL + inferenceType);
+        rdfLink.add(getImage("rdf_icon", "my_resources/icons/rdf_w3c_icon.16.png"));
+        add(rdfLink);
+
+        String jsonTableURL = baseURL + "data/" + resName + ".json";
+        ExternalLink jsonTableLink = getExternalLink("json_grid_url", jsonTableURL + inferenceType);
+        jsonTableLink.add(getImage("grid_icon", "my_resources/icons/table.png"));
         add(jsonTableLink);
-        String jsonTreeURL = baseURL + "tree_data/" + resName + ".json";
+        String jsonTreeURL = baseURL + "data/" + resName + ".json";
         ExternalLink jsonTreeLink = getExternalLink("json_tree_url", jsonTreeURL + inferenceType);
-        jsonTreeLink.add(getImage("tree_icon", "myresources/icons/expand-all.gif"));
+        jsonTreeLink.add(getImage("tree_icon", "my_resources/icons/expand-all.gif"));
         add(jsonTreeLink);
     }
 
@@ -463,20 +470,35 @@ public class ResourcePage extends CommonPage implements Serializable {
                 setInstanceList(propertyRDFNodeMap, instancePropertyImpl);
                 setPropertyAndValueList(propertyRDFNodeMap, instancePropertyImpl);
                 break;
-            case RDF_XML:
-                String rdfString = WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
-                outputResource("application/rdf+xml", rdfString);
-                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), rdfString);
+            case XML:
+                String rdf = WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV");
+                outputResource("application/rdf+xml", rdf);
+                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), rdf);
                 break;
-            case JSON_TABLE:
-                String jsonString = wikiOntSearch.getTableJSONString(outputModel, numberOfStatements);
-                outputResource("application/json", jsonString);
-                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
+            case N3:
+                String n3String = WikipediaOntologyUtils.getRDFString(outputModel, "N3");
+                outputResource("application/n3", n3String);
+                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), n3String);
                 break;
-            case JSON_TREE:
-                jsonString = wikiOntSearch.getTreeJSONString(outputModel);
-                outputResource("application/json", jsonString);
-                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonString);
+            case NTRIPLE:
+                String nt = WikipediaOntologyUtils.getRDFString(outputModel, "N-TRIPLE");
+                outputResource("application/n-triples", nt);
+                WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), nt);
+                break;
+            case JSON:
+            case JSONP:
+                switch (searchParams.getExtJsJSonFormatType()) {
+                    case GRID:
+                        String jsonGrid = wikiOntSearch.getTableJSONString(outputModel, numberOfStatements);
+                        outputResource("application/json", jsonGrid);
+                        WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonGrid);
+                        break;
+                    case TREE:
+                        String jsonTree = wikiOntSearch.getTreeJSONString(outputModel);
+                        outputResource("application/json", jsonTree);
+                        WikipediaOntologyUtils.addStringToMemcached(searchParams.getKey(), jsonTree);
+                        break;
+                }
                 break;
         }
     }

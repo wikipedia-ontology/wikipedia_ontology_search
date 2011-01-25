@@ -86,7 +86,7 @@ function applyOptionState() {
 
     if (!show_isa_tree) {
         var classTreePanel = Ext.getCmp('classTreePanel');
-        classTreePanel.loader.dataUrl = NULL_TREE_DATA;
+        classTreePanel.loader.dataUrl = NULL_DATA;
         classTreePanel.loader.load(classTreePanel.getRootNode());
     }
     

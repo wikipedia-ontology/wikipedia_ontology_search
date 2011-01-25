@@ -21,7 +21,7 @@ function getQueryURI(keyword) {
     var versionOption = "version=" + versionOptionSelection.getValue();
 
     if (1 < keywords.length) {
-        queryURI += CLASS_PATH + TABLE_DATA_PATH + "queryString?";
+        queryURI += CLASS_PATH + DATA_PATH + "queryString?";
         for (var i = 0; i < keywords.length; i++) {
             queryURI += "type=" + keywords[i];
             if (i != keywords.length - 1) {
@@ -53,7 +53,7 @@ function getQueryURI(keyword) {
         if (queryType == undefined) {
             queryType = QTYPE_CLASS;
         }
-        queryURI += queryType + '/' + TABLE_DATA_PATH + keyword;
+        queryURI += queryType + '/' + DATA_PATH + keyword + ".json";
         if (Ext.getCmp("uri_radio_button").checked) {
             queryURI += '?search_target=uri';
         } else if (Ext.getCmp("label_radio_button").checked) {
@@ -138,7 +138,7 @@ function reloadStatements(queryURI, keyword) {
     if (queryType == QTYPE_CLASS &&
             searchTargetType == URI_SEARCH_TARGET_OPTION &&
             searchOptionSelection.getValue() == EXACT_MATCH_SEARCH_OPTION) {
-        var queryTreeDataURI = queryURI.replace("table_data", "tree_data");
+        var queryTreeDataURI = queryURI += "&extjs_json_format=tree";
         reloadTree(queryTreeDataURI);
     }
 }

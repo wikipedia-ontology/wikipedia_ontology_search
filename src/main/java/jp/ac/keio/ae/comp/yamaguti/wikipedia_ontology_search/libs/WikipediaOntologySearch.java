@@ -590,7 +590,9 @@ public class WikipediaOntologySearch {
         } catch (JSONException jsonExp) {
             jsonExp.printStackTrace();
         }
-//        return "stcCallback1001(" + rootObj.toString() + ")";
+        if (searchParameters.getDataType() == DataType.JSONP) {
+            return "stcCallback1001(" + rootObj.toString() + ")";
+        }
         return rootObj.toString();
     }
 

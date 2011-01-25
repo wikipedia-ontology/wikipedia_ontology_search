@@ -7,7 +7,6 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data;
 import com.google.common.collect.Sets;
 import org.apache.wicket.PageParameters;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 /**
@@ -25,18 +24,33 @@ public class SearchParameters {
     private SearchTargetType searchTarget;
     private SearchOptionType searchOption;
     private InferenceType inferenceType;
+    private ExtJsJSonFormatType extjsJSONFormatType;
 
     public SearchParameters(PageParameters params) {
         resourceType = getResourceType(params.getString("resource_type"));
-        dataType = getDataType(params.getString("data_type"));
+        resourceName = params.getString("resource_name", "");
+        dataType = getDataTypeAndRemoveExtensionFromResourceName(params.getString("data_type", ""));
         version = getVersion(params.getString("version"));
-        resourceName = getResourceName(params.getString("resource_name"));
         typeSet = getTypeSet(params.getStringArray("type"));
         searchTarget = getSearchTargetType(params.getString("search_target", "uri"));
         searchOption = getSearchOptionType(params.getString("search_option", "exact_match"));
         inferenceType = getInferenceType(params.getString("inference_type", "none"));
+        extjsJSONFormatType = getExtJsJSONFormatType(params.getString("extjs_json_format", "grid"));
         start = params.getInt("start", 0);
         limit = params.getInt("limit", 0);
+    }
+
+    private ExtJsJSonFormatType getExtJsJSONFormatType(String type) {
+        if (type.equals("grid")) {
+            return ExtJsJSonFormatType.GRID;
+        } else if (type.equals("tree")) {
+            return ExtJsJSonFormatType.TREE;
+        }
+        return ExtJsJSonFormatType.GRID;
+    }
+
+    public ExtJsJSonFormatType getExtJsJSonFormatType() {
+        return extjsJSONFormatType;
     }
 
     public boolean isValidRequest() {
@@ -65,31 +79,31 @@ public class SearchParameters {
         return null;
     }
 
-    private DataType getDataType(String dt) {
+    private DataType getDataTypeAndRemoveExtensionFromResourceName(String dt) {
         if (dt.equals("page")) {
+            resourceName = resourceName.replaceAll("\\.html", "");
             return DataType.PAGE;
         } else if (dt.equals("data")) {
-            return DataType.RDF_XML;
-        } else if (dt.equals("table_data")) {
-            return DataType.JSON_TABLE;
-        } else if (dt.equals("tree_data")) {
-            return DataType.JSON_TREE;
+            if (resourceName.matches(".*\\.rdf$")) {
+                resourceName = resourceName.replaceAll("\\.rdf", "");
+                return DataType.XML;
+            } else if (resourceName.matches(".*\\.n3$")) {
+                resourceName = resourceName.replaceAll("\\.n3", "");
+                return DataType.N3;
+            } else if (resourceName.matches(".*\\.nt$")) {
+                resourceName = resourceName.replaceAll("\\.nt", "");
+                return DataType.NTRIPLE;
+            } else if (resourceName.matches(".*\\.json$")) {
+                resourceName = resourceName.replaceAll("\\.json", "");
+                return DataType.JSON;
+            } else if (resourceName.matches(".*\\.jsonp$")) {
+                resourceName = resourceName.replaceAll("\\.jsonp", "");
+                return DataType.JSONP;
+            } else {
+                return DataType.XML;
+            }
         }
-        return null;
-    }
-
-    private String getResourceName(String resName) {
-        switch (dataType) {
-            case PAGE:
-                return resName.replaceAll("\\.html", "");
-            case RDF_XML:
-                return resName.replaceAll("\\.rdf", "");
-            case JSON_TABLE:
-            case JSON_TREE:
-                return resName.replaceAll("\\.json", "");
-            default:
-                return resName;
-        }
+        return DataType.NONE;
     }
 
     private Set<String> getTypeSet(String[] types) {
@@ -183,6 +197,23 @@ public class SearchParameters {
         return dataType;
     }
 
+    public String getMIMEHeader() {
+        switch (dataType) {
+            case PAGE:
+                return "application/html";
+            case XML:
+                return "application/rdf+xml";
+            case N3:
+                return "application/n3";
+            case NTRIPLE:
+                return "application/n-triples";
+            case JSON:
+            case JSONP:
+                return "application/json";
+        }
+        return "application/html";
+    }
+
     public ResourceType getResourceType() {
         return resourceType;
     }
@@ -205,7 +236,7 @@ public class SearchParameters {
     }
 
     public String getRDFKey() {
-        return getKey(DataType.RDF_XML);
+        return getKey(DataType.XML);
     }
 
     private String getKey(DataType dt) {
@@ -221,6 +252,8 @@ public class SearchParameters {
         hashCode += searchTarget.toString().hashCode();
         hashCode += searchOption.toString().hashCode();
         hashCode += inferenceType.toString().hashCode();
+
+        hashCode += extjsJSONFormatType.toString().hashCode();
 
         if (!(start == 0 && limit == 0)) {
             hashCode += ("start" + start).hashCode();
@@ -257,6 +290,10 @@ public class SearchParameters {
 
         builder.append("Inference Type:");
         builder.append(inferenceType);
+        builder.append("\n");
+
+        builder.append("ExtJs JSON Format Type:");
+        builder.append(extjsJSONFormatType);
         builder.append("\n");
 
         builder.append("start:");

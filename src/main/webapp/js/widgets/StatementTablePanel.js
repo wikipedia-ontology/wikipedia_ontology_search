@@ -8,7 +8,7 @@ function getStatementTableDataStore() {
     return new Ext.data.GroupingStore({
         id : 'StatementTableDataStore' + tabIndex,
         reader : getStatementJsonReader(),
-        proxy : getProxy(NULL_TABLE_DATA),
+        proxy : getProxy(NULL_DATA),
         sortInfo : {
             field : 'subject',
             direction : "ASC"
@@ -277,20 +277,20 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
         url = e.getTarget().children.item(1).toString();
     }
     if (url.indexOf("wikiont_class") != -1) {
-        var queryURL = url.replace("wikiont_class:", CLASS_PATH + TABLE_DATA_PATH);
-        var keyword = queryURL.split(TABLE_DATA_PATH)[1];
+        var queryURL = url.replace("wikiont_class:", CLASS_PATH + DATA_PATH);
+        var keyword = queryURL.split(DATA_PATH)[1];
         keyword = decodeURI(keyword);
         queryType = QTYPE_CLASS;
         makeClassContextMenu(keyword).showAt(e.getXY());
     } else if (url.indexOf("wikiont_property") != -1) {
-        var queryURL = url.replace("wikiont_property:", PROPERTY_PATH + TABLE_DATA_PATH);
-        var keyword = queryURL.split(TABLE_DATA_PATH)[1];
+        var queryURL = url.replace("wikiont_property:", PROPERTY_PATH + DATA_PATH);
+        var keyword = queryURL.split(DATA_PATH)[1];
         keyword = decodeURI(keyword);
         queryType = QTYPE_PROPERTY;
         makePropertyContextMenu(keyword).showAt(e.getXY());
     } else if (url.indexOf("wikiont_instance") != -1) {
-        var queryURL = url.replace("wikiont_instance:", INSTANCE_PATH + TABLE_DATA_PATH);
-        var keyword = queryURL.split(TABLE_DATA_PATH)[1];
+        var queryURL = url.replace("wikiont_instance:", INSTANCE_PATH + DATA_PATH);
+        var keyword = queryURL.split(DATA_PATH)[1];
         keyword = decodeURI(keyword);
         queryType = QTYPE_INSTANCE;
         makeInstanceContextMenu(keyword).showAt(e.getXY());
@@ -353,21 +353,22 @@ function openWikiOntRDFData(value) {
     if (values.length == 2) {
         var prefix = values[0];
         var localName = values[1];
+        var extension = ".json";
         searchTargetType = URI_SEARCH_TARGET_OPTION;
         switch (prefix) {
             case "wikiont_class":
                 queryType = QTYPE_CLASS;
-                var queryURI = BASE_SERVER_CLASS_TABLE_DATA_URL + localName;
+                var queryURI = BASE_SERVER_CLASS_DATA_URL + localName + extension;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_property":
                 queryType = QTYPE_PROPERTY;
-                var queryURI = BASE_SERVER_PROPERTY_TABLE_DATA_URL + localName;
+                var queryURI = BASE_SERVER_PROPERTY_DATA_URL + localName +extension;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_instance":
                 queryType = QTYPE_INSTANCE;
-                var queryURI = BASE_SERVER_INSTANCE_TABLE_DATA_URL + localName;
+                var queryURI = BASE_SERVER_INSTANCE_DATA_URL + localName + extension;
                 reloadStatements(queryURI, localName);
                 break;
         }
@@ -385,21 +386,21 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
     if (url == null) {
         url = e.getTarget().children.item(1).toString();
     }
-    url = decodeURI(url);
+    url = decodeURI(url) + ".json";
     Ext.getDom('uri_radio_button').checked = true;
     if (url.indexOf("wikiont_class") != -1) {
-        var queryURI = url.replace("wikiont_class:", CLASS_PATH + TABLE_DATA_PATH);
-        var keyword = queryURI.split(TABLE_DATA_PATH)[1];
+        var queryURI = url.replace("wikiont_class:", CLASS_PATH + DATA_PATH);
+        var keyword = queryURI.split(DATA_PATH)[1];
         queryType = QTYPE_CLASS;
         reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_property") != -1) {
-        var queryURI = url.replace("wikiont_property:", PROPERTY_PATH + TABLE_DATA_PATH);
-        var keyword = queryURI.split(TABLE_DATA_PATH)[1];
+        var queryURI = url.replace("wikiont_property:", PROPERTY_PATH + DATA_PATH);
+        var keyword = queryURI.split(DATA_PATH)[1];
         queryType = QTYPE_PROPERTY;
         reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_instance") != -1) {
-        var queryURI = url.replace("wikiont_instance:", INSTANCE_PATH + TABLE_DATA_PATH);
-        var keyword = queryURI.split(TABLE_DATA_PATH)[1];
+        var queryURI = url.replace("wikiont_instance:", INSTANCE_PATH + DATA_PATH);
+        var keyword = queryURI.split(DATA_PATH)[1];
         queryType = QTYPE_INSTANCE;
         reloadStatements(queryURI, keyword);
     }

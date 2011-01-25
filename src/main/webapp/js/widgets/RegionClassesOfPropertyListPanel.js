@@ -13,7 +13,7 @@ function getRegionClassesOfPropertyListTableDataStore(type) {
     }
     return new Ext.data.Store({
         reader : getStatementJsonReader(),
-        proxy : getProxy(BASE_SERVER_PROPERTY_TABLE_DATA_URL),
+        proxy : getProxy(BASE_SERVER_PROPERTY_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp(panelName).body != undefined) {
