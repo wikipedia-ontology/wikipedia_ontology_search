@@ -48,7 +48,7 @@ function setSearchParams(params) {
                 var versionOptionSelection = Ext.getCmp('Version_Option');
                 versionOptionSelection.setValue(value);
                 break;
-            case INFERNCE_TYPE_PARAMETER_KEY:
+            case INFERENCE_TYPE_PARAMETER_KEY:
                 switch (value) {
                     case RDFS_INFERENCE_OPTION:
                         inferenceType = RDFS_INFERENCE_OPTION;
@@ -82,7 +82,7 @@ function extractParametersFromURI(uri) {
         // default parameters
         params[SEARCH_TARGET_PARAMETER_KEY] = URI_SEARCH_TARGET_OPTION;
         params[SEARCH_OPTION_PARAMETER_KEY] = EXACT_MATCH_SEARCH_OPTION;
-        params[INFERNCE_TYPE_PARAMETER_KEY] = NONE_INFERENCE_OPTION;
+        params[INFERENCE_TYPE_PARAMETER_KEY] = NONE_INFERENCE_OPTION;
         params[VERSION_PARAMETER_KEY] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
     params[URI_PARAMETER_KEY] = uri;
@@ -487,7 +487,7 @@ function renderResourceType(value, metadata, record) {
 }
 
 function renderInferenceType(value, metadata, record) {
-    switch (record.get(INFERNCE_TYPE_PARAMETER_KEY)) {
+    switch (record.get(INFERENCE_TYPE_PARAMETER_KEY)) {
         case RDFS_INFERENCE_OPTION:
             return RDFS_INFERENCE;
         default:
@@ -534,7 +534,7 @@ function openHistoryAndBookmarkData(record) {
     queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
     selectResourceTypeRadioButton();
     searchTargetType = record.get(SEARCH_TARGET_PARAMETER_KEY);
-    inferenceType = record.get(INFERNCE_TYPE_PARAMETER_KEY);
+    inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
     if (inferenceType == RDFS_INFERENCE) {
         Ext.getDom('use_inf_model').checked = true;
     } else {

@@ -71,7 +71,7 @@ function getTreePanel(title, treeType) {
                 },
                 load : function() {
                     var classTreePanel = Ext.getCmp('classTreePanel');
-                    classTreePanel.getRootNode().expand(expand_all_class_and_instance);
+                    classTreePanel.getRootNode().expand(expand_all_class);
                     var tp = Ext.getCmp(treePanelId).body;
                     if (tp != undefined) {
                         tp.unmask();
@@ -225,7 +225,7 @@ var isRenderTree = true;
 function reloadTree(queryJSONTreeURI) {
     //    alert("tree:" + queryJSONTreeURL);
     Ext.getCmp("TreeURIField").setValue(queryJSONTreeURI);
-    if (show_isa_tree_and_instance) {
+    if (show_isa_tree) {
         if (!isRenderTree) {
             return;
         }

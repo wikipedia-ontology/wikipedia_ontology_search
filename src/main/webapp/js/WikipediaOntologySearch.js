@@ -10,8 +10,9 @@
 var queryType = QTYPE_CLASS;
 var inferenceType = NONE_INFERENCE_OPTION;
 var searchTargetType = URI_SEARCH_TARGET_OPTION;
-var show_isa_tree_and_instance = true;
-var expand_all_class_and_instance = false;
+
+var show_isa_tree = true;
+var expand_all_class = false;
 var start_collapsed_group = true;
 
 var bookmarkPanel;
@@ -27,7 +28,7 @@ WikipediaOntologySearch = new Ext.app.App({
         bookmarkPanel = getBookmarkPanel();
         historyPanel = getHistoryPanel();
         getBookmarkImportAndExportDialog(); // new BookmarkImportAndExportDialog
-        //        applyOptionState();
+        applyOptionState();
         //        setTimeout(function() {
         //            Ext.get('loading').remove();
         //            Ext.get('loading-mask').fadeOut({
@@ -46,17 +47,104 @@ WikipediaOntologySearch = new Ext.app.App({
             new WikipediaOntologySearch.BookmarkWindow(),
             new WikipediaOntologySearch.HistoryWindow(),
             new WikipediaOntologySearch.SourceWindow(),
+            new WikipediaOntologySearch.OptionWindow(),
+            new WikipediaOntologySearch.HelpWindow()
         ];
     },
 
     // config for the start menu
     getStartConfig : function() {
         return {
-            title: 'Menu',
-            iconCls: 'user',
+            title: MENU,
+            iconCls: 'icon-table',
             toolItems: [
+                {
+                    text : MANUAL,
+                    iconCls: 'icon-help',
+                    handler : function() {
+                        window.open(HOME_URL + MANUAL_HTML);
+                    }
+                },
+                {
+                    text : ENGLISH,
+                    handler : function() {
+                        window.open(HOME_URL + SEARCH_EN_HTML, "_self");
+                    }
+                },
+                {
+                    text : JAPANESE,
+                    handler : function() {
+                        window.open(HOME_URL + SEARCH_JA_HTML, "_self");
+                    }
+                }
             ]
         };
+    }
+});
+
+WikipediaOntologySearch.OptionWindow = Ext.extend(Ext.app.Module, {
+    id:'option-win',
+    init : function() {
+        this.launcher = {
+            text : OPTION,
+            iconCls:'icon-option',
+            handler : this.createWindow,
+            scope: this
+        }
+    },
+
+    createWindow : function() {
+        var desktop = this.app.getDesktop();
+        var win = desktop.getWindow('option-win');
+        if (!win) {
+            win = desktop.createWindow({
+                id: 'option-win',
+                title : OPTION,
+                width:600,
+                height:200,
+                iconCls: 'icon-option',
+                shim:false,
+                closable: true,
+                animCollapse:false,
+                constrainHeader:true,
+                layout: 'fit',
+                items:getOptionPanel()
+            });
+        }
+        win.show();
+    }
+});
+
+WikipediaOntologySearch.HelpWindow = Ext.extend(Ext.app.Module, {
+    id:'help-win',
+    init : function() {
+        this.launcher = {
+            text : HELP,
+            iconCls:'icon-help',
+            handler : this.createWindow,
+            scope: this
+        }
+    },
+
+    createWindow : function() {
+        var desktop = this.app.getDesktop();
+        var win = desktop.getWindow('help-win');
+        if (!win) {
+            win = desktop.createWindow({
+                id: 'help-win',
+                title : HELP,
+                width:600,
+                height:400,
+                iconCls: 'icon-help',
+                shim:false,
+                closable: true,
+                animCollapse:false,
+                constrainHeader:true,
+                layout: 'fit',
+                items:getHelpPanel()
+            });
+        }
+        win.show();
     }
 });
 
@@ -348,7 +436,7 @@ WikipediaOntologySearch.SourceWindow = Ext.extend(Ext.app.Module, {
     id:'source-win',
     init : function() {
         this.launcher = {
-            text: "RDF/XML",
+            text: SOURCE_CODE,
             iconCls:'icon-rdf',
             handler : this.createWindow,
             scope: this
@@ -361,7 +449,7 @@ WikipediaOntologySearch.SourceWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'source-win',
-                title:"RDF/XML",
+                title: SOURCE_CODE,
                 width:800,
                 height:600,
                 iconCls: 'icon-rdf',
@@ -549,40 +637,6 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
     }
 });
 
-
-WikipediaOntologySearch.BookmarkImportAndExportWindow = Ext.extend(Ext.app.Module, {
-    id:'bookmark-import-export-win',
-    init : function() {
-        this.launcher = {
-            title : IMPORT_OR_EXPORT_BOOKMARKS,
-            iconCls:'icon-book',
-            handler : this.createWindow,
-            scope: this
-        }
-    },
-
-    createWindow : function() {
-        var desktop = this.app.getDesktop();
-        var win = desktop.getWindow('bookmark-import-export-win');
-        if (!win) {
-            win = desktop.createWindow({
-                id: 'bookmark-import-export-win',
-                title : IMPORT_OR_EXPORT_BOOKMARKS,
-                width:800,
-                height:600,
-                iconCls: 'icon-bok',
-                shim:false,
-                closable: true,
-                modal: true,
-                animCollapse:false,
-                constrainHeader:true,
-                layout: 'fit',
-                items:getBookmarkImportAndExportPanel()
-            });
-        }
-        win.show();
-    }
-});
 
 //Ext.onReady(function() {
 //    Ext.QuickTips.init();

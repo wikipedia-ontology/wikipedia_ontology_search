@@ -68,11 +68,13 @@ var VERSION = "Version";
 var SHOW_WHOLE_CLASS_HIERARCHY = "Show Whole Class Hiearchy";
 var HIERARCHY = "Hiearchy";
 
+var MENU = "Menu";
+var SOURCE_CODE = "Source Code";
 var BOOKMARK_RECORD_LENGTH = 8;
 
 var LANGUAGE = "Language";
 var ENGLISH = "English";
-var JAPANESE = "Japanese";
+var JAPANESE = "日本語";
 var LOADING = "Loading...";
 var SEARCHING = "Searching・・・";
 var HELP_HTML = "en_help.html";
@@ -82,13 +84,14 @@ var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
 // parameter keys
+var DATE_PARAMETER_KEY = "date";
 var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
 var SEARCH_TARGET_PARAMETER_KEY = "search_target";
 var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
 var SEARCH_OPTION_PARAMETER_KEY = "search_option";
 var VERSION_PARAMETER_KEY = "version";
 var URI_PARAMETER_KEY = "uri";
-var INFERNCE_TYPE_PARAMETER_KEY = "inference_type";
+var INFERENCE_TYPE_PARAMETER_KEY = "inference_type";
 
 //inference type
 var NONE_INFERENCE = "None";

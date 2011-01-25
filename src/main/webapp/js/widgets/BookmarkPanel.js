@@ -52,7 +52,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             },
             {
                 id : 'inference_type_id',
-                dataIndex : INFERNCE_TYPE_PARAMETER_KEY,
+                dataIndex : INFERENCE_TYPE_PARAMETER_KEY,
                 header : USE_INFERENCE_MODEL,
                 hidden : isSidePanel,
                 renderer : renderInferenceType,
@@ -99,7 +99,7 @@ function getBookmarkPanel() {
                 name : SEARCH_OPTION_PARAMETER_KEY
             },
             {
-                name : INFERNCE_TYPE_PARAMETER_KEY
+                name : INFERENCE_TYPE_PARAMETER_KEY
             },
             {
                 name : URI_PARAMETER_KEY
@@ -385,7 +385,7 @@ function addBookmark(params) {
         params[RESOURCE_TYPE_PARAMETER_KEY],
         params[SEARCH_TARGET_PARAMETER_KEY],
         params[SEARCH_OPTION_PARAMETER_KEY],
-        params[INFERNCE_TYPE_PARAMETER_KEY],
+        params[INFERENCE_TYPE_PARAMETER_KEY],
         params[URI_PARAMETER_KEY],
         params[VERSION_PARAMETER_KEY]];
     bookmarkArray.push(record);
@@ -453,7 +453,7 @@ function makeBookmarkClassContextMenu(record) {
                 handler : function() {
                     queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
                     selectResourceTypeRadioButton();
-                    inferenceType = record.get(INFERNCE_TYPE_PARAMETER_KEY);
+                    inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
                     Ext.getDom('use_inf_model').checked = useInfModel;
                     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                     searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));

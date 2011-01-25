@@ -4,38 +4,6 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
-function getOptionDialog() {
-    var optionPanel = getOptionPanel();
-    return new Ext.Window({
-        id : 'OptionDialog',
-        title : OPTION,
-        iconCls: 'icon-option',
-        width : 600,
-        height : 220,
-        autoScroll : true,
-        modal : true,
-        items : optionPanel,
-        buttons : [
-            {
-                xtype : 'button',
-                text : CLOSE,
-                handler : function() {
-                    Ext.getCmp("OptionDialog").setVisible(false);
-                }
-            }
-        ],
-        listeners : {
-            show : function() {
-                setOptionChecks();
-            }
-        }
-    });
-}
-
-function showOptionDialog() {
-    Ext.getCmp('OptionDialog').show();
-}
-
 function getOptionPanel() {
     return new Ext.FormPanel({
         frame : true,
@@ -47,8 +15,8 @@ function getOptionPanel() {
                 fieldLabel : ABOUT_CLASS_HIERARCHY,
                 items : [
                     {
-                        id : 'show_isa_tree_and_instance',
-                        stateId : 'show_isa_tree_and_instance_state',
+                        id : 'show_isa_tree',
+                        stateId : 'show_isa_tree_state',
                         statefule : true,
                         stateEvents : ['check'],
                         xtype : 'checkbox',
@@ -59,25 +27,25 @@ function getOptionPanel() {
                             }
                         },
                         applyState : function(state) {
-                            show_isa_tree_and_instance = state.checked;
+                            show_isa_tree = state.checked;
                             this.setValue(state.checked);
                         },
                         handler : applyNewOptionState
                     },
                     {
-                        id : 'expand_all_class_and_instance',
-                        stateId : 'expand_all_class_and_instance_state',
+                        id : 'expand_all_class',
+                        stateId : 'expand_all_class_state',
                         statefule : true,
                         stateEvents : ['check'],
                         xtype : 'checkbox',
-                        boxLabel : EXPAND_ALL_CLASS_HIEARCHY_AND_INSTANCES,
+                        boxLabel : EXPAND_ALL_CLASS_HIERARCHY,
                         getState : function() {
                             return {
                                 checked : this.getValue()
                             }
                         },
                         applyState : function(state) {
-                            expand_all_class_and_instance = state.checked;
+                            expand_all_class = state.checked;
                             this.setValue(state.checked);
                         },
                         handler : applyNewOptionState
@@ -112,13 +80,14 @@ function getOptionPanel() {
 }
 
 function applyOptionState() {
-    var classAndInstanceTreePanel = Ext.getCmp('classAndInstanceTreePanel');
-    //    var groupingStatementTableView = Ext.getCmp('StatementTablePanel').view;
-    var groupingStatementTableView = statementTabPanel.getActiveTab().view;
+    var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
+    var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
+    var groupingStatementTableView = statementTablePanel.view;
 
-    if (!show_isa_tree_and_instance) {
-        classAndInstanceTreePanel.loader.dataUrl = NULL_TREE_DATA;
-        classAndInstanceTreePanel.loader.load(classAndInstanceTreePanel.getRootNode());
+    if (!show_isa_tree) {
+        var classTreePanel = Ext.getCmp('classTreePanel');
+        classTreePanel.loader.dataUrl = NULL_TREE_DATA;
+        classTreePanel.loader.load(classTreePanel.getRootNode());
     }
     
     groupingStatementTableView.startCollapsed = start_collapsed_group;
@@ -130,17 +99,17 @@ function applyOptionState() {
 }
 
 function setOptionChecks() {
-    if (Ext.getDom('show_isa_tree_and_instance') != null) {
-        Ext.getDom('show_isa_tree_and_instance').checked = show_isa_tree_and_instance;
-        Ext.getDom('expand_all_class_and_instance').checked = expand_all_class_and_instance;
+    if (Ext.getDom('show_isa_tree') != null) {
+        Ext.getDom('show_isa_tree').checked = show_isa_tree;
+        Ext.getDom('expand_all_class').checked = expand_all_class;
         Ext.getDom('start_collapsed_group').checked = start_collapsed_group;
     }
 }
 
 function applyNewOptionState() {
-    if (Ext.getDom('show_isa_tree_and_instance') != null) {
-        show_isa_tree_and_instance = Ext.getDom('show_isa_tree_and_instance').checked;
-        expand_all_class_and_instance = Ext.getDom('expand_all_class_and_instance').checked;
+    if (Ext.getDom('show_isa_tree') != null) {
+        show_isa_tree = Ext.getDom('show_isa_tree').checked;
+        expand_all_class = Ext.getDom('expand_all_class').checked;
         start_collapsed_group = Ext.getDom('start_collapsed_group').checked;
         applyOptionState();
     }

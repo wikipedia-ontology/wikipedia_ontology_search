@@ -56,7 +56,7 @@ function exportBookmarks() {
             record.get(RESOURCE_TYPE_PARAMETER_KEY),
             record.get(SEARCH_TARGET_PARAMETER_KEY),
             record.get(SEARCH_OPTION_PARAMETER_KEY),
-            record.get(INFERNCE_TYPE_PARAMETER_KEY),
+            record.get(INFERENCE_TYPE_PARAMETER_KEY),
             record.get(URI_PARAMETER_KEY),
             record.get(VERSION_PARAMETER_KEY)
         ].join(",") + "\n";

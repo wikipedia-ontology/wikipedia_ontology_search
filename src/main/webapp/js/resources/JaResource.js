@@ -54,8 +54,8 @@ var EXPAND_ALL = "階層をすべて開く";
 var COLLAPSE_ALL = "階層をすべて閉じる";
 var ROOT_CLASS = "ルートクラス";
 var BOOKMARK_AND_SEARCH_HISTORY = "ブックマークと検索履歴";
-var ABOUT_CLASS_HIERARCHY = "クラス階層とインスタンス関連";
-var SHOW_CLASS_HIERARCHY = "クラス階層とインスタンスを表示";
+var ABOUT_CLASS_HIERARCHY = "クラス階層関連";
+var SHOW_CLASS_HIERARCHY = "クラス階層を表示";
 var EXPAND_ALL_CLASS_HIERARCHY = "クラス階層をすべて展開して表示する";
 var ABOUT_RDF_XML = "RDF/XML関連";
 var ABOUT_STATEMENT_TABLE = "ステートメントテーブル関連";
@@ -68,10 +68,12 @@ var VERSION = "バージョン";
 var SHOW_WHOLE_CLASS_HIERARCHY = "全クラス階層を表示";
 var HIERARCHY = "階層表示";
 
+var MENU = "メニュー";
+var SOURCE_CODE = "ソースコード";
 var BOOKMARK_RECORD_LENGTH = 8;
 
 var LANGUAGE = "言語";
-var ENGLISH = "英語";
+var ENGLISH = "English";
 var JAPANESE = "日本語";
 var LOADING = "読み込み中・・・";
 var SEARCHING = "検索中・・・";
@@ -89,7 +91,7 @@ var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
 var SEARCH_OPTION_PARAMETER_KEY = "search_option";
 var VERSION_PARAMETER_KEY = "version";
 var URI_PARAMETER_KEY = "uri";
-var INFERNCE_TYPE_PARAMETER_KEY = "inference_type";
+var INFERENCE_TYPE_PARAMETER_KEY = "inference_type";
 
 //inference type
 var NONE_INFERENCE = "なし";

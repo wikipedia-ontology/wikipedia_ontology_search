@@ -17,7 +17,7 @@ function addHistoryData(queryURI) {
         params[RESOURCE_TYPE_PARAMETER_KEY],
         params[SEARCH_TARGET_PARAMETER_KEY],
         params[SEARCH_OPTION_PARAMETER_KEY],
-        params[INFERNCE_TYPE_PARAMETER_KEY],
+        params[INFERENCE_TYPE_PARAMETER_KEY],
         params[URI_PARAMETER_KEY],
         params[VERSION_PARAMETER_KEY]
     ];
@@ -59,7 +59,7 @@ function addSelectedHistoriesToBookmark() {
             records[i].get(RESOURCE_TYPE_PARAMETER_KEY),
             records[i].get(SEARCH_TARGET_PARAMETER_KEY),
             records[i].get(SEARCH_OPTION_PARAMETER_KEY),
-            records[i].get(INFERNCE_TYPE_PARAMETER_KEY),
+            records[i].get(INFERENCE_TYPE_PARAMETER_KEY),
             records[i].get(URI_PARAMETER_KEY),
             records[i].get(VERSION_PARAMETER_KEY)]);
     }
@@ -109,7 +109,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'inference_type_id',
-                dataIndex : INFERNCE_TYPE_PARAMETER_KEY,
+                dataIndex : INFERENCE_TYPE_PARAMETER_KEY,
                 header : USE_INFERENCE_MODEL,
                 hidden : isSidePanel,
                 renderer : renderInferenceType,
@@ -156,7 +156,7 @@ function getHistoryPanel() {
                 name : SEARCH_OPTION_PARAMETER_KEY
             },
             {
-                name : INFERNCE_TYPE_PARAMETER_KEY
+                name : INFERENCE_TYPE_PARAMETER_KEY
             },
             {
                 name : URI_PARAMETER_KEY
@@ -470,7 +470,7 @@ function makeHistoryClassContextMenu(record) {
                 handler : function() {
                     queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
                     selectResourceTypeRadioButton();
-                    inferenceType = record.get(INFERNCE_TYPE_PARAMETER_KEY);
+                    inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
                     Ext.getDom('use_inf_model').checked = useInfModel;
                     searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
                     searchStatementsByContextMenu(currentkeyword + " " + keyword);
