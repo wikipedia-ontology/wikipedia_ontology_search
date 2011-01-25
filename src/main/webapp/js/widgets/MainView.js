@@ -182,7 +182,7 @@ function getMainView() {
     })
 
     var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree");
-    var wholeClassTreePanel = getTreePanel(WHOLE_CLASS_HIEARCHY, "wholeClassTree");
+    var wholeClassTreePanel = getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree");
 
     var wikiOntContentsTab = new Ext.TabPanel({
         activeTab : 0,
@@ -252,7 +252,7 @@ function getMainView() {
                                         handler : addTab
                                     },
                                     {
-                                        text : SHOW_WHOLE_CLASS_HIEARCHY,
+                                        text : SHOW_WHOLE_CLASS_HIERARCHY,
                                         iconCls: 'icon-expand-all',
                                         handler : showWholeIsaTree
                                     },

@@ -306,7 +306,7 @@ WikipediaOntologySearch.WholeTreeWindow = Ext.extend(Ext.app.Module, {
     id:'whole-tree-win',
     init : function() {
         this.launcher = {
-            text: WHOLE_CLASS_HIEARCHY,
+            text: WHOLE_CLASS_HIERARCHY,
             iconCls:'icon-class-tree',
             handler : this.createWindow,
             scope: this
@@ -319,7 +319,7 @@ WikipediaOntologySearch.WholeTreeWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'whole-tree-win',
-                title:WHOLE_CLASS_HIEARCHY,
+                title:WHOLE_CLASS_HIERARCHY,
                 width:500,
                 height:600,
                 iconCls: 'icon-class-tree',
@@ -328,7 +328,7 @@ WikipediaOntologySearch.WholeTreeWindow = Ext.extend(Ext.app.Module, {
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items:getTreePanel(WHOLE_CLASS_HIEARCHY, "wholeClassTree")
+                items:getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree")
             });
         }
         win.show();
@@ -534,6 +534,41 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
                 constrainHeader:true,
                 layout: 'fit',
                 items:instanceListWindowPanel
+            });
+        }
+        win.show();
+    }
+});
+
+
+WikipediaOntologySearch.BookmarkImportAndExportWindow = Ext.extend(Ext.app.Module, {
+    id:'bookmark-import-export-win',
+    init : function() {
+        this.launcher = {
+            title : IMPORT_OR_EXPORT_BOOKMARKS,
+            iconCls:'icon-book',
+            handler : this.createWindow,
+            scope: this
+        }
+    },
+
+    createWindow : function() {
+        var desktop = this.app.getDesktop();
+        var win = desktop.getWindow('bookmark-import-export-win');
+        if (!win) {
+            win = desktop.createWindow({
+                id: 'bookmark-import-export-win',
+                title : IMPORT_OR_EXPORT_BOOKMARKS,
+                width:800,
+                height:600,
+                iconCls: 'icon-bok',
+                shim:false,
+                closable: true,
+                modal: true,
+                animCollapse:false,
+                constrainHeader:true,
+                layout: 'fit',
+                items:getBookmarkImportAndExportPanel()
             });
         }
         win.show();

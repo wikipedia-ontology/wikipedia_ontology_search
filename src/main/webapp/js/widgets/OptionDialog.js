@@ -44,7 +44,7 @@ function getOptionPanel() {
         layout : 'form',
         items : [
             {
-                fieldLabel : ABOUT_CLASS_HIEARCHY_AND_INSTANCE,
+                fieldLabel : ABOUT_CLASS_HIERARCHY_AND_INSTANCE,
                 items : [
                     {
                         id : 'show_isa_tree_and_instance',
