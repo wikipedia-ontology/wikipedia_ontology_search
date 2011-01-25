@@ -61,23 +61,28 @@ public class WikipediaOntologyStatisticsAnalyzer {
     }
 
     private static void storeInstancesToDB(String lang) {
-        EntityManager em = WikipediaOntologyStorage.getEntityManager();
         Model ontModel = WikipediaOntologyStorage.getInstanceMemModel(lang);
+        Set<String> instanceSet = Sets.newHashSet();
         for (StmtIterator stmtIter = ontModel.listStatements(); stmtIter.hasNext();) {
             Statement stmt = stmtIter.nextStatement();
             Resource subject = stmt.getSubject();
             String localName = WikipediaOntologyUtils.getLocalName(subject);
             if (localName != null && !localName.equals("null") && 0 < localName.length()) {
-                addInstanceToDB(em, localName);
+                instanceSet.add(localName);
             }
             RDFNode object = stmt.getObject();
             if (object.isResource()) {
                 Resource objectRes = (Resource) object;
                 localName = WikipediaOntologyUtils.getLocalName(objectRes);
                 if (localName != null && !localName.equals("null") && 0 < localName.length()) {
-                    addInstanceToDB(em, localName);
+                    instanceSet.add(localName);
                 }
             }
+        }
+        System.out.println("instance size: " + instanceSet.size());
+        EntityManager em = WikipediaOntologyStorage.getEntityManager();
+        for (String instance : instanceSet) {
+            addInstanceToDB(em, instance);
         }
     }
 

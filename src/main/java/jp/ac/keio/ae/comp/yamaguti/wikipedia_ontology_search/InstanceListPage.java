@@ -6,6 +6,9 @@ import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.InstanceStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.OrderByType;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.SearchOptionType;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.ResourceSearchUtils;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.SPARQLQueryMaker;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
@@ -66,10 +69,55 @@ public class InstanceListPage extends CommonPage {
         return "[]";
     }
 
-    private String getInstanceListJSonString(int start, int limit) {
+    private String getInstanceListJSonString(String keyword, int start, int limit,
+                                             OrderByType orderByType, SearchOptionType searchOptionType) {
         try {
             EntityManager em = WikipediaOntologyStorage.getEntityManager();
-            Query query = Query.select().order("name").limit(limit).offset(start);
+
+            Query query = Query.select().limit(limit).offset(start);
+            int numberOfInstances = 0;
+
+            String orderBy = "name asc";
+            switch (orderByType) {
+                case NAME_ASC:
+                    orderBy = "name asc";
+                    break;
+                case NAME_DESC:
+                    orderBy = "name desc";
+                    break;
+            }
+            System.out.println("order_by: " + orderBy);
+            query = query.order(orderBy);
+
+            String clause = "name like ?";
+            String value = "";
+            switch (searchOptionType) {
+                case EXACT_MATCH:
+                    value = keyword;
+                    clause = "name = ?";
+                    break;
+                case ANY_MATCH:
+                    value = "%" + keyword + "%";
+                    break;
+                case STARTS_WITH:
+                    value = keyword + "%";
+                    break;
+                case ENDS_WITH:
+                    value = "%" + keyword;
+                    break;
+                default:
+                    clause = "";
+                    break;
+            }
+
+            System.out.println("search_option: " + clause + value);
+            if (clause.isEmpty()) {
+                numberOfInstances = em.count(InstanceStatistics.class, Query.select());
+            } else {
+                query = query.where(clause, value);
+                numberOfInstances = em.count(InstanceStatistics.class, Query.select().where(clause, value));
+            }
+
             JSONObject rootObj = new JSONObject();
             JSONArray jsonArray = new JSONArray();
             for (InstanceStatistics i : em.find(InstanceStatistics.class, query)) {
@@ -83,7 +131,6 @@ public class InstanceListPage extends CommonPage {
                 }
             }
             rootObj.put("instance_list", jsonArray);
-            int numberOfInstances = em.count(InstanceStatistics.class);
             rootObj.put("numberOfInstances", numberOfInstances);
             return rootObj.toString();
         } catch (SQLException sqle) {
@@ -94,19 +141,12 @@ public class InstanceListPage extends CommonPage {
         return "[]";
     }
 
-    private String getHashCode(int start, int limit, String instanceName) {
-        int hashCode = 0;
-        hashCode += ("start=" + start).hashCode();
-        hashCode += ("limit=" + limit).hashCode();
-        hashCode += ("instance=" + instanceName).hashCode();
-        return Integer.toString(hashCode);
-    }
 
     public InstanceListPage(PageParameters params) {
         String outputString = null;
         if (params.containsKey("instance")) {
             String instanceName = params.getString("instance");
-            String hashCode = getHashCode(0, 0, instanceName);
+            String hashCode = ResourceSearchUtils.getHashCode(0, 0, "keyword", instanceName, "", "");
             outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
             if (outputString == null) {
                 outputString = getTypeListJSonString(instanceName);
@@ -115,11 +155,27 @@ public class InstanceListPage extends CommonPage {
         } else if (params.containsKey("limit") & params.containsKey("start")) {
             int start = params.getInt("start");
             int limit = params.getInt("limit");
-            String hashCode = getHashCode(start, limit, "instance_list");
-            outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
-            if (outputString == null) {
-                outputString = getInstanceListJSonString(start, limit);
-                WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+
+            String orderBy = params.getString("order_by", "instance_count_desc");
+            if (params.containsKey("keyword")) {
+                String keyword = params.getString("keyword");
+                String searchOption = params.getString("search_option", "exact_match");
+
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "keyword", keyword, orderBy, searchOption);
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getInstanceListJSonString(keyword, start, limit,
+                            ResourceSearchUtils.getOrderByType(orderBy), ResourceSearchUtils.getSearchOptionType(searchOption));
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            } else {
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "instance_list", "instance_list", orderBy, "");
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getInstanceListJSonString("", start, limit,
+                            ResourceSearchUtils.getOrderByType(orderBy), SearchOptionType.NONE);
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
             }
         } else {
             outputString = "[]";

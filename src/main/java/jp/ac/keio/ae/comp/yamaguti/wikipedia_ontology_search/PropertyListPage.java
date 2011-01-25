@@ -5,14 +5,8 @@ import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
 import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
 import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.PropertyStatistics;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.IndicatingAjaxPagingNavigator;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.SPARQLQueryMaker;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
 import net.java.ao.EntityManager;
 import net.java.ao.Query;
 import org.apache.wicket.IRequestTarget;
@@ -239,10 +233,60 @@ public class PropertyListPage extends CommonPage {
         });
     }
 
-    private String getPropertyListJSonString(int start, int limit) {
+    private String getPropertyListJSonString(String keyword, int start, int limit,
+                                             OrderByType orderByType, SearchOptionType searchOptionType) {
         try {
             EntityManager em = WikipediaOntologyStorage.getEntityManager();
-            Query query = Query.select().order("numberOfInstances desc, name").limit(limit).offset(start);
+            Query query = Query.select().limit(limit).offset(start);
+            int numberOfProperties = 0;
+
+            String orderBy = "numberOfInstances desc, name";
+            switch (orderByType) {
+                case NAME_ASC:
+                    orderBy = "name asc, numberOfInstances desc";
+                    break;
+                case NAME_DESC:
+                    orderBy = "name desc, numberOfInstances desc";
+                    break;
+                case INSTANCE_COUNT_ASC:
+                    orderBy = "numberOfInstances asc, name";
+                    break;
+                case INSTANCE_COUNT_DESC:
+                    orderBy = "numberOfInstances desc, name";
+                    break;
+            }
+            System.out.println("order_by: " + orderBy);
+            query = query.order(orderBy);
+
+            String clause = "name like ?";
+            String value = "";
+            switch (searchOptionType) {
+                case EXACT_MATCH:
+                    value = keyword;
+                    clause = "name = ?";
+                    break;
+                case ANY_MATCH:
+                    value = "%" + keyword + "%";
+                    break;
+                case STARTS_WITH:
+                    value = keyword + "%";
+                    break;
+                case ENDS_WITH:
+                    value = "%" + keyword;
+                    break;
+                default:
+                    clause = "";
+                    break;
+            }
+
+            System.out.println("search_option: " + clause + value);
+            if (clause.isEmpty()) {
+                numberOfProperties = em.count(PropertyStatistics.class, Query.select());
+            } else {
+                query = query.where(clause, value);
+                numberOfProperties = em.count(PropertyStatistics.class, Query.select().where(clause, value));
+            }
+
             JSONObject rootObj = new JSONObject();
             JSONArray jsonArray = new JSONArray();
             for (PropertyStatistics c : em.find(PropertyStatistics.class, query)) {
@@ -257,7 +301,6 @@ public class PropertyListPage extends CommonPage {
                 }
             }
             rootObj.put("property_list", jsonArray);
-            int numberOfProperties = em.count(PropertyStatistics.class, Query.select());
             rootObj.put("numberOfProperties", numberOfProperties);
             return rootObj.toString();
         } catch (SQLException sqle) {
@@ -301,32 +344,37 @@ public class PropertyListPage extends CommonPage {
         return "[]";
     }
 
-    private String getHashCode(int start, int limit, String propertyName) {
-        int hashCode = 0;
-        hashCode += ("start=" + start).hashCode();
-        hashCode += ("limit=" + limit).hashCode();
-        hashCode += ("property=" + propertyName).hashCode();
-        return Integer.toString(hashCode);
-    }
-
     public PropertyListPage(PageParameters params) {
         if (params.containsKey("limit") & params.containsKey("start")) {
             int start = params.getInt("start");
             int limit = params.getInt("limit");
             String outputString = null;
+            String orderBy = params.getString("order_by", "instance_count_desc");
             if (params.containsKey("property")) {
                 String propertyName = params.getString("property");
-                String hashCode = getHashCode(start, limit, propertyName);
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "property", propertyName, "", "");
                 outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
                 if (outputString == null) {
                     outputString = getInstanceListJSonString(propertyName, start, limit);
                     WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
                 }
-            } else {
-                String hashCode = getHashCode(start, limit, "property_list");
+            } else if (params.containsKey("keyword")) {
+                String keyword = params.getString("keyword");
+                String searchOption = params.getString("search_option", "exact_match");
+
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "keyword", keyword, orderBy, searchOption);
                 outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
                 if (outputString == null) {
-                    outputString = getPropertyListJSonString(start, limit);
+                    outputString = getPropertyListJSonString(keyword, start, limit,
+                            ResourceSearchUtils.getOrderByType(orderBy), ResourceSearchUtils.getSearchOptionType(searchOption));
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            } else {
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "property_list", "property_list", orderBy, "");
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getPropertyListJSonString("", start, limit,
+                            ResourceSearchUtils.getOrderByType(orderBy), SearchOptionType.NONE);
                     WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
                 }
             }
@@ -358,8 +406,7 @@ public class PropertyListPage extends CommonPage {
                 instanceListContainer.setOutputMarkupPlaceholderTag(true);
                 instanceListContainer.setVisible(false);
                 item.add(WikipediaOntologyUtils.getRDFLink(uri, "property"));
-                final Image plusOrMinusImage = new Image("plus_or_minus_icon", WikipediaOntologyUtils
-                        .getPlusIconReference());
+                final Image plusOrMinusImage = new Image("plus_or_minus_icon", WikipediaOntologyUtils.getPlusIconReference());
                 plusOrMinusImage.setOutputMarkupId(true);
                 final Image indicator = WikipediaOntologyUtils.getIndicator("indicator");
                 item.add(indicator);
@@ -394,17 +441,14 @@ public class PropertyListPage extends CommonPage {
             }
         };
         propertyListContainer.add(propertyStatisticsView);
-        propertyListContainer.add(new Label("property_start",
-                new PropertyModel<PagingData>(propertyPagingData, "start")));
+        propertyListContainer.add(new Label("property_start", new PropertyModel<PagingData>(propertyPagingData, "start")));
         propertyListContainer.add(new Label("property_end", new PropertyModel<PagingData>(propertyPagingData, "end")));
-        propertyListContainer
-                .add(new Label("property_count", new PropertyModel<PagingData>(propertyPagingData, "size")));
+        propertyListContainer.add(new Label("property_count", new PropertyModel<PagingData>(propertyPagingData, "size")));
         Image topIndicator = WikipediaOntologyUtils.getIndicator("top_indicator");
         propertyListContainer.add(topIndicator);
         Image bottomIndicator = WikipediaOntologyUtils.getIndicator("bottom_indicator");
         propertyListContainer.add(bottomIndicator);
-        propertyListContainer.add(new IndicatingAjaxPagingNavigator("top_property_paging", propertyStatisticsView,
-                topIndicator));
+        propertyListContainer.add(new IndicatingAjaxPagingNavigator("top_property_paging", propertyStatisticsView, topIndicator));
         propertyListContainer.add(new IndicatingAjaxPagingNavigator("bottom_property_paging", propertyStatisticsView,
                 bottomIndicator));
         add(propertyListContainer);

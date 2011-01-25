@@ -3,19 +3,12 @@ package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 import com.google.common.collect.Lists;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
 import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
 import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.ClassStatistics;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PropertyImpl;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.IndicatingAjaxPagingNavigator;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.SPARQLQueryMaker;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyStorage;
-import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.WikipediaOntologyUtils;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
+import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
 import net.java.ao.EntityManager;
 import net.java.ao.Query;
 import org.apache.wicket.IRequestTarget;
@@ -384,11 +377,60 @@ public class ClassListPage extends CommonPage {
         return "[]";
     }
 
-    private String getClassListJSonString(int start, int limit) {
+    private String getClassListJSonString(String keyword, int start, int limit,
+                                          OrderByType orderByType, SearchOptionType searchOptionType) {
         try {
             EntityManager em = WikipediaOntologyStorage.getEntityManager();
-            Query query = Query.select().order("instanceCount desc, classname").limit(limit).offset(start)
-                    .where("language = ?", "ja");
+            Query query = Query.select().limit(limit).offset(start).where("language = ?", "ja");
+            int numberOfClasses = 0;
+
+            String orderBy = "instanceCount desc, classname";
+            switch (orderByType) {
+                case NAME_ASC:
+                    orderBy = "classname asc, instanceCount desc";
+                    break;
+                case NAME_DESC:
+                    orderBy = "classname desc, instanceCount desc";
+                    break;
+                case INSTANCE_COUNT_ASC:
+                    orderBy = "instanceCount asc, classname";
+                    break;
+                case INSTANCE_COUNT_DESC:
+                    orderBy = "instanceCount desc, classname";
+                    break;
+            }
+            System.out.println("order_by: " + orderBy);
+            query = query.order(orderBy);
+
+            String clause = "classname like ?";
+            String value = "";
+            switch (searchOptionType) {
+                case EXACT_MATCH:
+                    value = keyword;
+                    clause = "classname = ?";
+                    break;
+                case ANY_MATCH:
+                    value = "%" + keyword + "%";
+                    break;
+                case STARTS_WITH:
+                    value = keyword + "%";
+                    break;
+                case ENDS_WITH:
+                    value = "%" + keyword;
+                    break;
+                default:
+                    clause = "";
+                    break;
+            }
+
+            System.out.println("search_option: " + clause + value);
+            if (clause.isEmpty()) {
+                numberOfClasses = em.count(ClassStatistics.class, Query.select());
+            } else {
+                query = query.where(clause, value);
+                numberOfClasses = em.count(ClassStatistics.class, Query.select().where(clause, value));
+            }
+
             JSONObject rootObj = new JSONObject();
             JSONArray jsonArray = new JSONArray();
             for (ClassStatistics c : em.find(ClassStatistics.class, query)) {
@@ -403,7 +445,6 @@ public class ClassListPage extends CommonPage {
                 }
             }
             rootObj.put("class_list", jsonArray);
-            int numberOfClasses = em.count(ClassStatistics.class, Query.select().where("language = ?", "ja"));
             rootObj.put("numberOfClasses", numberOfClasses);
             return rootObj.toString();
         } catch (SQLException sqle) {
@@ -414,32 +455,39 @@ public class ClassListPage extends CommonPage {
         return "[]";
     }
 
-    private String getHashCode(int start, int limit, String className) {
-        int hashCode = 0;
-        hashCode += ("start=" + start).hashCode();
-        hashCode += ("limit=" + limit).hashCode();
-        hashCode += ("class=" + className).hashCode();
-        return Integer.toString(hashCode);
-    }
 
     public ClassListPage(PageParameters params) {
         if (params.containsKey("limit") & params.containsKey("start")) {
+            String outputString = null;
             int start = params.getInt("start");
             int limit = params.getInt("limit");
-            String outputString = null;
+
+            String orderBy = params.getString("order_by", "instance_count_desc");
             if (params.containsKey("class")) {
                 String clsName = params.getString("class");
-                String hashCode = getHashCode(start, limit, clsName);
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "class", clsName, "", "");
                 outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
                 if (outputString == null) {
                     outputString = getInstanceListJSonString(clsName, start, limit);
                     WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
                 }
-            } else {
-                String hashCode = getHashCode(start, limit, "class_list");
+            } else if (params.containsKey("keyword")) {
+                String keyword = params.getString("keyword");
+                String searchOption = params.getString("search_option", "exact_match");
+
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "keyword", keyword, orderBy, searchOption);
                 outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
                 if (outputString == null) {
-                    outputString = getClassListJSonString(start, limit);
+                    outputString = getClassListJSonString(keyword, start, limit,
+                            ResourceSearchUtils.getOrderByType(orderBy), ResourceSearchUtils.getSearchOptionType(searchOption));
+                    WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
+                }
+            } else {
+                String hashCode = ResourceSearchUtils.getHashCode(start, limit, "class_list", "class_list", orderBy, "");
+                outputString = WikipediaOntologyUtils.getStringFromMemcached(hashCode);
+                if (outputString == null) {
+                    outputString = getClassListJSonString("", start, limit,
+                            ResourceSearchUtils.getOrderByType(orderBy), SearchOptionType.NONE);
                     WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
                 }
             }
