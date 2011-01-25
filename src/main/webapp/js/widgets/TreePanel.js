@@ -7,7 +7,7 @@ function getTreePanel(title, treeType) {
     var treePanelId = treeType + "Panel";
     var treePanelSearchFieldlId = treeType + "Field";
     var textFieldEmptyText = "";
-    if (treeType == "classAndInstanceTree") {
+    if (treeType == "classTree") {
         textFieldEmptyText = FIND_CLASSES_OR_INSTANCES;
     } else if (treeType == "wholeClassTree") {
         textFieldEmptyText = FIND_CLASSES;
@@ -24,7 +24,7 @@ function getTreePanel(title, treeType) {
     searchOptionComboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
     var treePanel = new Ext.tree.TreePanel({
         id : treePanelId,
-        //        title : title,
+        title : title,
         layout : 'fit',
         border : false,
         animate : false,
@@ -70,8 +70,8 @@ function getTreePanel(title, treeType) {
                     }
                 },
                 load : function() {
-                    var classAndInstanceTreePanel = Ext.getCmp('classAndInstanceTreePanel');
-                    classAndInstanceTreePanel.getRootNode().expand(expand_all_class_and_instance);
+                    var classTreePanel = Ext.getCmp('classTreePanel');
+                    classTreePanel.getRootNode().expand(expand_all_class_and_instance);
                     var tp = Ext.getCmp(treePanelId).body;
                     if (tp != undefined) {
                         tp.unmask();
@@ -89,21 +89,21 @@ function getTreePanel(title, treeType) {
         listeners : {
             click : function(n) {
                 var qname = n.attributes.qname;
-                var queryURL = "";
+                var queryURI = "";
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
                     queryType = QTYPE_CLASS;
-                    queryURL = qname.replace("wikiont_class:", BASE_SERVER_CLASS_TABLE_DATA_URL);
+                    queryURI = qname.replace("wikiont_class:", BASE_SERVER_CLASS_TABLE_DATA_URL);
                 } else if (qname.indexOf("wikiont_property") != -1) {
                     queryType = QTYPE_PROPERTY;
-                    queryURL = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_TABLE_DATA_URL);
+                    queryURI = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_TABLE_DATA_URL);
                 } else if (qname.indexOf("wikiont_instance") != -1) {
                     queryType = QTYPE_INSTANCE;
-                    queryURL = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_TABLE_DATA_URL);
+                    queryURI = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_TABLE_DATA_URL);
                 }
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                 searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
-                reloadStatements(queryURL, keyword);
+                reloadStatements(queryURI, keyword);
             },
             contextmenu : showTreePanelContextMenu
         }
@@ -222,17 +222,17 @@ function showTreePanelContextMenu(node, e) {
 }
 
 var isRenderTree = true;
-function reloadTree(queryJSONTreeURL) {
+function reloadTree(queryJSONTreeURI) {
     //    alert("tree:" + queryJSONTreeURL);
+    Ext.getCmp("TreeURIField").setValue(queryJSONTreeURI);
     if (show_isa_tree_and_instance) {
         if (!isRenderTree) {
             return;
         }
-        var classAndInstanceTreePanel = Ext.getCmp('classAndInstanceTreePanel');
-        if (classAndInstanceTreePanel != null) {
-            classAndInstanceTreePanel.loader.dataUrl = queryJSONTreeURL;
-            //        classAndInstanceTreePanel.loader.proxy = getProxy(queryJSONTableURL);
-            classAndInstanceTreePanel.loader.load(classAndInstanceTreePanel.getRootNode());
+        var classTreePanel = Ext.getCmp('classTreePanel');
+        if (classTreePanel != null) {
+            classTreePanel.loader.dataUrl = queryJSONTreeURI;
+            classTreePanel.loader.load(classTreePanel.getRootNode());
         }
     }
 }
@@ -241,7 +241,6 @@ function showWholeIsaTree() {
     var wholeClassTreePanel = Ext.getCmp('wholeClassTreePanel');
     //    alert(ALL_CLASSES);
     wholeClassTreePanel.loader.dataUrl = ALL_CLASSES;
-    //    classAndInstanceTreePanel.loader.proxy = getProxy(ALL_CLASSES);
     wholeClassTreePanel.loader.load(wholeClassTreePanel.getRootNode());
     wholeClassTreePanel.getRootNode().expand();
 }

@@ -7,8 +7,8 @@
  *
  */
 
-var inferenceType = NONE_INFERENCE_OPTION;
 var queryType = QTYPE_CLASS;
+var inferenceType = NONE_INFERENCE_OPTION;
 var searchTargetType = URI_SEARCH_TARGET_OPTION;
 var show_isa_tree_and_instance = true;
 var expand_all_class_and_instance = false;
@@ -40,10 +40,9 @@ WikipediaOntologySearch = new Ext.app.App({
         return [
             new WikipediaOntologySearch.StatementWindow(),
             new WikipediaOntologySearch.ClassListWindow(),
+            new WikipediaOntologySearch.TreeWindow(),
             new WikipediaOntologySearch.PropertyListWindow(),
             new WikipediaOntologySearch.InstanceListWindow(),
-            new WikipediaOntologySearch.TreeWindow(),
-            new WikipediaOntologySearch.WholeTreeWindow(),
             new WikipediaOntologySearch.BookmarkWindow(),
             new WikipediaOntologySearch.HistoryWindow(),
             new WikipediaOntologySearch.SourceWindow(),
@@ -273,7 +272,7 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
     id:'tree-win',
     init : function() {
         this.launcher = {
-            text: CLASS_HIERARCHY_AND_INSTANCES,
+            text: CLASS_HIERARCHY,
             iconCls:'icon-class-tree',
             handler : this.createWindow,
             scope: this
@@ -283,57 +282,67 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
     createWindow : function() {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('tree-win');
+
+        var uriPanel = getURIPanel("TreeURIField");
+        var treePanel = getTreePanel(CLASS_HIERARCHY, "classTree");
+        var wholeTreePanel = getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree");
+
+        var mainPanel = new Ext.Panel({
+            layout : 'hbox',
+            items : [
+                {
+                    flex: 1,
+                    layout: 'fit',
+                    items: treePanel,
+                    height: 768
+                },
+                {
+                    flex: 1,
+                    layout : 'fit',
+                    items : wholeTreePanel,
+                    height: 768
+                }
+            ]
+        });
+
+        var treeWindowPanel = new Ext.Panel({
+            layout : 'border',
+            hideBorders : true,
+            iconCls: 'icon-table',
+            items : [
+                {
+                    region: 'north',
+                    height: 40,
+                    items: uriPanel
+                },
+                {
+                    region : 'center',
+                    layout : 'fit',
+                    collapsible : false,
+                    items : mainPanel
+                }
+            ]
+        });
+
         if (!win) {
             win = desktop.createWindow({
                 id: 'tree-win',
-                title:CLASS_HIERARCHY_AND_INSTANCES,
-                width:500,
-                height:600,
+                title:CLASS_HIERARCHY,
+                width:1024,
+                height:768,
                 iconCls: 'icon-class-tree',
                 shim:false,
                 closable: true,
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items:getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree")
+                items:treeWindowPanel
             });
         }
         win.show();
     }
 });
 
-WikipediaOntologySearch.WholeTreeWindow = Ext.extend(Ext.app.Module, {
-    id:'whole-tree-win',
-    init : function() {
-        this.launcher = {
-            text: WHOLE_CLASS_HIERARCHY,
-            iconCls:'icon-class-tree',
-            handler : this.createWindow,
-            scope: this
-        }
-    },
-
-    createWindow : function() {
-        var desktop = this.app.getDesktop();
-        var win = desktop.getWindow('whole-tree-win');
-        if (!win) {
-            win = desktop.createWindow({
-                id: 'whole-tree-win',
-                title:WHOLE_CLASS_HIERARCHY,
-                width:500,
-                height:600,
-                iconCls: 'icon-class-tree',
-                shim:false,
-                closable: true,
-                animCollapse:false,
-                constrainHeader:true,
-                layout: 'fit',
-                items:getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree")
-            });
-        }
-        win.show();
-    }
-});
 
 WikipediaOntologySearch.SourceWindow = Ext.extend(Ext.app.Module, {
     id:'source-win',

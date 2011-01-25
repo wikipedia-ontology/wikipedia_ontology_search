@@ -181,7 +181,7 @@ function getMainView() {
         ]
     })
 
-    var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY_AND_INSTANCES, "classAndInstanceTree");
+    var classAndInstanceTreePanel = getTreePanel(CLASS_HIERARCHY, "classAndInstanceTree");
     var wholeClassTreePanel = getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree");
 
     var wikiOntContentsTab = new Ext.TabPanel({

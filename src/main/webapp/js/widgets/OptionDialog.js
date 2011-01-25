@@ -44,7 +44,7 @@ function getOptionPanel() {
         layout : 'form',
         items : [
             {
-                fieldLabel : ABOUT_CLASS_HIERARCHY_AND_INSTANCE,
+                fieldLabel : ABOUT_CLASS_HIERARCHY,
                 items : [
                     {
                         id : 'show_isa_tree_and_instance',
@@ -52,7 +52,7 @@ function getOptionPanel() {
                         statefule : true,
                         stateEvents : ['check'],
                         xtype : 'checkbox',
-                        boxLabel : SHOW_CLASS_HIERARCHY_AND_INSTANCES,
+                        boxLabel : SHOW_CLASS_HIERARCHY,
                         getState : function() {
                             return {
                                 checked : this.getValue()
