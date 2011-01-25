@@ -332,6 +332,7 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
                 {
                     region: 'center',
                     layout: 'fit',
+                    split: true,
                     items: eastSideClassListPanel
                 }
             ]
@@ -550,6 +551,7 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
                 {
                     region: 'center',
                     layout: 'fit',
+                    split: true,
                     items: eastSidePropertyListPanel
                 }
             ]

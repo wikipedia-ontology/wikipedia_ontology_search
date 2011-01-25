@@ -28,20 +28,23 @@ function getStatementTabPanel() {
     });
 
     var westSidePanel = new Ext.Panel({
-        layout : 'vbox',
+        layout : 'border',
         items : [
             {
+                region: 'north',
                 title : BOOKMARK,
                 iconCls: 'icon-book',
                 layout : 'fit',
-                flex: 1,
+                split: true,
+                height: 300,
                 items : getSideBookmarkPanel()
             },
             {
+                region: 'center',
                 title : SEARCH_HISTORY,
                 iconCls: 'icon-time',
                 layout : 'fit',
-                flex: 1,
+                split: true,
                 items : getSideHistoryPanel()
             }
         ]
@@ -92,8 +95,7 @@ function getStatementTabPanel() {
                 title : BOOKMARK_AND_SEARCH_HISTORY,
                 region : 'west',
                 layout : 'fit',
-                width : 300,
-                minWidth : 300,
+                width : 250,
                 split : true,
                 animate : true,
                 collapsible : true,
