@@ -331,11 +331,11 @@ public class WikipediaOntologyStatisticsAnalyzer {
 
 //        storeClassStatisticsToDB("ja");
 //        storePropertyStatisticsToDB("ja");
-        storeInstancesToDB("ja");
+//        storeInstancesToDB("ja");
 //        storeClassStatisticsToDB("en");
 //        storePropertyStatisticsToDB("en");
 
-        countAllSortsOfTriplesAndStoreDB("ja", "none");
+//        countAllSortsOfTriplesAndStoreDB("ja", "none");
 //        countAllSortsOfTriplesAndStoreDB("en", "none");
 //        countAllSortsOfTriplesAndStoreDB("ja", "rdfs");
 //        countAllSortsOfTriplesAndStoreDB("en", "rdfs");

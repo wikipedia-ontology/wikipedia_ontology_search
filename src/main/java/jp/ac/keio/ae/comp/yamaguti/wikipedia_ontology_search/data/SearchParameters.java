@@ -30,7 +30,7 @@ public class SearchParameters {
         resourceType = getResourceType(params.getString("resource_type"));
         resourceName = params.getString("resource_name", "");
         dataType = getDataTypeAndRemoveExtensionFromResourceName(params.getString("data_type", ""));
-        version = getVersion(params.getString("version"));
+        version = getVersion(params.getString("wikipedia_ontology_version"));
         typeSet = getTypeSet(params.getStringArray("type"));
         searchTarget = getSearchTargetType(params.getString("search_target", "uri"));
         searchOption = getSearchOptionType(params.getString("search_option", "exact_match"));

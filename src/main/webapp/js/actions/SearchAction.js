@@ -28,7 +28,8 @@ function getQueryURI(keyword) {
                 queryURI += "&";
             }
         }
-        queryURI += "&" + versionOption;
+        //以下を入れると動かなくなるため
+        //        queryURI += '&' + versionOption;
     } else {
         var searchOptionValue = searchOptionSelection.getValue();
         switch (searchOptionValue) {
@@ -54,16 +55,20 @@ function getQueryURI(keyword) {
             queryType = QTYPE_CLASS;
         }
         queryURI += queryType + '/' + DATA_PATH + keyword + EXTENSION;
-        if (Ext.getCmp("uri_radio_button").checked) {
-            queryURI += '?search_target=uri';
-        } else if (Ext.getCmp("label_radio_button").checked) {
-            queryURI += '?search_target=label';
-        }
+        queryURI += getSearchTargetOption();
         queryURI += '&' + searchOption;
         queryURI += '&' + versionOption;
     }
     queryURI = setInferenceTypeOption(queryURI);
     return queryURI;
+}
+
+function getSearchTargetOption() {
+    if (Ext.getCmp("uri_radio_button").checked) {
+        return '?search_target=uri';
+    } else if (Ext.getCmp("label_radio_button").checked) {
+        return '?search_target=label';
+    }
 }
 
 function searchStatementsByContextMenu(keyword) {
@@ -109,6 +114,7 @@ function reloadStatementsByTypesOfInstances(queryURI, keywords) {
     addHistoryData(queryURI);
     statementTabPanel.getActiveTab().setTitle(keywords.join("＆"));
     statementTabPanel.getActiveTab().setIconClass('icon-class');
+    searchTargetType = URI_SEARCH_TARGET_OPTION;
     reloadStatementTable(queryURI);
 }
 

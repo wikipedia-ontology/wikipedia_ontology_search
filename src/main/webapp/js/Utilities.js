@@ -5,11 +5,11 @@
  */
 
 function getProxy(json_url) {
-//    return new Ext.data.ScriptTagProxy({
-//        url : json_url,
-//        timeout: 1000 * 60 * 5,
-//        method : "GET"
-//    });
+    //    return new Ext.data.ScriptTagProxy({
+    //        url : json_url,
+    //        timeout: 1000 * 60 * 5,
+    //        method : "GET"
+    //    });
     return new Ext.data.HttpProxy({
         url : json_url,
         timeout: 1000 * 60 * 5,
@@ -79,24 +79,36 @@ function extractParametersFromURI(uri) {
         params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4]
         params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace(ESCAPED_EXTENSION, "");
     }
+
+    // default parameter
+    params[SEARCH_TARGET_PARAMETER_KEY] = URI_SEARCH_TARGET_OPTION;
     if (paramString != '&') {
         var paramSet = paramString.split("&");
         for (var i = 0; i < paramSet.length; i++) {
             var param = paramSet[i].split("=");
-            params[param[0]] = param[1];
+            var key = param[0];
+            var value = param[1];
+            if (key == 'type') {
+                if (params[RESOURCE_NAME_PARAMETER_KEY] == 'q') {
+                    params[RESOURCE_NAME_PARAMETER_KEY] = value + " ";
+                } else {
+                    params[RESOURCE_NAME_PARAMETER_KEY] += value + " ";
+                }
+            } else {
+                params[key] = value;
+            }
         }
     } else {
         // default parameters
-        params[SEARCH_TARGET_PARAMETER_KEY] = URI_SEARCH_TARGET_OPTION;
         params[SEARCH_OPTION_PARAMETER_KEY] = EXACT_MATCH_SEARCH_OPTION;
         params[INFERENCE_TYPE_PARAMETER_KEY] = NONE_INFERENCE_OPTION;
         params[VERSION_PARAMETER_KEY] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
     params[URI_PARAMETER_KEY] = uri;
 
-    //        for (var key in params) {
-    //            alert("key: " + key + "->" + "value: " + params[key]);
-    //        }
+//    for (var key in params) {
+    //        alert("key: " + key + "->" + "value: " + params[key]);
+    //    }
     return params;
 }
 
@@ -302,7 +314,7 @@ function getSearchOptionComboBox(id) {
                         Ext.getDom('instance_button').checked = true;
                         break;
                 }
-                setURIField("StatementURIField",getQueryURI(""));
+                setURIField("StatementURIField", getQueryURI(""));
             }
         }
     });

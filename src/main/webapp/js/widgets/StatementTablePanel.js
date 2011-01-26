@@ -306,7 +306,6 @@ function reloadStatementTable(queryURI) {
     var statementTableDataStore = statementTablePanel.store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
     var pagingToolBar = statementTablePanel.bbar;
-    alert(queryURI);
     statementTableDataStore.proxy = getProxy(queryURI);
     var limitSize = 100;
     if (!isNaN(numberOfStatementsSelection.getValue())) {
@@ -391,16 +390,19 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
     if (url.indexOf("wikiont_class") != -1) {
         var queryURI = url.replace("wikiont_class:", CLASS_PATH + DATA_PATH);
         var keyword = queryURI.split(DATA_PATH)[1];
+        keyword = keyword.replace(ESCAPED_EXTENSION, "");
         queryType = QTYPE_CLASS;
         reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_property") != -1) {
         var queryURI = url.replace("wikiont_property:", PROPERTY_PATH + DATA_PATH);
         var keyword = queryURI.split(DATA_PATH)[1];
+        keyword = keyword.replace(ESCAPED_EXTENSION, "");
         queryType = QTYPE_PROPERTY;
         reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_instance") != -1) {
         var queryURI = url.replace("wikiont_instance:", INSTANCE_PATH + DATA_PATH);
         var keyword = queryURI.split(DATA_PATH)[1];
+        keyword = keyword.replace(ESCAPED_EXTENSION, "");
         queryType = QTYPE_INSTANCE;
         reloadStatements(queryURI, keyword);
     }
