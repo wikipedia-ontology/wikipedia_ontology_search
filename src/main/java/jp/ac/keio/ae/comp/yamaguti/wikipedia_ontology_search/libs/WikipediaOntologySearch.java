@@ -83,7 +83,13 @@ public class WikipediaOntologySearch {
             dbModel = getWikipediaOntologyAndInstanceModel("ja", "rdfs");
             return "ja";
         }
-        if (!searchParameters.getResourceName().equals("queryString") && searchParameters.isEnglishResourceName()) {
+        if (!searchParameters.getResourceName().equals("q.json") &&
+                !searchParameters.getResourceName().equals("q.jsonp") &&
+                !searchParameters.getResourceName().equals("q.rdf") &&
+                !searchParameters.getResourceName().equals("q.n3") &&
+                !searchParameters.getResourceName().equals("q.nt") &&
+                !searchParameters.getResourceName().equals("q") &&
+                searchParameters.isEnglishResourceName()) {
             dbModel = getWikipediaOntologyAndInstanceModel("en", "");
             return "en";
         }

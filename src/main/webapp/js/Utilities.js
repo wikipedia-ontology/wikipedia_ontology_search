@@ -5,16 +5,21 @@
  */
 
 function getProxy(json_url) {
-    //    return new Ext.data.ScriptTagProxy({
-    //        url : json_url,
-    //        timeout: 1000 * 60 * 5,
-    //        method : "GET"
-    //    });
+//    return new Ext.data.ScriptTagProxy({
+//        url : json_url,
+//        timeout: 1000 * 60 * 5,
+//        method : "GET"
+//    });
     return new Ext.data.HttpProxy({
         url : json_url,
         timeout: 1000 * 60 * 5,
         method : "GET"
     });
+}
+
+function setURIField(id, url) {
+    url = url.replace(ESCAPED_EXTENSION, "");
+    Ext.getCmp(id).setValue(url);
 }
 
 function setSearchParams(params) {
@@ -72,7 +77,7 @@ function extractParametersFromURI(uri) {
     var baseURIElems = baseURI.split("/");
     if (7 <= baseURIElems.length) {
         params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4]
-        params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace("\.json", "");
+        params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace(ESCAPED_EXTENSION, "");
     }
     if (paramString != '&') {
         var paramSet = paramString.split("&");
@@ -89,7 +94,7 @@ function extractParametersFromURI(uri) {
     }
     params[URI_PARAMETER_KEY] = uri;
 
-//        for (var key in params) {
+    //        for (var key in params) {
     //            alert("key: " + key + "->" + "value: " + params[key]);
     //        }
     return params;
@@ -297,7 +302,7 @@ function getSearchOptionComboBox(id) {
                         Ext.getDom('instance_button').checked = true;
                         break;
                 }
-                Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+                setURIField("StatementURIField",getQueryURI(""));
             }
         }
     });
@@ -325,7 +330,7 @@ function getVersionOptionComboBox(name) {
         store : versionOptionList,
         listeners: {
             select: function() {
-                Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+                setURIField("StatementURIField", getQueryURI(""));
             }
         }
     });

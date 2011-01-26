@@ -224,7 +224,7 @@ function showTreePanelContextMenu(node, e) {
 var isRenderTree = true;
 function reloadTree(queryJSONTreeURI) {
     //    alert("tree:" + queryJSONTreeURL);
-    Ext.getCmp("TreeURIField").setValue(queryJSONTreeURI);
+    setURIField("TreeURIField", queryJSONTreeURI);
     if (show_isa_tree) {
         if (!isRenderTree) {
             return;

@@ -13,7 +13,7 @@ function setQueryType() {
         queryType = QTYPE_INSTANCE;
     }
     resetSearchOptionList();
-    Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+    setURIField("StatementURIField", getQueryURI(""));
 }
 
 function setSearchTargetType() {
@@ -23,7 +23,7 @@ function setSearchTargetType() {
         searchTargetType = LABEL_SEARCH_TARGET_OPTION;
     }
     resetSearchOptionList();
-    Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+    setURIField("StatementURIField", getQueryURI(""));
 }
 
 function resetSearchOptionList() {
@@ -48,7 +48,7 @@ function getStatementSearchPanel() {
                 width : 250,
                 listeners: {
                     change: function() {
-                        Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+                        setURIField("StatementURIField", getQueryURI(""));
                     }
                 }
             },
@@ -145,7 +145,7 @@ function getStatementSearchPanel() {
         } else {
             inferenceType = NONE_INFERENCE_OPTION;
         }
-        Ext.getCmp("StatementURIField").setValue(getQueryURI(""));
+        setURIField("StatementURIField", getQueryURI(""));
     }
 
     return new Ext.FormPanel({

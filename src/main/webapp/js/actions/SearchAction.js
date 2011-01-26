@@ -21,7 +21,7 @@ function getQueryURI(keyword) {
     var versionOption = "version=" + versionOptionSelection.getValue();
 
     if (1 < keywords.length) {
-        queryURI += CLASS_PATH + DATA_PATH + "queryString?";
+        queryURI += CLASS_PATH + DATA_PATH + "q" + EXTENSION + "?";
         for (var i = 0; i < keywords.length; i++) {
             queryURI += "type=" + keywords[i];
             if (i != keywords.length - 1) {
@@ -53,7 +53,7 @@ function getQueryURI(keyword) {
         if (queryType == undefined) {
             queryType = QTYPE_CLASS;
         }
-        queryURI += queryType + '/' + DATA_PATH + keyword + ".json";
+        queryURI += queryType + '/' + DATA_PATH + keyword + EXTENSION;
         if (Ext.getCmp("uri_radio_button").checked) {
             queryURI += '?search_target=uri';
         } else if (Ext.getCmp("label_radio_button").checked) {
@@ -109,7 +109,7 @@ function reloadStatementsByTypesOfInstances(queryURI, keywords) {
     addHistoryData(queryURI);
     statementTabPanel.getActiveTab().setTitle(keywords.join("＆"));
     statementTabPanel.getActiveTab().setIconClass('icon-class');
-    reloadStatementTable(queryJSONTableURL);
+    reloadStatementTable(queryURI);
 }
 
 function reloadStatements(queryURI, keyword) {

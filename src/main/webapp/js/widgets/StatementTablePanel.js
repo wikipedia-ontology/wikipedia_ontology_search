@@ -297,16 +297,17 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
     }
 }
 
-function reloadStatementTable(queryJSONTableURI) {
+function reloadStatementTable(queryURI) {
     var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
     var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
     var statementURIField = Ext.getCmp("StatementTabURIField" + tabId);
-    statementURIField.setValue(queryJSONTableURI);
-    Ext.getCmp("StatementURIField").setValue(queryJSONTableURI);
+    statementURIField.setValue(queryURI.replace(ESCAPED_EXTENSION, ""));
+    setURIField("StatementURIField", queryURI);
     var statementTableDataStore = statementTablePanel.store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
     var pagingToolBar = statementTablePanel.bbar;
-    statementTableDataStore.proxy = getProxy(queryJSONTableURI);
+    alert(queryURI);
+    statementTableDataStore.proxy = getProxy(queryURI);
     var limitSize = 100;
     if (!isNaN(numberOfStatementsSelection.getValue())) {
         limitSize = parseInt(numberOfStatementsSelection.getValue());
@@ -353,22 +354,21 @@ function openWikiOntRDFData(value) {
     if (values.length == 2) {
         var prefix = values[0];
         var localName = values[1];
-        var extension = ".json";
         searchTargetType = URI_SEARCH_TARGET_OPTION;
         switch (prefix) {
             case "wikiont_class":
                 queryType = QTYPE_CLASS;
-                var queryURI = BASE_SERVER_CLASS_DATA_URL + localName + extension;
+                var queryURI = BASE_SERVER_CLASS_DATA_URL + localName + EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_property":
                 queryType = QTYPE_PROPERTY;
-                var queryURI = BASE_SERVER_PROPERTY_DATA_URL + localName +extension;
+                var queryURI = BASE_SERVER_PROPERTY_DATA_URL + localName + EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_instance":
                 queryType = QTYPE_INSTANCE;
-                var queryURI = BASE_SERVER_INSTANCE_DATA_URL + localName + extension;
+                var queryURI = BASE_SERVER_INSTANCE_DATA_URL + localName + EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
         }
@@ -386,7 +386,7 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
     if (url == null) {
         url = e.getTarget().children.item(1).toString();
     }
-    url = decodeURI(url) + ".json";
+    url = decodeURI(url) + EXTENSION;
     Ext.getDom('uri_radio_button').checked = true;
     if (url.indexOf("wikiont_class") != -1) {
         var queryURI = url.replace("wikiont_class:", CLASS_PATH + DATA_PATH);

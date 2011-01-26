@@ -107,7 +107,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static List<InstanceImpl> getInstanceImplList(String queryString, String lang) {
-        System.out.println(queryString);
+//        System.out.println(queryString);
         Query query = QueryFactory.create(queryString);
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
         Model dbModel = wikiOntStrage.getTDBModel();
@@ -334,8 +334,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static void writeFile(File outputFile, String outputString) {
-        if (outputFile != null && !outputFile.exists() && outputFile.getName().indexOf("queryString") == -1
-                && 0 < outputString.length()) {
+        if (outputFile != null && !outputFile.exists() && 0 < outputString.length()) {
             try {
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile),
                         "UTF-8"));

@@ -52,6 +52,7 @@ function getSourcePanel() {
 }
 
 function reloadRDFSource(queryDataURL) {
+    queryDataURL = queryDataURL.replace(ESCAPED_EXTENSION, "");
     Ext.getCmp("SourceURIField").setValue(queryDataURL);
     Ext.Ajax.request({
         url : queryDataURL,

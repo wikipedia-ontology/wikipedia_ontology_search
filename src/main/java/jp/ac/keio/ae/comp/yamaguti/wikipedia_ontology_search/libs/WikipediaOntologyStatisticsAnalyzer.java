@@ -54,7 +54,7 @@ public class WikipediaOntologyStatisticsAnalyzer {
             } else {
                 System.out.println("over 250 chars " + instance);
             }
-            System.out.println(instance);
+//            System.out.println(instance);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }

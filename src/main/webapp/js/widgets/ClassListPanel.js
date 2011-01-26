@@ -102,18 +102,17 @@ function loadClassInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
 }
 
 function loadClassInstanceData(clsName) {
-    var extension = ".json";
     var instanceListPanel = Ext.getCmp("ClassInstanceListTablePanel");
     instanceListPanel.store.proxy = getProxy(CLASS_LIST_DATA_URL + "?class=" + clsName);
     loadStore(instanceListPanel.store);
 
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
-    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + extension + "?search_option="
+    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + EXTENSION + "?search_option="
             + PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION);
     loadStore(propertiesOfDomainClassListTablePanel.store);
 
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
-    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + extension + "?search_option="
+    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + EXTENSION + "?search_option="
             + PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION);
     loadStore(propertiesOfRangeClassListTablePanel.store);
 }
