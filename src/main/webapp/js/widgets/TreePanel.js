@@ -6,12 +6,7 @@
 function getTreePanel(title, treeType) {
     var treePanelId = treeType + "Panel";
     var treePanelSearchFieldlId = treeType + "Field";
-    var textFieldEmptyText = "";
-    if (treeType == "classTree") {
-        textFieldEmptyText = FIND_CLASSES_OR_INSTANCES;
-    } else if (treeType == "wholeClassTree") {
-        textFieldEmptyText = FIND_CLASSES;
-    }
+    var textFieldEmptyText = FIND_CLASSES;
 
     var searchTreeFieldPanel = new Ext.Panel({
         width : 160,
@@ -88,8 +83,8 @@ function getTreePanel(title, treeType) {
         },
         listeners : {
             click : function(n) {
-                var qname = n.attributes.qname;
                 var queryURI = "";
+                var qname = n.attributes.qname;
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
                     queryType = QTYPE_CLASS;
@@ -101,8 +96,11 @@ function getTreePanel(title, treeType) {
                     queryType = QTYPE_INSTANCE;
                     queryURI = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_DATA_URL);
                 }
+                queryURI += EXTENSION;
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                 searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
+                alert(keyword);
+                alert(queryURI);
                 reloadStatements(queryURI, keyword);
             },
             contextmenu : showTreePanelContextMenu
@@ -237,7 +235,7 @@ function reloadTree(queryJSONTreeURI) {
     }
 }
 
-function showWholeIsaTree() {
+function loadWholeIsaTree() {
     var wholeClassTreePanel = Ext.getCmp('wholeClassTreePanel');
     //    alert(ALL_CLASSES);
     wholeClassTreePanel.loader.dataUrl = ALL_CLASSES;

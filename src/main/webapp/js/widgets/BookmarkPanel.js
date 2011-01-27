@@ -17,6 +17,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
                 dataIndex : DATE_PARAMETER_KEY,
                 header : DATE_AND_HOUR,
                 hidden : true,
+                renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                 width : 150
             },
             {
@@ -84,7 +85,8 @@ function getBookmarkPanel() {
         proxy: new Ext.ux.data.PagingMemoryProxy(bookmarkArray),
         reader: new Ext.data.ArrayReader({}, [
             {
-                name : DATE_PARAMETER_KEY
+                name : DATE_PARAMETER_KEY,
+                type: 'date'
             },
             {
                 name : RESOURCE_NAME_PARAMETER_KEY

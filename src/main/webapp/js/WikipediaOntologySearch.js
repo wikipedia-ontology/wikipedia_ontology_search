@@ -20,7 +20,6 @@ var historyPanel;
 WikipediaOntologySearch = new Ext.app.App({
     init :function() {
         Ext.QuickTips.init();
-        //        Ext.getDom("title").innerHTML = APP_TITLE + " ver. 2011-01-23";
         var cookieProvider = new Ext.state.CookieProvider({
             expires : new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365 * 5))
         });
@@ -28,13 +27,7 @@ WikipediaOntologySearch = new Ext.app.App({
         bookmarkPanel = getBookmarkPanel();
         historyPanel = getHistoryPanel();
         getBookmarkImportAndExportDialog(); // new BookmarkImportAndExportDialog
-        applyOptionState();
-        //        setTimeout(function() {
-        //            Ext.get('loading').remove();
-        //            Ext.get('loading-mask').fadeOut({
-        //                remove : true
-        //            });
-        //        }, 1000);
+        applyOptions();
     },
 
     getModules : function() {
@@ -58,6 +51,14 @@ WikipediaOntologySearch = new Ext.app.App({
             title: MENU,
             iconCls: 'icon-table',
             toolItems: [
+                {
+                    text : WHOLE_CLASS_HIERARCHY,
+                    iconCls: 'icon-expand-all',
+                    handler : function() {
+                        loadWholeIsaTree();
+                    }
+                },
+                "-",
                 {
                     text : MANUAL,
                     iconCls: 'icon-help',
@@ -639,22 +640,3 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
     }
 });
 
-
-//Ext.onReady(function() {
-//    Ext.QuickTips.init();
-//    Ext.getDom("title").innerHTML = APP_TITLE + " ver. 2011-01-23";
-//    var cookieProvider = new Ext.state.CookieProvider({
-//        expires : new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365 * 5))
-//    });
-//    Ext.state.Manager.setProvider(cookieProvider);
-//    var mainView = getMainView();
-//    applyOptionState();
-//    mainView.doLayout();
-//    setTimeout(function() {
-//        Ext.get('loading').remove();
-//        Ext.get('loading-mask').fadeOut({
-//            remove : true
-//        });
-//    }, 1000);
-//
-//});

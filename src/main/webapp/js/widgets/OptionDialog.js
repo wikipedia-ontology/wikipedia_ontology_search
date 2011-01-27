@@ -79,7 +79,7 @@ function getOptionPanel() {
     });
 }
 
-function applyOptionState() {
+function applyOptions() {
     var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
     var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
     var groupingStatementTableView = statementTablePanel.view;
@@ -111,6 +111,6 @@ function applyNewOptionState() {
         show_isa_tree = Ext.getDom('show_isa_tree').checked;
         expand_all_class = Ext.getDom('expand_all_class').checked;
         start_collapsed_group = Ext.getDom('start_collapsed_group').checked;
-        applyOptionState();
+        applyOptions();
     }
 }

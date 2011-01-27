@@ -74,6 +74,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
                 dataIndex : DATE_PARAMETER_KEY,
                 header : DATE_AND_HOUR,
                 hidden : isSidePanel,
+                renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                 width : 150
             },
             {
@@ -141,7 +142,8 @@ function getHistoryPanel() {
         proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
         reader: new Ext.data.ArrayReader({}, [
             {
-                name : DATE_PARAMETER_KEY
+                name : DATE_PARAMETER_KEY,
+                type: 'date'
             },
             {
                 name : RESOURCE_NAME_PARAMETER_KEY
