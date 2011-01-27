@@ -30,7 +30,7 @@ public class SearchParameters {
         resourceType = getResourceType(params.getString("resource_type"));
         resourceName = params.getString("resource_name", "");
         dataType = getDataTypeAndRemoveExtensionFromResourceName(params.getString("data_type", ""));
-        version = getVersion(params.getString("wikipedia_ontology_version"));
+        version = getVersion(params.getString("version"));
         typeSet = getTypeSet(params.getStringArray("type"));
         searchTarget = getSearchTargetType(params.getString("search_target", "uri"));
         searchOption = getSearchOptionType(params.getString("search_option", "exact_match"));
@@ -254,6 +254,7 @@ public class SearchParameters {
         hashCode += inferenceType.toString().hashCode();
 
         hashCode += extjsJSONFormatType.toString().hashCode();
+        hashCode += version.toString().hashCode();
 
         if (!(start == 0 && limit == 0)) {
             hashCode += ("start" + start).hashCode();
@@ -275,6 +276,10 @@ public class SearchParameters {
         builder.append("\n");
         builder.append("Resource Name:");
         builder.append(resourceName);
+        builder.append("\n");
+
+        builder.append("Search Target:");
+        builder.append(searchTarget);
         builder.append("\n");
 
         builder.append("Type Set:");

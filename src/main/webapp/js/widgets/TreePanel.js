@@ -96,11 +96,9 @@ function getTreePanel(title, treeType) {
                     queryType = QTYPE_INSTANCE;
                     queryURI = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_DATA_URL);
                 }
-                queryURI += EXTENSION;
+                queryURI += JSON_EXTENSION;
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                 searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
-                alert(keyword);
-                alert(queryURI);
                 reloadStatements(queryURI, keyword);
             },
             contextmenu : showTreePanelContextMenu
@@ -220,16 +218,15 @@ function showTreePanelContextMenu(node, e) {
 }
 
 var isRenderTree = true;
-function reloadTree(queryJSONTreeURI) {
-    //    alert("tree:" + queryJSONTreeURL);
-    setURIField("TreeURIField", queryJSONTreeURI);
+function reloadTree(queryURI) {
+    setURIField("TreeURIField", queryURI);
     if (show_isa_tree) {
         if (!isRenderTree) {
             return;
         }
         var classTreePanel = Ext.getCmp('classTreePanel');
         if (classTreePanel != null) {
-            classTreePanel.loader.dataUrl = queryJSONTreeURI;
+            classTreePanel.loader.dataUrl = encodeURI(queryURI);
             classTreePanel.loader.load(classTreePanel.getRootNode());
         }
     }

@@ -7,9 +7,9 @@
 
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs;
 
-import net.java.ao.db.*;
 
-import org.h2.*;
+import net.java.ao.db.HSQLDatabaseProvider;
+import org.h2.Driver;
 
 /**
  * @author takeshi morita

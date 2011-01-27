@@ -19,8 +19,10 @@ var CLASS_PATH = "class/";
 var PROPERTY_PATH = "property/";
 var INSTANCE_PATH = "instance/";
 var DATA_PATH = "data/";
-var EXTENSION = ".json";
-var ESCAPED_EXTENSION = "\.json";
+var JSON_EXTENSION = ".json";
+var JSONP_EXTENSION = ".jsonp";
+var ESCAPED_JSON_EXTENSION = "\.json";
+var ESCAPED_JSONP_EXTENSION = "\.jsonp";
 
 var BASE_CLASS_URI = BASE_URI + CLASS_PATH;
 var BASE_PROPERTY_URI = BASE_URI + PROPERTY_PATH;

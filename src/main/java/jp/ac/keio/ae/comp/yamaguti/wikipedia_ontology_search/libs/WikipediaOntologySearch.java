@@ -9,8 +9,10 @@ import com.google.common.collect.*;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.sparql.lib.org.json.*;
 import com.hp.hpl.jena.vocabulary.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
  * @(#)  2009/09/10
@@ -125,7 +127,6 @@ public class WikipediaOntologySearch {
 
     public Model getPathToRootClassQueryResults() {
         Model outputModel = ModelFactory.createDefaultModel();
-        WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
         String clsName = searchParameters.getResourceName();
         Resource clsResource = ResourceFactory.createResource(WikipediaOntologyStorage.CLASS_NS + clsName);
         Model ontModel = wikiOntStrage.getTDBModel();
@@ -269,7 +270,15 @@ public class WikipediaOntologySearch {
                 QuerySolution qs = results.nextSolution();
                 Resource resource = qs.getResource("resource");
                 RDFNode label = qs.get("label");
-                outputModel.add(resource, RDFS.label, label);
+                if (searchParameters.getSearchOption() == SearchOptionType.EXACT_MATCH) {
+                    for (StmtIterator stmtIter = resource.listProperties(); stmtIter.hasNext();) {
+                        Statement stmt = stmtIter.nextStatement();
+//                        System.out.println(stmt);
+                        outputModel.add(stmt);
+                    }
+                } else {
+                    outputModel.add(resource, RDFS.label, label);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,6 +287,7 @@ public class WikipediaOntologySearch {
                 qexec.close();
             }
         }
+
         WikipediaOntologyUtils.addStringToMemcached(searchParameters.getRDFKey(), WikipediaOntologyUtils.getRDFString(outputModel, "RDF/XML-ABBREV"));
         return outputModel;
     }
@@ -355,8 +365,7 @@ public class WikipediaOntologySearch {
             Property property = stmt.getPredicate();
             Object object = stmt.getObject();
             if (property.equals(RDF.type) && object.equals(OWL.Class) && classSubClassMap.get(subject) == null) {
-                Set<Resource> subClassSet = Sets.newHashSet();
-                classSubClassMap.put(subject, subClassSet);
+                classSubClassMap.put(subject, Sets.<Resource>newHashSet());
             }
             if (property.equals(RDFS.subClassOf)) {
                 Resource objectRes = (Resource) stmt.getObject();

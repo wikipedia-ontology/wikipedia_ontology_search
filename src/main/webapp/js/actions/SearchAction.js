@@ -21,15 +21,14 @@ function getQueryURI(keyword) {
     var versionOption = "version=" + versionOptionSelection.getValue();
 
     if (1 < keywords.length) {
-        queryURI += CLASS_PATH + DATA_PATH + "q" + EXTENSION + "?";
+        queryURI += CLASS_PATH + DATA_PATH + "q" + JSON_EXTENSION + "?";
         for (var i = 0; i < keywords.length; i++) {
             queryURI += "type=" + keywords[i];
             if (i != keywords.length - 1) {
                 queryURI += "&";
             }
         }
-        //以下を入れると動かなくなるため
-        //        queryURI += '&' + versionOption;
+        queryURI += '&' + versionOption;
     } else {
         var searchOptionValue = searchOptionSelection.getValue();
         switch (searchOptionValue) {
@@ -54,7 +53,7 @@ function getQueryURI(keyword) {
         if (queryType == undefined) {
             queryType = QTYPE_CLASS;
         }
-        queryURI += queryType + '/' + DATA_PATH + keyword + EXTENSION;
+        queryURI += queryType + '/' + DATA_PATH + keyword + JSON_EXTENSION;
         queryURI += getSearchTargetOption();
         queryURI += '&' + searchOption;
         queryURI += '&' + versionOption;
@@ -141,10 +140,15 @@ function reloadStatements(queryURI, keyword) {
     isRenderTree = true;
     reloadStatementTable(queryURI);
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
+    var searchOptionValue = searchOptionSelection.getValue();
     if (queryType == QTYPE_CLASS &&
             searchTargetType == URI_SEARCH_TARGET_OPTION &&
-            searchOptionSelection.getValue() == EXACT_MATCH_SEARCH_OPTION) {
-        var queryTreeDataURI = queryURI += "&extjs_json_format=tree";
+            ( searchOptionValue == EXACT_MATCH_SEARCH_OPTION || searchOptionValue == PATH_TO_ROOT_CLASS_SEARCH_OPTION)) {
+        queryURI = queryURI.replace(EXACT_MATCH_SEARCH_OPTION, PATH_TO_ROOT_CLASS_SEARCH_OPTION);
+        var queryTreeDataURI = queryURI + "?extjs_json_format=tree";
+        if (queryURI.indexOf("?") != -1) {
+            queryTreeDataURI = queryURI + "&extjs_json_format=tree";
+        }
         reloadTree(queryTreeDataURI);
     }
 }

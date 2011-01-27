@@ -1,8 +1,5 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
-import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
-import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
-import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.InstanceStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.ClassImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
@@ -17,6 +14,9 @@ import net.java.ao.Query;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RequestCycle;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.List;

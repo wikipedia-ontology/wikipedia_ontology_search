@@ -5,20 +5,24 @@
  */
 
 function getProxy(json_url) {
-    //    return new Ext.data.ScriptTagProxy({
-    //        url : json_url,
-    //        timeout: 1000 * 60 * 5,
-    //        method : "GET"
-    //    });
+    //    alert(json_url);
+    //    if (json_url.indexOf(JSONP_EXTENSION) != -1) {
+    //        return new Ext.data.ScriptTagProxy({
+    //            url : json_url,
+    //            timeout: 1000 * 60 * 5,
+    //            method : "GET"
+    //        });
+    //    } else {
     return new Ext.data.HttpProxy({
         url : json_url,
         timeout: 1000 * 60 * 5,
         method : "GET"
     });
+    //    }
 }
 
 function setURIField(id, url) {
-    url = url.replace(ESCAPED_EXTENSION, "");
+    url = url.replace(ESCAPED_JSON_EXTENSION, "");
     Ext.getCmp(id).setValue(url);
 }
 
@@ -37,14 +41,7 @@ function setSearchParams(params) {
                 break;
             case SEARCH_TARGET_PARAMETER_KEY:
                 searchTargetType = value;
-                switch (value) {
-                    case URI_SEARCH_TARGET_OPTION:
-                        Ext.getCmp("uri_radio_button").checked = true;
-                        break;
-                    case LABEL_SEARCH_TARGET_OPTION:
-                        Ext.getCmp("label_radio_button").checked = true;
-                        break;
-                }
+                selectSearchTargetRadioButton();
                 break;
             case SEARCH_OPTION_PARAMETER_KEY:
                 Ext.getCmp("Resource_Search_Option").setValue(value);
@@ -77,11 +74,12 @@ function extractParametersFromURI(uri) {
     var baseURIElems = baseURI.split("/");
     if (7 <= baseURIElems.length) {
         params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4]
-        params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace(ESCAPED_EXTENSION, "");
+        params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace(ESCAPED_JSON_EXTENSION, "");
     }
 
     // default parameter
     params[SEARCH_TARGET_PARAMETER_KEY] = URI_SEARCH_TARGET_OPTION;
+    params[VERSION_PARAMETER_KEY] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     if (paramString != '&') {
         var paramSet = paramString.split("&");
         for (var i = 0; i < paramSet.length; i++) {
@@ -106,7 +104,7 @@ function extractParametersFromURI(uri) {
     }
     params[URI_PARAMETER_KEY] = uri;
 
-//    for (var key in params) {
+    //    for (var key in params) {
     //        alert("key: " + key + "->" + "value: " + params[key]);
     //    }
     return params;
@@ -552,6 +550,7 @@ function openHistoryAndBookmarkData(record) {
     queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
     selectResourceTypeRadioButton();
     searchTargetType = record.get(SEARCH_TARGET_PARAMETER_KEY);
+    selectSearchTargetRadioButton();
     inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
     if (inferenceType == RDFS_INFERENCE) {
         Ext.getDom('use_inf_model').checked = true;
@@ -566,8 +565,9 @@ function openHistoryAndBookmarkData(record) {
     }
     var versionOptionSelection = Ext.getCmp('Version_Option');
     versionOptionSelection.setValue(version);
+    var queryURI = getQueryURI(keyword);
     searchStatements(keyword);
-    resetSearchOptionList();
+    //    resetSearchOptionList();
 }
 
 function selectResourceTypeRadioButton() {
@@ -580,6 +580,17 @@ function selectResourceTypeRadioButton() {
             break;
         case QTYPE_INSTANCE:
             Ext.getDom('instance_button').checked = true;
+            break;
+    }
+}
+
+function selectSearchTargetRadioButton() {
+    switch (searchTargetType) {
+        case URI_SEARCH_TARGET_OPTION:
+            Ext.getCmp("uri_radio_button").checked = true;
+            break;
+        case LABEL_SEARCH_TARGET_OPTION:
+            Ext.getCmp("label_radio_button").checked = true;
             break;
     }
 }

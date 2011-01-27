@@ -82,6 +82,7 @@ public class ResourcePage extends CommonPage implements Serializable {
         } else {
             outputModel = getSubOutputModel(outputModel, wikiOntSearch.getSearchParameters());
         }
+
         wikiOntSearch.closeDB();
         output(outputModel, wikiOntSearch, numberOfStatements);
     }
@@ -156,8 +157,6 @@ public class ResourcePage extends CommonPage implements Serializable {
                     break;
             }
             queryString = SPARQLQueryMaker.getRegionClassesOfPropertyQueryString(searchParams, sparqlTemplateString);
-            System.out.println("domain classes");
-            System.out.println(queryString);
             wikiOntSearch.setQueryResultsForClasses(queryString);
         } else if (searchParams.getResourceType() == ResourceType.INSTANCE && searchOptionType == SearchOptionType.TYPES_OF_INSTANCE) {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types_of_instance.tmpl");

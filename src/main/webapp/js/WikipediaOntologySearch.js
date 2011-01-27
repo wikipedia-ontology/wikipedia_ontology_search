@@ -12,7 +12,7 @@ var inferenceType = NONE_INFERENCE_OPTION;
 var searchTargetType = URI_SEARCH_TARGET_OPTION;
 
 var show_isa_tree = true;
-var expand_all_class = false;
+var expand_all_class = true;
 var start_collapsed_group = true;
 
 var bookmarkPanel;
@@ -378,19 +378,20 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
         var wholeTreePanel = getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree");
 
         var mainPanel = new Ext.Panel({
-            layout : 'hbox',
+            layout : 'border',
             items : [
                 {
-                    flex: 1,
+                    region: 'west',
                     layout: 'fit',
                     items: treePanel,
-                    height: 768
+                    split: true,
+                    width: 400
                 },
                 {
-                    flex: 1,
+                    region: 'center',
                     layout : 'fit',
-                    items : wholeTreePanel,
-                    height: 768
+                    split: true,
+                    items : wholeTreePanel
                 }
             ]
         });
@@ -418,8 +419,8 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
             win = desktop.createWindow({
                 id: 'tree-win',
                 title:CLASS_HIERARCHY,
-                width:1024,
-                height:768,
+                width:800,
+                height:600,
                 iconCls: 'icon-class-tree',
                 shim:false,
                 closable: true,

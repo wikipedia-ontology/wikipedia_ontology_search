@@ -107,12 +107,12 @@ function loadClassInstanceData(clsName) {
     loadStore(instanceListPanel.store);
 
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
-    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + EXTENSION + "?search_option="
+    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + JSON_EXTENSION + "?search_option="
             + PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION);
     loadStore(propertiesOfDomainClassListTablePanel.store);
 
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
-    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + EXTENSION + "?search_option="
+    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + JSON_EXTENSION + "?search_option="
             + PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION);
     loadStore(propertiesOfRangeClassListTablePanel.store);
 }

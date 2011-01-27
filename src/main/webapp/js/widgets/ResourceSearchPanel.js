@@ -102,7 +102,6 @@ function getResourceSearchPanel(type) {
                     var paramsString = "?keyword=" + keyword;
                     paramsString += "&search_option=" + searchOption;
                     paramsString += "&order_by=" + orderOption;
-                    //                    alert(paramsString);
                     var store = null;
                     switch (type) {
                         case CLASS:

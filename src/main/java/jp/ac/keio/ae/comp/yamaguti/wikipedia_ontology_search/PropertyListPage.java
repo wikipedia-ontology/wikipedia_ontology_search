@@ -1,9 +1,6 @@
 package jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search;
 
 import com.google.common.collect.Lists;
-import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
-import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
-import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.PropertyStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
@@ -27,6 +24,9 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.Iterator;
