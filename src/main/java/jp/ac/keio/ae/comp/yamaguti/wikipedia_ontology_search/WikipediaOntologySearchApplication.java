@@ -35,12 +35,12 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         mount(new MixedParamUrlCodingStrategy("/instance", ResourcePage.class, new String[]{"data_type", "resource_name"}));
         String hostName = WikipediaOntologyUtils.getHostName();
         WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
-        if (hostName.equals("zest")) {
+        if (hostName.equals("zest") || hostName.equals("avalon")) {
             WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
         }
         WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
         WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter("wikipedia_ontology_path");
-        if (hostName.equals("zest")) {
+        if (hostName.equals("zest") || hostName.equals("avalon")) {
             WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "C:/Users/t_morita/wikipedia_ontology/";
         }
         MemCachedStorage.HOST = getServletContext().getInitParameter("memcached_host");
