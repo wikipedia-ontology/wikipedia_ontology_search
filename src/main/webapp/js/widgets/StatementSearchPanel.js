@@ -111,7 +111,7 @@ function getStatementSearchPanel() {
     var queryTypeRadioGroup = new Ext.form.RadioGroup({
         border : false,
         fieldLabel : SEARCH_TARGET,
-        width: 240,
+        width: 300,
         items : [
             {
                 xtype: 'radio',

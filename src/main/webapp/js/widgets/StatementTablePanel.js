@@ -378,15 +378,13 @@ function openWikiOntRDFData(value) {
 }
 
 function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
-    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
     searchTargetType = URI_SEARCH_TARGET_OPTION;
     var url = e.getTarget().getAttribute("alt");
     if (url == null) {
         url = e.getTarget().children.item(1).toString();
     }
     url = decodeURI(url) + JSON_EXTENSION;
-    Ext.getDom('uri_radio_button').setValue(true);
+    Ext.getDom('uri_radio_button').checked = true;
     if (url.indexOf("wikiont_class") != -1) {
         var queryURI = url.replace("wikiont_class:", CLASS_PATH + DATA_PATH);
         var keyword = queryURI.split(DATA_PATH)[1];

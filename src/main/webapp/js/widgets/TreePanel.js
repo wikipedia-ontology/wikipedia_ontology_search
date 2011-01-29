@@ -219,7 +219,6 @@ function showTreePanelContextMenu(node, e) {
 
 var isRenderTree = true;
 function reloadTree(queryURI) {
-    setURIField("TreeURIField", queryURI);
     if (show_isa_tree) {
         if (!isRenderTree) {
             return;
@@ -228,6 +227,7 @@ function reloadTree(queryURI) {
         if (classTreePanel != null) {
             classTreePanel.loader.dataUrl = encodeURI(queryURI);
             classTreePanel.loader.load(classTreePanel.getRootNode());
+            setURIField("TreeURIField", queryURI);
         }
     }
 }
