@@ -12,7 +12,7 @@ function setQueryType() {
     } else if (Ext.getCmp("instance_button").checked) {
         queryType = QTYPE_INSTANCE;
     }
-    resetSearchOptionList();
+    resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
     setURIField("StatementURIField", getQueryURI(""));
 }
 
@@ -22,14 +22,14 @@ function setSearchTargetType() {
     } else if (Ext.getCmp("label_radio_button").checked) {
         searchTargetType = LABEL_SEARCH_TARGET_OPTION;
     }
-    resetSearchOptionList();
+    resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
     setURIField("StatementURIField", getQueryURI(""));
 }
 
-function resetSearchOptionList() {
+function resetSearchOptionList(searchOption) {
     var searchOptionList = getSearchOptionList();
     Ext.getCmp("Resource_Search_Option").store.loadData(searchOptionList);
-    Ext.getCmp("Resource_Search_Option").setValue(EXACT_MATCH_SEARCH_OPTION);
+    Ext.getCmp("Resource_Search_Option").setValue(searchOption);
 }
 
 function getStatementSearchPanel() {

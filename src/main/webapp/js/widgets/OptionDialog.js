@@ -100,17 +100,17 @@ function applyOptions() {
 
 function setOptionChecks() {
     if (Ext.getDom('show_isa_tree') != null) {
-        Ext.getDom('show_isa_tree').checked = show_isa_tree;
-        Ext.getDom('expand_all_class').checked = expand_all_class;
-        Ext.getDom('start_collapsed_group').checked = start_collapsed_group;
+        Ext.getDom('show_isa_tree').setValue(show_isa_tree);
+        Ext.getDom('expand_all_class').setValue(expand_all_class);
+        Ext.getDom('start_collapsed_group').setValue(start_collapsed_group);
     }
 }
 
 function applyNewOptionState() {
     if (Ext.getDom('show_isa_tree') != null) {
-        show_isa_tree = Ext.getDom('show_isa_tree').checked;
-        expand_all_class = Ext.getDom('expand_all_class').checked;
-        start_collapsed_group = Ext.getDom('start_collapsed_group').checked;
+        show_isa_tree = Ext.getDom('show_isa_tree').getValue();
+        expand_all_class = Ext.getDom('expand_all_class').getValue();
+        start_collapsed_group = Ext.getDom('start_collapsed_group').getValue();
         applyOptions();
     }
 }

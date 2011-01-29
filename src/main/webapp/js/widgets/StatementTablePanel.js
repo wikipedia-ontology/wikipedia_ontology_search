@@ -371,7 +371,7 @@ function openWikiOntRDFData(value) {
                 reloadStatements(queryURI, localName);
                 break;
         }
-        resetSearchOptionList();
+        resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
     } else {
         window.open(value);
     }
@@ -386,7 +386,7 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
         url = e.getTarget().children.item(1).toString();
     }
     url = decodeURI(url) + JSON_EXTENSION;
-    Ext.getDom('uri_radio_button').checked = true;
+    Ext.getDom('uri_radio_button').setValue(true);
     if (url.indexOf("wikiont_class") != -1) {
         var queryURI = url.replace("wikiont_class:", CLASS_PATH + DATA_PATH);
         var keyword = queryURI.split(DATA_PATH)[1];
@@ -406,5 +406,5 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
         queryType = QTYPE_INSTANCE;
         reloadStatements(queryURI, keyword);
     }
-    resetSearchOptionList();
+    resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
 }

@@ -63,10 +63,13 @@ function getQueryURI(keyword) {
 }
 
 function getSearchTargetOption() {
-    if (Ext.getCmp("uri_radio_button").checked) {
-        return '?search_target=uri';
-    } else if (Ext.getCmp("label_radio_button").checked) {
-        return '?search_target=label';
+    switch (searchTargetType) {
+        case URI_SEARCH_TARGET_OPTION:
+            return '?search_target=uri';
+            break;
+        case LABEL_SEARCH_TARGET_OPTION:
+            return '?search_target=label';
+            break;
     }
 }
 
@@ -74,10 +77,9 @@ function searchStatementsByContextMenu(keyword) {
     var searchPanel = Ext.getCmp("SearchPanel");
     searchPanel.getForm().findField('keyword').setValue(keyword);
     searchTargetType = URI_SEARCH_TARGET_OPTION;
-    Ext.getCmp("uri_radio_button").checked = true;
-    selectResourceTypeRadioButton();
+    selectSearchTargetRadioButton();
     searchStatements(keyword);
-    resetSearchOptionList();
+    resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
 }
 
 function searchStatements(keyword) {

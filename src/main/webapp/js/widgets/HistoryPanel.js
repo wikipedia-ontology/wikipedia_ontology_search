@@ -473,7 +473,7 @@ function makeHistoryClassContextMenu(record) {
                     queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
                     selectResourceTypeRadioButton();
                     inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
-                    Ext.getDom('use_inf_model').checked = useInfModel;
+                    Ext.getDom('use_inf_model').setValue(useInfModel);
                     searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
                     searchStatementsByContextMenu(currentkeyword + " " + keyword);
                 }

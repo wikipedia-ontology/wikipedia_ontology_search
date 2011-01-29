@@ -456,7 +456,7 @@ function makeBookmarkClassContextMenu(record) {
                     queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
                     selectResourceTypeRadioButton();
                     inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
-                    Ext.getDom('use_inf_model').checked = useInfModel;
+                    Ext.getDom('use_inf_model').setValue(useInfModel);
                     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
                     searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
                     searchStatementsByContextMenu(currentkeyword + " " + keyword);

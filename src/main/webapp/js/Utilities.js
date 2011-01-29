@@ -552,13 +552,13 @@ function openHistoryAndBookmarkData(record) {
     searchTargetType = record.get(SEARCH_TARGET_PARAMETER_KEY);
     selectSearchTargetRadioButton();
     inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
-    if (inferenceType == RDFS_INFERENCE) {
-        Ext.getDom('use_inf_model').checked = true;
-    } else {
-        Ext.getDom('use_inf_model').checked = false;
-    }
+
+    Ext.getDom('use_inf_model').checked = (inferenceType == RDFS_INFERENCE);
+
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
+    var searchOption = record.get(SEARCH_OPTION_PARAMETER_KEY);
+    resetSearchOptionList(searchOption);
+    
     var version = record.get(VERSION_PARAMETER_KEY);
     if (version == "") {
         version = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
@@ -567,7 +567,6 @@ function openHistoryAndBookmarkData(record) {
     versionOptionSelection.setValue(version);
     var queryURI = getQueryURI(keyword);
     searchStatements(keyword);
-    //    resetSearchOptionList();
 }
 
 function selectResourceTypeRadioButton() {
@@ -587,10 +586,10 @@ function selectResourceTypeRadioButton() {
 function selectSearchTargetRadioButton() {
     switch (searchTargetType) {
         case URI_SEARCH_TARGET_OPTION:
-            Ext.getCmp("uri_radio_button").checked = true;
+            Ext.getCmp("uri_radio_button").setValue(true);
             break;
         case LABEL_SEARCH_TARGET_OPTION:
-            Ext.getCmp("label_radio_button").checked = true;
+            Ext.getCmp("label_radio_button").setValue(true);
             break;
     }
 }
