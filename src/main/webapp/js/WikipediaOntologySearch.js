@@ -15,8 +15,6 @@ var show_isa_tree = true;
 var expand_all_class = true;
 var start_collapsed_group = true;
 
-var bookmarkPanel;
-var historyPanel;
 WikipediaOntologySearch = new Ext.app.App({
     init :function() {
         Ext.QuickTips.init();
@@ -24,9 +22,6 @@ WikipediaOntologySearch = new Ext.app.App({
             expires : new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365 * 5))
         });
         Ext.state.Manager.setProvider(cookieProvider);
-        bookmarkPanel = getBookmarkPanel();
-        historyPanel = getHistoryPanel();
-        getBookmarkImportAndExportDialog(); // new BookmarkImportAndExportDialog
         applyOptions();
     },
 
@@ -171,11 +166,11 @@ WikipediaOntologySearch.BookmarkWindow = Ext.extend(Ext.app.Module, {
                 height:600,
                 iconCls: 'icon-bookmark',
                 shim:false,
-                closable: false,
+                //                closable: false,
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items:  bookmarkPanel
+                items:  getBookmarkPanel()
             });
         }
         win.show();
@@ -203,12 +198,11 @@ WikipediaOntologySearch.HistoryWindow = Ext.extend(Ext.app.Module, {
                 width:800,
                 height:600,
                 iconCls: 'icon-history',
-                closable: false,
                 shim:false,
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items: historyPanel
+                items: getHistoryPanel()
             });
         }
         win.show();
@@ -236,7 +230,6 @@ WikipediaOntologySearch.StatementWindow = Ext.extend(Ext.app.Module, {
                 height:768,
                 iconCls: 'icon-statement',
                 shim:false,
-                closable: false,
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',

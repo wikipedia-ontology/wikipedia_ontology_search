@@ -8,6 +8,8 @@ import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.ResourcePage;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.InstanceImpl;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.SearchParameters;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Set;
 
 /**
@@ -71,21 +73,22 @@ public class SPARQLQueryMaker {
 
     public static String getSiblingAndSubClassesQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
-        return sparqlTemplate.replace("$CLASS_NAME", resourceName);
+        return sparqlTemplate.replace("$CLASS_NAME", escape(resourceName));
     }
 
     public static String getPropertiesOfRegionClassQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
-        return sparqlTemplate.replace("$CLASS_NAME", resourceName);
+        return sparqlTemplate.replace("$CLASS_NAME", escape(resourceName));
     }
 
     public static String getRegionClassesOfPropertyQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resourceName = searchParameters.getResourceName();
-        return sparqlTemplate.replace("$PROPERTY_NAME", resourceName);
+        return sparqlTemplate.replace("$PROPERTY_NAME", escape(resourceName));
     }
 
     public static String getResourceByURIQueryString(SearchParameters searchParameters, String sparqlTemplate) {
         String resource = searchParameters.getResourceName();
+
         switch (searchParameters.getResourceType()) {
             case CLASS:
                 resource = "wikiont_class:" + resource;

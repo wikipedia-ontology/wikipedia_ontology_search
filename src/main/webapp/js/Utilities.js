@@ -607,7 +607,6 @@ function getDataFromWebStorage(storage) {
  */
 function saveBookmarksToWebStorage() {
     localStorage.bookmark = JSON.stringify(bookmarkArray);
-    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
     bookmarkStore.proxy = new Ext.ux.data.PagingMemoryProxy(bookmarkArray);
     bookmarkStore.reload();
 }
@@ -617,7 +616,6 @@ function saveBookmarksToWebStorage() {
  */
 function saveHistoryDataToWebStorage() {
     localStorage.history = JSON.stringify(historyDataArray);
-    var historyDataStore = Ext.getCmp('HistoryPanel').store;
     historyDataStore.proxy = new Ext.ux.data.PagingMemoryProxy(historyDataArray);
     historyDataStore.reload();
 }

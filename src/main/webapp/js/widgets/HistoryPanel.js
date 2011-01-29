@@ -136,44 +136,47 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
     });
 }
 
-function getHistoryPanel() {
-    var historyDataStore = new Ext.data.Store({
-        id: 'HistoryDataStore',
-        proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
-        reader: new Ext.data.ArrayReader({}, [
-            {
-                name : DATE_PARAMETER_KEY,
-                type: 'date'
-            },
-            {
-                name : RESOURCE_NAME_PARAMETER_KEY
-            },
-            {
-                name : RESOURCE_TYPE_PARAMETER_KEY
-            },
-            {
-                name : SEARCH_TARGET_PARAMETER_KEY
-            },
-            {
-                name : SEARCH_OPTION_PARAMETER_KEY
-            },
-            {
-                name : INFERENCE_TYPE_PARAMETER_KEY
-            },
-            {
-                name : URI_PARAMETER_KEY
-            },
-            {
-                name : VERSION_PARAMETER_KEY
-            }
-        ]),
-        remoteSort: true,
-        sortInfo : {
-            field : DATE_PARAMETER_KEY,
-            direction : "DESC"
+
+var historyDataStore = new Ext.data.Store({
+    id: 'HistoryDataStore',
+    proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
+    reader: new Ext.data.ArrayReader({}, [
+        {
+            name : DATE_PARAMETER_KEY,
+            type: 'date'
+        },
+        {
+            name : RESOURCE_NAME_PARAMETER_KEY
+        },
+        {
+            name : RESOURCE_TYPE_PARAMETER_KEY
+        },
+        {
+            name : SEARCH_TARGET_PARAMETER_KEY
+        },
+        {
+            name : SEARCH_OPTION_PARAMETER_KEY
+        },
+        {
+            name : INFERENCE_TYPE_PARAMETER_KEY
+        },
+        {
+            name : URI_PARAMETER_KEY
+        },
+        {
+            name : VERSION_PARAMETER_KEY
         }
-    });
-    var historyDataCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
+    ]),
+    remoteSort: true,
+    sortInfo : {
+        field : DATE_PARAMETER_KEY,
+        direction : "DESC"
+    }
+});
+historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
+var historyDataCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
+
+function getHistoryPanel() {
     var historyDataColumnModel = getHistoryDataColumnModel(false, historyDataCheckboxSelectionModel);
 
     /**
@@ -331,7 +334,6 @@ function getHistoryPanel() {
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
-    historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
     var historyPanel = new Ext.grid.GridPanel({
         id : 'HistoryPanel',
         stateId : 'history_panel',
@@ -402,8 +404,6 @@ function getHistoryPanel() {
 }
 
 function getSideHistoryPanel() {
-    var historyDataStore = Ext.getCmp('HistoryPanel').store;
-    var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var sideHistoryDataColumnModel = getHistoryDataColumnModel(true, historyDataCheckboxSelectionModel);
     var bbar = new Ext.PagingToolbar({
         store: historyDataStore,

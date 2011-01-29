@@ -233,7 +233,7 @@ public class WikipediaOntologySearch {
 
     public Model getResourceByURIQueryResults(String queryString) {
 //        System.out.println("URI");
-//        System.out.println(queryString);
+        System.out.println(queryString);
         Model outputModel = ModelFactory.createDefaultModel();
         QueryExecution qexec = null;
         try {

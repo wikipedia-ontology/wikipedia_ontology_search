@@ -99,9 +99,7 @@ public class WikipediaOntologyUtils {
     }
 
     public static ExternalLink getRDFLink(String uri, String type) {
-        ExternalLink rdfLink = new ExternalLink(type + "_rdf_url", uri.replaceAll(type + "/", "query/" + type
-                + "/data/")
-                + ".rdf");
+        ExternalLink rdfLink = new ExternalLink(type + "_rdf_url", uri.replaceAll(type + "/", "query/" + type + "/data/") + ".rdf");
         rdfLink.add(getRDFIcon("rdf_icon"));
         return rdfLink;
     }
@@ -122,6 +120,7 @@ public class WikipediaOntologyUtils {
                 Literal label = (Literal) qs.get("label");
                 InstanceImpl instance = new InstanceImpl(resource.getURI(), label.toString());
                 if (!instanceList.contains(instance)) {
+//                    System.out.println(instance);
                     instanceList.add(instance);
                 }
             }

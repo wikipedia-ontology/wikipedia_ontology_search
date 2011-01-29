@@ -79,45 +79,48 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
     });
 }
 
-function getBookmarkPanel() {
-    var bookmarkStore = new Ext.data.Store({
-        id: 'BookmarkStore',
-        proxy: new Ext.ux.data.PagingMemoryProxy(bookmarkArray),
-        reader: new Ext.data.ArrayReader({}, [
-            {
-                name : DATE_PARAMETER_KEY,
-                type: 'date'
-            },
-            {
-                name : RESOURCE_NAME_PARAMETER_KEY
-            },
-            {
-                name : RESOURCE_TYPE_PARAMETER_KEY
-            },
-            {
-                name : SEARCH_TARGET_PARAMETER_KEY
-            },
-            {
-                name : SEARCH_OPTION_PARAMETER_KEY
-            },
-            {
-                name : INFERENCE_TYPE_PARAMETER_KEY
-            },
-            {
-                name : URI_PARAMETER_KEY
-            },
-            {
-                name : VERSION_PARAMETER_KEY
-            }
-        ]),
-        remoteSort: true,
-        sortInfo : {
-            field : RESOURCE_NAME_PARAMETER_KEY,
-            direction : "ASC"
+var bookmarkStore = new Ext.data.Store({
+    id: 'BookmarkStore',
+    proxy: new Ext.ux.data.PagingMemoryProxy(bookmarkArray),
+    reader: new Ext.data.ArrayReader({}, [
+        {
+            name : DATE_PARAMETER_KEY,
+            type: 'date'
+        },
+        {
+            name : RESOURCE_NAME_PARAMETER_KEY
+        },
+        {
+            name : RESOURCE_TYPE_PARAMETER_KEY
+        },
+        {
+            name : SEARCH_TARGET_PARAMETER_KEY
+        },
+        {
+            name : SEARCH_OPTION_PARAMETER_KEY
+        },
+        {
+            name : INFERENCE_TYPE_PARAMETER_KEY
+        },
+        {
+            name : URI_PARAMETER_KEY
+        },
+        {
+            name : VERSION_PARAMETER_KEY
         }
-    });
+    ]),
+    remoteSort: true,
+    sortInfo : {
+        field : RESOURCE_NAME_PARAMETER_KEY,
+        direction : "ASC"
+    }
+});
+bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
 
-    var bookmarkCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
+var bookmarkCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
+
+function getBookmarkPanel() {
+    getBookmarkImportAndExportDialog(); // new BookmarkImportAndExportDialog
     var bookmarkColumnModel = getBookmarkColumnModel(false, bookmarkCheckboxSelectionModel);
 
     /**
@@ -282,7 +285,6 @@ function getBookmarkPanel() {
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
-    bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
     var bookmarkPanel = new Ext.grid.GridPanel({
         id : 'BookmarkPanel',
         stateId : 'bookmark_panel',
@@ -353,8 +355,6 @@ function getBookmarkPanel() {
 }
 
 function getSideBookmarkPanel() {
-    var bookmarkStore = Ext.getCmp('BookmarkPanel').store;
-    var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     var sideBookmarkColumnModel = getBookmarkColumnModel(true, bookmarkCheckboxSelectionModel);
 
     var bbar = new Ext.PagingToolbar({

@@ -290,9 +290,8 @@ public class WikipediaOntologyStorage {
     public static void main(String[] args) {
 //        storeWikipediaOntologyAndInstanceToTDB("ja", false);
 //        storeWikipediaOntologyAndInstanceToTDB("ja", true);
-        // storeWikipediaOntologyAndInstanceToTDB("en", false);
+        storeWikipediaOntologyAndInstanceToTDB("en", false);
         // storeWikipediaOntologyAndInstanceToDB(isInfModel, lang);
-        // storeEnglishWikipediaInstanceToDB();
 //        storeAllClassesToFile("ja");
     }
 }

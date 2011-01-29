@@ -11,7 +11,6 @@ function getBookmarkImportAndExportDialog() {
         width : 600,
         height : 400,
         autoScroll : true,
-        modal : true,
         layout : 'border',
         iconCls: 'icon-book',
         items : {
