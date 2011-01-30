@@ -29,7 +29,7 @@
     <script type="text/javascript" src="js/lib/TaskBar.js"></script>
     <script type="text/javascript" src="js/lib/Desktop.js"></script>
     <script type="text/javascript" src="js/lib/App.js"></script>
-    <script type="text/javascript" src="js/lib/Module.js"></script> 
+    <script type="text/javascript" src="js/lib/Module.js"></script>
     <!-- my libs-->
     <script type="text/javascript" src="js/resources/JaResource.js"></script>
     <script type="text/javascript" src="js/Parameters.js"></script>
@@ -53,6 +53,7 @@
     <script type="text/javascript" src="js/widgets/StatementTablePanel.js"></script>
     <script type="text/javascript" src="js/widgets/StatementTabPanel.js"></script>
     <script type="text/javascript" src="js/widgets/TreePanel.js"></script>
+    <script type="text/javascript" src="js/widgets/StatisticsInformationPanel.js"></script>
     <script type="text/javascript" src="js/WikipediaOntologySearch.js"></script>
 </head>
 <body scroll="no">
@@ -61,47 +62,64 @@
 
     <dl id="x-shortcuts">
         <dt id="statement-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-            <div>ステートメント</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>ステートメント</div>
+            </a>
         </dt>
         <dt id="class-list-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>クラス一覧</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>クラス一覧</div>
+            </a>
         </dt>
         <dt id="tree-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>クラス階層</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>クラス階層</div>
+            </a>
         </dt>
         <dt id="property-list-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>プロパティ一覧</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>プロパティ一覧</div>
+            </a>
         </dt>
         <dt id="instance-list-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>インスタンス一覧</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>インスタンス一覧</div>
+            </a>
         </dt>
         <dt id="bookmark-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>ブックマーク</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>ブックマーク</div>
+            </a>
         </dt>
-        
+
         <dt id="history-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>履歴</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>履歴</div>
+            </a>
         </dt>
         <dt id="source-win-shortcut">
-            <a href="#"><img src="ext_resources/images/s.gif" />
-                <div>ソースコード</div></a>
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>ソースコード</div>
+            </a>
         </dt>
-        <dt id="option-win-shortcut"> </dt>
     </dl>
 </div>
 
 <div id="ux-taskbar">
-	<div id="ux-taskbar-start"></div>
-	<div id="ux-taskbuttons-panel"></div>
-	<div class="x-clear"></div>
+    <div id="ux-taskbar-start"></div>
+    <div id="ux-taskbuttons-panel"></div>
+    <div class="x-clear"></div>
 </div>
+
+<div id="container"></div>
 
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

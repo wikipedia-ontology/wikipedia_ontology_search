@@ -68,6 +68,15 @@ var VERSION = "バージョン";
 var SHOW_WHOLE_CLASS_HIERARCHY = "全クラス階層を表示";
 var HIERARCHY = "階層表示";
 
+var STATISTICS_INFORMATION = "統計情報";
+var NUMBER_OF_RESOURCES = "リソース数";
+var NUMBER_OF_CLASSES = "クラス数";
+var NUMBER_OF_PROPERTIES = "プロパティ数";
+var NUMBER_OF_INSTANCES = "インスタンス数";
+var NUMBER_OF_STATEMENTS = "全ステートメント数: 7,588,865";
+var NUMBER_OF_ISA_RELATIONSHIPS = "Is-a関係数";
+var NUMBER_OF_TYPES_OF_INSTANCES = "インスタンスのタイプ数";
+
 var MENU = "メニュー";
 var SOURCE_CODE = "ソースコード";
 var BOOKMARK_RECORD_LENGTH = 8;

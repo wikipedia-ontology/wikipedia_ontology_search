@@ -74,16 +74,36 @@ function getStatementTabPanel() {
         ]
     });
 
+    var uriPanel =  new Ext.Panel({
+        frame : true,
+        height: 30,
+        bodyStyle : 'padding: 10px;',
+        layout: 'border',
+        items : [
+            {
+                region: 'west',
+                xtype: 'label',
+                text: URI,
+                width: 30
+            },
+            {
+                id: 'StatementURIField',
+                region: 'center',
+                xtype: 'textfield',
+                editable: false
+            }
+        ]
+    });
+
     return new Ext.Panel({
         layout : 'border',
         hideBorders : true,
-        //        title : STATEMENT,
         iconCls: 'icon-table',
         items : [
             {
                 region: 'north',
                 height: 40,
-                items: getURIPanel('StatementURIField')
+                items: uriPanel
             },
             {
                 region : 'center',

@@ -36,6 +36,7 @@ WikipediaOntologySearch = new Ext.app.App({
             new WikipediaOntologySearch.HistoryWindow(),
             new WikipediaOntologySearch.SourceWindow(),
             new WikipediaOntologySearch.OptionWindow(),
+            new WikipediaOntologySearch.StatisticsInformationWindow(),
             new WikipediaOntologySearch.HelpWindow()
         ];
     },
@@ -633,4 +634,37 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
         win.show();
     }
 });
+
+WikipediaOntologySearch.StatisticsInformationWindow = Ext.extend(Ext.app.Module, {
+    id:'statistics-information-win',
+    init : function() {
+        this.launcher = {
+            text: STATISTICS_INFORMATION,
+            iconCls:'icon-chart',
+            handler : this.createWindow,
+            scope: this
+        }
+    },
+
+    createWindow : function() {
+        var desktop = this.app.getDesktop();
+        var win = desktop.getWindow('statistics-information-win');
+        if (!win) {
+            win = desktop.createWindow({
+                id: 'statistics-information-win',
+                title:STATISTICS_INFORMATION,
+                width:700,
+                height:500,
+                iconCls: 'icon-chart',
+                shim:false,
+                animCollapse:false,
+                constrainHeader:true,
+                layout: 'fit',
+                items: getStatisticsInformationPanel()
+            });
+        }
+        win.show();
+    }
+});
+
 

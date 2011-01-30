@@ -197,7 +197,6 @@ function addShowNodes(node) {
 function showTreePanelContextMenu(node, e) {
     e.stopEvent();
     var qname = node.attributes.id;
-    var queryURL = "";
     var keyword = qname.split(":")[1];
     if (qname.indexOf("wikiont_class") != -1) {
         queryType = QTYPE_CLASS;

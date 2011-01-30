@@ -68,6 +68,15 @@ var VERSION = "Version";
 var SHOW_WHOLE_CLASS_HIERARCHY = "Show Whole Class Hiearchy";
 var HIERARCHY = "Hiearchy";
 
+var STATISTICS_INFORMATION = "Statistics Information";
+var NUMBER_OF_RESOURCES = "# Resources";
+var NUMBER_OF_CLASSES = "# Classes";
+var NUMBER_OF_PROPERTIES = "# Properties";
+var NUMBER_OF_INSTANCES = "# Instances";
+var NUMBER_OF_STATEMENTS = "# Statements: 7,588,865";
+var NUMBER_OF_ISA_RELATIONSHIPS = "# Isa relationships";
+var NUMBER_OF_TYPES_OF_INSTANCES = "# Types of instances";
+
 var MENU = "Menu";
 var SOURCE_CODE = "Source Code";
 var BOOKMARK_RECORD_LENGTH = 8;
