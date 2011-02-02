@@ -356,7 +356,7 @@ public class PropertyListPage extends CommonPage {
                     outputString = getInstanceListJSonString(propertyName, start, limit);
                     WikipediaOntologyUtils.addStringToMemcached(hashCode, outputString);
                 }
-            } else if (params.containsKey("keyword")) {
+            } else if (params.containsKey("keyword") && !params.getString("keyword").isEmpty()) {
                 String keyword = params.getString("keyword");
                 String searchOption = params.getString("search_option", "exact_match");
 

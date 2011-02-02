@@ -653,7 +653,7 @@ WikipediaOntologySearch.StatisticsInformationWindow = Ext.extend(Ext.app.Module,
             win = desktop.createWindow({
                 id: 'statistics-information-win',
                 title:STATISTICS_INFORMATION,
-                width:700,
+                width:750,
                 height:500,
                 iconCls: 'icon-chart',
                 shim:false,

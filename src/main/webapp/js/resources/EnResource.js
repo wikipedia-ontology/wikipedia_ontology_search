@@ -73,7 +73,7 @@ var NUMBER_OF_RESOURCES = "# Resources";
 var NUMBER_OF_CLASSES = "# Classes";
 var NUMBER_OF_PROPERTIES = "# Properties";
 var NUMBER_OF_INSTANCES = "# Instances";
-var NUMBER_OF_STATEMENTS = "# Statements: 7,588,865";
+var TOTAL_NUMBER_OF_STATEMENTS = "# Statements: 7,588,865";
 var NUMBER_OF_ISA_RELATIONSHIPS = "# Isa relationships";
 var NUMBER_OF_TYPES_OF_INSTANCES = "# Types of instances";
 

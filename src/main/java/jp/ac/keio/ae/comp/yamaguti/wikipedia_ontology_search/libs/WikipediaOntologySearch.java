@@ -232,8 +232,7 @@ public class WikipediaOntologySearch {
     }
 
     public Model getResourceByURIQueryResults(String queryString) {
-//        System.out.println("URI");
-        System.out.println(queryString);
+//        System.out.println(queryString);
         Model outputModel = ModelFactory.createDefaultModel();
         QueryExecution qexec = null;
         try {
@@ -259,7 +258,6 @@ public class WikipediaOntologySearch {
     }
 
     public Model getResourceByLabelQueryResults(String lang, String queryString) {
-//        System.out.println("Label");
 //        System.out.println(queryString);
         Model outputModel = ModelFactory.createDefaultModel();
         QueryExecution qexec = null;
@@ -549,7 +547,7 @@ public class WikipediaOntologySearch {
                 break;
             }
         }
-        System.out.println(cls + ": " + instanceCnt);
+//        System.out.println(cls + ": " + instanceCnt);
         return instanceCnt;
     }
 

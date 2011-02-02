@@ -22,7 +22,7 @@ var statisticsStore = new Ext.data.JsonStore({
 function getStatisticsInformationPanel() {
 
     return new Ext.Panel({
-        title: NUMBER_OF_STATEMENTS,
+        title: TOTAL_NUMBER_OF_STATEMENTS,
         width:600,
         height:300,
         layout:'fit',

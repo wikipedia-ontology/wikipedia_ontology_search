@@ -73,7 +73,7 @@ var NUMBER_OF_RESOURCES = "リソース数";
 var NUMBER_OF_CLASSES = "クラス数";
 var NUMBER_OF_PROPERTIES = "プロパティ数";
 var NUMBER_OF_INSTANCES = "インスタンス数";
-var NUMBER_OF_STATEMENTS = "全ステートメント数: 7,588,865";
+var TOTAL_NUMBER_OF_STATEMENTS = "全ステートメント数: 7,588,865";
 var NUMBER_OF_ISA_RELATIONSHIPS = "Is-a関係数";
 var NUMBER_OF_TYPES_OF_INSTANCES = "インスタンスのタイプ数";
 
