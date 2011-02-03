@@ -51,6 +51,7 @@ function getInstanceListTableDataStore(type) {
 
 function getInstanceListPanel(type) {
     var panelIdLabel = "";
+    var cellRenderer = openInstanceByLink;
     var cellClickListener = openInstanceByCellClick;
     switch (type) {
         case CLASS:
@@ -61,7 +62,8 @@ function getInstanceListPanel(type) {
             break;
         case INSTANCE:
             panelIdLabel = "Instance";
-            cellClickListener = loadInstanceTypeByCellClick
+            cellRenderer = openInstanceTypeByLink;
+            cellClickListener = openInstanceTypeByCellClick;
             break;
     }
     var instanceListTableDataStore = getInstanceListTableDataStore(type);
@@ -85,7 +87,7 @@ function getInstanceListPanel(type) {
                 header : INSTANCE,
                 dataIndex : "instance",
                 id : panelIdLabel + "list_table_instance_column",
-                renderer : openInstance,
+                renderer : cellRenderer,
                 sortable : true
             }
         ],
@@ -102,17 +104,15 @@ function getInstanceListPanel(type) {
 function showInstanceContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]); 
+    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
     queryType = QTYPE_INSTANCE;
     makeInstanceContextMenu(keyword).showAt(e.getXY());
 }
 
-function loadInstanceTypeByCellClick(grid, rowIndex, columnIndex, e) {
+function openInstanceTypeByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
     var instanceName = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    var instanceTypeListPanel = Ext.getCmp("InstanceTypeListTablePanel");
-    instanceTypeListPanel.store.proxy = getProxy(INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
-    loadStore(instanceTypeListPanel.store);
+    openInstanceType(instanceName);
 }
 
 function openInstanceByCellClick(grid, rowIndex, columnIndex, e) {
@@ -121,7 +121,18 @@ function openInstanceByCellClick(grid, rowIndex, columnIndex, e) {
     openWikiOntRDFData("wikiont_instance:" + keyword);
 }
 
-function openInstance(instanceName) {
+function openInstanceType(instanceName) {
+    var instanceTypeListPanel = Ext.getCmp("InstanceTypeListTablePanel");
+    instanceTypeListPanel.store.proxy = getProxy(INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
+    loadStore(instanceTypeListPanel.store);
+}
+
+function openInstanceTypeByLink(instanceName) {
+    return "<img alt='" + instanceName + "' src='" + BASE_ICON_URL + "instance_icon_s.png'/> " +
+            '<a href="' + instanceName + '" onclick="openInstanceType(\'' + instanceName + '\'); return false;">' + instanceName + "</a>";
+}
+
+function openInstanceByLink(instanceName) {
     return "<img alt='" + instanceName + "' src='" + BASE_ICON_URL + "instance_icon_s.png'/> " +
             '<a href="' + instanceName + '" onclick="openWikiOntRDFData(\'wikiont_instance:' + instanceName + '\'); return false;">' + instanceName + "</a>";
 }
