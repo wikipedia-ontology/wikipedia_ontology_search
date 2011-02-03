@@ -126,6 +126,9 @@ function getURIPanel(id) {
                 listeners: {
                     "click": function() {
                         var uri = getCurrentStatementTabURI();
+                        if (id == "TreeURIField") {
+                            uri = Ext.getCmp("TreeURIField").getValue();
+                        }
                         var searchParams = extractParametersFromURI(uri);
                         addBookmark(searchParams);
                     }
@@ -137,6 +140,9 @@ function getURIPanel(id) {
                 listeners: {
                     "click": function() {
                         var uri = getCurrentStatementTabURI();
+                        if (id == "TreeURIField") {
+                            uri = Ext.getCmp("TreeURIField").getValue();
+                        }
                         reloadRDFSource(uri);
                     }
                 }
