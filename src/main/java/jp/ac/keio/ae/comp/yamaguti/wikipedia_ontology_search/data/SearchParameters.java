@@ -150,8 +150,8 @@ public class SearchParameters {
             return SearchOptionType.INSTANCES_OF_CLASS;
         } else if (so.equals("types_of_instance")) {
             return SearchOptionType.TYPES_OF_INSTANCE;
-        } else if (so.equals("inverse")) {
-            return SearchOptionType.INVERSE;
+        } else if (so.equals("inverse_statements")) {
+            return SearchOptionType.INVERSE_STATEMENTS;
         } else if (so.equals("path_to_root_class")) {
             return SearchOptionType.PATH_TO_ROOT_CLASS;
         }

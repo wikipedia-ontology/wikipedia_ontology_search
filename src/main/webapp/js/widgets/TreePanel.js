@@ -16,7 +16,7 @@ function getTreePanel(title, treeType) {
         items : []
     });
     var searchOptionComboBox = getTreeSearchOptionComboBox(treeType + '_Search_Option');
-    searchOptionComboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
+    searchOptionComboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
     var treePanel = new Ext.tree.TreePanel({
         id : treePanelId,
         title : title,
@@ -87,18 +87,18 @@ function getTreePanel(title, treeType) {
                 var qname = n.attributes.qname;
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
-                    queryType = QTYPE_CLASS;
+                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
                     queryURI = qname.replace("wikiont_class:", BASE_SERVER_CLASS_DATA_URL);
                 } else if (qname.indexOf("wikiont_property") != -1) {
-                    queryType = QTYPE_PROPERTY;
+                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
                     queryURI = qname.replace("wikiont_property:", BASE_SERVER_PROPERTY_DATA_URL);
                 } else if (qname.indexOf("wikiont_instance") != -1) {
-                    queryType = QTYPE_INSTANCE;
+                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
                     queryURI = qname.replace("wikiont_instance:", BASE_SERVER_INSTANCE_DATA_URL);
                 }
                 queryURI += JSON_EXTENSION;
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                searchOptionSelection.setValue(EXACT_MATCH_SEARCH_OPTION);
+                searchOptionSelection.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
                 reloadStatements(queryURI, keyword);
             },
             contextmenu : showTreePanelContextMenu
@@ -199,17 +199,17 @@ function showTreePanelContextMenu(node, e) {
     var qname = node.attributes.id;
     var keyword = qname.split(":")[1];
     if (qname.indexOf("wikiont_class") != -1) {
-        queryType = QTYPE_CLASS;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
         var classContextMenu = makeClassContextMenu(keyword);
         classContextMenu.contextNode = node;
         classContextMenu.showAt(e.getXY());
     } else if (qname.indexOf("wikiont_property") != -1) {
-        queryType = QTYPE_PROPERTY;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
         var classContextMenu = makePropertyContextMenu(keyword);
         classContextMenu.contextNode = node;
         classContextMenu.showAt(e.getXY());
     } else if (qname.indexOf("wikiont_instance") != -1) {
-        queryType = QTYPE_INSTANCE;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
         var instanceContextMenu = makeInstanceContextMenu(keyword);
         instanceContextMenu.contextNode = node;
         instanceContextMenu.showAt(e.getXY());

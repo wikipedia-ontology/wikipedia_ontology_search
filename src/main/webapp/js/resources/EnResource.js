@@ -92,72 +92,44 @@ var MANUAL_HTML = "en_manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
-// parameter keys
-var DATE_PARAMETER_KEY = "date";
-var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
-var SEARCH_TARGET_PARAMETER_KEY = "search_target";
-var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
-var SEARCH_OPTION_PARAMETER_KEY = "search_option";
-var VERSION_PARAMETER_KEY = "version";
-var URI_PARAMETER_KEY = "uri";
-var INFERENCE_TYPE_PARAMETER_KEY = "inference_type";
+var WIKIPEDIA_ONTOLOGY_SEARCH = {};
 
-//inference type
-var NONE_INFERENCE = "None";
-var NONE_INFERENCE_OPTION = "none";
-var RDFS_INFERENCE = "RDFS";
-var RDFS_INFERENCE_OPTION = "rdfs";
+WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels = {
+    class: "Class",
+    property: "Property",
+    instance: "Instance"
+}
 
-// queryType
-var QTYPE_CLASS = 'class';
-var QTYPE_PROPERTY = 'property';
-var QTYPE_INSTANCE = 'instance';
+WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptionLabels = {
+    uri: "URI" ,
+    label: "Label"
+}
 
-//searchTarget
-var URI = "URI";
-var URI_SEARCH_TARGET_OPTION = "uri";
-var LABEL = "Label";
-var LABEL_SEARCH_TARGET_OPTION = "label";
+// 検索オプション関連の定数
+WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels = {
+    search_option: "Search Option",
+    exact_match: "Exact match",
+    any_match: "Any match",
+    starts_with: "Starts with",
+    ends_with: "Ends with",
+    sibling_classes: "Sibling classes",
+    sub_classes: "Sub classes",
+    properties_of_domain_class: "Properties of a domain class",
+    properties_of_range_class: "Properties of a range class",
+    domain_classes_of_property: "Domain classes of a property",
+    range_classes_of_property: "Range classes of a property",
+    instances_of_class: "Instances of a class",
+    types_of_instance: "Types of an instance",
+    inverse_statements: "Inverse statements",
+    path_to_root_class: "Path to a root class"
+};
 
-var SEARCH_OPTION = "Search Option";
-var EXACT_MATCH = "Exact match";
-var EXACT_MATCH_SEARCH_OPTION = "exact_match";
-var ANY_MATCH = "Any match";
-var ANY_MATCH_SEARCH_OPTION = "any_match";
-var STARTS_WITH = "Starts with";
-var STARTS_WITH_SEARCH_OPTION = "starts_with";
-var ENDS_WITH = "Ends with";
-var ENDS_WITH_SEARCH_OPTION = "ends_with";
-var SIBLING_CLASSES = "Sibling Classes";
-var SIBLING_CLASSES_SEARCH_OPTION = "sibling_classes";
-var SUB_CLASSES = "Sub Classes";
-var SUB_CLASSES_SEARCH_OPTION = "sub_classes";
-var PROPERTIES_OF_DOMAIN_CLASS = "Properties of a domain class";
-var PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION = "properties_of_domain_class";
-var PROPERTIES_OF_RANGE_CLASS = "Properties of a range class";
-var PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION = "properties_of_range_class";
-var DOMAIN_CLASSES_OF_PROPERTY = "Domain classes of a property";
-var DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION = "domain_classes_of_property";
-var RANGE_CLASSES_OF_PROPERTY = "Range classes of a property";
-var RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION = "range_classes_of_property";
-var INSTANCES_OF_CLASS = "Instances of a class";
-var INSTANCES_OF_CLASS_SEARCH_OPTION = "instances_of_class";
-var TYPES_OF_INSTANCE = "Types of a instance";
-var TYPES_OF_INSTANCE_SEARCH_OPTION = "types_of_instance";
-var INVERSE_STATEMENTS = "Inverse statements";
-var INVERSE_STATEMENTS_SEARCH_OPTION = "inverse";
-var PATH_TO_ROOT_CLASS = "Path to root class";
-var PATH_TO_ROOT_CLASS_SEARCH_OPTION = "path_to_root_class";
-
-// order by 関連の定数
-var NAME_ASC = "Name (ASC)";
-var NAME_ASC_OPTION = "name_asc";
-var NAME_DESC = "Name (DESC)";
-var NAME_DESC_OPTION = "name_desc";
-var INSTANCE_COUNT_ASC = "Number of instances (ASC)";
-var INSTANCE_COUNT_ASC_OPTION = "instance_count_asc";
-var INSTANCE_COUNT_DESC = "Number of instances (DESC)";
-var INSTANCE_COUNT_DESC_OPTION = "instance_count_desc";
+WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels = {
+    name_asc: "Name (ASC)",
+    name_desc: "Name (DESC)",
+    instance_count_asc: "Number of instances (ASC)",
+    instance_count_desc: "Number of instances (DESC)"
+}
 
 function getSearchKeywordLabel(keyword) {
     return "Search " + keyword;

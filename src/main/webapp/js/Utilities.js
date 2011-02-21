@@ -21,9 +21,9 @@ function getProxy(json_url) {
     //    }
 }
 
-function setURIField(id, url) {
-    url = url.replace(ESCAPED_JSON_EXTENSION, "");
-    Ext.getCmp(id).setValue(url);
+function setURIField(id, uri) {
+    uri = uri.replace(ESCAPED_JSON_EXTENSION, "");
+    Ext.getCmp(id).setValue(uri);
 }
 
 function setSearchParams(params) {
@@ -31,29 +31,29 @@ function setSearchParams(params) {
         //        alert("key: " + key + "->" + "value: " + params[key]);
         var value = params[key];
         switch (key) {
-            case RESOURCE_TYPE_PARAMETER_KEY:
+            case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type:
                 queryType = value;
                 selectResourceTypeRadioButton();
                 break;
-            case RESOURCE_NAME_PARAMETER_KEY:
+            case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name:
                 var searchPanel = Ext.getCmp("SearchPanel");
                 searchPanel.getForm().findField('keyword').setValue(value);
                 break;
-            case SEARCH_TARGET_PARAMETER_KEY:
+            case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target:
                 searchTargetType = value;
                 selectSearchTargetRadioButton();
                 break;
-            case SEARCH_OPTION_PARAMETER_KEY:
+            case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option:
                 Ext.getCmp("Resource_Search_Option").setValue(value);
                 break;
-            case VERSION_PARAMETER_KEY:
+            case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version:
                 var versionOptionSelection = Ext.getCmp('Version_Option');
                 versionOptionSelection.setValue(value);
                 break;
-            case INFERENCE_TYPE_PARAMETER_KEY:
+            case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type:
                 switch (value) {
-                    case RDFS_INFERENCE_OPTION:
-                        inferenceType = RDFS_INFERENCE_OPTION;
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.rdfs:
+                        inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.rdfs;
                         Ext.getDom('use_inf_model').checked = true;
                         break;
                 }
@@ -73,13 +73,13 @@ function extractParametersFromURI(uri) {
     }
     var baseURIElems = baseURI.split("/");
     if (7 <= baseURIElems.length) {
-        params[RESOURCE_TYPE_PARAMETER_KEY] = baseURIElems[4]
-        params[RESOURCE_NAME_PARAMETER_KEY] = baseURIElems[6].replace(ESCAPED_JSON_EXTENSION, "");
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type] = baseURIElems[4]
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name] = baseURIElems[6].replace(ESCAPED_JSON_EXTENSION, "");
     }
 
     // default parameter
-    params[SEARCH_TARGET_PARAMETER_KEY] = URI_SEARCH_TARGET_OPTION;
-    params[VERSION_PARAMETER_KEY] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target] = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     if (paramString != '&') {
         var paramSet = paramString.split("&");
         for (var i = 0; i < paramSet.length; i++) {
@@ -87,10 +87,10 @@ function extractParametersFromURI(uri) {
             var key = param[0];
             var value = param[1];
             if (key == 'type') {
-                if (params[RESOURCE_NAME_PARAMETER_KEY] == 'q') {
-                    params[RESOURCE_NAME_PARAMETER_KEY] = value + " ";
+                if (params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name] == 'q') {
+                    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name] = value + " ";
                 } else {
-                    params[RESOURCE_NAME_PARAMETER_KEY] += value + " ";
+                    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name] += value + " ";
                 }
             } else {
                 params[key] = value;
@@ -98,11 +98,11 @@ function extractParametersFromURI(uri) {
         }
     } else {
         // default parameters
-        params[SEARCH_OPTION_PARAMETER_KEY] = EXACT_MATCH_SEARCH_OPTION;
-        params[INFERENCE_TYPE_PARAMETER_KEY] = NONE_INFERENCE_OPTION;
-        params[VERSION_PARAMETER_KEY] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option] = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match;
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type] = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
-    params[URI_PARAMETER_KEY] = uri;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri] = uri;
 
     //    for (var key in params) {
     //        alert("key: " + key + "->" + "value: " + params[key]);
@@ -209,40 +209,40 @@ function getStatementJsonReader() {
 
 function getSearchOptionList() {
     switch (searchTargetType) {
-        case URI_SEARCH_TARGET_OPTION:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri:
             switch (queryType) {
-                case QTYPE_CLASS:
+                case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
                     return [
-                        [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                        [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
-                        [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
-                        [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
-                        [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
-                        [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION],
-                        [PATH_TO_ROOT_CLASS, PATH_TO_ROOT_CLASS_SEARCH_OPTION],
-                        [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.sibling_classes, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.sibling_classes],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.sub_classes, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.sub_classes],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.properties_of_domain_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_domain_class],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.properties_of_range_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_range_class],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.instances_of_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.instances_of_class],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.path_to_root_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.path_to_root_class],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.inverse_statements, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.inverse_statements]
                     ];
-                case QTYPE_PROPERTY:
+                case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
                     return [
-                        [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                        [DOMAIN_CLASSES_OF_PROPERTY, DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-                        [RANGE_CLASSES_OF_PROPERTY, RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION],
-                        [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.domain_classes_of_property, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.domain_classes_of_property],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.range_classes_of_property, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.range_classes_of_property],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.inverse_statements, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.inverse_statements]
                     ];
-                case QTYPE_INSTANCE:
+                case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
                     return [
-                        [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                        [TYPES_OF_INSTANCE, TYPES_OF_INSTANCE_SEARCH_OPTION],
-                        [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.types_of_instance, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.types_of_instance],
+                        [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.inverse_statements, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.inverse_statements]
                     ];
             }
             break;
-        case LABEL_SEARCH_TARGET_OPTION:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.label:
             return [
-                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
-                [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
-                [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.any_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.any_match],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.starts_with, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.starts_with],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.ends_with, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.ends_with]
             ];
             break;
     }
@@ -253,10 +253,10 @@ function getTreeSearchOptionComboBox(id) {
     var searchOptionList = new Ext.data.ArrayStore({
         fields : ["Search_Option", "Search_Option_Value"],
         data : [
-            [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-            [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
-            [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
-            [ENDS_WITH, ENDS_WITH_SEARCH_OPTION],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.any_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.any_match],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.starts_with, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.starts_with],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.ends_with, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.ends_with]
         ]
     });
 
@@ -270,7 +270,7 @@ function getTreeSearchOptionComboBox(id) {
         mode : "local",
         store : searchOptionList
     });
-    comboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
+    comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
     return comboBox;
 }
 
@@ -278,14 +278,14 @@ function getSearchOptionComboBox(id) {
     var searchOptionList = new Ext.data.ArrayStore({
         fields : ["Search_Option", "Search_Option_Value"],
         data : [
-            [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-            [SIBLING_CLASSES, SIBLING_CLASSES_SEARCH_OPTION],
-            [SUB_CLASSES, SUB_CLASSES_SEARCH_OPTION],
-            [PROPERTIES_OF_DOMAIN_CLASS, PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION],
-            [PROPERTIES_OF_RANGE_CLASS, PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION],
-            [INSTANCES_OF_CLASS, INSTANCES_OF_CLASS_SEARCH_OPTION],
-            [PATH_TO_ROOT_CLASS, PATH_TO_ROOT_CLASS_SEARCH_OPTION],
-            [INVERSE_STATEMENTS, INVERSE_STATEMENTS_SEARCH_OPTION]
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.sibling_classes, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.sibling_classes],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.sub_classes, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.sub_classes],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.properties_of_domain_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_domain_class],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.properties_of_range_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_range_class],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.instances_of_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.instances_of_class],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.path_to_root_class, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.path_to_root_class],
+            [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.inverse_statements, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.inverse_statements]
         ]
     });
 
@@ -302,19 +302,19 @@ function getSearchOptionComboBox(id) {
         {
             select: function(combo, value) {
                 switch (combo.getValue()) {
-                    case SIBLING_CLASSES_SEARCH_OPTION:
-                    case SUB_CLASSES_SEARCH_OPTION:
-                    case PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION:
-                    case PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION:
-                    case INSTANCES_OF_CLASS_SEARCH_OPTION:
-                    case PATH_TO_ROOT_CLASS_SEARCH_OPTION:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.sibling_classes:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.sub_classes:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_domain_class:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_range_class:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.instances_of_class:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.path_to_root_class:
                         Ext.getDom('class_button').checked = true;
                         break;
-                    case DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION:
-                    case RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.domain_classes_of_property:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.range_classes_of_property:
                         Ext.getDom('property_button').checked = true;
                         break
-                    case TYPES_OF_INSTANCE_SEARCH_OPTION:
+                    case WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.types_of_instance:
                         Ext.getDom('instance_button').checked = true;
                         break;
                 }
@@ -322,7 +322,7 @@ function getSearchOptionComboBox(id) {
             }
         }
     });
-    comboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
+    comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
     return comboBox;
 }
 
@@ -355,12 +355,12 @@ function getVersionOptionComboBox(name) {
 }
 
 function renderKeyword(value, metadata, record) {
-    switch (record.get(RESOURCE_TYPE_PARAMETER_KEY)) {
-        case QTYPE_CLASS:
+    switch (record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type)) {
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
             return "<img src='" + BASE_ICON_URL + "class_icon_s.png'/> " + value;
-        case QTYPE_PROPERTY:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
             return "<img src='" + BASE_ICON_URL + "property_icon_s.png'/> " + value;
-        case QTYPE_INSTANCE:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
             return "<img src='" + BASE_ICON_URL + "instance_icon_s.png'/> " + value;
     }
     return value;
@@ -480,7 +480,7 @@ function makeInstanceContextMenu(keyword) {
 }
 
 function renderVersionOption(value, metadata, record) {
-    var versionOption = record.get(VERSION_PARAMETER_KEY);
+    var versionOption = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version);
     if (versionOption == '') {
         return CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     } else {
@@ -489,83 +489,109 @@ function renderVersionOption(value, metadata, record) {
 }
 
 function renderSearchTargetType(value, metadata, record) {
-    switch (record.get(SEARCH_TARGET_PARAMETER_KEY)) {
-        case URI_SEARCH_TARGET_OPTION:
-            return URI;
-        case LABEL_SEARCH_TARGET_OPTION:
-            return LABEL;
-    }
+    var searchTarget = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target);
+    return WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptionLabels[searchTarget];
+    /*
+     switch (record.get(SEARCH_TARGET_PARAMETER_KEY)) {
+     case URI_SEARCH_TARGET_OPTION:
+     return URI;
+     case LABEL_SEARCH_TARGET_OPTION:
+     return LABEL;
+     }
+     */
 }
 
 function renderResourceType(value, metadata, record) {
-    switch (record.get(RESOURCE_TYPE_PARAMETER_KEY)) {
-        case QTYPE_CLASS:
-            return CLASS;
-        case QTYPE_PROPERTY:
-            return PROPERTY;
-        case QTYPE_INSTANCE:
-            return INSTANCE;
-    }
+    var resourceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
+    return WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels[resourceType];
+    /*
+     switch (record.get(RESOURCE_TYPE_PARAMETER_KEY)) {
+     case QTYPE_CLASS:
+     return CLASS;
+     case QTYPE_PROPERTY:
+     return PROPERTY;
+     case QTYPE_INSTANCE:
+     return INSTANCE;
+     }
+     */
 }
 
 function renderInferenceType(value, metadata, record) {
-    switch (record.get(INFERENCE_TYPE_PARAMETER_KEY)) {
-        case RDFS_INFERENCE_OPTION:
-            return RDFS_INFERENCE;
-        default:
-            return NONE_INFERENCE;
+    var inferenceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type);
+    var inferenceOptionLabel = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptionLabels[inferenceType];
+    if (inferenceOptionLabel == null) {
+        return WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptionLabels.none;
+    } else {
+        return inferenceOptionLabel;
     }
+    /*
+     switch (record.get(INFERENCE_TYPE_PARAMETER_KEY)) {
+     case RDFS_INFERENCE_OPTION:
+     return RDFS_INFERENCE;
+     default:
+     return NONE_INFERENCE;
+     }
+     */
 }
 
 function renderSearchOption(value, metadata, record) {
-    switch (record.get(SEARCH_OPTION_PARAMETER_KEY)) {
-        case EXACT_MATCH_SEARCH_OPTION:
-            return EXACT_MATCH;
-        case  ANY_MATCH_SEARCH_OPTION:
-            return ANY_MATCH;
-        case STARTS_WITH_SEARCH_OPTION:
-            return STARTS_WITH;
-        case ENDS_WITH_SEARCH_OPTION:
-            return ENDS_WITH;
-        case SIBLING_CLASSES_SEARCH_OPTION:
-            return SIBLING_CLASSES;
-        case SUB_CLASSES_SEARCH_OPTION:
-            return SUB_CLASSES;
-        case PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION:
-            return PROPERTIES_OF_DOMAIN_CLASS;
-        case PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION:
-            return PROPERTIES_OF_RANGE_CLASS;
-        case DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION:
-            return DOMAIN_CLASSES_OF_PROPERTY;
-        case RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION:
-            return RANGE_CLASSES_OF_PROPERTY;
-        case INSTANCES_OF_CLASS_SEARCH_OPTION:
-            return INSTANCES_OF_CLASS;
-        case TYPES_OF_INSTANCE_SEARCH_OPTION:
-            return TYPES_OF_INSTANCE;
-        case INVERSE_STATEMENTS_SEARCH_OPTION:
-            return INVERSE_STATEMENTS;
-        case PATH_TO_ROOT_CLASS_SEARCH_OPTION:
-            return PATH_TO_ROOT_CLASS;
+    var selectedOption = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option);
+    var selectedOptionLabel = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels[selectedOption];
+    /*
+     switch (record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option)) {
+     case EXACT_MATCH_SEARCH_OPTION:
+     return EXACT_MATCH;
+     case  ANY_MATCH_SEARCH_OPTION:
+     return ANY_MATCH;
+     case STARTS_WITH_SEARCH_OPTION:
+     return STARTS_WITH;
+     case ENDS_WITH_SEARCH_OPTION:
+     return ENDS_WITH;
+     case SIBLING_CLASSES_SEARCH_OPTION:
+     return SIBLING_CLASSES;
+     case SUB_CLASSES_SEARCH_OPTION:
+     return SUB_CLASSES;
+     case PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION:
+     return PROPERTIES_OF_DOMAIN_CLASS;
+     case PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION:
+     return PROPERTIES_OF_RANGE_CLASS;
+     case DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+     return DOMAIN_CLASSES_OF_PROPERTY;
+     case RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION:
+     return RANGE_CLASSES_OF_PROPERTY;
+     case INSTANCES_OF_CLASS_SEARCH_OPTION:
+     return INSTANCES_OF_CLASS;
+     case TYPES_OF_INSTANCE_SEARCH_OPTION:
+     return TYPES_OF_INSTANCE;
+     case INVERSE_STATEMENTS_SEARCH_OPTION:
+     return INVERSE_STATEMENTS;
+     case PATH_TO_ROOT_CLASS_SEARCH_OPTION:
+     return PATH_TO_ROOT_CLASS;
+     }
+     */
+    if (selectedOptionLabel != null) {
+        return selectedOptionLabel;
+    } else {
+        return WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match;
     }
-    return EXACT_MATCH;
+    //    return EXACT_MATCH;
 }
 
 function openHistoryAndBookmarkData(record) {
-    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
-    queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
+    var keyword = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name);
+    queryType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
     selectResourceTypeRadioButton();
-    searchTargetType = record.get(SEARCH_TARGET_PARAMETER_KEY);
+    searchTargetType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target);
     selectSearchTargetRadioButton();
-    inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
+    inferenceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type);
 
-    Ext.getDom('use_inf_model').checked = (inferenceType == RDFS_INFERENCE);
+    Ext.getDom('use_inf_model').checked = (inferenceType == WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptionLabels.rdfs);
 
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-    var searchOption = record.get(SEARCH_OPTION_PARAMETER_KEY);
+    var searchOption = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option);
     resetSearchOptionList(searchOption);
-    
-    var version = record.get(VERSION_PARAMETER_KEY);
+
+    var version = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version);
     if (version == "") {
         version = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
@@ -577,13 +603,13 @@ function openHistoryAndBookmarkData(record) {
 
 function selectResourceTypeRadioButton() {
     switch (queryType) {
-        case QTYPE_CLASS:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
             Ext.getDom('class_button').checked = true;
             break;
-        case QTYPE_PROPERTY:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
             Ext.getDom('property_button').checked = true;
             break;
-        case QTYPE_INSTANCE:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
             Ext.getDom('instance_button').checked = true;
             break;
     }
@@ -591,10 +617,10 @@ function selectResourceTypeRadioButton() {
 
 function selectSearchTargetRadioButton() {
     switch (searchTargetType) {
-        case URI_SEARCH_TARGET_OPTION:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri:
             Ext.getCmp("uri_radio_button").setValue(true);
             break;
-        case LABEL_SEARCH_TARGET_OPTION:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.label:
             Ext.getCmp("label_radio_button").setValue(true);
             break;
     }

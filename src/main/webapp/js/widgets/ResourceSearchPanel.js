@@ -11,10 +11,14 @@ function getResourceSearchPanel(type) {
             return new Ext.data.ArrayStore({
                 fields : ["Search_Option", "Search_Option_Value"],
                 data : [
-                    [NAME_ASC, NAME_ASC_OPTION],
-                    [NAME_DESC, NAME_DESC_OPTION],
-                    [INSTANCE_COUNT_ASC, INSTANCE_COUNT_ASC_OPTION],
-                    [INSTANCE_COUNT_DESC, INSTANCE_COUNT_DESC_OPTION]
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_asc,
+                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_desc,
+                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_desc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.instance_count_asc,
+                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_asc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.instance_count_desc,
+                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_desc]
                 ]
             });
         }
@@ -23,8 +27,10 @@ function getResourceSearchPanel(type) {
             return new Ext.data.ArrayStore({
                 fields : ["Search_Option", "Search_Option_Value"],
                 data : [
-                    [NAME_ASC, NAME_ASC_OPTION],
-                    [NAME_DESC, NAME_DESC_OPTION],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_asc,
+                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_desc,
+                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_desc],
                 ]
             });
         }
@@ -45,9 +51,9 @@ function getResourceSearchPanel(type) {
             store : searchOptionList
         });
         if (type == INSTANCE) {
-            comboBox.setValue(NAME_ASC);
+            comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc);
         } else {
-            comboBox.setValue(INSTANCE_COUNT_DESC_OPTION);
+            comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_desc);
         }
         return comboBox;
     }
@@ -56,10 +62,14 @@ function getResourceSearchPanel(type) {
         var searchOptionList = new Ext.data.ArrayStore({
             fields : ["Search_Option", "Search_Option_Value"],
             data : [
-                [EXACT_MATCH, EXACT_MATCH_SEARCH_OPTION],
-                [ANY_MATCH, ANY_MATCH_SEARCH_OPTION],
-                [STARTS_WITH, STARTS_WITH_SEARCH_OPTION],
-                [ENDS_WITH, ENDS_WITH_SEARCH_OPTION]
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.exact_match,
+                    WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.any_match,
+                    WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.any_match],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.starts_with,
+                    WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.starts_with],
+                [WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.ends_with,
+                    WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.ends_with]
             ]
         });
 
@@ -73,7 +83,7 @@ function getResourceSearchPanel(type) {
             mode : "local",
             store : searchOptionList
         });
-        comboBox.setValue(EXACT_MATCH_SEARCH_OPTION);
+        comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
         return comboBox;
     }
 
@@ -133,7 +143,7 @@ function getResourceSearchPanel(type) {
 
     var searchOptionField = {
         border: false,
-        fieldLabel: SEARCH_OPTION,
+        fieldLabel: WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.search_option,
         xtype: 'compositefield',
         items: searchOptionSelection
     }

@@ -13,13 +13,13 @@ function addHistoryData(queryURI) {
     var params = extractParametersFromURI(queryURI);
     var record = [
         new Date().toLocaleString(),
-        params[RESOURCE_NAME_PARAMETER_KEY],
-        params[RESOURCE_TYPE_PARAMETER_KEY],
-        params[SEARCH_TARGET_PARAMETER_KEY],
-        params[SEARCH_OPTION_PARAMETER_KEY],
-        params[INFERENCE_TYPE_PARAMETER_KEY],
-        params[URI_PARAMETER_KEY],
-        params[VERSION_PARAMETER_KEY]
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name],
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type],
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target],
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option],
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type],
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri],
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version]
     ];
     historyDataArray.push(record);
     saveHistoryDataToWebStorage();
@@ -55,13 +55,13 @@ function addSelectedHistoriesToBookmark() {
     for (var i = 0; i < records.length; i++) {
         bookmarkArray.push([
             new Date().toLocaleString(),
-            records[i].get(RESOURCE_NAME_PARAMETER_KEY),
-            records[i].get(RESOURCE_TYPE_PARAMETER_KEY),
-            records[i].get(SEARCH_TARGET_PARAMETER_KEY),
-            records[i].get(SEARCH_OPTION_PARAMETER_KEY),
-            records[i].get(INFERENCE_TYPE_PARAMETER_KEY),
-            records[i].get(URI_PARAMETER_KEY),
-            records[i].get(VERSION_PARAMETER_KEY)]);
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name),
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type),
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target),
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option),
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type),
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri),
+            records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version)]);
     }
     saveBookmarksToWebStorage();
 }
@@ -71,7 +71,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
         columns : [historyDataCheckboxSelectionModel,
             {
                 id : 'date_id',
-                dataIndex : DATE_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
                 header : DATE_AND_HOUR,
                 hidden : isSidePanel,
                 renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
@@ -79,14 +79,14 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'resource_name_id',
-                dataIndex : RESOURCE_NAME_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name,
                 header : KEYWORD,
                 renderer : renderKeyword,
                 width : 200
             },
             {
                 id : 'resource_type_id',
-                dataIndex : RESOURCE_TYPE_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type,
                 header : RESOURCE_TYPE,
                 hidden : isSidePanel,
                 renderer : renderResourceType,
@@ -94,7 +94,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'search_target_type_id',
-                dataIndex : SEARCH_TARGET_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target,
                 header : SEARCH_TARGET,
                 hidden : isSidePanel,
                 renderer : renderSearchTargetType,
@@ -102,15 +102,15 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'search_option_id',
-                dataIndex : SEARCH_OPTION_PARAMETER_KEY,
-                header : SEARCH_OPTION,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.search_option,
                 hidden : isSidePanel,
                 renderer : renderSearchOption,
                 width : 100
             },
             {
                 id : 'inference_type_id',
-                dataIndex : INFERENCE_TYPE_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type,
                 header : USE_INFERENCE_MODEL,
                 hidden : isSidePanel,
                 renderer : renderInferenceType,
@@ -118,13 +118,13 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             },
             {
                 id : 'uri_id',
-                dataIndex : URI_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri,
                 header : URI,
                 hidden : isSidePanel
             },
             {
                 id : 'version_id',
-                dataIndex : VERSION_PARAMETER_KEY,
+                dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version,
                 header : VERSION,
                 hidden : isSidePanel,
                 renderer : renderVersionOption
@@ -142,34 +142,34 @@ var historyDataStore = new Ext.data.Store({
     proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
     reader: new Ext.data.ArrayReader({}, [
         {
-            name : DATE_PARAMETER_KEY,
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
             type: 'date'
         },
         {
-            name : RESOURCE_NAME_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name
         },
         {
-            name : RESOURCE_TYPE_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type
         },
         {
-            name : SEARCH_TARGET_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target
         },
         {
-            name : SEARCH_OPTION_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option
         },
         {
-            name : INFERENCE_TYPE_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type
         },
         {
-            name : URI_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri
         },
         {
-            name : VERSION_PARAMETER_KEY
+            name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version
         }
     ]),
     remoteSort: true,
     sortInfo : {
-        field : DATE_PARAMETER_KEY,
+        field : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
         direction : "DESC"
     }
 });
@@ -304,7 +304,7 @@ function getHistoryPanel() {
     tbar.add(createSorterButton({
         text: DATE_AND_HOUR,
         sortData: {
-            field: DATE_PARAMETER_KEY,
+            field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
             direction: 'DESC'
         }
     }));
@@ -312,15 +312,15 @@ function getHistoryPanel() {
     tbar.add(createSorterButton({
         text: KEYWORD,
         sortData: {
-            field: RESOURCE_NAME_PARAMETER_KEY,
+            field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name,
             direction: 'ASC'
         }
     }));
 
     tbar.add(createSorterButton({
-        text: SEARCH_OPTION,
+        text: WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.search_option,
         sortData: {
-            field: SEARCH_OPTION_PARAMETER_KEY,
+            field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option,
             direction: 'ASC'
         }
     }));
@@ -434,15 +434,15 @@ function showHistoryContextMenu(grid, rowIndex, cellIndex, e) {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     historyDataCheckboxSelectionModel.selectRow(rowIndex);
     var record = historyDataCheckboxSelectionModel.getSelected();
-    var resourceType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
+    var resourceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
     switch (resourceType) {
-        case QTYPE_CLASS:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
             makeHistoryClassContextMenu(record).showAt(e.getXY());
             break;
-        case QTYPE_PROPERTY:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
             makeHistoryPropertyContextMenu(record).showAt(e.getXY());
             break;
-        case QTYPE_INSTANCE:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
             makeHistoryInstanceContextMenu(record).showAt(e.getXY());
             break;
     }
@@ -451,7 +451,7 @@ function showHistoryContextMenu(grid, rowIndex, cellIndex, e) {
 function makeHistoryClassContextMenu(record) {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var record = historyDataCheckboxSelectionModel.getSelected();
-    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
+    var keyword = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name);
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
 
     return new Ext.menu.Menu({
@@ -470,11 +470,11 @@ function makeHistoryClassContextMenu(record) {
                 text : getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
-                    queryType = record.get(RESOURCE_TYPE_PARAMETER_KEY);
+                    queryType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
                     selectResourceTypeRadioButton();
-                    inferenceType = record.get(INFERENCE_TYPE_PARAMETER_KEY);
+                    inferenceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type);
                     Ext.getDom('use_inf_model').setValue(useInfModel);
-                    searchOptionSelection.setValue(record.get(SEARCH_OPTION_PARAMETER_KEY));
+                    searchOptionSelection.setValue(record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option));
                     searchStatementsByContextMenu(currentkeyword + " " + keyword);
                 }
             },
@@ -506,7 +506,7 @@ function makeHistoryInstanceContextMenu(record) {
 function makeHistoryInstanceAndPropertyContextMenu(record) {
     var historyDataCheckboxSelectionModel = Ext.getCmp('HistoryPanel').getSelectionModel();
     var record = historyDataCheckboxSelectionModel.getSelected();
-    var keyword = record.get(RESOURCE_NAME_PARAMETER_KEY);
+    var keyword = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name);
 
     return new Ext.menu.Menu({
         style : {

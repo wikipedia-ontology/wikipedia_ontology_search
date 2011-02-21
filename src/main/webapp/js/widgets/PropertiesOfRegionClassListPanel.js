@@ -34,10 +34,10 @@ function getPropertiesOfRegionClassListPanel(type) {
     var headerLabel = "";
     if (type == DOMAIN) {
         panelIdLabel = "PropertiesOfDomainClass";
-        headerLabel = PROPERTIES_OF_DOMAIN_CLASS;
+        headerLabel = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.properties_of_domain_class;
     } else if (type == RANGE) {
         panelIdLabel = "PropertiesOfRangeClass";
-        headerLabel = PROPERTIES_OF_RANGE_CLASS;
+        headerLabel = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.properties_of_range_class;
     }
     var propertiesOfRegionClassListTableDataStore = getPropertiesOfRegionClassListTableDataStore(type);
 
@@ -78,7 +78,7 @@ function showPropertyContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = QTYPE_PROPERTY;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
     makePropertyContextMenu(keyword).showAt(e.getXY());
 }
 

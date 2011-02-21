@@ -53,7 +53,7 @@ function getInstanceTypeListPanel() {
         store : instanceTypeListTableDataStore,
         columns : [
             {
-                header : TYPES_OF_INSTANCE,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.types_of_instance,
                 dataIndex : "type",
                 id : "instance_type_list_table_type_column",
                 renderer : openType,
@@ -74,7 +74,7 @@ function showTypeContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = QTYPE_CLASS;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 

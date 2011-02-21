@@ -86,7 +86,7 @@ function showClassContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = QTYPE_CLASS;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 
@@ -108,11 +108,11 @@ function loadClassInstanceData(clsName) {
 
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
     propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + JSON_EXTENSION + "?search_option="
-            + PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION);
+            + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_domain_class);
     loadStore(propertiesOfDomainClassListTablePanel.store);
 
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
     propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + JSON_EXTENSION + "?search_option="
-            + PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION);
+            + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_range_class);
     loadStore(propertiesOfRangeClassListTablePanel.store);
 }

@@ -105,7 +105,7 @@ function showInstanceContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = QTYPE_INSTANCE;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
     makeInstanceContextMenu(keyword).showAt(e.getXY());
 }
 

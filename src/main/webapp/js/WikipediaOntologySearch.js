@@ -7,9 +7,9 @@
  *
  */
 
-var queryType = QTYPE_CLASS;
-var inferenceType = NONE_INFERENCE_OPTION;
-var searchTargetType = URI_SEARCH_TARGET_OPTION;
+var queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+var inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
+var searchTargetType = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
 
 var show_isa_tree = true;
 var expand_all_class = true;

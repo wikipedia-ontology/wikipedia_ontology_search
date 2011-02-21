@@ -84,7 +84,7 @@ function showPropertyContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
-    queryType = QTYPE_PROPERTY;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
     makePropertyContextMenu(keyword).showAt(e.getXY());
 }
 
@@ -106,12 +106,12 @@ function loadPropertyInstanceData(propertyName) {
 
     var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
     domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_DATA_URL + propertyName + JSON_EXTENSION + "?search_option="
-            + DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION);
+            + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.domain_classes_of_property);
     loadStore(domainClassesOfPropertyListTablePanel.store);
 
     var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
     rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_DATA_URL + propertyName + JSON_EXTENSION + "?search_option="
-            + RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION);
+            + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.range_classes_of_property);
     loadStore(rangeClassesOfPropertyListTablePanel.store);
 
 }

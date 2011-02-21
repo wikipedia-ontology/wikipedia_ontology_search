@@ -74,7 +74,7 @@ function getStatementTabPanel() {
         ]
     });
 
-    var uriPanel =  new Ext.Panel({
+    var uriPanel = new Ext.Panel({
         frame : true,
         height: 30,
         bodyStyle : 'padding: 10px;',

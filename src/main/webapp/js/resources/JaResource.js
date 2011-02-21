@@ -92,73 +92,50 @@ var MANUAL_HTML = "manual.html";
 var SEARCH_EN_HTML = "en_search.html";
 var SEARCH_JA_HTML = "search.html";
 
-// parameter keys
-var DATE_PARAMETER_KEY = "date";
-var RESOURCE_TYPE_PARAMETER_KEY = "resource_type";
-var SEARCH_TARGET_PARAMETER_KEY = "search_target";
-var RESOURCE_NAME_PARAMETER_KEY = "resource_name";
-var SEARCH_OPTION_PARAMETER_KEY = "search_option";
-var VERSION_PARAMETER_KEY = "version";
-var URI_PARAMETER_KEY = "uri";
-var INFERENCE_TYPE_PARAMETER_KEY = "inference_type";
 
-//inference type
-var NONE_INFERENCE = "なし";
-var NONE_INFERENCE_OPTION = "none";
-var RDFS_INFERENCE = "RDFS";
-var RDFS_INFERENCE_OPTION = "rdfs";
+var WIKIPEDIA_ONTOLOGY_SEARCH = {};
 
-// queryType
-var QTYPE_CLASS = 'class';
-var QTYPE_PROPERTY = 'property';
-var QTYPE_INSTANCE = 'instance';
+WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptionLabels = {
+    rdfs: "RDFS",
+    none: "なし"
+};
 
-// 検索対象オプション関連の定数
-var URI = "URI";
-var URI_SEARCH_TARGET_OPTION = "uri";
-var LABEL = "ラベル";
-var LABEL_SEARCH_TARGET_OPTION = "label";
+WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels = {
+    class: "クラス",
+    property: "プロパティ",
+    instance: "インスタンス"
+}
+
+WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptionLabels = {
+    uri: "URI" ,
+    label: "ラベル"
+}
 
 // 検索オプション関連の定数
-var SEARCH_OPTION = "検索オプション";
-var EXACT_MATCH = "完全一致";
-var EXACT_MATCH_SEARCH_OPTION = "exact_match";
-var ANY_MATCH = "部分一致";
-var ANY_MATCH_SEARCH_OPTION = "any_match";
-var STARTS_WITH = "前方一致";
-var STARTS_WITH_SEARCH_OPTION = "starts_with";
-var ENDS_WITH = "後方一致";
-var ENDS_WITH_SEARCH_OPTION = "ends_with";
-var SIBLING_CLASSES = "兄弟クラス";
-var SIBLING_CLASSES_SEARCH_OPTION = "sibling_classes";
-var SUB_CLASSES = "下位クラス";
-var SUB_CLASSES_SEARCH_OPTION = "sub_classes";
-var PROPERTIES_OF_DOMAIN_CLASS = "定義域クラスのプロパティ";
-var PROPERTIES_OF_DOMAIN_CLASS_SEARCH_OPTION = "properties_of_domain_class";
-var PROPERTIES_OF_RANGE_CLASS = "値域クラスのプロパティ";
-var PROPERTIES_OF_RANGE_CLASS_SEARCH_OPTION = "properties_of_range_class";
-var DOMAIN_CLASSES_OF_PROPERTY = "プロパティの定義域";
-var DOMAIN_CLASSES_OF_PROPERTY_SEARCH_OPTION = "domain_classes_of_property";
-var RANGE_CLASSES_OF_PROPERTY = "プロパティの値域";
-var RANGE_CLASSES_OF_PROPERTY_SEARCH_OPTION = "range_classes_of_property";
-var INSTANCES_OF_CLASS = "クラスのインスタンス";
-var INSTANCES_OF_CLASS_SEARCH_OPTION = "instances_of_class";
-var TYPES_OF_INSTANCE = "インスタンスのタイプ";
-var TYPES_OF_INSTANCE_SEARCH_OPTION = "types_of_instance";
-var INVERSE_STATEMENTS = "逆関係のステートメント";
-var INVERSE_STATEMENTS_SEARCH_OPTION = "inverse";
-var PATH_TO_ROOT_CLASS = "ルートクラスまでのパス";
-var PATH_TO_ROOT_CLASS_SEARCH_OPTION = "path_to_root_class";
+WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels = {
+    search_option: "検索オプション",
+    exact_match: "完全一致",
+    any_match: "部分一致",
+    starts_with: "前方一致",
+    ends_with: "後方一致",
+    sibling_classes: "兄弟クラス",
+    sub_classes: "下位クラス",
+    properties_of_domain_class: "定義域クラスのプロパティ",
+    properties_of_range_class: "値域クラスのプロパティ",
+    domain_classes_of_property: "プロパティの定義域",
+    range_classes_of_property: "プロパティの値域",
+    instances_of_class: "クラスのインスタンス",
+    types_of_instance: "インスタンスのタイプ",
+    inverse_statements: "逆関係のステートメント",
+    path_to_root_class: "ルートクラスまでのパス"
+};
 
-// order by 関連の定数
-var NAME_ASC = "名前（昇順）";
-var NAME_ASC_OPTION = "name_asc";
-var NAME_DESC = "名前（降順）";
-var NAME_DESC_OPTION = "name_desc";
-var INSTANCE_COUNT_ASC = "インスタンス数（昇順）";
-var INSTANCE_COUNT_ASC_OPTION = "instance_count_asc";
-var INSTANCE_COUNT_DESC = "インスタンス数（降順）";
-var INSTANCE_COUNT_DESC_OPTION = "instance_count_desc";
+WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels = {
+    name_asc: "名前（昇順）",
+    name_desc: "名前（降順）",
+    instance_count_asc: "インスタンス数（昇順）",
+    instance_count_desc: "インスタンス数（降順）"
+}
 
 function getSearchKeywordLabel(keyword) {
     return keyword + "を検索";

@@ -6,23 +6,23 @@
 
 function setQueryType() {
     if (Ext.getCmp("class_button").checked) {
-        queryType = QTYPE_CLASS;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
     } else if (Ext.getCmp("property_button").checked) {
-        queryType = QTYPE_PROPERTY;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
     } else if (Ext.getCmp("instance_button").checked) {
-        queryType = QTYPE_INSTANCE;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
     }
-    resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
+    resetSearchOptionList(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
     setURIField("StatementURIField", getQueryURI(""));
 }
 
 function setSearchTargetType() {
     if (Ext.getCmp("uri_radio_button").checked) {
-        searchTargetType = URI_SEARCH_TARGET_OPTION;
+        searchTargetType = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
     } else if (Ext.getCmp("label_radio_button").checked) {
-        searchTargetType = LABEL_SEARCH_TARGET_OPTION;
+        searchTargetType = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.label;
     }
-    resetSearchOptionList(EXACT_MATCH_SEARCH_OPTION);
+    resetSearchOptionList(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
     setURIField("StatementURIField", getQueryURI(""));
 }
 
@@ -77,7 +77,7 @@ function getStatementSearchPanel() {
             },
             {
                 xtype: 'radio',
-                boxLabel : LABEL,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptionLabels.label,
                 name : 'search_target',
                 id : 'label_radio_button',
                 width: 80
@@ -91,7 +91,7 @@ function getStatementSearchPanel() {
 
     var searchOptionField = {
         border: false,
-        fieldLabel: SEARCH_OPTION,
+        fieldLabel: WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.search_option,
         xtype: 'compositefield',
         items: [
             searchOptionRadioGroup,
@@ -141,9 +141,9 @@ function getStatementSearchPanel() {
 
     function setInferenceType() {
         if (Ext.getDom('use_inf_model').checked) {
-            inferenceType = RDFS_INFERENCE_OPTION;
+            inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.rdfs;
         } else {
-            inferenceType = NONE_INFERENCE_OPTION;
+            inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
         }
         setURIField("StatementURIField", getQueryURI(""));
     }

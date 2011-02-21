@@ -50,14 +50,14 @@ function exportBookmarks() {
     for (var i = 0; i < bookmarkStore.getCount(); i++) {
         var record = bookmarkStore.getAt(i);
         exportText += [
-            record.get(DATE_PARAMETER_KEY),
-            record.get(RESOURCE_NAME_PARAMETER_KEY),
-            record.get(RESOURCE_TYPE_PARAMETER_KEY),
-            record.get(SEARCH_TARGET_PARAMETER_KEY),
-            record.get(SEARCH_OPTION_PARAMETER_KEY),
-            record.get(INFERENCE_TYPE_PARAMETER_KEY),
-            record.get(URI_PARAMETER_KEY),
-            record.get(VERSION_PARAMETER_KEY)
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri),
+            record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version)
         ].join(",") + "\n";
     }
     Ext.getCmp('bookmark_source_text_area').setValue(exportText);
