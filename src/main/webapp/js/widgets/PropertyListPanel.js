@@ -22,7 +22,7 @@ function getPropertyListTableDataStore() {
     return new Ext.data.Store({
         id : 'PropertyListTableDataStore',
         reader : reader,
-        proxy : getProxy(PROPERTY_LIST_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp("PropertyListTablePanel").body != undefined) {
@@ -43,10 +43,10 @@ function getPropertyListPanel() {
 
     var pagingToolBar = new Ext.PagingToolbar({
         id : 'PropertyListPagingToolBar',
-        pageSize : RESOURCE_LIST_SIZE_LIMIT,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : propertyListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + PROPERTY + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -59,13 +59,13 @@ function getPropertyListPanel() {
         columns : [
             {
                 id: "property_list_table_property_column",
-                header : PROPERTY,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property,
                 dataIndex : "property",
                 renderer : renderPropertyLink,
                 sortable : true
             },
             {
-                header : NUMBER_OF_INSTANCES,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfInstances,
                 dataIndex : "count",
                 sortable : true
             }
@@ -83,34 +83,36 @@ function getPropertyListPanel() {
 function showPropertyContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
     makePropertyContextMenu(keyword).showAt(e.getXY());
 }
 
 function renderPropertyLink(propertyName) {
-    return "<img alt='" + propertyName + "' src='" + BASE_ICON_URL + "property_icon_s.png'/> " +
+    return "<img alt='" + propertyName + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "property_icon_s.png'/> " +
             '<a href="' + propertyName + '" onclick="loadPropertyInstanceData(\'' + propertyName + '\'); return false;">' + propertyName + "</a>";
 }
 
 function loadPropertyInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     loadPropertyInstanceData(keyword);
 }
 
 function loadPropertyInstanceData(propertyName) {
     var instanceListPanel = Ext.getCmp("PropertyInstanceListTablePanel");
-    instanceListPanel.store.proxy = getProxy(PROPERTY_LIST_DATA_URL + "?property=" + propertyName);
+    instanceListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL + "?property=" + propertyName);
     loadStore(instanceListPanel.store);
 
     var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
-    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_DATA_URL + propertyName + JSON_EXTENSION + "?search_option="
+    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL +
+            propertyName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.domain_classes_of_property);
     loadStore(domainClassesOfPropertyListTablePanel.store);
 
     var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
-    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(BASE_SERVER_PROPERTY_DATA_URL + propertyName + JSON_EXTENSION + "?search_option="
+    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL +
+            propertyName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.range_classes_of_property);
     loadStore(rangeClassesOfPropertyListTablePanel.store);
 

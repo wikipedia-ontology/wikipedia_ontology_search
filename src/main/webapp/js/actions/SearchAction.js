@@ -14,14 +14,15 @@ function getDefaultKeyword(keyword) {
 function getQueryURI(keyword) {
     keyword = getDefaultKeyword(keyword);
     var keywords = keyword.split(/\s+/);
-    var queryURI = BASE_SERVER_URL;
+    var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL;
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     var searchOption = "search_option=" + searchOptionSelection.getValue();
     var versionOptionSelection = Ext.getCmp('Version_Option');
     var versionOption = "version=" + versionOptionSelection.getValue();
     
     if (1 < keywords.length) {
-        queryURI += CLASS_PATH + DATA_PATH + "q" + JSON_EXTENSION + "?";
+        queryURI += WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH +
+                "q" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?";
         for (var i = 0; i < keywords.length; i++) {
             queryURI += "type=" + keywords[i];
             if (i != keywords.length - 1) {
@@ -53,7 +54,7 @@ function getQueryURI(keyword) {
         if (queryType == undefined) {
             queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
         }
-        queryURI += queryType + '/' + DATA_PATH + keyword + JSON_EXTENSION;
+        queryURI += queryType + '/' + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH + keyword + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
         queryURI += getSearchTargetOption();
         queryURI += '&' + searchOption;
         queryURI += '&' + versionOption;

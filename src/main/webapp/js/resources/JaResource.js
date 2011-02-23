@@ -4,96 +4,107 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
-var APP_TITLE = "日本語Wikipediaオントロジー検索インタフェース";
-var KEYWORD = "キーワード";
-var SEARCH = "検索";
-var CLASS = "クラス";
-var DOMAIN = "定義域";
-var RANGE = "値域";
-var CLASS_LIST = "クラス一覧";
-var PROPERTY = "プロパティ";
-var PROPERTY_LIST = "プロパティ一覧";
-var INSTANCE = "インスタンス";
-var INSTANCE_LIST = "インスタンス一覧";
-var RESOURCE_TYPE = "リソースのタイプ";
-var SEARCH_TARGET = "検索対象";
-var USE_INFERENCE_MODEL = "推論モデルの利用";
-var NUMBER_OF_STATEMENTS = "表示ステートメント数";
-var COMMUNICATION_ERROR = "通信エラー";
-var STATUS = "ステータス";
-var STATEMENT = "ステートメント";
-var NEW_TAB = "新しいタブ";
-var ADD_TAB = "タブを追加";
-var OPEN_NEW_TAB = "新しいタブで開く";
-var OPEN_RDF_FILE = "RDFファイルを開く";
-var SUBJECT = "主語";
-var PREDICATE = "述語";
-var OBJECT = "目的語";
-var SORTING_ORDER = "ソート順";
-var NUMBER_OF_INSTANCES = "インスタンス数";
-var DATE_AND_HOUR = "日時";
-var URL = "URL";
-var URI = "URI";
-var SEARCH_HISTORY = "検索履歴";
-var OPEN_SELECTED_HISTORY = "選択した履歴を開く";
-var ADD_SELECTED_HISTORIES_TO_BOOKMARK = "選択した履歴をブックマークに追加";
-var REMOVE_SELECTED_HISTORIES = "選択した履歴を削除";
-var REMOVE_ALL_HISTORY = "すべての履歴を削除";
-var BOOKMARK = "ブックマーク";
-var OPEN_SELECTED_BOOKMARK = "選択したブックマークを開く";
-var REMOVE_SELECTED_BOOKMARKS = "選択したブックマークを削除";
-var IMPORT = "インポート";
-var EXPORT = "エクスポート";
-var IMPORT_OR_EXPORT_BOOKMARKS = 'ブックマークのインポート/エクスポート';
-var CLOSE = "閉じる";
-var CLASS_HIERARCHY = "クラス階層";
-var WHOLE_CLASS_HIERARCHY = "全クラス階層";
-var FIND_CLASSES_OR_INSTANCES = "クラスまたはインスタンスを検索";
-var FIND_CLASSES = "クラスを検索";
-var EXPAND_ALL = "階層をすべて開く";
-var COLLAPSE_ALL = "階層をすべて閉じる";
-var ROOT_CLASS = "ルートクラス";
-var BOOKMARK_AND_SEARCH_HISTORY = "ブックマークと検索履歴";
-var ABOUT_CLASS_HIERARCHY = "クラス階層関連";
-var SHOW_CLASS_HIERARCHY = "クラス階層を表示";
-var EXPAND_ALL_CLASS_HIERARCHY = "クラス階層をすべて展開して表示する";
-var ABOUT_RDF_XML = "RDF/XML関連";
-var ABOUT_STATEMENT_TABLE = "ステートメントテーブル関連";
-var CLOSE_GROUPING_STATEMENTS = "グルーピングをすべて閉じた状態で表示";
-var OPTION = "オプション";
-var VERSION_INFORMATION = "バージョン情報";
-var TOOL = "ツール";
-var HELP = "ヘルプ";
-var VERSION = "バージョン";
-var SHOW_WHOLE_CLASS_HIERARCHY = "全クラス階層を表示";
-var HIERARCHY = "階層表示";
-
-var STATISTICS_INFORMATION = "統計情報";
-var NUMBER_OF_RESOURCES = "リソース数";
-var NUMBER_OF_CLASSES = "クラス数";
-var NUMBER_OF_PROPERTIES = "プロパティ数";
-var NUMBER_OF_INSTANCES = "インスタンス数";
-var TOTAL_NUMBER_OF_STATEMENTS = "全ステートメント数: 7,588,865";
-var NUMBER_OF_ISA_RELATIONSHIPS = "Is-a関係数";
-var NUMBER_OF_TYPES_OF_INSTANCES = "インスタンスのタイプ数";
-
-var MENU = "メニュー";
-var SOURCE_CODE = "ソースコード";
-var BOOKMARK_RECORD_LENGTH = 8;
-
-var LANGUAGE = "言語";
-var ENGLISH = "English";
-var JAPANESE = "日本語";
-var LOADING = "読み込み中・・・";
-var SEARCHING = "検索中・・・";
-var HELP_HTML = "help.html";
-var MANUAL = "マニュアル";
-var MANUAL_HTML = "manual.html";
-var SEARCH_EN_HTML = "en_search.html";
-var SEARCH_JA_HTML = "search.html";
-
-
 var WIKIPEDIA_ONTOLOGY_SEARCH = {};
+
+WIKIPEDIA_ONTOLOGY_SEARCH.resources = {
+    appTitle : "日本語Wikipediaオントロジー検索インタフェース",
+    keyword : "キーワード",
+    search : "検索",
+    domain : "定義域",
+    range : "値域",
+    classList : "クラス一覧",
+    propertyList : "プロパティ一覧",
+    instanceList : "インスタンス一覧",
+    resourceType : "リソースのタイプ",
+    searchTarget : "検索対象",
+    useInferenceModel : "推論モデルの利用",
+    numberOfStatements : "表示ステートメント数",
+    communicationError : "通信エラー",
+    status : "ステータス",
+    statement : "ステートメント",
+    newTab : "新しいタブ",
+    addTab : "タブを追加",
+    openNewTab : "新しいタブで開く",
+    openRDFFile : "RDFファイルを開く",
+    subject : "主語",
+    predicate : "述語",
+    object : "目的語",
+    stortingOrder : "ソート順",
+    numberOfInstances : "インスタンス数",
+    dateAndHour : "日時",
+    url : "URL",
+    uri : "URI",
+    searchHistory : "検索履歴",
+    openSelectedHistory : "選択した履歴を開く",
+    addSelectedHistoriesToBookmark : "選択した履歴をブックマークに追加",
+    removeSelectedHistories : "選択した履歴を削除",
+    removeAllHistory : "すべての履歴を削除",
+    bookmark : "ブックマーク",
+    openSelectedBookmark : "選択したブックマークを開く",
+    removeSelectedBookmarks : "選択したブックマークを削除",
+    import : "インポート",
+    export : "エクスポート",
+    importOrExportBookmarks : 'ブックマークのインポート/エクスポート',
+    close : "閉じる",
+    classHierarchy : "クラス階層",
+    wholeClassHierarchy : "全クラス階層",
+    findClassesOrInstances : "クラスまたはインスタンスを検索",
+    findClasses : "クラスを検索",
+    expandAll : "階層をすべて開く",
+    collapseAll : "階層をすべて閉じる",
+    rootClass : "ルートクラス",
+    bookmarkAndSearchHistory : "ブックマークと検索履歴",
+    aboutClassHierarchy : "クラス階層関連",
+    showClassHierarchy : "クラス階層を表示",
+    expandAllClassHierarchy : "クラス階層をすべて展開して表示する",
+    aboutRDFXML : "RDF/XML関連",
+    aboutStatementTable : "ステートメントテーブル関連",
+    closeGroupingStatements : "グルーピングをすべて閉じた状態で表示",
+    option : "オプション",
+    versionInformation : "バージョン情報",
+    tool : "ツール",
+    help : "ヘルプ",
+    version : "バージョン",
+    showWholeClassHierarchy : "全クラス階層を表示",
+    hierarchy : "階層表示",
+    statisticsInformation : "統計情報",
+    numberOfResources : "リソース数",
+    numberOfClasses : "クラス数",
+    numberOfProperties : "プロパティ数",
+    numberOfInstances : "インスタンス数",
+    totalNumberOfStatements : "全ステートメント数: 7,588,865",
+    numberOfIsaRelationships : "Is-a関係数",
+    numberOfTypesOfInstances : "インスタンスのタイプ数",
+    menu : "メニュー",
+    sourceCode : "ソースコード",
+    language : "言語",
+    english : "English",
+    japanese : "日本語",
+    loading : "読み込み中・・・",
+    searching : "検索中・・・",
+    helpHTML : "help.html",
+    manual : "マニュアル",
+    manualHTML : "manual.html",
+    searchEnHTML : "en_search.html",
+    searchJaHTML : "search.html",
+    getSearchKeywordLabel:function(keyword) {
+        return keyword + "を検索";
+    },
+    getNarrowDownKeywordLabel: function(keyword) {
+        return keyword + "で絞り込む";
+    },
+    getAddKeywordToBookmarkLabel:function(keyword) {
+        return keyword + "をブックマークに追加";
+    },
+    getRemoveKeywordFromBookmarkLabel:function(keyword) {
+        return keyword + "をブックマークから削除";
+    },
+    getRemoveKeywordFromHistoryLabel:function(keyword) {
+        return keyword + "を検索履歴から削除";
+    }
+};
+
+var LOADING = "読み込み中・・・";
 
 WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptionLabels = {
     rdfs: "RDFS",
@@ -137,22 +148,4 @@ WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels = {
     instance_count_desc: "インスタンス数（降順）"
 }
 
-function getSearchKeywordLabel(keyword) {
-    return keyword + "を検索";
-}
 
-function getNarrowDownKeywordLabel(keyword) {
-    return keyword + "で絞り込む";
-}
-
-function getAddKeywordToBookmarkLabel(keyword) {
-    return keyword + "をブックマークに追加";
-}
-
-function getRemoveKeywordFromBookmarkLabel(keyword) {
-    return keyword + "をブックマークから削除";
-}
-
-function getRemoveKeywordFromHistoryLabel(keyword) {
-    return keyword + "を検索履歴から削除";
-}

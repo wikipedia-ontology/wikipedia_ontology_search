@@ -32,7 +32,7 @@ function getStatementTabPanel() {
         items : [
             {
                 region: 'north',
-                title : BOOKMARK,
+                title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.bookmark,
                 iconCls: 'icon-book',
                 layout : 'fit',
                 split: true,
@@ -41,7 +41,7 @@ function getStatementTabPanel() {
             },
             {
                 region: 'center',
-                title : SEARCH_HISTORY,
+                title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchHistory,
                 iconCls: 'icon-time',
                 layout : 'fit',
                 split: true,
@@ -57,7 +57,7 @@ function getStatementTabPanel() {
             {
                 region : 'north',
                 layout : 'fit',
-                title: SEARCH,
+                title: WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
                 iconCls: 'icon-search',
                 height: 180,
                 animate: true,
@@ -83,7 +83,7 @@ function getStatementTabPanel() {
             {
                 region: 'west',
                 xtype: 'label',
-                text: URI,
+                text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.uri,
                 width: 30
             },
             {
@@ -112,7 +112,7 @@ function getStatementTabPanel() {
                 items : centerPanel
             },
             {
-                title : BOOKMARK_AND_SEARCH_HISTORY,
+                title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.bookmarkAndSearchHistory,
                 region : 'west',
                 layout : 'fit',
                 width : 250,
@@ -126,5 +126,5 @@ function getStatementTabPanel() {
 }
 
 function addTab() {
-    statementTabPanel.add(getStatementTablePanel(NEW_TAB, tabIndex++)).show();
+    statementTabPanel.add(getStatementTablePanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.newTab, tabIndex++)).show();
 }

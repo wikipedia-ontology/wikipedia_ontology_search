@@ -44,11 +44,11 @@ WikipediaOntologySearch = new Ext.app.App({
     // config for the start menu
     getStartConfig : function() {
         return {
-            title: MENU,
+            title: WIKIPEDIA_ONTOLOGY_SEARCH.resources.menu,
             iconCls: 'icon-table',
             toolItems: [
                 {
-                    text : WHOLE_CLASS_HIERARCHY,
+                    text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.wholeClassHierarchy,
                     iconCls: 'icon-expand-all',
                     handler : function() {
                         loadWholeIsaTree();
@@ -56,22 +56,22 @@ WikipediaOntologySearch = new Ext.app.App({
                 },
                 "-",
                 {
-                    text : MANUAL,
+                    text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.manual,
                     iconCls: 'icon-help',
                     handler : function() {
-                        window.open(HOME_URL + MANUAL_HTML);
+                        window.open(WIKIPEDIA_ONTOLOGY_SEARCH.constants.HOME_URL + WIKIPEDIA_ONTOLOGY_SEARCH.resources.manualHTML);
                     }
                 },
                 {
-                    text : ENGLISH,
+                    text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.english,
                     handler : function() {
-                        window.open(HOME_URL + SEARCH_EN_HTML, "_self");
+                        window.open(WIKIPEDIA_ONTOLOGY_SEARCH.constants.HOME_URL + WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchEnHTML, "_self");
                     }
                 },
                 {
-                    text : JAPANESE,
+                    text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.japanese,
                     handler : function() {
-                        window.open(HOME_URL + SEARCH_JA_HTML, "_self");
+                        window.open(WIKIPEDIA_ONTOLOGY_SEARCH.constants.HOME_URL + WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchJaHTML, "_self");
                     }
                 }
             ]
@@ -83,7 +83,7 @@ WikipediaOntologySearch.OptionWindow = Ext.extend(Ext.app.Module, {
     id:'option-win',
     init : function() {
         this.launcher = {
-            text : OPTION,
+            text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.option,
             iconCls:'icon-option',
             handler : this.createWindow,
             scope: this
@@ -96,7 +96,7 @@ WikipediaOntologySearch.OptionWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'option-win',
-                title : OPTION,
+                title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.option,
                 width:600,
                 height:200,
                 iconCls: 'icon-option',
@@ -116,7 +116,7 @@ WikipediaOntologySearch.HelpWindow = Ext.extend(Ext.app.Module, {
     id:'help-win',
     init : function() {
         this.launcher = {
-            text : HELP,
+            text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.help,
             iconCls:'icon-help',
             handler : this.createWindow,
             scope: this
@@ -129,7 +129,7 @@ WikipediaOntologySearch.HelpWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'help-win',
-                title : HELP,
+                title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.help,
                 width:600,
                 height:400,
                 iconCls: 'icon-help',
@@ -149,7 +149,7 @@ WikipediaOntologySearch.BookmarkWindow = Ext.extend(Ext.app.Module, {
     id:'bookmark-win',
     init : function() {
         this.launcher = {
-            text: BOOKMARK,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.bookmark,
             iconCls:'icon-bookmark',
             handler : this.createWindow,
             scope: this
@@ -162,7 +162,7 @@ WikipediaOntologySearch.BookmarkWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'bookmark-win',
-                title:BOOKMARK,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.bookmark,
                 width:800,
                 height:600,
                 iconCls: 'icon-bookmark',
@@ -182,7 +182,7 @@ WikipediaOntologySearch.HistoryWindow = Ext.extend(Ext.app.Module, {
     id:'history-win',
     init : function() {
         this.launcher = {
-            text: SEARCH_HISTORY,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchHistory,
             iconCls:'icon-history',
             handler : this.createWindow,
             scope: this
@@ -195,7 +195,7 @@ WikipediaOntologySearch.HistoryWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'history-win',
-                title:SEARCH_HISTORY,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchHistory,
                 width:800,
                 height:600,
                 iconCls: 'icon-history',
@@ -213,7 +213,7 @@ WikipediaOntologySearch.StatementWindow = Ext.extend(Ext.app.Module, {
     id:'statement-win',
     init : function() {
         this.launcher = {
-            text: STATEMENT,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.statement,
             iconCls:'icon-statement',
             handler : this.createWindow,
             scope: this
@@ -226,7 +226,7 @@ WikipediaOntologySearch.StatementWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'statement-win',
-                title:STATEMENT,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.statement,
                 width:1024,
                 height:768,
                 iconCls: 'icon-statement',
@@ -245,7 +245,7 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
     id:'class-list-win',
     init : function() {
         this.launcher = {
-            text: CLASS_LIST,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.classList,
             iconCls:'icon-class',
             handler : this.createWindow,
             scope: this
@@ -257,12 +257,12 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('class-list-win');
 
-        var resourceSearchPanel = getResourceSearchPanel(CLASS);
+        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class);
         var classListPanel = getClassListPanel();
         loadStore(classListPanel.store);
-        var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(DOMAIN);
-        var propertiesOfRangeClassListPanel = getPropertiesOfRegionClassListPanel(RANGE);
-        var classInstanceListPanel = getInstanceListPanel(CLASS);
+        var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.domain);
+        var propertiesOfRangeClassListPanel = getPropertiesOfRegionClassListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.range);
+        var classInstanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class);
 
         var regionListOfClassPanel = new Ext.Panel({
             layout : 'hbox',
@@ -336,7 +336,7 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'class-list-win',
-                title:CLASS_LIST,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.classList,
                 width:1024,
                 height:768,
                 iconCls: 'icon-class',
@@ -356,7 +356,7 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
     id:'tree-win',
     init : function() {
         this.launcher = {
-            text: CLASS_HIERARCHY,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.classHierarchy,
             iconCls:'icon-class-tree',
             handler : this.createWindow,
             scope: this
@@ -368,8 +368,8 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
         var win = desktop.getWindow('tree-win');
 
         var uriPanel = getURIPanel("TreeURIField");
-        var treePanel = getTreePanel(CLASS_HIERARCHY, "classTree");
-        var wholeTreePanel = getTreePanel(WHOLE_CLASS_HIERARCHY, "wholeClassTree");
+        var treePanel = getTreePanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.classHierarchy, "classTree");
+        var wholeTreePanel = getTreePanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.wholeClassHierarchy, "wholeClassTree");
 
         var mainPanel = new Ext.Panel({
             layout : 'border',
@@ -412,7 +412,7 @@ WikipediaOntologySearch.TreeWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'tree-win',
-                title:CLASS_HIERARCHY,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.classHierarchy,
                 width:800,
                 height:600,
                 iconCls: 'icon-class-tree',
@@ -433,7 +433,7 @@ WikipediaOntologySearch.SourceWindow = Ext.extend(Ext.app.Module, {
     id:'source-win',
     init : function() {
         this.launcher = {
-            text: SOURCE_CODE,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.sourceCode,
             iconCls:'icon-rdf',
             handler : this.createWindow,
             scope: this
@@ -446,7 +446,7 @@ WikipediaOntologySearch.SourceWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'source-win',
-                title: SOURCE_CODE,
+                title: WIKIPEDIA_ONTOLOGY_SEARCH.resources.sourceCode,
                 width:800,
                 height:600,
                 iconCls: 'icon-rdf',
@@ -455,7 +455,7 @@ WikipediaOntologySearch.SourceWindow = Ext.extend(Ext.app.Module, {
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items:getSourcePanel()
+                items:WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.getSourcePanel()
             });
         }
         win.show();
@@ -466,7 +466,7 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
     id:'property-list-win',
     init : function() {
         this.launcher = {
-            text: PROPERTY_LIST,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.propertyList,
             iconCls:'icon-property',
             handler : this.createWindow,
             scope: this
@@ -477,12 +477,12 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('property-list-win');
 
-        var resourceSearchPanel = getResourceSearchPanel(PROPERTY);
+        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property);
         var propertyListPanel = getPropertyListPanel();
         loadStore(propertyListPanel.store);
-        var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(DOMAIN);
-        var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(RANGE);
-        var propertyInstanceListPanel = getInstanceListPanel(PROPERTY);
+        var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.domain);
+        var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.range);
+        var propertyInstanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property);
 
         var regionListOfPropertyPanel = new Ext.Panel({
             layout : 'hbox',
@@ -556,7 +556,7 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
         if (!win) {
             win = desktop.createWindow({
                 id: 'property-list-win',
-                title : PROPERTY_LIST,
+                title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.propertyList,
                 width:1024,
                 height:768,
                 iconCls: 'icon-property',
@@ -576,7 +576,7 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
     id:'instance-list-win',
     init : function() {
         this.launcher = {
-            text: INSTANCE_LIST,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.instanceList,
             iconCls:'icon-instance',
             handler : this.createWindow,
             scope: this
@@ -587,8 +587,8 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('instance-list-win');
 
-        var resourceSearchPanel = getResourceSearchPanel(INSTANCE);
-        var instanceListPanel = getInstanceListPanel(INSTANCE);
+        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance);
+        var instanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance);
         loadStore(instanceListPanel.store);
         var instanceTypeListPanel = getInstanceTypeListPanel();
         var instanceListWindowPanel = new Ext.Panel({
@@ -615,11 +615,11 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
                     items: instanceTypeListPanel
                 }
             ]
-        })
+        });
         if (!win) {
             win = desktop.createWindow({
                 id: 'instance-list-win',
-                title:INSTANCE_LIST,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.instanceList,
                 width:1024,
                 height:768,
                 iconCls: 'icon-instance',
@@ -639,7 +639,7 @@ WikipediaOntologySearch.StatisticsInformationWindow = Ext.extend(Ext.app.Module,
     id:'statistics-information-win',
     init : function() {
         this.launcher = {
-            text: STATISTICS_INFORMATION,
+            text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.statisticsInformation,
             iconCls:'icon-chart',
             handler : this.createWindow,
             scope: this
@@ -652,7 +652,7 @@ WikipediaOntologySearch.StatisticsInformationWindow = Ext.extend(Ext.app.Module,
         if (!win) {
             win = desktop.createWindow({
                 id: 'statistics-information-win',
-                title:STATISTICS_INFORMATION,
+                title:WIKIPEDIA_ONTOLOGY_SEARCH.resources.statisticsInformation,
                 width:750,
                 height:500,
                 iconCls: 'icon-chart',

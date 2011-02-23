@@ -39,7 +39,7 @@ function getStatementSearchPanel() {
     var versionOptionSelection = getVersionOptionComboBox('Version_Option');
     var searchField = {
         border : false,
-        fieldLabel : KEYWORD,
+        fieldLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.keyword,
         xtype: 'compositefield',
         items : [
             {
@@ -55,7 +55,7 @@ function getStatementSearchPanel() {
             {
                 xtype : 'button',
                 iconCls: 'icon-search',
-                text : SEARCH,
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
                 name : 'search-button',
                 // searchStatements function is defined in SearchAction.js
                 handler : function() {
@@ -70,7 +70,7 @@ function getStatementSearchPanel() {
             {
                 xtype: 'radio',
                 checked : true,
-                boxLabel : URI,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.uri,
                 name : 'search_target',
                 id : 'uri_radio_button',
                 width: 80
@@ -101,34 +101,34 @@ function getStatementSearchPanel() {
             },
             {
                 xtype : 'checkbox',
-                boxLabel : USE_INFERENCE_MODEL,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.useInferenceModel,
                 id : 'use_inf_model',
                 handler : setInferenceType
             }
         ]
-    }
+    };
 
     var queryTypeRadioGroup = new Ext.form.RadioGroup({
         border : false,
-        fieldLabel : SEARCH_TARGET,
+        fieldLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchTarget,
         width: 300,
         items : [
             {
                 xtype: 'radio',
                 checked : true,
-                boxLabel : CLASS,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class,
                 name : 'query-type',
                 id : 'class_button'
             },
             {
                 xtype: 'radio',
-                boxLabel : PROPERTY,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property,
                 name : 'query-type',
                 id : 'property_button'
             },
             {
                 xtype: 'radio',
-                boxLabel : INSTANCE,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance,
                 name : 'query-type',
                 id : 'instance_button'
             }
@@ -156,10 +156,10 @@ function getStatementSearchPanel() {
         layout : 'form',
         items : [searchField,  queryTypeRadioGroup,searchOptionField,
             {
-                fieldLabel : NUMBER_OF_STATEMENTS,
+                fieldLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfStatements,
                 items : numberOfStatementsSelection
             }, {
-                fieldLabel: VERSION,
+                fieldLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.version,
                 items: versionOptionSelection
             }]
     });

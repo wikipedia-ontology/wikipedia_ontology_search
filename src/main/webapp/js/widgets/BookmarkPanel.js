@@ -15,7 +15,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             {
                 id : 'date_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
-                header : DATE_AND_HOUR,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
                 hidden : true,
                 renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                 width : 150
@@ -23,14 +23,14 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             {
                 id : 'resource_name_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name,
-                header : KEYWORD,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.keyword,
                 renderer : renderKeyword,
                 width : 200
             },
             {
                 id : 'resource_type_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type,
-                header : RESOURCE_TYPE,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.resourceType,
                 hidden : true,
                 renderer: renderResourceType,
                 width : 100
@@ -38,7 +38,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             {
                 id : 'search_target_type_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target,
-                header : SEARCH_TARGET,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchTarget,
                 hidden : isSidePanel,
                 renderer: renderSearchTargetType,
                 width : 100
@@ -54,7 +54,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             {
                 id : 'inference_type_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type,
-                header : USE_INFERENCE_MODEL,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.useInferenceModel,
                 hidden : isSidePanel,
                 renderer : renderInferenceType,
                 width : 100
@@ -62,13 +62,13 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
             {
                 id : 'uri_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri,
-                header : URI,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.uri,
                 hidden : isSidePanel
             },
             {
                 id : 'version_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version,
-                header : VERSION,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.version,
                 hidden : isSidePanel,
                 renderer : renderVersionOption
             }
@@ -115,7 +115,7 @@ var bookmarkStore = new Ext.data.Store({
         direction : "ASC"
     }
 });
-bookmarkStore.load({params:{start:0, limit:BOOKMARK_PAGE_SIZE}});
+bookmarkStore.load({params:{start:0, limit:WIKIPEDIA_ONTOLOGY_SEARCH.constants.BOOKMARK_PAGE_SIZE}});
 
 var bookmarkCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
 
@@ -235,7 +235,7 @@ function getBookmarkPanel() {
 
     var reorderer = new Ext.ux.ToolbarReorderer();
     var tbar = new Ext.Toolbar({
-        items  : [SORTING_ORDER + ':', '-'],
+        items  : [WIKIPEDIA_ONTOLOGY_SEARCH.resources.sortingOrder + ':', '-'],
         plugins: [reorderer, droppable],
         listeners: {
             scope    : this,
@@ -246,7 +246,7 @@ function getBookmarkPanel() {
     });
 
     tbar.add(createSorterButton({
-        text: KEYWORD,
+        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.keyword,
         sortData: {
             field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name,
             direction: 'ASC'
@@ -262,7 +262,7 @@ function getBookmarkPanel() {
     }));
 
     tbar.add(createSorterButton({
-        text: DATE_AND_HOUR,
+        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
         sortData: {
             field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
             direction: 'ASC'
@@ -270,7 +270,7 @@ function getBookmarkPanel() {
     }));
 
     tbar.add(createSorterButton({
-        text: VERSION,
+        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.version,
         sortData: {
             field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version,
             direction: 'ASC'
@@ -279,7 +279,7 @@ function getBookmarkPanel() {
 
     var bbar = new Ext.PagingToolbar({
         store: bookmarkStore,
-        pageSize : BOOKMARK_PAGE_SIZE,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.BOOKMARK_PAGE_SIZE,
         displayInfo : true,
         displayMsg : "{2} " + "件中" + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
@@ -321,7 +321,7 @@ function getBookmarkPanel() {
                     {
                         xtype : 'button',
                         iconCls: 'icon-book_open',
-                        text : OPEN_SELECTED_BOOKMARK,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.openSelectedBookmark,
                         handler : function() {
                             openHistoryAndBookmarkData(bookmarkCheckboxSelectionModel.getSelected());
                         }
@@ -330,21 +330,21 @@ function getBookmarkPanel() {
                     {
                         xtype : 'button',
                         iconCls: 'icon-book_delete',
-                        text : REMOVE_SELECTED_BOOKMARKS,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeSelectedBookmarks,
                         handler : removeSelectedBookmarks
                     },
                     '-',
                     {
                         xtype : 'button',
                         iconCls: 'icon-import',
-                        text : IMPORT,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import,
                         handler : showBookmarkImportDialog
                     },
                     '-',
                     {
                         xtype : 'button',
                         iconCls: 'icon-export',
-                        text : EXPORT,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.export,
                         handler : showBookmarkExportDialog
                     }
                 ]
@@ -358,7 +358,7 @@ function getSideBookmarkPanel() {
     var sideBookmarkColumnModel = getBookmarkColumnModel(true, bookmarkCheckboxSelectionModel);
     var bbar = new Ext.PagingToolbar({
         store: bookmarkStore,
-        pageSize : BOOKMARK_PAGE_SIZE,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.BOOKMARK_PAGE_SIZE,
         plugins : [new Ext.ux.SlidingPager()]
     });
 
@@ -443,14 +443,14 @@ function makeBookmarkClassContextMenu(record) {
         },
         items : [
             {
-                text : getSearchKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getSearchKeywordLabel(keyword),
                 iconCls: 'icon-book_open',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
-                text : getNarrowDownKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
                     queryType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
@@ -463,7 +463,7 @@ function makeBookmarkClassContextMenu(record) {
                 }
             },
             {
-                text : getRemoveKeywordFromBookmarkLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getRemoveKeywordFromBookmarkLabel(keyword),
                 iconCls: 'icon-book_delete',
                 handler : function() {
                     removeSelectedBookmarks();
@@ -492,14 +492,14 @@ function makeBookmarkInstanceAndPropertyContextMenu() {
         },
         items : [
             {
-                text : getSearchKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getSearchKeywordLabel(keyword),
                 iconCls: 'icon-book_open',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
-                text : getRemoveKeywordFromBookmarkLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getRemoveKeywordFromBookmarkLabel(keyword),
                 iconCls: 'icon-book_delete',
                 handler : removeSelectedBookmarks
             }

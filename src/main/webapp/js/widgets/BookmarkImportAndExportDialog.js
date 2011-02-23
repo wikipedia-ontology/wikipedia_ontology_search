@@ -7,7 +7,7 @@
 function getBookmarkImportAndExportDialog() {
     return new Ext.Window({
         id : 'BookmarkImportAndExportDialog',
-        title : IMPORT_OR_EXPORT_BOOKMARKS,
+        title : WIKIPEDIA_ONTOLOGY_SEARCH.resources.importOrExportBookmarks,
         width : 600,
         height : 400,
         autoScroll : true,
@@ -24,18 +24,18 @@ function getBookmarkImportAndExportDialog() {
             {
                 xtype : 'button',
                 iconCls: 'icon-import',
-                text : IMPORT,
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import,
                 handler : importBookmarks
             },
             {
                 xtype : 'button',
                 iconCls: 'icon-export',
-                text : EXPORT,
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.export,
                 handler : exportBookmarks
             },
             {
                 xtype : 'button',
-                text : CLOSE,
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.close,
                 handler : function() {
                     Ext.getCmp('BookmarkImportAndExportDialog').setVisible(false);
                 }
@@ -73,7 +73,7 @@ function importBookmarks() {
             continue;
         }
         var record = recordTexts[i].split(",");
-        if (record.length != BOOKMARK_RECORD_LENGTH) {
+        if (record.length != WIKIPEDIA_ONTOLOGY_SEARCH.constants.BOOKMARK_RECORD_LENGTH) {
             continue;
         }
         importedBookmarkData.push(record);

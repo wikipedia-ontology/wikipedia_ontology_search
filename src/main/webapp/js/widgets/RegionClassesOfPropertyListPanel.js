@@ -6,14 +6,14 @@
 
 function getRegionClassesOfPropertyListTableDataStore(type) {
     var panelName = "";
-    if (type == DOMAIN) {
+    if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resources.domain) {
         panelName = "DomainClassesOfPropertyListTablePanel";
-    } else if (type == RANGE) {
+    } else if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resources.range) {
         panelName = "RangeClassesOfPropertyListTablePanel";
     }
     return new Ext.data.Store({
         reader : getStatementJsonReader(),
-        proxy : getProxy(BASE_SERVER_PROPERTY_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp(panelName).body != undefined) {
@@ -32,20 +32,20 @@ function getRegionClassesOfPropertyListTableDataStore(type) {
 function getRegionClassesOfPropertyListPanel(type) {
     var panelIdLabel = "";
     var headerLabel = "";
-    if (type == DOMAIN) {
+    if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resources.domain) {
         panelIdLabel = "DomainClassesOfProperty";
         headerLabel = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.domain_classes_of_property;
-    } else if (type == RANGE) {
+    } else if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resources.range) {
         panelIdLabel = "RangeClassesOfProperty";
         headerLabel = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptionLabels.range_classes_of_property;
     }
     var regionClassesOfPropertyListTableDataStore = getRegionClassesOfPropertyListTableDataStore(type);
 
     var pagingToolBar = new Ext.PagingToolbar({
-        pageSize : RESOURCE_LIST_SIZE_LIMIT,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : regionClassesOfPropertyListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + PROPERTY + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -77,19 +77,19 @@ function getRegionClassesOfPropertyListPanel(type) {
 function showClassContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 
 function openClassByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     openWikiOntRDFData("wikiont_class:" + keyword);
 }
 
 function renderClass(qname) {
     var clsName = qname.split("wikiont_class:")[1];
-    return "<img alt='" + clsName + "' src='" + BASE_ICON_URL + "class_icon_s.png'/> " +
+    return "<img alt='" + clsName + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "class_icon_s.png'/> " +
             '<a href="' + clsName + '" onclick="openWikiOntRDFData(\'' + qname + '\'); return false;">' + clsName + "</a>";
 }

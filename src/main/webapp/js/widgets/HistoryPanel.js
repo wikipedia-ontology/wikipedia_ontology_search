@@ -72,7 +72,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             {
                 id : 'date_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
-                header : DATE_AND_HOUR,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
                 hidden : isSidePanel,
                 renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                 width : 150
@@ -80,14 +80,14 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             {
                 id : 'resource_name_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name,
-                header : KEYWORD,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.keyword,
                 renderer : renderKeyword,
                 width : 200
             },
             {
                 id : 'resource_type_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type,
-                header : RESOURCE_TYPE,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.resourceType,
                 hidden : isSidePanel,
                 renderer : renderResourceType,
                 width : 100
@@ -95,7 +95,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             {
                 id : 'search_target_type_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target,
-                header : SEARCH_TARGET,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.searchTarget,
                 hidden : isSidePanel,
                 renderer : renderSearchTargetType,
                 width : 100
@@ -111,7 +111,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             {
                 id : 'inference_type_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type,
-                header : USE_INFERENCE_MODEL,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.useInferenceModel,
                 hidden : isSidePanel,
                 renderer : renderInferenceType,
                 width : 100
@@ -119,13 +119,13 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
             {
                 id : 'uri_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri,
-                header : URI,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.uri,
                 hidden : isSidePanel
             },
             {
                 id : 'version_id',
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version,
-                header : VERSION,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.version,
                 hidden : isSidePanel,
                 renderer : renderVersionOption
             }
@@ -173,7 +173,7 @@ var historyDataStore = new Ext.data.Store({
         direction : "DESC"
     }
 });
-historyDataStore.load({params:{start:0, limit:HISTORY_PAGE_SIZE}});
+historyDataStore.load({params:{start:0, limit:WIKIPEDIA_ONTOLOGY_SEARCH.constants.HISTORY_PAGE_SIZE}});
 var historyDataCheckboxSelectionModel = new Ext.grid.CheckboxSelectionModel({});
 
 function getHistoryPanel() {
@@ -291,7 +291,7 @@ function getHistoryPanel() {
 
     var reorderer = new Ext.ux.ToolbarReorderer();
     var tbar = new Ext.Toolbar({
-        items  : [SORTING_ORDER + ':', '-'],
+        items  : [WIKIPEDIA_ONTOLOGY_SEARCH.resources.sortingOrder + ':', '-'],
         plugins: [reorderer, droppable],
         listeners: {
             scope    : this,
@@ -302,7 +302,7 @@ function getHistoryPanel() {
     });
 
     tbar.add(createSorterButton({
-        text: DATE_AND_HOUR,
+        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
         sortData: {
             field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
             direction: 'DESC'
@@ -310,7 +310,7 @@ function getHistoryPanel() {
     }));
 
     tbar.add(createSorterButton({
-        text: KEYWORD,
+        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.keyword,
         sortData: {
             field: WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name,
             direction: 'ASC'
@@ -328,7 +328,7 @@ function getHistoryPanel() {
 
     var bbar = new Ext.PagingToolbar({
         store: historyDataStore,
-        pageSize : HISTORY_PAGE_SIZE,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.HISTORY_PAGE_SIZE,
         displayInfo : true,
         displayMsg : "{2} " + "件中" + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
@@ -370,7 +370,7 @@ function getHistoryPanel() {
                     {
                         xtype : 'tbbutton',
                         iconCls: 'icon-time_go',
-                        text : OPEN_SELECTED_HISTORY,
+                        text :WIKIPEDIA_ONTOLOGY_SEARCH.resources.openSelectedHistory,
                         handler : function() {
                             openHistoryAndBookmarkData(historyDataCheckboxSelectionModel.getSelected());
                         }
@@ -379,21 +379,21 @@ function getHistoryPanel() {
                     {
                         xtype : 'tbbutton',
                         iconCls: 'icon-book_add',
-                        text : ADD_SELECTED_HISTORIES_TO_BOOKMARK,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.addSelectedHistoriesToBookmark,
                         handler : addSelectedHistoriesToBookmark
                     },
                     '-',
                     {
                         xtype : 'tbbutton',
                         iconCls: 'icon-time_delete',
-                        text : REMOVE_SELECTED_HISTORIES,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeSelectedHistories,
                         handler : removeSelectedHistories
                     },
                     '-',
                     {
                         xtype : 'tbbutton',
                         iconCls: 'icon-time_delete',
-                        text : REMOVE_ALL_HISTORY,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeAllHistory,
                         handler : removeAllHistoryData
                     }
                 ]
@@ -407,7 +407,7 @@ function getSideHistoryPanel() {
     var sideHistoryDataColumnModel = getHistoryDataColumnModel(true, historyDataCheckboxSelectionModel);
     var bbar = new Ext.PagingToolbar({
         store: historyDataStore,
-        pageSize : HISTORY_PAGE_SIZE,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.HISTORY_PAGE_SIZE,
         plugins : [new Ext.ux.SlidingPager()]
     });
     return new Ext.grid.GridPanel({
@@ -460,14 +460,14 @@ function makeHistoryClassContextMenu(record) {
         },
         items : [
             {
-                text : getSearchKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getSearchKeywordLabel(keyword),
                 iconCls: 'icon-time_go',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
-                text : getNarrowDownKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
                     queryType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
@@ -479,7 +479,7 @@ function makeHistoryClassContextMenu(record) {
                 }
             },
             {
-                text : getAddKeywordToBookmarkLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
@@ -487,7 +487,7 @@ function makeHistoryClassContextMenu(record) {
                 }
             },
             {
-                text : getRemoveKeywordFromHistoryLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getRemoveKeywordFromHistoryLabel(keyword),
                 iconCls: 'icon-time_delete',
                 handler : removeSelectedHistories
             }
@@ -514,14 +514,14 @@ function makeHistoryInstanceAndPropertyContextMenu(record) {
         },
         items : [
             {
-                text : getSearchKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getSearchKeywordLabel(keyword),
                 iconCls: 'icon-time_go',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
                 }
             },
             {
-                text : getAddKeywordToBookmarkLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
                     openHistoryAndBookmarkData(record);
@@ -529,7 +529,7 @@ function makeHistoryInstanceAndPropertyContextMenu(record) {
                 }
             },
             {
-                text : getRemoveKeywordFromHistoryLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getRemoveKeywordFromHistoryLabel(keyword),
                 iconCls: 'icon-time_delete',
                 handler : removeSelectedHistories
             }

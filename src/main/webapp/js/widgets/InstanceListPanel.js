@@ -18,17 +18,17 @@ function getInstanceListTableDataStore(type) {
     var panelName = "";
     var dataURL = "";
     switch (type) {
-        case CLASS:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
             panelName = "ClassInstanceListTablePanel";
-            dataURL = CLASS_LIST_DATA_URL;
+            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL;
             break;
-        case PROPERTY:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
             panelName = "PropertyInstanceListTablePanel";
-            dataURL = PROPERTY_LIST_DATA_URL;
+            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL;
             break;
-        case INSTANCE:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
             panelName = "InstanceListTablePanel";
-            dataURL = INSTANCE_LIST_DATA_URL;
+            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL;
             break;
     }
     return new Ext.data.Store({
@@ -54,13 +54,13 @@ function getInstanceListPanel(type) {
     var cellRenderer = openInstanceByLink;
     var cellClickListener = openInstanceByCellClick;
     switch (type) {
-        case CLASS:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
             panelIdLabel = "ClassInstance";
             break;
-        case PROPERTY:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
             panelIdLabel = "PropertyInstance";
             break;
-        case INSTANCE:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
             panelIdLabel = "Instance";
             cellRenderer = openInstanceTypeByLink;
             cellClickListener = openInstanceTypeByCellClick;
@@ -69,10 +69,10 @@ function getInstanceListPanel(type) {
     var instanceListTableDataStore = getInstanceListTableDataStore(type);
 
     var pagingToolBar = new Ext.PagingToolbar({
-        pageSize : RESOURCE_LIST_SIZE_LIMIT,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : instanceListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + INSTANCE + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resources.instance + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -84,7 +84,7 @@ function getInstanceListPanel(type) {
         store : instanceListTableDataStore,
         columns : [
             {
-                header : INSTANCE,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance,
                 dataIndex : "instance",
                 id : panelIdLabel + "list_table_instance_column",
                 renderer : cellRenderer,
@@ -104,36 +104,36 @@ function getInstanceListPanel(type) {
 function showInstanceContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
     makeInstanceContextMenu(keyword).showAt(e.getXY());
 }
 
 function openInstanceTypeByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
-    var instanceName = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var instanceName = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     openInstanceType(instanceName);
 }
 
 function openInstanceByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     openWikiOntRDFData("wikiont_instance:" + keyword);
 }
 
 function openInstanceType(instanceName) {
     var instanceTypeListPanel = Ext.getCmp("InstanceTypeListTablePanel");
-    instanceTypeListPanel.store.proxy = getProxy(INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
+    instanceTypeListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
     loadStore(instanceTypeListPanel.store);
 }
 
 function openInstanceTypeByLink(instanceName) {
-    return "<img alt='" + instanceName + "' src='" + BASE_ICON_URL + "instance_icon_s.png'/> " +
+    return "<img alt='" + instanceName + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "instance_icon_s.png'/> " +
             '<a href="' + instanceName + '" onclick="openInstanceType(\'' + instanceName + '\'); return false;">' + instanceName + "</a>";
 }
 
 function openInstanceByLink(instanceName) {
-    return "<img alt='" + instanceName + "' src='" + BASE_ICON_URL + "instance_icon_s.png'/> " +
+    return "<img alt='" + instanceName + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "instance_icon_s.png'/> " +
             '<a href="' + instanceName + '" onclick="openWikiOntRDFData(\'wikiont_instance:' + instanceName + '\'); return false;">' + instanceName + "</a>";
 }
 

@@ -19,10 +19,12 @@ function getClassListTableDataStore() {
             }
         ]
     });
+    console.log("class list data URL");
+    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL);
     return new Ext.data.Store({
         id : 'ClassListTableDataStore',
         reader : reader,
-        proxy : getProxy(CLASS_LIST_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp("ClassListTablePanel").body != undefined) {
@@ -43,10 +45,10 @@ function getClassListPanel() {
 
     var pagingToolBar = new Ext.PagingToolbar({
         id : 'ClassListPagingToolBar',
-        pageSize : RESOURCE_LIST_SIZE_LIMIT,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : classListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + CLASS + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -59,13 +61,13 @@ function getClassListPanel() {
         columns : [
             {
                 id: "class_list_table_class_column",
-                header : CLASS,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class,
                 dataIndex : "class",
                 renderer : renderClassLink,
                 sortable : true
             },
             {
-                header : NUMBER_OF_INSTANCES,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfInstances,
                 id : "number_of_instances_id",
                 dataIndex : "count",
                 sortable : true
@@ -85,34 +87,36 @@ function getClassListPanel() {
 function showClassContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 
 function renderClassLink(clsName) {
-    return  "<img alt='" + clsName + "' src='" + BASE_ICON_URL + "class_icon_s.png'/> " +
+    return  "<img alt='" + clsName + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "class_icon_s.png'/> " +
             '<a href="' + clsName + '" onclick="loadClassInstanceData(\'' + clsName + '\'); return false;">' + clsName + "</a>";
 }
 
 function loadClassInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     loadClassInstanceData(keyword);
 }
 
 function loadClassInstanceData(clsName) {
     var instanceListPanel = Ext.getCmp("ClassInstanceListTablePanel");
-    instanceListPanel.store.proxy = getProxy(CLASS_LIST_DATA_URL + "?class=" + clsName);
+    instanceListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL + "?class=" + clsName);
     loadStore(instanceListPanel.store);
 
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
-    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + JSON_EXTENSION + "?search_option="
+    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL +
+            clsName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_domain_class);
     loadStore(propertiesOfDomainClassListTablePanel.store);
 
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
-    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(BASE_SERVER_CLASS_DATA_URL + clsName + JSON_EXTENSION + "?search_option="
+    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL +
+            clsName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_range_class);
     loadStore(propertiesOfRangeClassListTablePanel.store);
 }

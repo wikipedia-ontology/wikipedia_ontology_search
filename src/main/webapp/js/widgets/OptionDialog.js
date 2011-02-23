@@ -12,7 +12,7 @@ function getOptionPanel() {
         layout : 'form',
         items : [
             {
-                fieldLabel : ABOUT_CLASS_HIERARCHY,
+                fieldLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.aboutClassHierarchy,
                 items : [
                     {
                         id : 'show_isa_tree',
@@ -20,7 +20,7 @@ function getOptionPanel() {
                         statefule : true,
                         stateEvents : ['check'],
                         xtype : 'checkbox',
-                        boxLabel : SHOW_CLASS_HIERARCHY,
+                        boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.showClassHierarchy,
                         getState : function() {
                             return {
                                 checked : this.getValue()
@@ -38,7 +38,7 @@ function getOptionPanel() {
                         statefule : true,
                         stateEvents : ['check'],
                         xtype : 'checkbox',
-                        boxLabel : EXPAND_ALL_CLASS_HIERARCHY,
+                        boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.expandAllClassHierarchy,
                         getState : function() {
                             return {
                                 checked : this.getValue()
@@ -53,7 +53,7 @@ function getOptionPanel() {
                 ]
             },
             {
-                fieldLabel : ABOUT_STATEMENT_TABLE,
+                fieldLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.aboutStatementTable,
                 items : [
                     {
                         id : 'start_collapsed_group',
@@ -61,7 +61,7 @@ function getOptionPanel() {
                         statefule : true,
                         stateEvents : ['check'],
                         xtype : 'checkbox',
-                        boxLabel : CLOSE_GROUPING_STATEMENTS,
+                        boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.closeGroupingStatements,
                         getState : function() {
                             return {
                                 checked : this.getValue()
@@ -80,21 +80,22 @@ function getOptionPanel() {
 }
 
 function applyOptions() {
-    var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
-    var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
-    var groupingStatementTableView = statementTablePanel.view;
+    if (statementTabPanel !== undefined) {
+        var tabId = statementTabPanel.getActiveTab().id.split("StatementPanel")[1];
+        var statementTablePanel = Ext.getCmp("StatementTablePanel" + tabId);
+        var groupingStatementTableView = statementTablePanel.view;
 
+        groupingStatementTableView.startCollapsed = start_collapsed_group;
+        if (start_collapsed_group) {
+            groupingStatementTableView.collapseAllGroups();
+        } else {
+            groupingStatementTableView.expandAllGroups();
+        }
+    }
     if (!show_isa_tree) {
         var classTreePanel = Ext.getCmp('classTreePanel');
-        classTreePanel.loader.dataUrl = NULL_DATA;
+        classTreePanel.loader.dataUrl = WIKIPEDIA_ONTOLOGY_SEARCH.constants.NULL_DATA;
         classTreePanel.loader.load(classTreePanel.getRootNode());
-    }
-    
-    groupingStatementTableView.startCollapsed = start_collapsed_group;
-    if (start_collapsed_group) {
-        groupingStatementTableView.collapseAllGroups();
-    } else {
-        groupingStatementTableView.expandAllGroups();
     }
 }
 

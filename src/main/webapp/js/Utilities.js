@@ -22,7 +22,7 @@ function getProxy(json_url) {
 }
 
 function setURIField(id, uri) {
-    uri = uri.replace(ESCAPED_JSON_EXTENSION, "");
+    uri = uri.replace(WIKIPEDIA_ONTOLOGY_SEARCH.constants.ESCAPED_JSON_EXTENSION, "");
     Ext.getCmp(id).setValue(uri);
 }
 
@@ -74,12 +74,12 @@ function extractParametersFromURI(uri) {
     var baseURIElems = baseURI.split("/");
     if (7 <= baseURIElems.length) {
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type] = baseURIElems[4]
-        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name] = baseURIElems[6].replace(ESCAPED_JSON_EXTENSION, "");
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name] = baseURIElems[6].replace(WIKIPEDIA_ONTOLOGY_SEARCH.constants.ESCAPED_JSON_EXTENSION, "");
     }
 
     // default parameter
     params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target] = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
-    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     if (paramString != '&') {
         var paramSet = paramString.split("&");
         for (var i = 0; i < paramSet.length; i++) {
@@ -100,12 +100,12 @@ function extractParametersFromURI(uri) {
         // default parameters
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option] = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match;
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type] = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
-        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
     params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri] = uri;
 
-    //    for (var key in params) {
-    //        alert("key: " + key + "->" + "value: " + params[key]);
+//    for (var key in params) {
+    //        console.log("key: " + key + "->" + "value: " + params[key]);
     //    }
     return params;
 }
@@ -143,7 +143,7 @@ function getURIPanel(id) {
                         if (id == "TreeURIField") {
                             uri = Ext.getCmp("TreeURIField").getValue();
                         }
-                        reloadRDFSource(uri);
+                        WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.reloadRDFSource(uri)
                     }
                 }
             }
@@ -159,7 +159,7 @@ function getURIPanel(id) {
             {
                 region: 'west',
                 xtype: 'label',
-                text: URI,
+                text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.uri,
                 width: 30
             },
             {
@@ -181,7 +181,7 @@ function loadStore(store) {
     store.load({
         params : {
             start : 0,
-            limit : RESOURCE_LIST_SIZE_LIMIT
+            limit : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT
         }
     });
 }
@@ -357,11 +357,11 @@ function getVersionOptionComboBox(name) {
 function renderKeyword(value, metadata, record) {
     switch (record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type)) {
         case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
-            return "<img src='" + BASE_ICON_URL + "class_icon_s.png'/> " + value;
+            return "<img src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "class_icon_s.png'/> " + value;
         case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
-            return "<img src='" + BASE_ICON_URL + "property_icon_s.png'/> " + value;
+            return "<img src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "property_icon_s.png'/> " + value;
         case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
-            return "<img src='" + BASE_ICON_URL + "instance_icon_s.png'/> " + value;
+            return "<img src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "instance_icon_s.png'/> " + value;
     }
     return value;
 }
@@ -373,14 +373,14 @@ function makeClassContextMenu(keyword) {
         },
         items : [
             {
-                text : getSearchKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getSearchKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
                     searchStatementsByContextMenu(keyword);
                 }
             },
             {
-                text: OPEN_NEW_TAB,
+                text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.openNewTab,
                 iconCls: 'icon-newtab',
                 handler: function() {
                     addTab();
@@ -388,22 +388,22 @@ function makeClassContextMenu(keyword) {
                 }
             },
             {
-                text : getNarrowDownKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getNarrowDownKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
                     searchStatementsByContextMenu(currentKeyword + " " + keyword);
                 }
             },
             {
-                text: OPEN_RDF_FILE,
+                text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.openRDFFile,
                 iconCls: 'icon-rdf',
                 handler: function() {
-                    var queryURL = BASE_SERVER_CLASS_DATA_URL + encodeURI(keyword) + ".rdf";
-                    reloadRDFSource(queryURL);
+                    var queryURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL + encodeURI(keyword) + ".rdf";
+                    WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.reloadRDFSource(queryURL);
                 }
             },
             {
-                text : getAddKeywordToBookmarkLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
                     var searchPanel = Ext.getCmp("SearchPanel");
@@ -431,14 +431,14 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
         },
         items : [
             {
-                text : getSearchKeywordLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getSearchKeywordLabel(keyword),
                 iconCls: 'icon-search',
                 handler : function() {
                     searchStatementsByContextMenu(keyword);
                 }
             },
             {
-                text: OPEN_NEW_TAB,
+                text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.openNewTab,
                 iconCls: 'icon-newtab',
                 handler: function() {
                     addTab();
@@ -446,21 +446,21 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 }
             },
             {
-                text: OPEN_RDF_FILE,
+                text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.openRDFFile,
                 iconCls: 'icon-rdf',
                 handler: function() {
                     var baseDataURL = "";
                     if (type == INSTANCE) {
-                        baseDataURL = BASE_SERVER_INSTANCE_DATA_URL;
+                        baseDataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_INSTANCE_DATA_URL;
                     } else {
-                        baseDataURL = BASE_SERVER_PROPERTY_DATA_URL;
+                        baseDataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL;
                     }
                     var queryURL = baseDataURL + encodeURI(keyword) + ".rdf";
-                    reloadRDFSource(queryURL);
+                    WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.reloadRDFSource(queryURL);
                 }
             },
             {
-                text : getAddKeywordToBookmarkLabel(keyword),
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
                     searchStatementsByContextMenu(keyword);
@@ -472,17 +472,17 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
 }
 
 function makePropertyContextMenu(keyword) {
-    return makeInstanceAndPropertyContextMenu(keyword, PROPERTY);
+    return makeInstanceAndPropertyContextMenu(keyword, WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property);
 }
 
 function makeInstanceContextMenu(keyword) {
-    return makeInstanceAndPropertyContextMenu(keyword, INSTANCE);
+    return makeInstanceAndPropertyContextMenu(keyword, WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance);
 }
 
 function renderVersionOption(value, metadata, record) {
     var versionOption = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version);
     if (versionOption == '') {
-        return CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+        return WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     } else {
         return versionOption;
     }
@@ -491,29 +491,11 @@ function renderVersionOption(value, metadata, record) {
 function renderSearchTargetType(value, metadata, record) {
     var searchTarget = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target);
     return WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptionLabels[searchTarget];
-    /*
-     switch (record.get(SEARCH_TARGET_PARAMETER_KEY)) {
-     case URI_SEARCH_TARGET_OPTION:
-     return URI;
-     case LABEL_SEARCH_TARGET_OPTION:
-     return LABEL;
-     }
-     */
 }
 
 function renderResourceType(value, metadata, record) {
     var resourceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
     return WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels[resourceType];
-    /*
-     switch (record.get(RESOURCE_TYPE_PARAMETER_KEY)) {
-     case QTYPE_CLASS:
-     return CLASS;
-     case QTYPE_PROPERTY:
-     return PROPERTY;
-     case QTYPE_INSTANCE:
-     return INSTANCE;
-     }
-     */
 }
 
 function renderInferenceType(value, metadata, record) {
@@ -524,14 +506,6 @@ function renderInferenceType(value, metadata, record) {
     } else {
         return inferenceOptionLabel;
     }
-    /*
-     switch (record.get(INFERENCE_TYPE_PARAMETER_KEY)) {
-     case RDFS_INFERENCE_OPTION:
-     return RDFS_INFERENCE;
-     default:
-     return NONE_INFERENCE;
-     }
-     */
 }
 
 function renderSearchOption(value, metadata, record) {
@@ -593,7 +567,7 @@ function openHistoryAndBookmarkData(record) {
 
     var version = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version);
     if (version == "") {
-        version = CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+        version = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
     var versionOptionSelection = Ext.getCmp('Version_Option');
     versionOptionSelection.setValue(version);

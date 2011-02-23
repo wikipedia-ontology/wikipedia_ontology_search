@@ -18,7 +18,7 @@ function getInstanceTypeListTableDataStore() {
     var panelName = "InstanceTypeListTablePanel";
     return new Ext.data.Store({
         reader : reader,
-        proxy : getProxy(INSTANCE_LIST_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp(panelName).body != undefined) {
@@ -38,10 +38,10 @@ function getInstanceTypeListPanel() {
     var instanceTypeListTableDataStore = getInstanceTypeListTableDataStore();
 
     var pagingToolBar = new Ext.PagingToolbar({
-        pageSize : RESOURCE_LIST_SIZE_LIMIT,
+        pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : instanceTypeListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + INSTANCE + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -73,18 +73,18 @@ function getInstanceTypeListPanel() {
 function showTypeContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 
 function openTypeByCellClick(grid, rowIndex, columnIndex, e) {
     var uri = e.getTarget().children.item(1).toString();
-    var keyword = decodeURI(uri.split(BASE_SERVER_URL)[1]);
+    var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
     openWikiOntRDFData("wikiont_class:" + keyword);
 }
 
 function openType(typeName) {
-    return "<img alt='" + typeName + "' src='" + BASE_ICON_URL + "class_icon_s.png'/> " +
+    return "<img alt='" + typeName + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "class_icon_s.png'/> " +
             '<a href="' + typeName + '" onclick="openWikiOntRDFData(\'wikiont_class:' + typeName + '\'); return false;">' + typeName + "</a>";
 }

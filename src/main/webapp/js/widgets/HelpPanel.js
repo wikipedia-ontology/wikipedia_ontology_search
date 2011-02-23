@@ -12,7 +12,7 @@ function getHelpPanel() {
         layout : 'form',
         items : [
             {
-                autoLoad : HELP_HTML
+                autoLoad : WIKIPEDIA_ONTOLOGY_SEARCH.resources.helpHTML
             }
         ]
     });

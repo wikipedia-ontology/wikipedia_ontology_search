@@ -4,25 +4,25 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
-Ext.chart.Chart.CHART_URL = BASE_SERVER_URL + 'ext_resources/charts.swf';
+Ext.chart.Chart.CHART_URL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL + 'ext_resources/charts.swf';
 
 
 var statisticsStore = new Ext.data.JsonStore({
     fields:['name', 'number'],
     data: [
-        {name:NUMBER_OF_CLASSES + "\n29,023", number: 29023},
-        {name:NUMBER_OF_ISA_RELATIONSHIPS + "\n28,260", number: 28260},
-        {name:NUMBER_OF_PROPERTIES + "\n5,816", number:5816},
-        {name:NUMBER_OF_TYPES_OF_INSTANCES + "\n434,939", number: 434939},
-        {name:NUMBER_OF_INSTANCES  + "\n2,325,660", number: 2325660},
-        {name:NUMBER_OF_RESOURCES + "\n2,360,499", number: 2360499}
+        {name:WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfClasses + "\n29,023", number: 29023},
+        {name:WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfIsaRelationships + "\n28,260", number: 28260},
+        {name:WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfProperties + "\n5,816", number:5816},
+        {name:WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfTypesOfInstances + "\n434,939", number: 434939},
+        {name:WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfInstances  + "\n2,325,660", number: 2325660},
+        {name:WIKIPEDIA_ONTOLOGY_SEARCH.resources.numberOfResources + "\n2,360,499", number: 2360499}
     ]
 });
 
 function getStatisticsInformationPanel() {
 
     return new Ext.Panel({
-        title: TOTAL_NUMBER_OF_STATEMENTS,
+        title: WIKIPEDIA_ONTOLOGY_SEARCH.resources.totalNumberOfStatements,
         width:600,
         height:300,
         layout:'fit',
