@@ -11,10 +11,10 @@ function getPropertiesOfRegionClassListTableDataStore(type) {
     } else if (type == WIKIPEDIA_ONTOLOGY_SEARCH.resources.range) {
         panelName = "PropertiesOfRangeClassListTablePanel";
     }
-    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL);
+    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL);
     return new Ext.data.Store({
         reader : getStatementJsonReader(),
-        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp(panelName).body != undefined) {

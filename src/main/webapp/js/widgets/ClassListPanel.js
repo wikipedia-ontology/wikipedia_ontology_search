@@ -20,11 +20,11 @@ function getClassListTableDataStore() {
         ]
     });
     console.log("class list data URL");
-    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL);
+    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL);
     return new Ext.data.Store({
         id : 'ClassListTableDataStore',
         reader : reader,
-        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp("ClassListTablePanel").body != undefined) {
@@ -105,17 +105,17 @@ function loadClassInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
 
 function loadClassInstanceData(clsName) {
     var instanceListPanel = Ext.getCmp("ClassInstanceListTablePanel");
-    instanceListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL + "?class=" + clsName);
+    instanceListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL + "?class=" + clsName);
     loadStore(instanceListPanel.store);
 
     var propertiesOfDomainClassListTablePanel = Ext.getCmp("PropertiesOfDomainClassListTablePanel");
-    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL +
+    propertiesOfDomainClassListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL +
             clsName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_domain_class);
     loadStore(propertiesOfDomainClassListTablePanel.store);
 
     var propertiesOfRangeClassListTablePanel = Ext.getCmp("PropertiesOfRangeClassListTablePanel");
-    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL +
+    propertiesOfRangeClassListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL +
             clsName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.properties_of_range_class);
     loadStore(propertiesOfRangeClassListTablePanel.store);

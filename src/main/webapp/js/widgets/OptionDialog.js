@@ -94,7 +94,7 @@ function applyOptions() {
     }
     if (!show_isa_tree) {
         var classTreePanel = Ext.getCmp('classTreePanel');
-        classTreePanel.loader.dataUrl = WIKIPEDIA_ONTOLOGY_SEARCH.constants.NULL_DATA;
+        classTreePanel.loader.dataUrl = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.NULL_DATA;
         classTreePanel.loader.load(classTreePanel.getRootNode());
     }
 }

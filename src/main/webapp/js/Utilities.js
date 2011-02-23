@@ -398,7 +398,7 @@ function makeClassContextMenu(keyword) {
                 text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.openRDFFile,
                 iconCls: 'icon-rdf',
                 handler: function() {
-                    var queryURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL + encodeURI(keyword) + ".rdf";
+                    var queryURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL + encodeURI(keyword) + ".rdf";
                     WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.reloadRDFSource(queryURL);
                 }
             },
@@ -451,9 +451,9 @@ function makeInstanceAndPropertyContextMenu(keyword, type) {
                 handler: function() {
                     var baseDataURL = "";
                     if (type == INSTANCE) {
-                        baseDataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_INSTANCE_DATA_URL;
+                        baseDataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_INSTANCE_DATA_URL;
                     } else {
-                        baseDataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL;
+                        baseDataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL;
                     }
                     var queryURL = baseDataURL + encodeURI(keyword) + ".rdf";
                     WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.reloadRDFSource(queryURL);

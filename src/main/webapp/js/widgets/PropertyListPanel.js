@@ -22,7 +22,7 @@ function getPropertyListTableDataStore() {
     return new Ext.data.Store({
         id : 'PropertyListTableDataStore',
         reader : reader,
-        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.PROPERTY_LIST_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp("PropertyListTablePanel").body != undefined) {
@@ -101,17 +101,17 @@ function loadPropertyInstanceDataByCellClick(grid, rowIndex, columnIndex, e) {
 
 function loadPropertyInstanceData(propertyName) {
     var instanceListPanel = Ext.getCmp("PropertyInstanceListTablePanel");
-    instanceListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL + "?property=" + propertyName);
+    instanceListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.PROPERTY_LIST_DATA_URL + "?property=" + propertyName);
     loadStore(instanceListPanel.store);
 
     var domainClassesOfPropertyListTablePanel = Ext.getCmp("DomainClassesOfPropertyListTablePanel");
-    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL +
+    domainClassesOfPropertyListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL +
             propertyName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.domain_classes_of_property);
     loadStore(domainClassesOfPropertyListTablePanel.store);
 
     var rangeClassesOfPropertyListTablePanel = Ext.getCmp("RangeClassesOfPropertyListTablePanel");
-    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL +
+    rangeClassesOfPropertyListTablePanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL +
             propertyName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?search_option="
             + WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.range_classes_of_property);
     loadStore(rangeClassesOfPropertyListTablePanel.store);

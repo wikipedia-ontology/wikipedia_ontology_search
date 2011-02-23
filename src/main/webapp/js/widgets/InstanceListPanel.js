@@ -20,15 +20,15 @@ function getInstanceListTableDataStore(type) {
     switch (type) {
         case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
             panelName = "ClassInstanceListTablePanel";
-            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL;
+            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL;
             break;
         case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
             panelName = "PropertyInstanceListTablePanel";
-            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL;
+            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.PROPERTY_LIST_DATA_URL;
             break;
         case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
             panelName = "InstanceListTablePanel";
-            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL;
+            dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.INSTANCE_LIST_DATA_URL;
             break;
     }
     return new Ext.data.Store({
@@ -123,7 +123,7 @@ function openInstanceByCellClick(grid, rowIndex, columnIndex, e) {
 
 function openInstanceType(instanceName) {
     var instanceTypeListPanel = Ext.getCmp("InstanceTypeListTablePanel");
-    instanceTypeListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
+    instanceTypeListPanel.store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.INSTANCE_LIST_DATA_URL + "?instance=" + instanceName);
     loadStore(instanceTypeListPanel.store);
 }
 

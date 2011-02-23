@@ -8,7 +8,7 @@ function getStatementTableDataStore() {
     return new Ext.data.GroupingStore({
         id : 'StatementTableDataStore' + tabIndex,
         reader : getStatementJsonReader(),
-        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.NULL_DATA),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.NULL_DATA),
         sortInfo : {
             field : 'subject',
             direction : "ASC"
@@ -359,19 +359,19 @@ function openWikiOntRDFData(value) {
         switch (prefix) {
             case "wikiont_class":
                 queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
-                var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL +
+                var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL +
                         localName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_property":
                 queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
-                var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL +
+                var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL +
                         localName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_instance":
                 queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
-                var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_INSTANCE_DATA_URL +
+                var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_INSTANCE_DATA_URL +
                         localName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;

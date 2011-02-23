@@ -13,7 +13,7 @@ function getRegionClassesOfPropertyListTableDataStore(type) {
     }
     return new Ext.data.Store({
         reader : getStatementJsonReader(),
-        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp(panelName).body != undefined) {

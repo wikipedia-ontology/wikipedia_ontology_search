@@ -116,15 +116,15 @@ function getResourceSearchPanel(type) {
                     switch (type) {
                         case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
                             store = Ext.getCmp("ClassListTablePanel").store;
-                            store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_LIST_DATA_URL + paramsString);
+                            store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL + paramsString);
                             break;
                         case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
                             store = Ext.getCmp("PropertyListTablePanel").store;
-                            store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_LIST_DATA_URL + paramsString);
+                            store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.PROPERTY_LIST_DATA_URL + paramsString);
                             break;
                         case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
                             store = Ext.getCmp("InstanceListTablePanel").store;
-                            store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL + paramsString);
+                            store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.INSTANCE_LIST_DATA_URL + paramsString);
                             break;
                     }
                     store.load({

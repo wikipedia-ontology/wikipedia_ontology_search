@@ -54,7 +54,7 @@ function getTreePanel(title, treeType) {
             }
         }, '- ', searchOptionComboBox],
         loader : new Ext.tree.TreeLoader({
-            dataUrl : WIKIPEDIA_ONTOLOGY_SEARCH.constants.NULL_TREE_DATA,
+            dataUrl : WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.NULL_TREE_DATA,
             //            proxy: getProxy(NULL_TABLE_DATA),
             requestMethod : 'GET',
             listeners : {
@@ -88,13 +88,13 @@ function getTreePanel(title, treeType) {
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
                     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
-                    queryURI = qname.replace("wikiont_class:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_CLASS_DATA_URL);
+                    queryURI = qname.replace("wikiont_class:", WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL);
                 } else if (qname.indexOf("wikiont_property") != -1) {
                     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
-                    queryURI = qname.replace("wikiont_property:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_PROPERTY_DATA_URL);
+                    queryURI = qname.replace("wikiont_property:", WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL);
                 } else if (qname.indexOf("wikiont_instance") != -1) {
                     queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
-                    queryURI = qname.replace("wikiont_instance:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_INSTANCE_DATA_URL);
+                    queryURI = qname.replace("wikiont_instance:", WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_INSTANCE_DATA_URL);
                 }
                 queryURI += WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
@@ -234,7 +234,7 @@ function reloadTree(queryURI) {
 function loadWholeIsaTree() {
     var wholeClassTreePanel = Ext.getCmp('wholeClassTreePanel');
     //    alert(ALL_CLASSES);
-    wholeClassTreePanel.loader.dataUrl = WIKIPEDIA_ONTOLOGY_SEARCH.constants.ALL_CLASSES;
+    wholeClassTreePanel.loader.dataUrl = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.ALL_CLASSES;
     wholeClassTreePanel.loader.load(wholeClassTreePanel.getRootNode());
     wholeClassTreePanel.getRootNode().expand();
 }

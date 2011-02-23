@@ -18,7 +18,7 @@ function getInstanceTypeListTableDataStore() {
     var panelName = "InstanceTypeListTablePanel";
     return new Ext.data.Store({
         reader : reader,
-        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_LIST_DATA_URL),
+        proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.INSTANCE_LIST_DATA_URL),
         listeners : {
             beforeload : function() {
                 if (Ext.getCmp(panelName).body != undefined) {
