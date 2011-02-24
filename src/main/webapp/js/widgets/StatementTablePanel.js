@@ -30,7 +30,7 @@ function getStatementTablePanel(title, tabIndex) {
         enableGrouping : false,
         forceFit : true,
         startCollapsed : start_collapsed_group,
-        groupTextTpl : '{text} ({[values.rs.length]} {[values.rs.length > 1 ?  STATEMENT  :  STATEMENT ]})'
+        groupTextTpl : '{text} ({[values.rs.length]} {[values.rs.length > 1 ?  WIKIPEDIA_ONTOLOGY_SEARCH.resources.statement  :  WIKIPEDIA_ONTOLOGY_SEARCH.resources.statement ]})'
     });
     var statementTableDataStore = getStatementTableDataStore();
 

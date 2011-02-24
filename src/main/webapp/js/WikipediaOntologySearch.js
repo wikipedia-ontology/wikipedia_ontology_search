@@ -22,7 +22,7 @@ WikipediaOntologySearch = new Ext.app.App({
             expires : new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 365 * 5))
         });
         Ext.state.Manager.setProvider(cookieProvider);
-        applyOptions();
+        WIKIPEDIA_ONTOLOGY_SEARCH.OptionPanel.applyOptions();
     },
 
     getModules : function() {
@@ -105,7 +105,7 @@ WikipediaOntologySearch.OptionWindow = Ext.extend(Ext.app.Module, {
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items:getOptionPanel()
+                items:WIKIPEDIA_ONTOLOGY_SEARCH.OptionPanel.getOptionPanel()
             });
         }
         win.show();
@@ -138,7 +138,7 @@ WikipediaOntologySearch.HelpWindow = Ext.extend(Ext.app.Module, {
                 animCollapse:false,
                 constrainHeader:true,
                 layout: 'fit',
-                items:getHelpPanel()
+                items:WIKIPEDIA_ONTOLOGY_SEARCH.HelpPanel.getHelpPanel()
             });
         }
         win.show();
