@@ -93,7 +93,20 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                 id: 'sparqlResultsStore',
                 proxy: new Ext.ux.data.PagingMemoryProxy(sparqlResultsArray),
                 reader: new Ext.data.ArrayReader({}, recordTypes),
-                remoteSort: true
+                remoteSort: true,
+                listeners : {
+                    // @todo indicatorが表示されない？
+                    beforeload : function() {
+                        if (sparqlResultsPanel !== undefined) {
+                            sparqlResultsPanel.body.mask(LOADING, "loading-indicator");
+                        }
+                    },
+                    load : function() {
+                        if (sparqlResultsPanel !== undefined) {
+                            sparqlResultsPanel.body.unmask();
+                        }
+                    }
+                }
             });
         };
 
@@ -490,6 +503,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                 ]
             },
             {
+                id: 'sparql_query_results_and_registered_queries',
                 xtype: 'tabpanel',
                 activeTab: 0,
                 region: 'center',

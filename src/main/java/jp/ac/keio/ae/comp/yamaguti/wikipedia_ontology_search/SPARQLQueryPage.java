@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.sparql.pfunction.library.str;
 import com.hp.hpl.jena.sparql.resultset.JSONOutputResultSet;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.SPARQLQueryInfo;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
@@ -37,6 +38,8 @@ import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -86,11 +89,30 @@ public class SPARQLQueryPage extends CommonPage {
         return true;
     }
 
+    private String checkLimit(String queryString) {
+        Pattern p = Pattern.compile("LIMIT[^0-9]+([0-9]+)");
+        Matcher m = p.matcher(queryString);
+        if (m.find()) {
+            String limitStr = m.group(1);
+            int limit = Integer.parseInt(limitStr);
+            if (1000 < limit) {
+                queryString = queryString.replaceAll("LIMIT[^0-9]+[0-9]+", "LIMIT 1000");
+            }
+//            System.out.println(limit + "の部分にマッチしました");
+        } else {
+            queryString += " LIMIT 1000";
+        }
+//        System.out.println("limit check");
+//        System.out.println(queryString);
+        return queryString;
+    }
+
     private String getQueryResults(String queryString, String outputFormat, String inferenceType, String version) {
 //        System.out.println(queryString);
         String output = "";
         QueryExecution queryExec = null;
         try {
+            queryString = checkLimit(queryString);
             Query query = QueryFactory.create(queryString);
             if (inferenceType == null) {
                 inferenceType = "none";
