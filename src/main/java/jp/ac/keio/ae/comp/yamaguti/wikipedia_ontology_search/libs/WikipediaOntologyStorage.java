@@ -44,6 +44,7 @@ public class WikipediaOntologyStorage {
     //    public static String WIKIPEDIA_ONTOLOGY_PATH = "/wikipedia_ontology";
     public static String WIKIPEDIA_ONTOLOGY_PATH = "E:/Users/t_morita/wikipedia_ontology/";
     public static String VERSION = "2010_11_14";
+    public static final String CURRENT_ONTOLOGY_VERSION = "2010_11_14";
     private static final String BASE_WIKIPEDIA_ONTOLOGY_NAME = "_wikipedia_ontology_";
 
     private static final String ENGLISH_WIKIPEDIA_INSTANCE_FILE_PATH = WIKIPEDIA_ONTOLOGY_PATH

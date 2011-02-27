@@ -17,6 +17,27 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             registeredSparqlQueryArray = getDataFromWebStorage(localStorage.registeredSparqlQueryArray);
         }
 
+
+        var versionOptionList = new Ext.data.ArrayStore({
+            fields : ["Version_Option", "Version_Option_Value"],
+            data : [
+                ["2010_11_14", "2010_11_14"],
+                ["2010_02_09", "2010_02_09"]
+            ]
+        });
+
+        var versionComboBox = new Ext.form.ComboBox({
+            id : "sparql_version_combobox_id",
+            displayField : 'Version_Option',
+            valueField : 'Version_Option_Value',
+            triggerAction : "all",
+            width : 100,
+            editable : false,
+            mode : "local",
+            store : versionOptionList
+        });
+        versionComboBox.setValue('2010_11_14');
+
         var getSPARQLColumnModel = function(columns) {
             return new Ext.grid.ColumnModel({
                 columns : columns,
@@ -110,35 +131,77 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             items: [
                 {
                     xtype: 'button',
-                    text: '更新',
+                    iconCls: 'icon-db_edit',
+                    text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.update,
                     handler: function() {
                         updateSelectedSparqlQuery();
                     }
                 },
                 {
                     xtype: 'button',
-                    text: '削除',
+                    iconCls: 'icon-db_delete',
+                    text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.remove,
                     handler: function() {
                         removeSelectedSparqlQueries();
                     }
                 },
                 {
+                    width: 10
+                },
+                {
                     xtype: 'textfield',
+                    id: 'registered_sparql_query_search_field',
                     width: 150
                 },
                 {
-                    xtype: 'checkbox',
-                    boxLabel: '説明',
-                    width: 50
+                    width: 10
                 },
                 {
                     xtype: 'checkbox',
-                    boxLabel: 'クエリ'
+                    id: 'registered_sparql_query_description_checkbox',
+                    boxLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.description,
+                    width: 80
+                },
+                {
+                    xtype: 'checkbox',
+                    id: 'registered_sparql_query_checkbox',
+                    boxLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.query,
+                    width: 60
                 },
                 {
                     xtype: 'button',
-                    text: '検索',
-                    width: 50
+                    iconCls: 'icon-search',
+                    text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
+                    width: 50,
+                    handler: function() {
+                        var searchField = Ext.getCmp("registered_sparql_query_search_field");
+                        var queryCheckBox = Ext.getCmp("registered_sparql_query_checkbox");
+                        var descriptionCheckBox = Ext.getCmp("registered_sparql_query_description_checkbox");
+//                        console.log(searchField.getValue());
+//                        console.log(descriptionCheckBox.checked);
+//                        console.log(queryCheckBox.checked);
+                        (function($) {
+                            var filteredRegisteredSparqlQueryArray = $.grep(registeredSparqlQueryArray, function(value, index) {
+                                var query = value[3];
+                                var description = value[2];
+//                                console.log(query);
+//                                console.log(description);
+                                if (queryCheckBox.checked && query.indexOf(searchField.getValue()) != -1) {
+                                    return true;
+                                }
+                                if (descriptionCheckBox.checked && description.indexOf(searchField.getValue()) != -1) {
+                                    return true;
+                                }
+                                return false;
+                            });
+                            if (searchField.getValue() === "") {
+                                filteredRegisteredSparqlQueryArray = registeredSparqlQueryArray;
+                            }
+//                            console.log(filterdRegisteredSparqlQueryArray);
+                            registeredSparqlQueryStore.proxy = new Ext.ux.data.PagingMemoryProxy(filteredRegisteredSparqlQueryArray);
+                            registeredSparqlQueryStore.reload();
+                        })(jQuery);
+                    }
                 }
             ]
         };
@@ -210,7 +273,14 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             var queryURL = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL;
             queryURL += "sparql?output_format=json&q=";
             queryURL += encodeURIComponent(sparqlQuery);
-            console.log(queryURL);
+            var isUseInfModel = Ext.getCmp("sparql_use_inf_model").checked;
+            if (isUseInfModel) {
+                queryURL += "&inference_type=rdfs";
+            } else {
+                queryURL += "&inference_type=none";
+            }
+            queryURL += "&version=" + versionComboBox.getValue();
+//            console.log(queryURL);
             return queryURL;
         }
 
@@ -339,7 +409,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             {
                 xtype: 'panel',
                 width: 800,
-                height: 260,
+                height: 290,
                 layout: 'border',
                 region: 'north',
                 items: [
@@ -347,44 +417,71 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                         xtype: 'fieldset',
                         region: 'center',
                         width: 800,
-                        height: 260,
+                        height: 290,
                         items: [
                             {
                                 xtype: 'textarea',
                                 id: "SPARQLQueryDescriptionArea",
                                 width: 650,
                                 height: 50,
-                                fieldLabel: '説明'
+                                fieldLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.description
                             },
                             {
                                 xtype: 'textarea',
                                 id: 'SPARQLQueryArea',
                                 width: 650,
                                 height: 150,
-                                fieldLabel: 'クエリ'
+                                fieldLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.query
+                            },
+                            {
+                                xtype: 'compositefield',
+                                fieldLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.version,
+                                items: [
+                                    {
+                                        items: [versionComboBox]
+                                    },
+                                    {
+                                        xtype : 'checkbox',
+                                        boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resources.useInferenceModel,
+                                        id : 'sparql_use_inf_model'
+                                    }
+                                ]
                             },
                             {
                                 xtype: 'panel',
                                 layout: 'hbox',
-                                width: 200,
+                                width: 350,
                                 items: [
                                     {
                                         xtype: 'button',
-                                        text: '検索',
+                                        iconCls: 'icon-search',
+                                        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
                                         flex: 1,
                                         handler: querySPARQL
                                     },
                                     {
                                         xtype: 'button',
-                                        text: '登録',
+                                        iconCls: 'icon-db_add',
+                                        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.register,
                                         flex: 1,
                                         handler: registerSPARQLQuery
                                     },
                                     {
                                         xtype: 'button',
-                                        text: 'クリア',
+                                        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.clear,
                                         flex: 1,
                                         handler: clearSPARQLQueryArea
+                                    },
+                                    {
+                                        xtype: 'button',
+//                                        iconCls: 'icon-rdf',
+                                        text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.sourceCode,
+                                        flex: 1,
+                                        handler: function() {
+                                            var queryURL = getSPARQLQueryURL();
+                                            queryURL = queryURL.replace("output_format=json", "output_format=xml");
+                                            WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel.reloadRDFSource(queryURL);
+                                        }
                                     }
                                 ]
                             }
@@ -400,7 +497,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                 items: [
                     {
                         xtype: 'panel',
-                        title: 'クエリ結果',
+                        title: WIKIPEDIA_ONTOLOGY_SEARCH.resources.queryResults,
                         layout: 'border',
                         items: [
                             sparqlResultsPanel
@@ -408,7 +505,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     },
                     {
                         xtype: 'panel',
-                        title: '登録クエリ',
+                        title: WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredQuery,
                         layout: 'border',
                         items: [
                             registeredSparqlQueryPanel

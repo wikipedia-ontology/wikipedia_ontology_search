@@ -86,7 +86,7 @@ public class SPARQLQueryPage extends CommonPage {
         return true;
     }
 
-    private String getQueryResults(String queryString, String outputFormat, String inferenceType) {
+    private String getQueryResults(String queryString, String outputFormat, String inferenceType, String version) {
 //        System.out.println(queryString);
         String output = "";
         QueryExecution queryExec = null;
@@ -96,6 +96,7 @@ public class SPARQLQueryPage extends CommonPage {
                 inferenceType = "none";
             }
 //            System.out.println("inference_type: " + inferenceType);
+            WikipediaOntologyStorage.VERSION = version;
             Model dbModel = getWikipediaOntologyAndInstanceModel("ja", inferenceType);
             queryExec = QueryExecutionFactory.create(query, dbModel);
             ResultSet results = queryExec.execSelect();
@@ -150,13 +151,14 @@ public class SPARQLQueryPage extends CommonPage {
         String query = params.getString("q");
         String outputFormat = params.getString("output_format");
         String inferenceType = params.getString("inference_type");
+        String version = params.getString("version", WikipediaOntologyStorage.CURRENT_ONTOLOGY_VERSION);
         if (query != null) {
             try {
                 if (outputFormat == null) {
                     outputFormat = "xml";
                 }
                 final String contentType = getContentType(outputFormat);
-                final String outputString = getQueryResults(query, outputFormat, inferenceType);
+                final String outputString = getQueryResults(query, outputFormat, inferenceType, version);
                 if (outputString.equals("error")) {
                     showErrorPage("SPARQLクエリエラー");
                 } else {
