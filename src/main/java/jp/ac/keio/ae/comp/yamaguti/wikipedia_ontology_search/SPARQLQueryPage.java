@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.sparql.resultset.JSONOutputResultSet;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.SPARQLQueryInfo;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.PagingData;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.SPARQLQueryInfoImpl;
@@ -31,8 +32,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -45,7 +45,7 @@ import java.util.*;
  * Date: 2010/09/06
  * Time: 14:00:35
  */
-public class SPARQLQueryPage extends CommonPage{
+public class SPARQLQueryPage extends CommonPage {
     private String sparqlQuery;
     private String description;
     private String userId;
@@ -56,83 +56,89 @@ public class SPARQLQueryPage extends CommonPage{
     private IndicatingAjaxLink currentAjaxLink;
     private String confirmType;
 
-   private String keyword;
+    private String keyword;
     private boolean isSearchAuthorCheck;
     private boolean isSearchDescriptionCheck;
     private boolean isSearchQueryCheck;
 
-   public void setConfirmType(String type)  {
-       confirmType = type;
-   }
+    public void setConfirmType(String type) {
+        confirmType = type;
+    }
 
     private Model getWikipediaOntologyAndInstanceModel(String lang, String inferenceType) {
         WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, inferenceType);
         return wikiOntStrage.getTDBModel();
     }
 
-   private boolean isValidSPARQLQuerySyntax(String queryString)  {
-       QueryExecution queryExec =  null;
-       try {
-           Query query = QueryFactory.create(queryString);
-           queryExec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel());
-       } catch(Exception e) {
-           e.printStackTrace();
-           return false;
-       } finally {
-           if (queryExec != null) {
-               queryExec.close();
-           }
-       }
-       return true;
-   }
+    private boolean isValidSPARQLQuerySyntax(String queryString) {
+        QueryExecution queryExec = null;
+        try {
+            Query query = QueryFactory.create(queryString);
+            queryExec = QueryExecutionFactory.create(query, ModelFactory.createDefaultModel());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (queryExec != null) {
+                queryExec.close();
+            }
+        }
+        return true;
+    }
 
-   private String getQueryResults(String queryString, String outputFormat, String inferenceType)  {
-       System.out.println(queryString);
-       String output = "";
-       QueryExecution queryExec =  null;
-       try {
-           Query query = QueryFactory.create(queryString);
-           if (inferenceType == null) {
-               inferenceType = "none";
-           }
-           System.out.println("inference_type: " + inferenceType);
-           Model dbModel = getWikipediaOntologyAndInstanceModel("ja", inferenceType);
-           queryExec =  QueryExecutionFactory.create(query, dbModel);
-           ResultSet results = queryExec.execSelect();
-           if (outputFormat.equals("xml")) {
-               output = ResultSetFormatter.asXMLString(results);
-           } else if (outputFormat.equals("text")) {
-               output = ResultSetFormatter.asText(results);
-           }
-       } catch(Exception e) {
-           e.printStackTrace();
-           output =  "error";
-       } finally {
-           if (queryExec != null) {
-               queryExec.close();
-           }
-       }
-       return output;
-   }
+    private String getQueryResults(String queryString, String outputFormat, String inferenceType) {
+//        System.out.println(queryString);
+        String output = "";
+        QueryExecution queryExec = null;
+        try {
+            Query query = QueryFactory.create(queryString);
+            if (inferenceType == null) {
+                inferenceType = "none";
+            }
+//            System.out.println("inference_type: " + inferenceType);
+            Model dbModel = getWikipediaOntologyAndInstanceModel("ja", inferenceType);
+            queryExec = QueryExecutionFactory.create(query, dbModel);
+            ResultSet results = queryExec.execSelect();
+            if (outputFormat.equals("xml")) {
+                output = ResultSetFormatter.asXMLString(results);
+            } else if (outputFormat.equals("text")) {
+                output = ResultSetFormatter.asText(results);
+            } else if (outputFormat.equals("json")) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ResultSetFormatter.outputAsJSON(outputStream, results);
+                output = outputStream.toString("UTF-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            output = "error";
+        } finally {
+            if (queryExec != null) {
+                queryExec.close();
+            }
+        }
+        return output;
+    }
 
-   private String getContentType(String outputFormat)  {
-       String contentType = "";
-       if (outputFormat.equals("xml")) {
-           contentType = "application/xml";
-       } else  if (outputFormat.equals("text")) {
-           contentType = "text/plain";
-       }
-       return contentType;
-   }
+    private String getContentType(String outputFormat) {
+        String contentType = "";
+        if (outputFormat.equals("xml")) {
+            contentType = "application/xml";
+        } else if (outputFormat.equals("text")) {
+            contentType = "text/plain";
+        } else if (outputFormat.equals("json")) {
+            contentType = "application/json";
+        }
+        return contentType;
+    }
 
-   private void showErrorPage(String errorMessage) {
-       PageParameters params = new PageParameters();
-       params.put("error_message", errorMessage);
-       setResponsePage(ErrorPage.class, params);
-   }
+    private void showErrorPage(String errorMessage) {
+        PageParameters params = new PageParameters();
+        params.put("error_message", errorMessage);
+        setResponsePage(ErrorPage.class, params);
+    }
 
-    private  AjaxFormComponentUpdatingBehavior getAjaxOnblurBehavior() {
-        return new AjaxFormComponentUpdatingBehavior("onblur"){
+    private AjaxFormComponentUpdatingBehavior getAjaxOnblurBehavior() {
+        return new AjaxFormComponentUpdatingBehavior("onblur") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 target.addComponent(getFormComponent());
@@ -141,8 +147,8 @@ public class SPARQLQueryPage extends CommonPage{
     }
 
     public SPARQLQueryPage(PageParameters params) {
-        String query = params.getString("query");
-        String outputFormat = params.getString("output");
+        String query = params.getString("q");
+        String outputFormat = params.getString("output_format");
         String inferenceType = params.getString("inference_type");
         if (query != null) {
             try {
@@ -159,18 +165,19 @@ public class SPARQLQueryPage extends CommonPage{
                             requestCycle.getResponse().setContentType(contentType + "; charset=utf-8");
                             requestCycle.getResponse().write(outputString);
                         }
+
                         public void detach(RequestCycle requestCycle) {
                         }
                     });
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-       final ModalWindow confirmDialog = new ModalWindow("confirmDialog");
+        final ModalWindow confirmDialog = new ModalWindow("confirmDialog");
         confirmDialog.setOutputMarkupId(true);
-         confirmDialog.setPageCreator(new ModalWindow.PageCreator() {
+        confirmDialog.setPageCreator(new ModalWindow.PageCreator() {
             public Page createPage() {
                 return new ConfirmDialog(SPARQLQueryPage.this, confirmDialog);
             }
@@ -190,7 +197,7 @@ public class SPARQLQueryPage extends CommonPage{
 
         Form<Void> form = new Form<Void>("sparql_query_form");
         PropertyModel<String> sparqlQueryModel = new PropertyModel<String>(this, "sparqlQuery");
-        final TextArea<String> queryArea = new TextArea<String>("queryArea",sparqlQueryModel);
+        final TextArea<String> queryArea = new TextArea<String>("queryArea", sparqlQueryModel);
         queryArea.setOutputMarkupId(true);
         queryArea.add(getAjaxOnblurBehavior());
 
@@ -223,7 +230,7 @@ public class SPARQLQueryPage extends CommonPage{
 
         add(form);
 
-        List<ChoiceElement>  choices = Arrays.asList(new ChoiceElement("xml", "XML"),  new ChoiceElement("text", "テキスト"));
+        List<ChoiceElement> choices = Arrays.asList(new ChoiceElement("xml", "XML"), new ChoiceElement("json", "JSON"), new ChoiceElement("text", "テキスト"));
         final DropDownChoice<ChoiceElement> select = new DropDownChoice<ChoiceElement>("format", new org.apache.wicket.model.Model<ChoiceElement>(), choices,
                 new IChoiceRenderer<ChoiceElement>() {
                     public String getDisplayValue(ChoiceElement object) {
@@ -238,7 +245,7 @@ public class SPARQLQueryPage extends CommonPage{
 
         final Image buttonIndicator = WikipediaOntologyUtils.getIndicator("button_indicator");
         form.add(buttonIndicator);
-        
+
         IndicatingAjaxButton submitButton = new IndicatingAjaxButton("query") {
             @Override
             public void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -249,13 +256,13 @@ public class SPARQLQueryPage extends CommonPage{
                     queryErrorMessage = "クエリを入力してください．";
                 } else {
                     PageParameters params = new PageParameters();
-                    params.put("query", sparqlQuery);
+                    params.put("q", sparqlQuery);
                     ChoiceElement elem = select.getModelObject();
                     String outputFormat = "xml";
                     if (elem != null) {
                         outputFormat = elem.getId();
                     }
-                    params.put("output", outputFormat);
+                    params.put("output_format", outputFormat);
                     String inferenceType = "none";
                     if (isUsingInferenceModel) {
                         inferenceType = "rdfs";
@@ -291,13 +298,13 @@ public class SPARQLQueryPage extends CommonPage{
                     inferenceType = "rdfs";
                 }
 
-               if (isDescriptionEmpty())  {
-                   descriptionErrorMessage = "クエリの説明を入力してください．";
-               }
+                if (isDescriptionEmpty()) {
+                    descriptionErrorMessage = "クエリの説明を入力してください．";
+                }
                 if (isQueryEmpty()) {
                     queryErrorMessage = "クエリを入力してください．";
                 }
-                if (!(isDescriptionEmpty() || isQueryEmpty())){
+                if (!(isDescriptionEmpty() || isQueryEmpty())) {
                     if (!isValidSPARQLQuerySyntax(sparqlQuery)) {
                         queryErrorMessage = "クエリにエラーがあります．";
                     } else {
@@ -406,13 +413,13 @@ public class SPARQLQueryPage extends CommonPage{
                             infType = "rdfs";
                         }
 
-                        if (isDescriptionEmpty())  {
+                        if (isDescriptionEmpty()) {
                             descriptionErrorMessage = "クエリの説明を入力してください．";
                         }
                         if (isQueryEmpty()) {
                             queryErrorMessage = "クエリを入力してください．";
                         }
-                        if (!(isDescriptionEmpty() || isQueryEmpty())){
+                        if (!(isDescriptionEmpty() || isQueryEmpty())) {
                             if (!isValidSPARQLQuerySyntax(sparqlQuery)) {
                                 queryErrorMessage = "クエリにエラーがあります．";
                             } else {
@@ -544,6 +551,7 @@ public class SPARQLQueryPage extends CommonPage{
                         requestCycle.getResponse().setContentType("text/csv; charset=utf-8");
                         requestCycle.getResponse().write(SPARQLQueryStorage.getAllSPARQLQueryInfoData());
                     }
+
                     public void detach(RequestCycle requestCycle) {
                     }
                 });
@@ -553,22 +561,22 @@ public class SPARQLQueryPage extends CommonPage{
         add(new Label("title", "SPARQLクエリ: " + TITLE).setRenderBodyOnly(true));
     }
 
-    private boolean isDescriptionEmpty()  {
+    private boolean isDescriptionEmpty() {
         return description == null || description.length() == 0;
     }
 
-    private  boolean isQueryEmpty()  {
+    private boolean isQueryEmpty() {
         return sparqlQuery == null || sparqlQuery.length() == 0;
     }
 
-   private String encodeUTF8String(String str)  {
-       try {
-           return URLEncoder.encode(str, "UTF-8");
-       } catch(UnsupportedEncodingException e) {
-           e.printStackTrace();
-       }
-       return "";
-   }
+    private String encodeUTF8String(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     private String getSPARQLQueryURL(String query, String inferenceType, String outputFormmat) {
         StringBuilder builder = new StringBuilder();
@@ -616,20 +624,20 @@ public class SPARQLQueryPage extends CommonPage{
 
             private String makeFilterQuery(String[] keywords, String fieldName) {
                 StringBuilder builder = new StringBuilder();
-               for (String keyword: keywords)  {
-                   builder.append(fieldName);
-                   builder.append(" like ");
-                   builder.append("'%");
-                   builder.append(keyword);
-                   builder.append("%'");
-                   builder.append(" OR ");
-               }
+                for (String keyword : keywords) {
+                    builder.append(fieldName);
+                    builder.append(" like ");
+                    builder.append("'%");
+                    builder.append(keyword);
+                    builder.append("%'");
+                    builder.append(" OR ");
+                }
                 builder.append("false ");
                 return builder.toString();
             }
 
             private net.java.ao.Query filterQuery(net.java.ao.Query query) {
-                if (keyword == null)  {
+                if (keyword == null) {
                     keyword = "";
                 }
                 String[] keywords = keyword.split("\\s+");
@@ -655,21 +663,21 @@ public class SPARQLQueryPage extends CommonPage{
                 return query;
             }
 
-            public Iterator< ? extends SPARQLQueryInfoImpl> iterator(int first, int count) {
+            public Iterator<? extends SPARQLQueryInfoImpl> iterator(int first, int count) {
                 pagingData.setStart(first + 1);
                 pagingData.setEnd(first + count);
                 List<SPARQLQueryInfoImpl> sparqlQueryInfoList = Lists.newArrayList();
                 net.java.ao.Query query = net.java.ao.Query.select().order("createdate desc, updatedate desc, description desc").limit(count).offset(first);
                 query = filterQuery(query);
                 try {
-                    for (SPARQLQueryInfo info: em.find(SPARQLQueryInfo.class, query)) {
+                    for (SPARQLQueryInfo info : em.find(SPARQLQueryInfo.class, query)) {
                         String inferenceType = info.getInferenceType();
                         SPARQLQueryInfoImpl infoImpl = new SPARQLQueryInfoImpl(info.getID(),
                                 info.getDescription(), info.getQuery(), info.getUserId(), inferenceType,
                                 info.getCreateDate(), info.getUpdateDate());
                         sparqlQueryInfoList.add(infoImpl);
                     }
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 return sparqlQueryInfoList.iterator();

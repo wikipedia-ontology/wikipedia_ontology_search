@@ -2,6 +2,9 @@
  * Author: Takeshi Morita
  * Contact: t_morita@ae.keio.ac.jp
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
+ *
+ * @todo グローバル関数の局所化
+ *
  */
 function getTreePanel(title, treeType) {
     var treePanelId = treeType + "Panel";

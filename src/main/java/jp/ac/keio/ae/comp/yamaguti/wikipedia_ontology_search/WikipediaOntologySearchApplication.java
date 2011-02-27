@@ -37,12 +37,20 @@ public class WikipediaOntologySearchApplication extends WebApplication {
         WikipediaOntologyStorage.H2_DB_PATH = getServletContext().getInitParameter("h2_db_path");
         if (hostName.equals("zest") || hostName.equals("avalon")) {
             WikipediaOntologyStorage.H2_DB_PATH = "C:/Users/t_morita/h2db/";
+        } else if (hostName.equals("t-morita-macbook-air.local")) {
+            WikipediaOntologyStorage.H2_DB_PATH = "/Users/t_morita/h2db/";
         }
         WikipediaOntologyStorage.H2_DB_PROTOCOL = getServletContext().getInitParameter("h2_db_protocol");
         WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = getServletContext().getInitParameter("wikipedia_ontology_path");
-        if (hostName.equals("zest") || hostName.equals("avalon")) {
+//        System.out.println(hostName);
+        if (hostName.equals("zest")) {
+            WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "E:/Users/t_morita/wikipedia_ontology/";
+        } else if (hostName.equals("avalon")) {
             WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "C:/Users/t_morita/wikipedia_ontology/";
+        } else if (hostName.equals("t-morita-macbook-air.local")) {
+            WikipediaOntologyStorage.WIKIPEDIA_ONTOLOGY_PATH = "/Users/t_morita/wikipedia_ontology/";
         }
+
         MemCachedStorage.HOST = getServletContext().getInitParameter("memcached_host");
         MemCachedStorage.PORT = getServletContext().getInitParameter("memcached_port");
         WikipediaOntologyStorage.getEntityManager(); // EntityManagerの初期化

@@ -733,6 +733,13 @@ td.ux-taskButtons-edge {
 }
 
 
+#sparql-win-shortcut img {
+    width: 48px;
+    height: 48px;
+    background-image: url(../../my_resources/icons/sparql_icon_48x48.png);
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src = 'images/im48x48.png', sizingMethod = 'scale');
+}
+
 #bookmark-win-shortcut img {
     width: 48px;
     height: 48px;

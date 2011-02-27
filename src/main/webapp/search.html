@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="my_resources/extjs_mystyle.css" type="text/css" media="all"/>
 
     <!-- extjs libs-->
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("jquery", "1.5.1");</script>
+    <script type="text/javascript" src="js/lib/ext-jquery-adapter.js"></script>
     <script type="text/javascript" src="js/lib/ecl.js"></script>
     <script type="text/javascript" src="js/lib/ext-base.js"></script>
     <script type="text/javascript" src="js/lib/ext-all.js"></script>
@@ -30,6 +33,7 @@
     <script type="text/javascript" src="js/lib/Desktop.js"></script>
     <script type="text/javascript" src="js/lib/App.js"></script>
     <script type="text/javascript" src="js/lib/Module.js"></script>
+    <script type="text/javascript" src="js/lib/CheckColumn.js"></script>
     <!-- my libs-->
     <script type="text/javascript" src="js/resources/JaResource.js"></script>
     <script type="text/javascript" src="js/Constants.js"></script>
@@ -54,6 +58,7 @@
     <script type="text/javascript" src="js/widgets/StatementTabPanel.js"></script>
     <script type="text/javascript" src="js/widgets/TreePanel.js"></script>
     <script type="text/javascript" src="js/widgets/StatisticsInformationPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/SPARQLPanel.js"></script>
     <script type="text/javascript" src="js/WikipediaOntologySearch.js"></script>
 </head>
 <body scroll="no">
@@ -89,6 +94,12 @@
             <a href="#"><img src="ext_resources/images/s.gif"/>
 
                 <div>インスタンス一覧</div>
+            </a>
+        </dt>
+        <dt id="sparql-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>SPARQL</div>
             </a>
         </dt>
         <dt id="bookmark-win-shortcut">

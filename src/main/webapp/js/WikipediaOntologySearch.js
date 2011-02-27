@@ -32,6 +32,7 @@ WikipediaOntologySearch = new Ext.app.App({
             new WikipediaOntologySearch.TreeWindow(),
             new WikipediaOntologySearch.PropertyListWindow(),
             new WikipediaOntologySearch.InstanceListWindow(),
+            new WikipediaOntologySearch.SPARQLWindow(),
             new WikipediaOntologySearch.BookmarkWindow(),
             new WikipediaOntologySearch.HistoryWindow(),
             new WikipediaOntologySearch.SourceWindow(),
@@ -139,6 +140,40 @@ WikipediaOntologySearch.HelpWindow = Ext.extend(Ext.app.Module, {
                 constrainHeader:true,
                 layout: 'fit',
                 items:WIKIPEDIA_ONTOLOGY_SEARCH.HelpPanel.getHelpPanel()
+            });
+        }
+        win.show();
+    }
+});
+
+
+WikipediaOntologySearch.SPARQLWindow = Ext.extend(Ext.app.Module, {
+    id:'sparql-win',
+    init : function() {
+        this.launcher = {
+            text : "SPARQL",
+            iconCls:'icon-sparql',
+            handler : this.createWindow,
+            scope: this
+        }
+    },
+
+    createWindow : function() {
+        var desktop = this.app.getDesktop();
+        var win = desktop.getWindow('help-win');
+        if (!win) {
+            win = desktop.createWindow({
+                id: 'sparql-win',
+                title : "SPARQL",
+                width: 800,
+                height:600,
+                iconCls: 'icon-sparql',
+                shim:false,
+                closable: true,
+                animCollapse:false,
+                constrainHeader:true,
+                layout: 'fit',
+                items: new WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel()
             });
         }
         win.show();

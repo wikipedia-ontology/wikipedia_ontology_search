@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.dao.ClassStatistics;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.data.*;
 import jp.ac.keio.ae.comp.yamaguti.wikipedia_ontology_search.libs.*;
@@ -91,6 +92,7 @@ public class ResourcePage extends CommonPage implements Serializable {
 
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
         String lang = wikiOntSearch.setTDBModel();
+
         String rdfString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getRDFKey());
         if (rdfString != null) {
             return WikipediaOntologyUtils.readRDFString(rdfString);

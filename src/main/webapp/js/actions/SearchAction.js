@@ -19,7 +19,7 @@ function getQueryURI(keyword) {
     var searchOption = "search_option=" + searchOptionSelection.getValue();
     var versionOptionSelection = Ext.getCmp('Version_Option');
     var versionOption = "version=" + versionOptionSelection.getValue();
-    
+
     if (1 < keywords.length) {
         queryURI += WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH +
                 "q" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION + "?";
@@ -125,16 +125,18 @@ function reloadStatements(queryURI, keyword) {
     searchPanel.getForm().findField('keyword').setValue(keyword);
     statementTabPanel.getActiveTab().setTitle(keyword);
     var searchParams = extractParametersFromURI(queryURI);
-    switch (searchParams[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type]) {
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
+    var queryTypes = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes;
+    var parameterKeys = WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys;
+    switch (searchParams[parameterKeys.resource_type]) {
+        case queryTypes.class:
             Ext.getDom('class_button').checked = true;
             statementTabPanel.getActiveTab().setIconClass('icon-class');
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
+        case queryTypes.property:
             Ext.getDom('property_button').checked = true;
             statementTabPanel.getActiveTab().setIconClass('icon-property');
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
+        case queryTypes.instance:
             Ext.getDom('instance_button').checked = true;
             statementTabPanel.getActiveTab().setIconClass('icon-instance');
             break;
@@ -144,15 +146,20 @@ function reloadStatements(queryURI, keyword) {
     reloadStatementTable(queryURI);
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     var searchOptionValue = searchOptionSelection.getValue();
-    if (queryType == WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class &&
-            searchTargetType == WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri &&
-            ( searchOptionValue == WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match ||
-                    searchOptionValue == WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.path_to_root_class)) {
-        queryURI = queryURI.replace(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match, WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.path_to_root_class);
+    var searchOptions = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions;
+    var inferenceOptions = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions;
+    if (queryType === queryTypes.class &&
+            searchTargetType === WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri &&
+            ( searchOptionValue === searchOptions.exact_match || searchOptionValue === searchOptions.path_to_root_class)) {
+        queryURI = queryURI.replace(searchOptions.exact_match, searchOptions.path_to_root_class);
         var queryTreeDataURI = queryURI + "?extjs_json_format=tree";
         if (queryURI.indexOf("?") != -1) {
             queryTreeDataURI = queryURI + "&extjs_json_format=tree";
         }
+        if (inferenceType === inferenceOptions.rdfs) {
+            queryTreeDataURI = queryTreeDataURI.replace("&" + parameterKeys.inference_type + "=" + inferenceOptions.rdfs, "");
+        }
+        console.log("tree uri: " + queryTreeDataURI);
         reloadTree(queryTreeDataURI);
     }
 }

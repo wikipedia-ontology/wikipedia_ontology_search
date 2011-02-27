@@ -75,6 +75,7 @@ public class WikipediaOntologyStorage {
             if (inferenceType.equals("rdfs")) {
                 infLabel = "_with_rdfs_inference";
             }
+//            System.out.println(WIKIPEDIA_ONTOLOGY_PATH + lang + BASE_WIKIPEDIA_ONTOLOGY_NAME + VERSION + infLabel);
             tdbModel = TDBFactory.createModel(WIKIPEDIA_ONTOLOGY_PATH + lang +
                     BASE_WIKIPEDIA_ONTOLOGY_NAME + VERSION + infLabel);
         } catch (Exception e) {
@@ -289,8 +290,8 @@ public class WikipediaOntologyStorage {
 
     public static void main(String[] args) {
 //        storeWikipediaOntologyAndInstanceToTDB("ja", false);
-//        storeWikipediaOntologyAndInstanceToTDB("ja", true);
-        storeWikipediaOntologyAndInstanceToTDB("en", false);
+        storeWikipediaOntologyAndInstanceToTDB("ja", true);
+//        storeWikipediaOntologyAndInstanceToTDB("en", false);
         // storeWikipediaOntologyAndInstanceToDB(isInfModel, lang);
 //        storeAllClassesToFile("ja");
     }
