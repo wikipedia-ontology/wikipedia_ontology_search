@@ -4,6 +4,8 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
+var WIKIPEDIA_ONTOLOGY_SEARCH = WIKIPEDIA_ONTOLOGY_SEARCH || {};
+
 WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel = {
     getSourcePanel: function() {
         var uriPanel = new Ext.Panel({
@@ -51,6 +53,11 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SourcePanel = {
     },
     reloadRDFSource: function(queryDataURL) {
         queryDataURL = queryDataURL.replace(WIKIPEDIA_ONTOLOGY_SEARCH.constants.ESCAPED_JSON_EXTENSION, "");
+        // @todo プログレスバーから現状のstartとlimitを取得すべき
+        if (queryDataURL.indexOf("instances_of_class") != -1) {
+            queryDataURL += "&start=0&limit=1000";
+        }
+//        console.log(queryDataURL);
         Ext.getCmp("SourceURIField").setValue(queryDataURL);
         Ext.Ajax.request({
             url : queryDataURL,

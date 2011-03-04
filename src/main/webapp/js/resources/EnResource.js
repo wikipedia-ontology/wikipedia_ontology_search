@@ -4,7 +4,7 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
-var WIKIPEDIA_ONTOLOGY_SEARCH = {};
+var WIKIPEDIA_ONTOLOGY_SEARCH = WIKIPEDIA_ONTOLOGY_SEARCH || {};
 
 WIKIPEDIA_ONTOLOGY_SEARCH.resources = {
     appTitle: "Japanese Wikipedia Ontology Search Interface",
@@ -54,8 +54,8 @@ WIKIPEDIA_ONTOLOGY_SEARCH.resources = {
     bookmark : "Bookmark",
     openSelectedBookmark : "Open Selected Bookmark",
     removeSelectedBookmarks : "Remove Selected Bookmarks",
-    import : "Import",
-    export : "Export",
+    import_bookmarks : "Import",
+    export_bookmarks : "Export",
     importOrExportBookmarks : 'Import/Export Bookmarks',
     close : "Close",
     classHierarchy : "Class Hiearchy",
@@ -120,9 +120,9 @@ WIKIPEDIA_ONTOLOGY_SEARCH.resources = {
 var LOADING = "Loading...";
 
 WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels = {
-    class: "Class",
-    property: "Property",
-    instance: "Instance"
+    Class: "Class",
+    Property: "Property",
+    Instance: "Instance"
 }
 
 WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptionLabels = {

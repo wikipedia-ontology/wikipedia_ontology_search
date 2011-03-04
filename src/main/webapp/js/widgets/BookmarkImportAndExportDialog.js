@@ -24,13 +24,13 @@ function getBookmarkImportAndExportDialog() {
             {
                 xtype : 'button',
                 iconCls: 'icon-import',
-                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import,
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import_bookmarks,
                 handler : importBookmarks
             },
             {
                 xtype : 'button',
                 iconCls: 'icon-export',
-                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.export,
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.export_bookmarks,
                 handler : exportBookmarks
             },
             {

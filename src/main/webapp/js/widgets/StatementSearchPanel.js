@@ -6,11 +6,11 @@
 
 function setQueryType() {
     if (Ext.getCmp("class_button").checked) {
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
     } else if (Ext.getCmp("property_button").checked) {
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
     } else if (Ext.getCmp("instance_button").checked) {
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
     }
     resetSearchOptionList(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);
     setURIField("StatementURIField", getQueryURI(""));
@@ -116,19 +116,19 @@ function getStatementSearchPanel() {
             {
                 xtype: 'radio',
                 checked : true,
-                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class,
                 name : 'query-type',
                 id : 'class_button'
             },
             {
                 xtype: 'radio',
-                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property,
                 name : 'query-type',
                 id : 'property_button'
             },
             {
                 xtype: 'radio',
-                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance,
+                boxLabel : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance,
                 name : 'query-type',
                 id : 'instance_button'
             }

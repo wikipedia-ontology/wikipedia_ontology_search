@@ -281,19 +281,19 @@ function showStatementTablePanelContextMenu(grid, rowIndex, cellIndex, e) {
         var queryURL = url.replace("wikiont_class:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH);
         var keyword = queryURL.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH)[1];
         keyword = decodeURI(keyword);
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
         makeClassContextMenu(keyword).showAt(e.getXY());
     } else if (url.indexOf("wikiont_property") != -1) {
         var queryURL = url.replace("wikiont_property:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH);
         var keyword = queryURL.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH)[1];
         keyword = decodeURI(keyword);
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
         makePropertyContextMenu(keyword).showAt(e.getXY());
     } else if (url.indexOf("wikiont_instance") != -1) {
         var queryURL = url.replace("wikiont_instance:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH);
         var keyword = queryURL.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH)[1];
         keyword = decodeURI(keyword);
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
         makeInstanceContextMenu(keyword).showAt(e.getXY());
     }
 }
@@ -307,7 +307,7 @@ function reloadStatementTable(queryURI) {
     var statementTableDataStore = statementTablePanel.store;
     var numberOfStatementsSelection = Ext.getCmp('numberOfStatementsSelection');
     var pagingToolBar = statementTablePanel.bbar;
-    console.log(queryURI);
+//    console.log(queryURI);
     statementTableDataStore.proxy = getProxy(queryURI);
     var limitSize = 100;
     if (!isNaN(numberOfStatementsSelection.getValue())) {
@@ -358,19 +358,19 @@ function openWikiOntRDFData(value) {
         searchTargetType = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
         switch (prefix) {
             case "wikiont_class":
-                queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+                queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
                 var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL +
                         localName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_property":
-                queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+                queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
                 var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL +
                         localName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 reloadStatements(queryURI, localName);
                 break;
             case "wikiont_instance":
-                queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+                queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
                 var queryURI = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_INSTANCE_DATA_URL +
                         localName + WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
                 reloadStatements(queryURI, localName);
@@ -394,19 +394,19 @@ function openWikiOntJSONData(grid, rowIndex, columnIndex, e) {
         var queryURI = url.replace("wikiont_class:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.CLASS_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH);
         var keyword = queryURI.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH)[1];
         keyword = keyword.replace(WIKIPEDIA_ONTOLOGY_SEARCH.constants.ESCAPED_JSON_EXTENSION, "");
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
         reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_property") != -1) {
         var queryURI = url.replace("wikiont_property:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.PROPERTY_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH);
         var keyword = queryURI.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH)[1];
         keyword = keyword.replace(WIKIPEDIA_ONTOLOGY_SEARCH.constants.ESCAPED_JSON_EXTENSION, "");
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
         reloadStatements(queryURI, keyword);
     } else if (url.indexOf("wikiont_instance") != -1) {
         var queryURI = url.replace("wikiont_instance:", WIKIPEDIA_ONTOLOGY_SEARCH.constants.INSTANCE_PATH + WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH);
         var keyword = queryURI.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.DATA_PATH)[1];
         keyword = keyword.replace(WIKIPEDIA_ONTOLOGY_SEARCH.constants.ESCAPED_JSON_EXTENSION, "");
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
         reloadStatements(queryURI, keyword);
     }
     resetSearchOptionList(WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match);

@@ -18,15 +18,15 @@ function getInstanceListTableDataStore(type) {
     var panelName = "";
     var dataURL = "";
     switch (type) {
-        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class:
             panelName = "ClassInstanceListTablePanel";
             dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL;
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property:
             panelName = "PropertyInstanceListTablePanel";
             dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.PROPERTY_LIST_DATA_URL;
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance:
             panelName = "InstanceListTablePanel";
             dataURL = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.INSTANCE_LIST_DATA_URL;
             break;
@@ -54,13 +54,13 @@ function getInstanceListPanel(type) {
     var cellRenderer = openInstanceByLink;
     var cellClickListener = openInstanceByCellClick;
     switch (type) {
-        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class:
             panelIdLabel = "ClassInstance";
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property:
             panelIdLabel = "PropertyInstance";
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance:
             panelIdLabel = "Instance";
             cellRenderer = openInstanceTypeByLink;
             cellClickListener = openInstanceTypeByCellClick;
@@ -72,7 +72,7 @@ function getInstanceListPanel(type) {
         pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : instanceListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resources.instance + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -84,7 +84,7 @@ function getInstanceListPanel(type) {
         store : instanceListTableDataStore,
         columns : [
             {
-                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance,
                 dataIndex : "instance",
                 id : panelIdLabel + "list_table_instance_column",
                 renderer : cellRenderer,
@@ -105,7 +105,7 @@ function showInstanceContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
-    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
     makeInstanceContextMenu(keyword).showAt(e.getXY());
 }
 

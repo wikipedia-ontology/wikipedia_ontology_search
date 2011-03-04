@@ -17,7 +17,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
                 header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
                 hidden : true,
-                renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
+                renderer: renderDate,
                 width : 150
             },
             {
@@ -85,7 +85,7 @@ var bookmarkStore = new Ext.data.Store({
     reader: new Ext.data.ArrayReader({}, [
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
-            type: 'date'
+            type: getDateType()
         },
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name
@@ -337,14 +337,14 @@ function getBookmarkPanel() {
                     {
                         xtype : 'button',
                         iconCls: 'icon-import',
-                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import_bookmarks,
                         handler : showBookmarkImportDialog
                     },
                     '-',
                     {
                         xtype : 'button',
                         iconCls: 'icon-export',
-                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.export,
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.export_bookmarks,
                         handler : showBookmarkExportDialog
                     }
                 ]
@@ -420,13 +420,13 @@ function showBookmarkContextMenu(grid, rowIndex, cellIndex, e) {
     var record = bookmarkCheckboxSelectionModel.getSelected();
     var resourceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
     switch (resourceType) {
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class:
             makeBookmarkClassContextMenu(record).showAt(e.getXY());
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property:
             makeBookmarkPropertyContextMenu(record).showAt(e.getXY());
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance:
             makeBookmarkInstanceContextMenu(record).showAt(e.getXY());
             break;
     }

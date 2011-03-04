@@ -5,6 +5,8 @@
  */
 
 
+var WIKIPEDIA_ONTOLOGY_SEARCH = WIKIPEDIA_ONTOLOGY_SEARCH || {};
+
 WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
     width: 800,
     height: 600,
@@ -56,14 +58,14 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     id : 'registered_date_id',
                     dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour,
                     header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour,
-                    renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
+                    renderer:renderDate,
                     width : 150
                 },
                 {
                     id : 'update_date_id',
                     dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour,
                     header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour,
-                    renderer : Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
+                    renderer : renderDate,
                     width : 150
                 },
                 {
@@ -95,15 +97,13 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                 reader: new Ext.data.ArrayReader({}, recordTypes),
                 remoteSort: true,
                 listeners : {
-                    // @todo indicatorが表示されない？
                     beforeload : function() {
-                        if (sparqlResultsPanel !== undefined) {
-                            sparqlResultsPanel.body.mask(LOADING, "loading-indicator");
-                        }
+                        // maskは検索時に行う
                     },
                     load : function() {
-                        if (sparqlResultsPanel !== undefined) {
+                        if (sparqlResultsPanel !== undefined && sparqlResultsPanel.body !== undefined) {
                             sparqlResultsPanel.body.unmask();
+                            registeredSparqlQueryPanel.body.unmask();
                         }
                     }
                 }
@@ -121,10 +121,11 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             reader:new Ext.data.ArrayReader({}, [
                 {
                     name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour,
-                    type: 'date'
+                    type: getDateType()
                 },
                 {
-                    name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour
+                    name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour,
+                    type: getDateType()
                 },
                 {
                     name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.sparqlQueryDescription
@@ -298,6 +299,10 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
         }
 
         var renderResource = function(value) {
+            if (value === null) {
+                newValue += "<img alt='" + value + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "label_icon_s.png'/> " + value;
+                return newValue;
+            }
             var baseURI = WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_URI;
             var newValue = "";
             if (value.indexOf(baseURI + "class") != -1) {
@@ -316,17 +321,28 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                 value = value.replace("/", ":");
                 newValue += '<a href="' + value + '" onclick="openWikiOntRDFData(\'' + value + '\'); return false;">' + value + "</a>";
                 return newValue;
+            } else if (value.indexOf("http://") !== -1) {
+                newValue += '<a href="' + value + '" onclick="openWikiOntRDFData(\'' + value + '\'); return false;">' + getQname(value) + "</a>";
+                return newValue;
             } else {
                 newValue += "<img alt='" + value + "' src='" + WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_ICON_URL + "label_icon_s.png'/> " + value;
                 return newValue;
             }
-        }
+        };
+
+        var getQname = function(uri) {
+            uri = uri.replace("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf:");
+            uri = uri.replace("http://www.w3.org/2000/01/rdf-schema#", "rdfs:");
+            uri = uri.replace("http://www.w3.org/2002/07/owl#", "owl:");
+            uri = uri.replace("http://xmlns.com/foaf/0.1/", "foaf:");
+            return uri;
+        };
 
         var saveRegisteredSPARQLQueryArray = function() {
             localStorage.registeredSparqlQueryArray = JSON.stringify(registeredSparqlQueryArray);
             registeredSparqlQueryStore.proxy = new Ext.ux.data.PagingMemoryProxy(registeredSparqlQueryArray);
             registeredSparqlQueryStore.reload();
-        }
+        };
 
         var registerSPARQLQuery = function() {
             var sparqlQuery = Ext.getCmp("SPARQLQueryArea").getValue();
@@ -343,7 +359,6 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
 
         var updateSelectedSparqlQuery = function() {
             var selectedRecords = registeredSparqlQueryCheckboxSelectionModel.getSelections();
-            var newRegisteredSparqlQueryArray = [];
             for (var q = 0; q < registeredSparqlQueryArray.length; q++) {
                 for (var i = 0; i < selectedRecords.length; i++) {
                     if (registeredSparqlQueryArray[q][0] == selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour)) {
@@ -377,7 +392,12 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
         };
 
         var querySPARQL = function() {
+            sparqlResultsPanel.body.mask(LOADING, "loading-indicator");
+            if (registeredSparqlQueryPanel !== undefined && registeredSparqlQueryPanel.body !== undefined) {
+                registeredSparqlQueryPanel.body.mask(LOADING, "loading-indicator");
+            }
             var queryURL = getSPARQLQueryURL();
+//            alert(queryURL);
             jQuery.getJSON(queryURL, function(results) {
 //                console.log(results);
                 var headers = results.head.vars;
@@ -398,7 +418,6 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     columns.push(column);
                     recordTypes.push(recordType);
                 });
-                sparqlResultsStore.reader = new Ext.data.ArrayReader({}, recordTypes);
                 var bindings = results.results.bindings;
                 sparqlResultsArray = [];
                 jQuery.each(bindings, function(index, result) {
@@ -409,10 +428,10 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     sparqlResultsArray.push(record);
                 });
 //                console.log(sparqlResultsArray);
-                var store = getSPARQLResultsStore(recordTypes);
-                sparqlResultsPanel.reconfigure(store, getSPARQLColumnModel(columns));
-                store.reload();
-                sparqlResultsPanelBbar.bind(store);
+                var sparqlResultsStore = getSPARQLResultsStore(recordTypes);
+                sparqlResultsPanel.reconfigure(sparqlResultsStore, getSPARQLColumnModel(columns));
+                sparqlResultsStore.reload();
+                sparqlResultsPanelBbar.bind(sparqlResultsStore);
                 sparqlResultsPanelBbar.doRefresh();
             });
         }

@@ -4,16 +4,16 @@
  * Copyright © 2009-2011 慶應義塾大学 理工学部 管理工学科 山口研究室．
  */
 
+var WIKIPEDIA_ONTOLOGY_SEARCH = WIKIPEDIA_ONTOLOGY_SEARCH || {};
 
 WIKIPEDIA_ONTOLOGY_SEARCH.constants = {
     HOME_URL:"http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/",
     CURRENT_WIKIPEDIA_ONTOLOGY_VERSION : "2010_11_14",
-    // BASE_SERVER_URL: "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/",
+//    BASE_SERVER_URL: "http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/",
     BASE_SERVER_URL : "http://localhost:8080/wikipedia_ontology_search/",
     // BASE_SERVER_URL : "http://avalon.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/",
     BASE_URI : "http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/",
     BASE_ICON_URL : "my_resources/icons/",
-    // ALL_CLASSES : BASE_SERVER_CLASS_TREE_DATA_URL + "ALLClasses.json",
     CLASS_PATH : "class/",
     PROPERTY_PATH : "property/",
     INSTANCE_PATH : "instance/",
@@ -93,9 +93,9 @@ WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions = {
 }
 
 WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes = {
-    class: "class",
-    property: "property",
-    instance: "instance"
+    Class: "class",
+    Property: "property",
+    Instance: "instance"
 }
 
 WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions = {

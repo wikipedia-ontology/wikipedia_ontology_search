@@ -7,7 +7,7 @@
  *
  */
 
-var queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+var queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
 var inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
 var searchTargetType = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
 
@@ -292,12 +292,12 @@ WikipediaOntologySearch.ClassListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('class-list-win');
 
-        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class);
+        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class);
         var classListPanel = getClassListPanel();
         loadStore(classListPanel.store);
         var propertiesOfDomainClassListPanel = getPropertiesOfRegionClassListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.domain);
         var propertiesOfRangeClassListPanel = getPropertiesOfRegionClassListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.range);
-        var classInstanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class);
+        var classInstanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class);
 
         var regionListOfClassPanel = new Ext.Panel({
             layout : 'hbox',
@@ -512,12 +512,12 @@ WikipediaOntologySearch.PropertyListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('property-list-win');
 
-        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property);
+        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property);
         var propertyListPanel = getPropertyListPanel();
         loadStore(propertyListPanel.store);
         var domainClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.domain);
         var rangeClassesOfPropertyListPanel = getRegionClassesOfPropertyListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resources.range);
-        var propertyInstanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property);
+        var propertyInstanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property);
 
         var regionListOfPropertyPanel = new Ext.Panel({
             layout : 'hbox',
@@ -622,8 +622,8 @@ WikipediaOntologySearch.InstanceListWindow = Ext.extend(Ext.app.Module, {
         var desktop = this.app.getDesktop();
         var win = desktop.getWindow('instance-list-win');
 
-        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance);
-        var instanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance);
+        var resourceSearchPanel = getResourceSearchPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance);
+        var instanceListPanel = getInstanceListPanel(WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance);
         loadStore(instanceListPanel.store);
         var instanceTypeListPanel = getInstanceTypeListPanel();
         var instanceListWindowPanel = new Ext.Panel({

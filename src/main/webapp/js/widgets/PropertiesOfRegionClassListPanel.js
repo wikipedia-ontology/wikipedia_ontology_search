@@ -11,7 +11,7 @@ function getPropertiesOfRegionClassListTableDataStore(type) {
     } else if (type == WIKIPEDIA_ONTOLOGY_SEARCH.resources.range) {
         panelName = "PropertiesOfRangeClassListTablePanel";
     }
-    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL);
+//    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL);
     return new Ext.data.Store({
         reader : getStatementJsonReader(),
         proxy : getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL),
@@ -46,7 +46,7 @@ function getPropertiesOfRegionClassListPanel(type) {
         pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : propertiesOfRegionClassListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -79,7 +79,7 @@ function showPropertyContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
-    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
     makePropertyContextMenu(keyword).showAt(e.getXY());
 }
 

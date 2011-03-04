@@ -329,8 +329,7 @@ public class ClassListPage extends CommonPage {
     }
 
     public ClassListPage() {
-        String title = TITLE + "（日本語+英語）";
-        renderPage(title, "ja+en");
+        renderPage(TITLE, "ja");
     }
 
     private void outputResource(final String outputString) {
@@ -493,11 +492,11 @@ public class ClassListPage extends CommonPage {
         } else {
             String title = TITLE;
             String lang = params.getString("lang");
-            if (lang.equals("ja")) {
-                title += "（日本語）";
-            } else if (lang.equals("en")) {
-                title += "（英語）";
-            }
+//            if (lang.equals("ja")) {
+//                title += "（日本語）";
+//            } else if (lang.equals("en")) {
+//                title += "（英語）";
+//            }
             renderPage(title, lang);
         }
     }

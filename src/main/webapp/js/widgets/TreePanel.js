@@ -90,13 +90,13 @@ function getTreePanel(title, treeType) {
                 var qname = n.attributes.qname;
                 var keyword = qname.split(":")[1];
                 if (qname.indexOf("wikiont_class") != -1) {
-                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
                     queryURI = qname.replace("wikiont_class:", WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_CLASS_DATA_URL);
                 } else if (qname.indexOf("wikiont_property") != -1) {
-                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
                     queryURI = qname.replace("wikiont_property:", WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_PROPERTY_DATA_URL);
                 } else if (qname.indexOf("wikiont_instance") != -1) {
-                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+                    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
                     queryURI = qname.replace("wikiont_instance:", WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.BASE_SERVER_INSTANCE_DATA_URL);
                 }
                 queryURI += WIKIPEDIA_ONTOLOGY_SEARCH.constants.JSON_EXTENSION;
@@ -142,12 +142,13 @@ function filterTreeNode(view) {
 
     hiddenNodes = [];
     treePanel.expandAll();
+    var searchOptions = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions;
     var re = new RegExp('^' + Ext.escapeRe(text) + '$', 'i');
-    if (searchOption == ANY_MATCH_SEARCH_OPTION) {
+    if (searchOption === searchOptions.any_match) {
         re = new RegExp('.*' + Ext.escapeRe(text) + '.*', 'i');
-    } else if (searchOption == STARTS_WITH_SEARCH_OPTION) {
+    } else if (searchOption == searchOptions.starts_with) {
         re = new RegExp('^' + Ext.escapeRe(text) + '.*', 'i');
-    } else if (searchOption == ENDS_WITH_SEARCH_OPTION) {
+    } else if (searchOption == searchOptions.ends_with) {
         re = new RegExp(Ext.escapeRe(text) + '$', 'i');
     }
     setShowNodes(treePanel, re, view);
@@ -202,17 +203,17 @@ function showTreePanelContextMenu(node, e) {
     var qname = node.attributes.id;
     var keyword = qname.split(":")[1];
     if (qname.indexOf("wikiont_class") != -1) {
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
         var classContextMenu = makeClassContextMenu(keyword);
         classContextMenu.contextNode = node;
         classContextMenu.showAt(e.getXY());
     } else if (qname.indexOf("wikiont_property") != -1) {
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
         var classContextMenu = makePropertyContextMenu(keyword);
         classContextMenu.contextNode = node;
         classContextMenu.showAt(e.getXY());
     } else if (qname.indexOf("wikiont_instance") != -1) {
-        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance;
+        queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance;
         var instanceContextMenu = makeInstanceContextMenu(keyword);
         instanceContextMenu.contextNode = node;
         instanceContextMenu.showAt(e.getXY());
@@ -236,7 +237,6 @@ function reloadTree(queryURI) {
 
 function loadWholeIsaTree() {
     var wholeClassTreePanel = Ext.getCmp('wholeClassTreePanel');
-    //    alert(ALL_CLASSES);
     wholeClassTreePanel.loader.dataUrl = WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.ALL_CLASSES;
     wholeClassTreePanel.loader.load(wholeClassTreePanel.getRootNode());
     wholeClassTreePanel.getRootNode().expand();

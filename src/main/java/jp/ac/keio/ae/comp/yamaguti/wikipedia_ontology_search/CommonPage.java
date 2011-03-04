@@ -21,9 +21,6 @@ public abstract class CommonPage extends WebPage {
     public CommonPage() {
         add(new Label("server_name", WikipediaOntologyUtils.getHostName()));
         add(new BookmarkablePageLink<Void>("statistics", StatisticsPage.class));
-        add(new BookmarkablePageLink<Void>("classes_ranked_by_number_of_instances", ClassListPage.class));
-        add(new BookmarkablePageLink<Void>("properties_ranked_by_number_of_statements", PropertyListPage.class));
-        add(new BookmarkablePageLink<Void>("sparql", SPARQLQueryPage.class));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/external.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/smoothscroll.js"));
         add(WikipediaOntologyUtils.getJsPackageResource("js/lib/prettify.js"));

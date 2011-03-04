@@ -19,8 +19,8 @@ function getClassListTableDataStore() {
             }
         ]
     });
-    console.log("class list data URL");
-    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL);
+//    console.log("class list data URL");
+//    console.log(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL);
     return new Ext.data.Store({
         id : 'ClassListTableDataStore',
         reader : reader,
@@ -48,7 +48,7 @@ function getClassListPanel() {
         pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : classListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -61,7 +61,7 @@ function getClassListPanel() {
         columns : [
             {
                 id: "class_list_table_class_column",
-                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class,
                 dataIndex : "class",
                 renderer : renderClassLink,
                 sortable : true
@@ -88,7 +88,7 @@ function showClassContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
-    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 

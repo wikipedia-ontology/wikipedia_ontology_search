@@ -46,7 +46,7 @@ function getPropertyListPanel() {
         pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : propertyListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -59,7 +59,7 @@ function getPropertyListPanel() {
         columns : [
             {
                 id: "property_list_table_property_column",
-                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property,
+                header : WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property,
                 dataIndex : "property",
                 renderer : renderPropertyLink,
                 sortable : true
@@ -84,7 +84,7 @@ function showPropertyContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
-    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property;
     makePropertyContextMenu(keyword).showAt(e.getXY());
 }
 

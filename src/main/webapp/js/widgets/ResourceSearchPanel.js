@@ -11,14 +11,10 @@ function getResourceSearchPanel(type) {
             return new Ext.data.ArrayStore({
                 fields : ["Search_Option", "Search_Option_Value"],
                 data : [
-                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_asc,
-                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc],
-                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_desc,
-                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_desc],
-                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.instance_count_asc,
-                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_asc],
-                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.instance_count_desc,
-                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_desc]
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_asc, WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_desc, WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_desc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.instance_count_asc, WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_asc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.instance_count_desc, WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_desc]
                 ]
             });
         }
@@ -27,16 +23,14 @@ function getResourceSearchPanel(type) {
             return new Ext.data.ArrayStore({
                 fields : ["Search_Option", "Search_Option_Value"],
                 data : [
-                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_asc,
-                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc],
-                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_desc,
-                        WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_desc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_asc, WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc],
+                    [WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptionLabels.name_desc, WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_desc]
                 ]
             });
         }
 
         var searchOptionList = getClassAndInstanceSearchOptionList();
-        if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance) {
+        if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance) {
             searchOptionList = getInstanceSearchOptionList();
         }
 
@@ -50,7 +44,7 @@ function getResourceSearchPanel(type) {
             mode : "local",
             store : searchOptionList
         });
-        if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance) {
+        if (type === WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance) {
             comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.name_asc);
         } else {
             comboBox.setValue(WIKIPEDIA_ONTOLOGY_SEARCH.orderByOptions.instance_count_desc);
@@ -114,15 +108,15 @@ function getResourceSearchPanel(type) {
                     paramsString += "&order_by=" + orderOption;
                     var store = null;
                     switch (type) {
-                        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.class:
+                        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Class:
                             store = Ext.getCmp("ClassListTablePanel").store;
                             store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.CLASS_LIST_DATA_URL + paramsString);
                             break;
-                        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.property:
+                        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Property:
                             store = Ext.getCmp("PropertyListTablePanel").store;
                             store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.PROPERTY_LIST_DATA_URL + paramsString);
                             break;
-                        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance:
+                        case WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance:
                             store = Ext.getCmp("InstanceListTablePanel").store;
                             store.proxy = getProxy(WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.INSTANCE_LIST_DATA_URL + paramsString);
                             break;

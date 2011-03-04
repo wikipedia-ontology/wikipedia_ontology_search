@@ -41,7 +41,7 @@ function getInstanceTypeListPanel() {
         pageSize : WIKIPEDIA_ONTOLOGY_SEARCH.constants.RESOURCE_LIST_SIZE_LIMIT,
         store : instanceTypeListTableDataStore,
         displayInfo : true,
-        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.instance + " {0} - {1} を表示",
+        displayMsg : "{2} " + WIKIPEDIA_ONTOLOGY_SEARCH.resourceTypeLabels.Instance + " {0} - {1} を表示",
         plugins : [new Ext.ux.SlidingPager(), new Ext.ux.ProgressBarPager()]
     });
 
@@ -74,7 +74,7 @@ function showTypeContextMenu(grid, rowIndex, cellIndex, e) {
     e.stopEvent();
     var uri = e.getTarget().children.item(1).toString();
     var keyword = decodeURI(uri.split(WIKIPEDIA_ONTOLOGY_SEARCH.constants.BASE_SERVER_URL)[1]);
-    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class;
+    queryType = WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class;
     makeClassContextMenu(keyword).showAt(e.getXY());
 }
 

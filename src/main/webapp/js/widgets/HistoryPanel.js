@@ -74,7 +74,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
                 header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
                 hidden : isSidePanel,
-                renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
+                renderer: renderDate,
                 width : 150
             },
             {
@@ -136,14 +136,13 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
     });
 }
 
-
 var historyDataStore = new Ext.data.Store({
     id: 'HistoryDataStore',
     proxy: new Ext.ux.data.PagingMemoryProxy(historyDataArray),
     reader: new Ext.data.ArrayReader({}, [
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
-            type: 'date'
+            type: getDateType()
         },
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name
@@ -436,13 +435,13 @@ function showHistoryContextMenu(grid, rowIndex, cellIndex, e) {
     var record = historyDataCheckboxSelectionModel.getSelected();
     var resourceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
     switch (resourceType) {
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.class:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class:
             makeHistoryClassContextMenu(record).showAt(e.getXY());
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.property:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Property:
             makeHistoryPropertyContextMenu(record).showAt(e.getXY());
             break;
-        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.instance:
+        case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Instance:
             makeHistoryInstanceContextMenu(record).showAt(e.getXY());
             break;
     }
@@ -467,23 +466,12 @@ function makeHistoryClassContextMenu(record) {
                 }
             },
             {
-                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getNarrowDownKeywordLabel(keyword),
-                iconCls: 'icon-search',
-                handler : function() {
-                    queryType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
-                    selectResourceTypeRadioButton();
-                    inferenceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type);
-                    Ext.getDom('use_inf_model').setValue(useInfModel);
-                    searchOptionSelection.setValue(record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option));
-                    searchStatementsByContextMenu(currentkeyword + " " + keyword);
-                }
-            },
-            {
                 text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
-                    openHistoryAndBookmarkData(record);
-                    addBookmark();
+                    var queryURI = getQueryURIFromHistoryAndBookmarkRecord(keyword, record);
+                    var searchParams = extractParametersFromURI(queryURI);
+                    addBookmark(searchParams);
                 }
             },
             {
@@ -524,8 +512,10 @@ function makeHistoryInstanceAndPropertyContextMenu(record) {
                 text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getAddKeywordToBookmarkLabel(keyword),
                 iconCls: 'icon-book_add',
                 handler : function() {
-                    openHistoryAndBookmarkData(record);
-                    addBookmark();
+                    // @todo 現在選択されているタブのフォームの選択状態が変化してしまうため、recordからsearchParams相当のオブジェクトを生成すべき
+                    var queryURI = getQueryURIFromHistoryAndBookmarkRecord(keyword, record);
+                    var searchParams = extractParametersFromURI(queryURI);
+                    addBookmark(searchParams);
                 }
             },
             {
