@@ -58,14 +58,14 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     id : 'registered_date_id',
                     dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour,
                     header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour,
-                    renderer:renderDate,
+                    renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                     width : 150
                 },
                 {
                     id : 'update_date_id',
                     dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour,
                     header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour,
-                    renderer : renderDate,
+                    renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                     width : 150
                 },
                 {
@@ -121,11 +121,11 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             reader:new Ext.data.ArrayReader({}, [
                 {
                     name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour,
-                    type: getDateType()
+                    type: "date"
                 },
                 {
                     name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.updateDateAndHour,
-                    type: getDateType()
+                    type: "date"
                 },
                 {
                     name : WIKIPEDIA_ONTOLOGY_SEARCH.resources.sparqlQueryDescription
@@ -157,6 +157,14 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.remove,
                     handler: function() {
                         removeSelectedSparqlQueries();
+                    }
+                },
+                {
+                    xtype: 'button',
+                    iconCls: 'icon-db_delete',
+                    text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeAll,
+                    handler: function() {
+                        removeAllSparqlQuery();
                     }
                 },
                 {
@@ -347,8 +355,9 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
         var registerSPARQLQuery = function() {
             var sparqlQuery = Ext.getCmp("SPARQLQueryArea").getValue();
             var sparqlQueryDescription = Ext.getCmp("SPARQLQueryDescriptionArea").getValue();
-            var registerDate = new Date().toLocaleString();
-            registeredSparqlQueryArray.push([registerDate,,sparqlQueryDescription, sparqlQuery]);
+            var registerDate = new Date();
+            var updateDate = new Date();
+            registeredSparqlQueryArray.push([registerDate,updateDate,sparqlQueryDescription, sparqlQuery]);
             saveRegisteredSPARQLQueryArray();
         };
 
@@ -361,8 +370,9 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             var selectedRecords = registeredSparqlQueryCheckboxSelectionModel.getSelections();
             for (var q = 0; q < registeredSparqlQueryArray.length; q++) {
                 for (var i = 0; i < selectedRecords.length; i++) {
-                    if (registeredSparqlQueryArray[q][0] == selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour)) {
-                        registeredSparqlQueryArray[q][1] = new Date().toLocaleString();
+//                    console.log(registeredSparqlQueryArray[q][0] + "===" + selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour));
+                    if (registeredSparqlQueryArray[q][0] === selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour)) {
+                        registeredSparqlQueryArray[q][1] = new Date();
                         registeredSparqlQueryArray[q][2] = Ext.getCmp("SPARQLQueryDescriptionArea").getValue();
                         registeredSparqlQueryArray[q][3] = Ext.getCmp("SPARQLQueryArea").getValue();
                     }
@@ -370,6 +380,11 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
             }
             saveRegisteredSPARQLQueryArray();
         };
+
+        var removeAllSparqlQuery = function() {
+            registeredSparqlQueryArray = [];
+            saveRegisteredSPARQLQueryArray();
+        }
 
         var removeSelectedSparqlQueries = function() {
             var selectedRecords = registeredSparqlQueryCheckboxSelectionModel.getSelections();
@@ -379,7 +394,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                 for (var i = 0; i < selectedRecords.length; i++) {
 //                    console.log(registeredSparqlQueryArray[q][0]);
 //                    console.log(selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour));
-                    if (registeredSparqlQueryArray[q][0] == selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour)) {
+                    if (registeredSparqlQueryArray[q][0] === selectedRecords[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.resources.registeredDateAndHour)) {
                         isDelete = true;
                     }
                 }

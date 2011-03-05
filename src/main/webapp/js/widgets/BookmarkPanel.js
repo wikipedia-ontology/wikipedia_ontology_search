@@ -17,7 +17,7 @@ function getBookmarkColumnModel(isSidePanel, bookmarkCheckboxSelectionModel) {
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
                 header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
                 hidden : true,
-                renderer: renderDate,
+                renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                 width : 150
             },
             {
@@ -85,7 +85,7 @@ var bookmarkStore = new Ext.data.Store({
     reader: new Ext.data.ArrayReader({}, [
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
-            type: getDateType()
+            type: "date"
         },
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name
@@ -336,6 +336,15 @@ function getBookmarkPanel() {
                     '-',
                     {
                         xtype : 'button',
+                        iconCls: 'icon-book_delete',
+                        text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeAllBookmark,
+                        handler : function() {
+                            removeAllBookmark();
+                        }
+                    },
+                    '-',
+                    {
+                        xtype : 'button',
                         iconCls: 'icon-import',
                         text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.import_bookmarks,
                         handler : showBookmarkImportDialog
@@ -382,7 +391,7 @@ function getSideBookmarkPanel() {
 
 function addBookmark(params) {
     var record = [
-        new Date().toLocaleString(),
+        new Date(),
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name],
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type],
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target],
@@ -394,6 +403,11 @@ function addBookmark(params) {
     saveBookmarksToWebStorage();
 }
 
+function removeAllBookmark() {
+    bookmarkArray = [];
+    saveBookmarksToWebStorage();
+}
+
 function removeSelectedBookmarks() {
     var bookmarkCheckboxSelectionModel = Ext.getCmp('BookmarkPanel').getSelectionModel();
     var selectedRecords = bookmarkCheckboxSelectionModel.getSelections();
@@ -401,7 +415,7 @@ function removeSelectedBookmarks() {
     for (var h = 0; h < bookmarkArray.length; h++) {
         var isDelete = false;
         for (var i = 0; i < selectedRecords.length; i++) {
-            if (bookmarkArray[h][0] == selectedRecords[i].get('date')) {
+            if (bookmarkArray[h][0] === selectedRecords[i].get('date')) {
                 isDelete = true;
             }
         }
@@ -450,23 +464,17 @@ function makeBookmarkClassContextMenu(record) {
                 }
             },
             {
-                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getNarrowDownKeywordLabel(keyword),
-                iconCls: 'icon-search',
-                handler : function() {
-                    queryType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type);
-                    selectResourceTypeRadioButton();
-                    inferenceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type);
-                    Ext.getDom('use_inf_model').setValue(useInfModel);
-                    var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
-                    searchOptionSelection.setValue(record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option));
-                    searchStatementsByContextMenu(currentkeyword + " " + keyword);
-                }
-            },
-            {
                 text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getRemoveKeywordFromBookmarkLabel(keyword),
                 iconCls: 'icon-book_delete',
                 handler : function() {
                     removeSelectedBookmarks();
+                }
+            },
+            {
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeAllBookmark,
+                iconCls: 'icon-book_delete',
+                handler : function() {
+                    removeAllBookmark();
                 }
             }
         ]
@@ -502,6 +510,13 @@ function makeBookmarkInstanceAndPropertyContextMenu() {
                 text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.getRemoveKeywordFromBookmarkLabel(keyword),
                 iconCls: 'icon-book_delete',
                 handler : removeSelectedBookmarks
+            },
+            {
+                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.removeAllBookmark,
+                iconCls: 'icon-book_delete',
+                handler : function() {
+                    removeAllBookmark();
+                }
             }
         ]
     });

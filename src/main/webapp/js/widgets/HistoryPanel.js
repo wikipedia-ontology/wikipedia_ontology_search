@@ -12,7 +12,7 @@ if (localStorage.history != undefined) {
 function addHistoryData(queryURI) {
     var params = extractParametersFromURI(queryURI);
     var record = [
-        new Date().toLocaleString(),
+        new Date(),
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name],
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type],
         params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target],
@@ -37,7 +37,7 @@ function removeSelectedHistories() {
     for (var h = 0; h < historyDataArray.length; h++) {
         var isDelete = false;
         for (var i = 0; i < selectedRecords.length; i++) {
-            if (historyDataArray[h][0] == selectedRecords[i].get('date')) {
+            if (historyDataArray[h][0] === selectedRecords[i].get('date')) {
                 isDelete = true;
             }
         }
@@ -54,7 +54,7 @@ function addSelectedHistoriesToBookmark() {
     var records = historyDataCheckboxSelectionModel.getSelections();
     for (var i = 0; i < records.length; i++) {
         bookmarkArray.push([
-            new Date().toLocaleString(),
+            new Date(),
             records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name),
             records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type),
             records[i].get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target),
@@ -74,7 +74,7 @@ function getHistoryDataColumnModel(isSidePanel, historyDataCheckboxSelectionMode
                 dataIndex : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
                 header : WIKIPEDIA_ONTOLOGY_SEARCH.resources.dateAndHour,
                 hidden : isSidePanel,
-                renderer: renderDate,
+                renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s'),
                 width : 150
             },
             {
@@ -142,7 +142,7 @@ var historyDataStore = new Ext.data.Store({
     reader: new Ext.data.ArrayReader({}, [
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.date,
-            type: getDateType()
+            type: "date"
         },
         {
             name : WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_name

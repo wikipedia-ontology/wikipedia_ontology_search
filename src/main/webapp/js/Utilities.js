@@ -354,25 +354,6 @@ function getVersionOptionComboBox(name) {
     return comboBox;
 }
 
-function getDateType() {
-    var strUA = navigator.userAgent.toLowerCase();
-    if (strUA.indexOf("chrome") !== -1 || strUA.indexOf("safari") !== -1) {
-        return "date";
-    } else {
-        return "string";
-    }
-}
-
-function renderDate(value, metadata, record) {
-    var strUA = navigator.userAgent.toLowerCase();
-    if (strUA.indexOf("chrome") !== -1 || strUA.indexOf("safari") !== -1) {
-        var renderer = Ext.util.Format.dateRenderer('Y/m/d H:i:s')
-        return renderer(value);
-    } else {
-        return value;
-    }
-}
-
 function renderKeyword(value, metadata, record) {
     switch (record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type)) {
         case WIKIPEDIA_ONTOLOGY_SEARCH.queryTypes.Class:
