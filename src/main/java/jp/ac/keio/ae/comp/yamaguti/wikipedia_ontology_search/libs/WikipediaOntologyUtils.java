@@ -156,10 +156,8 @@ public class WikipediaOntologyUtils {
         return propertyList;
     }
 
-    public static List<ClassImpl> getClassImplList(String queryString, String lang) {
+    public static List<ClassImpl> getClassImplList(String queryString, Model dbModel, String lang) {
         Query query = QueryFactory.create(queryString);
-        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
-        Model dbModel = wikiOntStrage.getTDBModel();
         QueryExecution qexec = QueryExecutionFactory.create(query, dbModel);
         com.hp.hpl.jena.query.ResultSet results = qexec.execSelect();
 
@@ -178,6 +176,12 @@ public class WikipediaOntologyUtils {
             qexec.close();
         }
         return clsList;
+    }
+
+    public static List<ClassImpl> getClassImplList(String queryString, String lang) {
+        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
+        Model dbModel = wikiOntStrage.getTDBModel();
+        return getClassImplList(queryString, dbModel, lang);
     }
 
     public static HeaderContributor getJsPackageResource(String path) {

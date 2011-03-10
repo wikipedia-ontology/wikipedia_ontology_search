@@ -164,7 +164,7 @@ public class ResourcePage extends CommonPage implements Serializable {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_types_of_instance.tmpl");
             String uri = WikipediaOntologyStorage.INSTANCE_NS + searchParams.getResourceName();
             queryString = SPARQLQueryMaker.getTypesOfInstanceQueryString(uri);
-            List<ClassImpl> typeList = WikipediaOntologyUtils.getClassImplList(queryString, "ja");
+            List<ClassImpl> typeList = WikipediaOntologyUtils.getClassImplList(queryString, dbModel, lang);
             return wikiOntSearch.getTypesOfInstanceQueryResults(uri, typeList);
         } else if (searchOptionType == SearchOptionType.INVERSE_STATEMENTS) {
             String sparqlTemplateString = WikipediaOntologyUtils.getResourceString(ResourcePage.class, "sparql_templates/query_inverse_statements.tmpl");
