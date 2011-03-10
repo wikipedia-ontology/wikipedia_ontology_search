@@ -104,6 +104,12 @@ public class WikipediaOntologyUtils {
         return rdfLink;
     }
 
+    public static List<InstanceImpl> getInstanceImplList(String queryString, String lang) {
+        WikipediaOntologyStorage wikiOntStrage = new WikipediaOntologyStorage(lang, "none");
+        Model dbModel = wikiOntStrage.getTDBModel();
+        return getInstanceImplList(queryString, dbModel);
+    }
+
     public static List<InstanceImpl> getInstanceImplList(String queryString, Model dbModel) {
 //        System.out.println(queryString);
         Query query = QueryFactory.create(queryString);
