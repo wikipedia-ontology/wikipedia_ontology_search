@@ -29,33 +29,31 @@ function getTreePanel(title, treeType) {
         enableDD : false,
         autoScroll : true,
         iconCls: 'icon-expand-all',
-        tbar : [' ', new Ext.form.TextField({
+        tbar : [' ', new Ext.form.TriggerField({
             id : treePanelSearchFieldlId,
             width : 160,
             minHeight : 50,
             maxHeight : 50,
             height : 50,
-            emptyText : textFieldEmptyText
-        }), {
-            text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
-            name : 'search-button',
-            iconCls: 'icon-search',
-            handler : function() {
+            emptyText : textFieldEmptyText,
+            triggerClass: 'x-form-search-trigger',
+            onTriggerClick: function() {
                 filterTreeNode(treeType);
             }
-        }, ' ', '-', {
-            iconCls : 'icon-expand-all',
-            tooltip : WIKIPEDIA_ONTOLOGY_SEARCH.resources.expandAll,
-            handler : function() {
-                expandAllTree(treePanelId);
-            }
-        }, '-', {
-            iconCls : 'icon-collapse-all',
-            tooltip : WIKIPEDIA_ONTOLOGY_SEARCH.resources.collapseAll,
-            handler : function() {
-                collapseAllTree(treePanelId);
-            }
-        }, '- ', searchOptionComboBox],
+        }),
+            ' ', '-', {
+                iconCls : 'icon-expand-all',
+                tooltip : WIKIPEDIA_ONTOLOGY_SEARCH.resources.expandAll,
+                handler : function() {
+                    expandAllTree(treePanelId);
+                }
+            }, '-', {
+                iconCls : 'icon-collapse-all',
+                tooltip : WIKIPEDIA_ONTOLOGY_SEARCH.resources.collapseAll,
+                handler : function() {
+                    collapseAllTree(treePanelId);
+                }
+            }, '- ', searchOptionComboBox],
         loader : new Ext.tree.TreeLoader({
             dataUrl : WIKIPEDIA_ONTOLOGY_SEARCH.dataUrl.NULL_TREE_DATA,
             //            proxy: getProxy(NULL_TABLE_DATA),

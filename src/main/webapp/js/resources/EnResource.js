@@ -31,7 +31,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.resources = {
     subject : "Subject",
     predicate : "Predicate",
     object : "Object",
-    sortingOrder : "Sorting order",
+    sortingOrder : "<span class='white_color'>Sorting order</span>",
     numberOfInstances : "Number of Instances",
     dateAndHour : "Date and Hour",
     registeredDateAndHour : "Registered Date and Hour",

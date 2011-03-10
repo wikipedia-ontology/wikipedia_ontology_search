@@ -43,23 +43,17 @@ function getStatementSearchPanel() {
         xtype: 'compositefield',
         items : [
             {
-                xtype : 'textfield',
+                xtype : 'trigger',
                 name : 'keyword',
                 width : 250,
+                triggerClass: 'x-form-search-trigger',
+                onTriggerClick: function() {
+                    searchStatements("")
+                },
                 listeners: {
                     change: function() {
                         setURIField("StatementURIField", getQueryURI(""));
                     }
-                }
-            },
-            {
-                xtype : 'button',
-                iconCls: 'icon-search',
-                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
-                name : 'search-button',
-                // searchStatements function is defined in SearchAction.js
-                handler : function() {
-                    searchStatements("")
                 }
             }
         ]

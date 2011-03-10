@@ -171,31 +171,29 @@ WIKIPEDIA_ONTOLOGY_SEARCH.SPARQLPanel = Ext.extend(Ext.Panel, {
                     width: 10
                 },
                 {
-                    xtype: 'textfield',
-                    id: 'registered_sparql_query_search_field',
-                    width: 150
-                },
-                {
-                    width: 10
+                    xtype: 'checkbox',
+                    id: 'registered_sparql_query_checkbox',
+                    boxLabel: "<span class='white_color'>" + WIKIPEDIA_ONTOLOGY_SEARCH.resources.query + "</span>",
+                    width: 60
                 },
                 {
                     xtype: 'checkbox',
                     id: 'registered_sparql_query_description_checkbox',
-                    boxLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.description,
+                    boxLabel: "<span class='white_color'>" + WIKIPEDIA_ONTOLOGY_SEARCH.resources.description + "</span>",
                     width: 80
                 },
                 {
                     xtype: 'checkbox',
                     id: 'registered_sparql_query_checkbox',
-                    boxLabel: WIKIPEDIA_ONTOLOGY_SEARCH.resources.query,
+                    boxLabel: "<span class='white_color'>" + WIKIPEDIA_ONTOLOGY_SEARCH.resources.query + "</span>",
                     width: 60
                 },
                 {
-                    xtype: 'button',
-                    iconCls: 'icon-search',
-                    text: WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
-                    width: 50,
-                    handler: function() {
+                    xtype: 'trigger',
+                    id: 'registered_sparql_query_search_field',
+                    width: 150,
+                    triggerClass: 'x-form-search-trigger',
+                    onTriggerClick: function() {
                         var searchField = Ext.getCmp("registered_sparql_query_search_field");
                         var queryCheckBox = Ext.getCmp("registered_sparql_query_checkbox");
                         var descriptionCheckBox = Ext.getCmp("registered_sparql_query_description_checkbox");

@@ -264,6 +264,7 @@ function getStatementTablePanel(title, tabIndex) {
         listeners: {
             'activate' : function(tabPanel, tab) {
                 var uri = getCurrentStatementTabURI();
+                setURIField("StatementURIField", uri);
                 var searchParams = extractParametersFromURI(uri);
                 setSearchParams(searchParams);
             }

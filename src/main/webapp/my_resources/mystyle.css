@@ -212,6 +212,10 @@ table.sparql_query_info_table td.description {
     text-align: left;
 }
 
+table.manual_table td,th{
+    text-align: center;
+}
+
 .error_message {
     color: red;
     font-weight: bold;

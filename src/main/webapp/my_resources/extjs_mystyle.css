@@ -1,3 +1,7 @@
+.white_color {
+    color: white;
+}
+
 #header {
     border: 0 none;
     background: #1E4176;
@@ -177,16 +181,13 @@
     background-image: url(icons/sparql_icon_16x16.png) !important;
 }
 
-
 .icon-db_add {
     background-image: url(icons/database_add.png) !important;
 }
 
-
 .icon-db_edit {
     background-image: url(icons/database_edit.png) !important;
 }
-
 
 .icon-db_delete {
     background-image: url(icons/database_delete.png) !important;

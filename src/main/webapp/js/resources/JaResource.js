@@ -31,7 +31,7 @@ WIKIPEDIA_ONTOLOGY_SEARCH.resources = {
     subject : "主語",
     predicate : "述語",
     object : "目的語",
-    sortingOrder : "ソート順",
+    sortingOrder : "<span class='white_color'>ソート順</span>",
     numberOfInstances : "インスタンス数",
     dateAndHour : "日時",
     registeredDateAndHour : "登録日時",

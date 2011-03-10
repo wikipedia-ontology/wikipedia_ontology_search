@@ -83,7 +83,6 @@ public class ResourcePage extends CommonPage implements Serializable {
         } else {
             outputModel = getSubOutputModel(outputModel, wikiOntSearch.getSearchParameters());
         }
-
         wikiOntSearch.closeDB();
         output(outputModel, wikiOntSearch, numberOfStatements);
     }
@@ -92,6 +91,7 @@ public class ResourcePage extends CommonPage implements Serializable {
 
     public Model getOutputModel(WikipediaOntologySearch wikiOntSearch, SearchParameters searchParams) {
         String lang = wikiOntSearch.setTDBModel();
+        Model dbModel = wikiOntSearch.getDBModel();
 
         String rdfString = WikipediaOntologyUtils.getStringFromMemcached(searchParams.getRDFKey());
         if (rdfString != null) {
@@ -130,7 +130,7 @@ public class ResourcePage extends CommonPage implements Serializable {
             int start = searchParams.getStart();
             String uri = WikipediaOntologyStorage.CLASS_NS + searchParams.getResourceName();
             queryString = SPARQLQueryMaker.getIntancesOfClassQueryString(uri, limit, start);
-            List<InstanceImpl> instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, "ja");
+            List<InstanceImpl> instanceList = WikipediaOntologyUtils.getInstanceImplList(queryString, dbModel);
             return wikiOntSearch.getInstancesOfClassQueryResults(uri, instanceList);
         } else if (searchParams.getResourceType() == ResourceType.CLASS
                 && (searchOptionType == SearchOptionType.PROPERTIES_OF_DOMAIN_CLASS || searchOptionType == SearchOptionType.PROPERTIES_OF_RANGE_CLASS)) {

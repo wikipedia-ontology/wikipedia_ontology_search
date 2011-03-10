@@ -90,16 +90,11 @@ function getResourceSearchPanel(type) {
         xtype: 'compositefield',
         items : [
             {
-                xtype : 'textfield',
+                xtype : 'trigger',
                 name : 'keyword',
-                width : 250
-            },
-            {
-                xtype : 'button',
-                iconCls: 'icon-search',
-                text : WIKIPEDIA_ONTOLOGY_SEARCH.resources.search,
-                name : 'search-button',
-                handler : function() {
+                width : 250,
+                triggerClass: 'x-form-search-trigger',
+                onTriggerClick: function() {
                     var keyword = Ext.getCmp(type + "SearchPanel").getForm().findField('keyword').getValue();
                     var searchOption = searchOptionSelection.getValue();
                     var orderOption = searchOrderOptionSelection.getValue();

@@ -27,11 +27,11 @@
 <h1>マニュアル</h1>
 
 <p class="page_description">
-    以下では，日本語Wikipediaオントロジー検索システム ver. 2009-11-23の使用方法について説明する．<br/>
-    (最新版 2011-03-05では、以下のAPIはかなり変更されています。近日中にマニュアルを全面的に更新する予定です。)
+    以下では，日本語Wikipediaオントロジー検索システム ver. 2011-03-10の使用方法について説明する．<br/>
+    (一部，前のバージョンの説明が含まれています．)
 </p>
 
-<div style="text-align: right; font-size: 80%;">最終更新日: 2010年9月13日</div>
+<div style="text-align: right; font-size: 80%;">最終更新日: 2011年3月10日</div>
 
 <a name="table_of_contents"></a>
 
@@ -41,12 +41,17 @@
     <li><a href="#system_overview">システム構成</a></li>
     <li><a href="#server_side_program">サーバーサイドプログラム</a>
         <ul>
+            <li><a href="#url_parameters">共通URLパラメータ</a></li>
             <li><a href="#get_class">クラスの取得</a></li>
+            <li><a href="#get_class_list">クラス一覧の取得</a></li>
+            <li><a href="#get_class_of_instances_list">クラスのインスタンス一覧の取得</a></li>
             <li><a href="#get_property">プロパティの取得</a></li>
+            <li><a href="#get_property_list">プロパティ一覧の取得</a></li>
+            <li><a href="#get_property_of_instances_list">プロパティを持つインスタンス一覧の取得</a></li>
             <li><a href="#get_instance">インスタンスの取得</a></li>
+            <li><a href="#get_instance_list">インスタンス一覧の取得</a></li>
             <li><a href="#get_instance_with_multiple_type">複数のタイプ(rdf:type)を持つインスタンスの取得</a></li>
             <li><a href="#get_class_and_instance_with_inference_model">推論モデルを用いたクラスおよびインスタンスの取得</a></li>
-            <li><a href="#url_parameters">URLパラメータ</a></li>
             <li><a href="#resource_uri_and_data_uri">リソース（クラス，プロパティ，インスタンス）のURIとデータのURIの区別について</a></li>
             <li><a href="#data_structure">データ構造</a></li>
             <li><a href="#sparql">SPARQLによる検索</a></li>
@@ -93,12 +98,11 @@
 
 <h2>動作環境</h2>
 
-<p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.0</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索システムは実行可能である．
+<p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.3.1</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索システムは実行可能である．
     以下の環境で動作確認を行っている．</p>
 <ul>
-    <li>Google Chrome 6.0.472.53</li>
-    <li>FireFox 3.6.9</li>
-    <li>Safari 5.0.2</li>
+    <li>Google Chrome 9.0.597.98</li>
+    <li>FireFox 4.0b12</li>
 </ul>
 
 <div style="color: red; font-weight: bold; margin: 1em;">
@@ -158,66 +162,250 @@
 
 <h2>サーバーサイドプログラム</h2>
 
-<p>サーバーサイドプログラムは以下の仕様に従って，日本語Wikipediaオントロジー内のクラスやインスタンスに関するRDF/XMLデータとJSONデータ
-    (テーブル用とツリー用)を返す．</p>
+<p>サーバーサイドプログラムは以下の仕様に従って，日本語Wikipediaオントロジー内のクラスやインスタンスに関するRDF/XMLデータやJSONデータを返す．</p>
+
+<a name="url_parameters"></a>
+
+<h3>共通URLパラメータ</h3>
+
+<p>サーバーサイドプログラムでは，以下の共通URLパラメータを利用できる．</p>
+<dl>
+    <dt>search_target</dt>
+    <dd>「uri」または「label」を指定可能．「uri」を指定した場合には，リソースURIのローカル名を検索対象とし，「label」を指定した場合には，「rdfs:label」プロパティの値を検索対象とする．</dd>
+    <dt>search_option</dt>
+    <dd>完全一致 (exact_match)，部分一致 (any_match)，前方一致 (starts_with)，後方一致 (ends_with) 検索オプションのいずれかを指定できる．
+        「search_target=uri」とした場合には，「exact_match」のみ指定可能．
+    </dd>
+    <dt>inference_type</dt>
+    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可能．</dd>
+    <dt>start</dt>
+    <dd>このパラメータで指定した位置を開始ステートメントとして，limitパラメータで指定した数だけステートメントを返す．</dd>
+    <dt>limit</dt>
+    <dd>一度に返すステートメント数を指定する．</dd>
+    <dt>version</dt>
+    <dd>検索対象のWikipediaオントロジーのバージョンを指定．現状では，「2010_11_14」と「2010_02_09]の2種類のみ指定可能．</dd>
+</dl>
+
+<p>startとlimitパラメータの使用例として，以下のURLにアクセスすることで，
+    「慶應義塾大学の人物」クラスのインスタンスに関する500番目～600番目までのステートメントを取得することができる．
+</p>
+<br/>
+
+<p><a
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?start=500&limit=100&search_option=instances_of_class"
+        rel="external">
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?start=500&amp;limit=100&amp;search_option=instances_of_class</a>
+</p>
+<br/>
+
+<p>search_optionパラメータの使用例として，「日本」をラベルに含むクラスを完全一致，部分一致，前方一致，後方一致で検索した結果を取得するためのURLを以下に示す．</p>
+<dl>
+    <dt>完全一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&search_option=exact_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&amp;search_option=exact_match</a>
+    </dd>
+    <dt>部分一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&search_option=any_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&amp;search_option=any_match</a>
+    </dd>
+    <dt>前方一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&search_option=starts_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&amp;search_option=starts_with</a>
+    </dd>
+    <dt>後方一致</dt>
+    <dd><a rel="external"
+           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&search_option=ends_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_target=label&amp;search_option=ends_with</a>
+    </dd>
+</dl>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
 <a name="get_class"></a>
-
 <h3>クラスの取得</h3>
 
-<p>以下のURIにアクセスすると，ラベル，カテゴリページへのリンク
-    (foaf:pageプロパティの値），対象クラスからルートクラスまでのパス，対象クラスに属するインスタンスを含むRDF/XMLデータが取得できる．</p>
-
-<h4>RDF/XMLデータ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">data</span>/[クラス名].rdf
-</div>
-
-<p>例： <a
-        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf</a>
-</p>
-<br/>
-
-<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
-
-<h4>JSON（テーブル用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">table_data</span>/[クラス名].json
-</div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.json"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/慶應義塾大学の人物.json</a>
+<p>
+    以下の形式のURIにアクセスすると，クラスに関連するステートメントを取得することができる．以下の注意点は，プロパティとインスタンスについても同様．
+<ul>
+    <li>[BASE_URI]は，「http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/」を指す．</li>
+    <li>pageを指定するとHTMLページを表示，dataを指定するとRDF/XML，N3，N-Triples，JSON, JSONPのいずれかの形式でデータを取得できる．</li>
+    <li>拡張子により取得データ形式を変更可能．</li>
+    <li>拡張子なしの場合は，RDF/XML形式．</li>
+</ul>
 </p>
 
-<h4>JSON（ツリー用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">tree_data</span>/[クラス名].json
+<div class="url">
+    [BASE_URI]class/[page|data]/クラス名.[rdf|n3|nt|json|jsonp]?search_option=[パラメータ値]
 </div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.json"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/慶應義塾大学の人物.json</a>
+
+<p>
+    「search_option」パラメータの値を指定することにより，取得するオントロジー要素を変更できる．
+    以下に，クラスに関連するオントロジー要素を取得する際の「search_option」パラメータの値を示す．
 </p>
 
 <br/>
 
-<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
-<h4>HTML</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">page</span>/[クラス名].html
+<div style="padding-left: 2em;">
+    <table class="manual_table">
+        <tr>
+            <th>クラスに関連するオントロジー要素</th>
+            <th>search_optionパラメータ値</th>
+        </tr>
+        <tr>
+            <td>検索クラスを主語リソースとするステートメント</td>
+            <td>exact_match</td>
+        </tr>
+        <tr>
+            <td>兄弟クラス</td>
+            <td>sibling_classes</td>
+        </tr>
+        <tr>
+            <td>下位クラス</td>
+            <td>sub_classes</td>
+        </tr>
+        <tr>
+            <td>定義域クラスのプロパティ（検索クラスを定義域として持つプロパティ）</td>
+            <td>properties_of_domain_class</td>
+        </tr>
+        <tr>
+            <td>値域クラスのプロパティ（検索クラスを値域として持つプロパティ）</td>
+            <td>properties_of_range_class</td>
+        </tr>
+        <tr>
+            <td>クラスのインスタンス</td>
+            <td>instances_of_class</td>
+        </tr>
+        <tr>
+            <td>ルートクラスまでのパス</td>
+            <td>path_to_root_class</td>
+        </tr>
+        <tr>
+            <td>逆関係のステートメント(検索クラスを目的語リソースとするステートメント）</td>
+            <td>inverse_statements</td>
+        </tr>
+    </table>
 </div>
-<p>例： <a
-        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.html"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/慶應義塾大学の人物.html</a>
+
+<h4>exact_matchの例</h4>
+<p>
+    慶應義塾大学の人物クラスを主語リソースとするステートメントを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf"
+            rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf</a>
 </p>
+<br/>
+
+<h4>sibling_classesの例</h4>
+<p>
+    慶應義塾大学の人物クラスの兄弟クラスを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?search_option=sibling_classes"
+            rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?search_option=sibling_classes</a>
+</p>
+<br/>
+
+<h4>sub_classesの例</h4>
+<p>
+    人物クラスの下位クラスを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E4%BA%BA%E7%89%A9.rdf?search_option=sub_classes" rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/人物.rdf?search_option=sub_classes</a>
+</p>
+<br/>
+
+<h4>properties_of_domain_classの例</h4>
+<p>
+    バレーボール選手クラスを定義域として持つプロパティを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%e3%83%90%e3%83%ac%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%ab%e9%81%b8%e6%89%8b.rdf?search_option=properties_of_domain_class" rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/バレーボール選手.rdf?search_option=properties_of_domain_class</a>
+</p>
+<br/>
+
+<h4>properties_of_range_classの例</h4>
+<p>
+    バレーボールクラスを値域として持つプロパティを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%e3%83%90%e3%83%ac%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%ab%e9%81%b8%e6%89%8b.rdf?search_option=properties_of_range_class" rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/バレーボール選手.rdf?search_option=properties_of_range_class</a>
+</p>
+<br/>
+
+<h4>instances_of_classの例</h4>
+<p>
+    慶應義塾大学の人物クラスのインスタンスを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?search_option=instances_of_class&amp;limit=50&amp;offset=0"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?search_option=instances_of_class&limit=50&offset=0</a>
+</p>
+<br/>
+
+<h4>path_to_root_classの例</h4>
+<p>
+    慶應義塾大学の人物クラスからルートクラスまでのパスを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?search_option=path_to_root_class"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?search_option=path_to_root_class</a>
+</p>
+<br/>
+
+<h4>inverse_statementsの例</h4>
+<p>
+    慶應義塾大学の人物クラスを目的語リソースとするステートメントを取得．<br/><br/>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?search_option=inverse_statements"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?search_option=inverse_statements</a>
+</p>
+<br/>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_class_list"></a>
+
+<h3>クラス一覧の取得</h3>
+
+<p>
+    以下の形式のURIにアクセスすると，クラス一覧を取得することができる．（JSON形式のみ対応）
+</p>
+
+<div class="url">
+    [BASE_URI]class_list?start=[]&limit=[]&order_by=[name_asc, name_desc, instance_count_asc,
+    instance_count_desc]&keyword=[クラス名]&search_option=[exact_match|any_match|starts_with|ends_with]
+</div>
+
+<h4>order_by（ソート順）</h4>
+<dl>
+    <dt>name_asc</dt>
+    <dd>クラス名 昇順</dd>
+    <dt>name_desc</dt>
+    <dd>クラス名 降順</dd>
+    <dt>instance_count_asc</dt>
+    <dd>クラスのインスタンス数 昇順</dd>
+    <dt>instance_count_desc</dt>
+    <dd>クラスのインスタンス数 降順</dd>
+</dl>
+<h4>keyword（クラス名）</h4>
+
+<p>
+    指定したクラス名またはクラス名の部分文字列とsearch_optionより，完全，部分，前方，後方一致検索を行う．
+</p>
+
+<h4>クラス一覧をインスタンス数降順で取得する例</h4>
+<p>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/class_list?search_option=exact_match&order_by=instance_count_desc&start=0&limit=50" rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class_list?search_option=exact_match&amp;order_by=instance_count_desc&amp;start=0&amp;limit=50</a>
+</p>
+<br/>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_class_of_instances_list"></a>
+
+<h3>クラスのインスタンス一覧の取得</h3>
+
+<p>
+    以下の形式のURIにアクセスすると，classパラメータに指定したクラスのインスタンス一覧を取得することができる．（JSON形式のみ対応）
+</p>
+
+<div class="url">
+    [BASE_URI]class_list?start=[]&limit=[]&class=[クラス名]
+</div>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
@@ -225,57 +413,130 @@
 
 <h3>プロパティの取得</h3>
 
-<p>以下のURIにアクセスすると，プロパティのラベルを含むRDF/XMLデータが取得できる．</p>
-
-<h4>RDF/XMLデータ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">property</span>/<span style="color: red;">data</span>/[プロパティ名].rdf
-</div>
-<p>例： <a
-        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.rdf"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/ジャンル.rdf</a>
-</p>
-<br/>
-
-<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
-
-<h4>JSON（テーブル用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">property</span>/<span style="color: red;">table_data</span>/[プロパティ名].json
-</div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/table_data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.json"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/table_data/ジャンル.json</a>
+<p>
+    以下の形式のURIにアクセスすると，プロパティに関連するステートメントを取得することができる．
 </p>
 
-<h4>JSON（ツリー用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">property</span>/<span style="color: red;">tree_data</span>/[プロパティ名].json
+<div class="url">
+    [BASE_URI]property/[page|data]/プロパティ名.[rdf|n3|nt|json|jsonp]?search_option=[パラメータ値]
 </div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/tree_data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.json"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/tree_data/ジャンル.json</a>
+
+<p>
+    「search_option」パラメータの値を指定することにより，取得するオントロジー要素を変更できる．
+    以下に，プロパティに関連するオントロジー要素を取得する際の「search_option」パラメータの値を示す．
 </p>
 
 <br/>
 
-<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
-<h4>HTML</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">property</span>/<span style="color: red;">page</span>/[プロパティ名].html
+<div style="padding-left: 2em;">
+    <table class="manual_table">
+        <tr>
+            <th>プロパティに関連するオントロジー要素</th>
+            <th>search_optionパラメータ値</th>
+        </tr>
+        <tr>
+            <td>検索プロパティを主語リソースとするステートメント</td>
+            <td>exact_match</td>
+        </tr>
+        <tr>
+            <td>検索プロパティの定義域</td>
+            <td>domain_classes_of_property</td>
+        </tr>
+        <tr>
+            <td>検索プロパティの値域</td>
+            <td>range_classes_of_property</td>
+        </tr>
+        <tr>
+            <td>逆関係のステートメント(検索プロパティを目的語リソースとするステートメント）</td>
+            <td>inverse_statements</td>
+        </tr>
+    </table>
 </div>
-<p>例： <a
-        href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/page/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.html"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/page/ジャンル.html</a>
+
+<h4>exact_matchの例</h4>
+
+<p>
+    ジャンルプロパティを主語リソースとするステートメントを取得．<br/><br/>
+
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.rdf"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/ジャンル.rdf</a>
 </p>
+<br/>
+
+<h4>domain_classes_of_propertyの例</h4>
+
+<p>
+    ジャンルプロパティの定義域を取得．<br/><br/>
+
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.rdf?search_option=domain_classes_of_property"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/ジャンル.rdf?search_option=domain_classes_of_property</a>
+</p>
+<br/>
+
+<h4>range_classes_of_propertyの例</h4>
+
+<p>
+    ジャンルプロパティの値域を取得．<br/><br/>
+
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%AB.rdf?search_option=range_classes_of_property"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/data/ジャンル.rdf?search_option=range_classes_of_property</a>
+</p>
+<br/>
+
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_property_list"></a>
+
+<h3>プロパティ一覧の取得</h3>
+
+<p>
+    以下の形式のURIにアクセスすると，プロパティ一覧を取得することができる．（JSON形式のみ対応）
+</p>
+
+<div class="url">
+    [BASE_URI]property_list?start=[]&limit=[]&order_by=[name_asc, name_desc, instance_count_asc,
+    instance_count_desc]&keyword=[プロパティ名]&search_option=[exact_match|any_match|starts_with|ends_with]
+</div>
+
+<h4>order_by（ソート順）</h4>
+<dl>
+    <dt>name_asc</dt>
+    <dd>プロパティ名 昇順</dd>
+    <dt>name_desc</dt>
+    <dd>プロパティ名 降順</dd>
+    <dt>instance_count_asc</dt>
+    <dd>プロパティを持つインスタンス数 昇順</dd>
+    <dt>instance_count_desc</dt>
+    <dd>プロパティを持つインスタンス数 降順</dd>
+</dl>
+<h4>keyword（プロパティ名）</h4>
+
+<p>
+    指定したプロパティ名またはプロパティ名の部分文字列とsearch_optionより，完全，部分，前方，後方一致検索を行う．
+</p>
+
+<h4>プロパティ一覧をプロパティを持つインスタンス数降順で取得する例</h4>
+<p>
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/property_list?search_option=exact_match&order_by=instance_count_desc&start=0&limit=50" rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property_list?search_option=exact_match&amp;order_by=instance_count_desc&amp;start=0&amp;limit=50</a>
+</p>
+<br/>
+
+<a name="get_property_of_instances_list"></a>
+
+<h3>プロパティを持つインスタンス一覧の取得</h3>
+
+<p>
+    以下の形式のURIにアクセスすると，propertyパラメータに指定したプロパティを持つインスタンス一覧を取得することができる．（JSON形式のみ対応）
+</p>
+
+<div class="url">
+    [BASE_URI]property_list?start=[]&limit=[]&property=[プロパティ名]
+</div>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
@@ -284,59 +545,100 @@
 <h3>インスタンスの取得</h3>
 
 <p>
-    以下のURIにアクセスすると，ラベル，Wikipedia記事へのリンク（foaf:pageプロパティの値），対象インスタンスが属するクラス，
-    対象インスタンスが属するクラスからルートクラスまでのパスを含むRDF/XMLデータが取得できる．</p>
+    以下の形式のURIにアクセスすると，インスタンスに関連するステートメントを取得することができる．
+</p>
 
-<h4>RDF/XMLデータ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">instance</span>/<span style="color: red;">data</span>/[インスタンス名].rdf
+<div class="url">
+    [BASE_URI]instance/[page|data]/インスタンス名.[rdf|n3|nt|json|jsonp]?search_option=[パラメータ値]
 </div>
-<p>例: <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.rdf"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/福澤諭吉.rdf</a>
+
+<p>
+    「search_option」パラメータの値を指定することにより，取得するオントロジー要素を変更できる．
+    以下に，インスタンスに関連するオントロジー要素を取得する際の「search_option」パラメータの値を示す．
 </p>
 
 <br/>
 
-<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
-
-<h4>JSON（テーブル用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">instance</span>/<span style="color: red;">table_data</span>/[インスタンス名].json
+<div style="padding-left: 2em;">
+    <table class="manual_table">
+        <tr>
+            <th>インスタンスに関連するオントロジー要素</th>
+            <th>search_optionパラメータ値</th>
+        </tr>
+        <tr>
+            <td>検索インスタンスを主語リソースとするステートメント</td>
+            <td>exact_match</td>
+        </tr>
+        <tr>
+            <td>インスタンスのタイプ</td>
+            <td>types_of_instance</td>
+        </tr>
+        <tr>
+            <td>逆関係のステートメント(検索インスタンスを目的語リソースとするステートメント）</td>
+            <td>inverse_statements</td>
+        </tr>
+    </table>
 </div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/table_data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.json"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/table_data/福澤諭吉.json</a>
+
+<h4>exact_matchの例</h4>
+
+<p>
+    福澤諭吉を主語リソースとするステートメントを取得．<br/><br/>
+
+    <a href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.rdf"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/福澤諭吉.rdf</a>
 </p>
-
-<h4>JSON（ツリー用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">instance</span>/<span style="color: red;">tree_data</span>/[インスタンス名].json
-</div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/tree_data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.json"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/tree_data/福澤諭吉.json</a>
-</p>
-
 <br/>
 
-<p>人間向けのHTMLページは，以下のURIから見ることができる．</p>
+<h4>types_of_instanceの例</h4>
 
-<h4>HTML</h4>
+<p>
+    福澤諭吉のタイプを取得．<br/><br/>
 
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">instance</span>/<span style="color: red;">page</span>/[インスタンス名].html
+    <a href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.rdf?search_option=types_of_instance"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/福澤諭吉.rdf?search_option=types_of_instance</a>
+</p>
+<br/>
+
+<h4>inverse_statementsの例</h4>
+
+<p>
+    福澤諭吉を目的語リソースとするステートメントを取得．<br/><br/>
+
+    <a href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.rdf?search_option=inverse_statements"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/data/福澤諭吉.rdf?search_option=inverse_statements</a>
+</p>
+<br/>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
+
+<a name="get_instance_list"></a>
+
+<h3>インスタンス一覧の取得</h3>
+
+<p>
+    以下の形式のURIにアクセスすると，インスタンス一覧を取得することができる．（JSON形式のみ対応）
+</p>
+
+<div class="url">
+    [BASE_URI]instance_list?start=[]&limit=[]&order_by=[name_asc,
+    name_desc]&keyword=[インスタンス名]&search_option=[exact_match|any_match|starts_with|ends_with]
 </div>
-<p>例: <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/page/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89.html"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/page/福澤諭吉.html</a>
+
+<h4>order_by（ソート順）</h4>
+<dl>
+    <dt>name_asc</dt>
+    <dd>インスタンス名 昇順</dd>
+    <dt>name_desc</dt>
+    <dd>インスタンス名 降順</dd>
+</dl>
+<h4>keyword（インスタンス名）</h4>
+
+<p>
+    指定したインスタンス名またはインスタンス名の部分文字列とsearch_optionより，完全，部分，前方，後方一致検索を行う．
 </p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
@@ -353,38 +655,25 @@
 <h4>RDF/XMLデータ</h4>
 
 <div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">data/queryString</span>?type=[クラス名]&amp;type=[クラス名]...
+        style="color: green;">class</span>/<span style="color: red;">data/q</span>?type=[クラス名]&amp;type=[クラス名]...
 </div>
 <p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/queryString?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/q?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
         rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/queryString?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物</a>
+    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/q?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物</a>
 </p>
 
 <br/>
 
-<p>同様に，テーブル用とツリー用のJSONデータは，以下のURIから取得できる．</p>
-
-<h4>JSON（テーブル用）データ</h4>
+<h4>JSONデータ</h4>
 
 <div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">table_data/queryString</span>?type=[クラス名]&amp;type=[クラス名]...
+        style="color: green;">class</span>/<span style="color: red;">data/q.json</span>?type=[クラス名]&amp;type=[クラス名]...
 </div>
 <p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/queryString?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
-        rel="external">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/table_data/queryString?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物
+        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/q.json?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
+        rel="external">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/q.json?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物
 </a></p>
-
-<h4>JSON（ツリー用）データ</h4>
-
-<div class="url">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/<span
-        style="color: green;">class</span>/<span style="color: red;">tree_data/queryString</span>?type=[クラス名]&amp;type=[クラス名]...
-</div>
-<p>例： <a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/queryString?type=%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9&amp;type=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E5%87%BA%E8%BA%AB%E3%81%AE%E4%BA%BA%E7%89%A9"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/tree_data/queryString?type=慶應義塾大学の人物&amp;type=神奈川県出身の人物</a>
-</p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
@@ -395,105 +684,27 @@
 <p>RDFS推論ルールにより導きだされたステートメントの集合に対して，クラスおよびインスタンスを取得することができる．</p>
 
 <p>
-    例として，「文学作品」クラスのインスタンス取得について説明する．「文学作品」クラスには，日本語Wikipediaオントロジーにはインスタンスが直接定義されていないため，以下のURIにアクセスしても「文学作品」クラスのインスタンスを取得することはできない．</p>
-<br/>
-
-<p><a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf" rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf</a>
-</p>
-
-<p><a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/文学作品.html"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/文学作品.html</a>
-</p>
+    例として，「アナウンサー」クラスのインスタンス取得について説明する．「アナウンサー」クラスには，日本語Wikipediaオントロジーにはインスタンスが直接定義されていないため，以下のURIにアクセスしても「アナウンサー」クラスのインスタンスを取得することはできない．</p>
 <br/>
 
 <p>
-    しかしながら，「文学作品」クラスの下位クラスには「小説」クラスなどのインスタンスが定義されたクラスが存在し，RDFS推論ルールを用いることで，これら下位クラスで定義されたインスタンスも「文学作品」クラスのインスタンスであることを導き出すことができる．上記の「文学作品」クラスを表すURLに「inference_type=rdfs」オプションを追加することで，
-    RDFS推論ルールを用いて導き出したステートメントを取得することができ，結果として「文学作品」クラスのインスタンスを取得することができる．</p>
-<br/>
-
-<p><a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf?inference_type=rdfs"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/文学作品.rdf?inference_type=rdfs</a>
+    <a href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E3%82%A2%E3%83%8A%E3%82%A6%E3%83%B3%E3%82%B5%E3%83%BC.rdf?search_option=instances_of_class&limit=50&offset=0"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/アナウンサー.rdf?search_option=instances_of_class&amp;limit=50&amp;offset=0</a>
 </p>
 
-<p><a
-        href="http://hpcs01.comp.ae.keio.ac.jp:8080/wikipedia_ontology/class/page/文学作品.html?inference_type=rdfs"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/page/文学作品.html?inference_type=rdfs</a>
-</p>
-
-<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
-
-
-<a name="url_parameters"></a>
-
-<h3>URLパラメータ</h3>
-
-<p>サーバーサイドプログラムでは，以下のURLパラメータを実装している．</p>
-<dl>
-    <dt>start</dt>
-    <dd>このパラメータで指定した位置を開始ステートメントとして，limitパラメータで指定した数だけステートメントを返す．</dd>
-    <dt>limit</dt>
-    <dd>一度に返すステートメント数を指定する．</dd>
-    <dt>inference_type</dt>
-    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可能．</dd>
-    <dt>search_option</dt>
-    <dd>完全一致 (exact_match)，部分一致 (any_match)，前方一致 (starts_with)，後方一致
-        (ends_with)，兄弟クラスリスト (siblings)，1階層下のサブクラスリスト (sub_classes) 検索オプションのいずれかを指定できる．
-    </dd>
-</dl>
-
-<p>startとlimitパラメータの使用例として，以下のURLにアクセスすることで，
-    「慶應義塾大学の人物」クラスのインスタンスに関する500番目～600番目までの
-    ステートメントを取得することができる．JSONデータ（テーブル用とツリー用）については，下記URLの「data」を「table_data」または「tree_data」に書き換えることで
-    取得することができる．</p>
 <br/>
-
-<p><a
-        href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%A6%E3%81%AE%E4%BA%BA%E7%89%A9.rdf?start=500&amp;limit=100"
-        rel="external">
-    http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/慶應義塾大学の人物.rdf?start=500&amp;limit=100</a>
-</p>
-<br/>
-
-<p>search_optionパラメータの使用例として，「日本」をラベルに含むクラスを完全一致，部分一致，前方一致，後方一致で検索した結果を取得するためのURLを以下に示す．</p>
-<dl>
-    <dt>完全一致</dt>
-    <dd><a rel="external"
-           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=exact_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=exact_match</a>
-    </dd>
-    <dt>部分一致</dt>
-    <dd><a rel="external"
-           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=any_match">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=any_match</a>
-    </dd>
-    <dt>前方一致</dt>
-    <dd><a rel="external"
-           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=starts_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=starts_with</a>
-    </dd>
-    <dt>後方一致</dt>
-    <dd><a rel="external"
-           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/日本.rdf?search_option=ends_with">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/日本.rdf?search_option=ends_with</a>
-    </dd>
-</dl>
 
 <p>
-    クラス検索を行う際に，search_optionパラメータに，siblingsまたはsub_classesを指定すると，指定したクラスの兄弟クラスのリストまたは1階層下のサブクラスのリストを取得できる．以下に時代小説クラスの兄弟クラスリストおよび受賞者クラスの1階層下のサブクラスリストを示す．</p>
+    しかしながら，「アナウンサー」クラスの下位クラスには「日本のアナウンサー」クラスなどのインスタンスが定義されたクラスが存在し，RDFS推論ルールを用いることで，これら下位クラスで定義されたインスタンスも「アナウンサー」クラスのインスタンスであることを導き出すことができる．上記の「アナウンサー」クラスを表すURLに「inference_type=rdfs」オプションを追加することで，
+    RDFS推論ルールを用いて導き出したステートメントを取得することができ，結果として「アナウンサー」クラスのインスタンスを取得することができる．</p>
+<br/>
 
-<dl>
-    <dt>兄弟クラスリスト</dt>
-    <dd><a rel="external"
-           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/時代小説.rdf?search_option=siblings">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/時代小説.rdf?search_option=siblings</a>
-    </dd>
-    <dt>1階層下のサブクラスリスト</dt>
-    <dd><a rel="external"
-           href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/受賞者.rdf?search_option=sub_classes">http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/query/class/data/受賞者.rdf?search_option=sub_classes</a>
-    </dd>
-</dl>
+<p>
+    <a href="http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/%E3%82%A2%E3%83%8A%E3%82%A6%E3%83%B3%E3%82%B5%E3%83%BC.rdf?inference_type=rdfs&search_option=instances_of_class&limit=50&offset=0"
+       rel="external">
+        http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/data/アナウンサー.rdf?inference_type=rdfs&amp;search_option=instances_of_class&amp;limit=50&amp;offset=0</a>
+</p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
@@ -632,31 +843,35 @@ public static void main(String[] args) throws Exception {
 <h3>SPARQLによる検索</h3>
 
 <p>
-    以下のURLにqueryパラメータの値としてUTF-8エンコードしたSPARQLクエリを与えると，SPARQLによる検索結果を得ることができる．
+    以下のURLにqパラメータの値としてUTF-8エンコードしたSPARQLクエリを与えると，SPARQLによる検索結果を得ることができる．
 </p>
 
 <div style="widt: 600px; text-align: center; padding: 10px;">
-    <a href="http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology/sparql">
-        http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology/sparql
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/sparql">
+        http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/sparql
     </a>
 </div>
 
-<p>query以外のURLパラメータには以下が指定できる．</p>
+<p>q以外のURLパラメータには以下が指定できる．</p>
 
 <dl>
     <dt>inference_type</dt>
-    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可能．</dd>
+    <dd>推論器の種類を指定する．現状では「rdfs」のみ指定可．</dd>
     <dt>output</dt>
-    <dd>「xml」または「txt」を指定できる．</dd>
+    <dd>「xml」，「txt」，「json」を指定できる．</dd>
+    <dt>version</dt>
+    <dd>「2010_02_09」と「2010_11_14」の２種類のみ指定可．</dd>
 </dl>
 
 <p>例として，「福澤諭吉」をラベルとして持つインスタンスとそのタイプをXML形式で得るためのURLを以下に示す．</p>
 
 <div style="widt: 600px; text-align: center; padding: 10px;">
-    <a href="http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/sparql?query=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none">
-        http://hpcs01.comp.ae.keio.ac.jp:8081/wikipedia_ontology_search/sparql?query=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none
+    <a href="http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/sparql?q=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none">
+        http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/sparql?q=PREFIX++rdf:+%3Chttp://www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0APREFIX++rdfs:++%3Chttp://www.w3.org/2000/01/rdf-schema%23%3E%0A%0ASELECT+%3Finstance+%3Fclass%0AWHERE%0A{%0A++++%3Finstance+rdf:type+%3Fclass;%0A++++rdfs:label+%22%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89%22.%0A}&output=xml&inference_type=none
     </a>
 </div>
+
+<div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
 <a name="search_interface"></a>
 

@@ -28,7 +28,7 @@ function setURIField(id, uri) {
 
 function setSearchParams(params) {
     for (var key in params) {
-        //        alert("key: " + key + "->" + "value: " + params[key]);
+//        alert("key: " + key + "->" + "value: " + params[key]);
         var value = params[key];
         switch (key) {
             case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.resource_type:
@@ -44,7 +44,7 @@ function setSearchParams(params) {
                 selectSearchTargetRadioButton();
                 break;
             case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option:
-                Ext.getCmp("Resource_Search_Option").setValue(value);
+                resetSearchOptionList(value);
                 break;
             case WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version:
                 var versionOptionSelection = Ext.getCmp('Version_Option');
@@ -55,6 +55,12 @@ function setSearchParams(params) {
                     case WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.rdfs:
                         inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.rdfs;
                         Ext.getDom('use_inf_model').checked = true;
+//                        console.log("checked: " + true);
+                        break;
+                    default:
+                        inferenceType = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
+                        Ext.getDom('use_inf_model').checked = false;
+//                        console.log("checked: " + false);
                         break;
                 }
                 break;
@@ -80,6 +86,10 @@ function extractParametersFromURI(uri) {
     // default parameter
     params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target] = WIKIPEDIA_ONTOLOGY_SEARCH.searchTargetOptions.uri;
     params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option] = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type] = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
+    params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
+
     if (paramString != '&') {
         var paramSet = paramString.split("&");
         for (var i = 0; i < paramSet.length; i++) {
@@ -96,11 +106,6 @@ function extractParametersFromURI(uri) {
                 params[key] = value;
             }
         }
-    } else {
-        // default parameters
-        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option] = WIKIPEDIA_ONTOLOGY_SEARCH.searchOptions.exact_match;
-        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type] = WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.none;
-        params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.version] = WIKIPEDIA_ONTOLOGY_SEARCH.constants.CURRENT_WIKIPEDIA_ONTOLOGY_VERSION;
     }
     params[WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.uri] = uri;
 
@@ -519,8 +524,7 @@ function getQueryURIFromHistoryAndBookmarkRecord(keyword, record) {
     searchTargetType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_target);
     selectSearchTargetRadioButton();
     inferenceType = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.inference_type);
-
-    Ext.getDom('use_inf_model').checked = (inferenceType == WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptionLabels.rdfs);
+    Ext.getDom('use_inf_model').checked = (inferenceType === WIKIPEDIA_ONTOLOGY_SEARCH.inferenceOptions.rdfs);
 
     var searchOptionSelection = Ext.getCmp('Resource_Search_Option');
     var searchOption = record.get(WIKIPEDIA_ONTOLOGY_SEARCH.parameterKeys.search_option);
