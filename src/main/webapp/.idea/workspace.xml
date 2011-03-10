@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/js/Utilities.js" line="6" />
+    <bookmark url="file://$PROJECT_DIR$/search.html" line="36" />
+    <bookmark url="file://$PROJECT_DIR$/en_search.html" line="36" />
+    <bookmark url="file://$PROJECT_DIR$/search.html" line="60" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="38e1f8d7-6dbb-4e2a-98ad-dafae11a49ef" name="Default" comment="" />
-    <ignored path="webapp.iws" />
+    <list default="true" id="38e1f8d7-6dbb-4e2a-98ad-dafae11a49ef" name="Default" comment="" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="webapp.iws" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,58 +27,48 @@
   <component name="FavoritesManager">
     <favorites_list name="webapp" />
   </component>
-  <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="manual.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/manual.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="667" column="0" selection-start="23565" selection-end="23565" vertical-scroll-proportion="-0.7096774">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BookmarkPanel.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/widgets/BookmarkPanel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="87" column="0" selection-start="3293" selection-end="3293" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="StatementTablePanel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/widgets/StatementTablePanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="251" column="0" selection-start="7795" selection-end="7795" vertical-scroll-proportion="0.0">
+            <state line="238" column="0" selection-start="7788" selection-end="7788" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ResourceSearchPanel.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/widgets/ResourceSearchPanel.js">
+      <file leaf-file-name="Utilities.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/Utilities.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="105" column="36" selection-start="3759" selection-end="3759" vertical-scroll-proportion="0.4489796">
+            <state line="47" column="0" selection-start="1625" selection-end="1625" vertical-scroll-proportion="0.5994624">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InstanceListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/InstanceListPanel.js">
+      <file leaf-file-name="StatementSearchPanel.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/widgets/StatementSearchPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="0" selection-start="3195" selection-end="3195" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RegionClassesOfPropertyListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/RegionClassesOfPropertyListPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="0" selection-start="2486" selection-end="2486" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PropertiesOfRegionClassListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/PropertiesOfRegionClassListPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="0" selection-start="2509" selection-end="2509" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InstanceTypeListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/InstanceTypeListPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="0" selection-start="2111" selection-end="2111" vertical-scroll-proportion="0.0">
+            <state line="16" column="0" selection-start="642" selection-end="642" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -81,34 +77,43 @@
       <file leaf-file-name="SearchAction.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/actions/SearchAction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="109" column="0" selection-start="3883" selection-end="3883" vertical-scroll-proportion="0.0">
+            <state line="1" column="0" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HistoryPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/HistoryPanel.js">
+      <file leaf-file-name="JaResource.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/resources/JaResource.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="106" column="0" selection-start="3234" selection-end="3234" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/Constants.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="66" column="0" selection-start="3528" selection-end="3528" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StatementTabPanel.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/widgets/StatementTabPanel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="90" column="0" selection-start="2477" selection-end="2477" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="extjs_mystyle.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/my_resources/extjs_mystyle.css">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClassListPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/widgets/ClassListPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="0" selection-start="2067" selection-end="2067" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WikipediaOntologySearch.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/WikipediaOntologySearch.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="373" column="0" selection-start="10997" selection-end="10997" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -122,32 +127,32 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
-    <option name="GIT_EXECUTABLE" value="C:\Program Files (x86)\Git\bin\git.exe" />
     <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
+    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/js/widgets/TreePanel.js" />
-        <option value="$PROJECT_DIR$/js/Utilities.js" />
-        <option value="$PROJECT_DIR$/js/widgets/SearchPanel.js" />
-        <option value="$PROJECT_DIR$/js/actions/SearchAction.js" />
-        <option value="$PROJECT_DIR$/ext_resources/css/desktop.css" />
-        <option value="$PROJECT_DIR$/my_resources/extjs_mystyle.css" />
-        <option value="$PROJECT_DIR$/js/resources/JaResource.js" />
-        <option value="$PROJECT_DIR$/js/resources/EnResource.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/widgets/HistoryPanel.js" />
+        <option value="$PROJECT_DIR$/js/widgets/BookmarkPanel.js" />
+        <option value="$PROJECT_DIR$/js/Constants.js" />
         <option value="$PROJECT_DIR$/js/widgets/StatementSearchPanel.js" />
-        <option value="$PROJECT_DIR$/search.html" />
-        <option value="$PROJECT_DIR$/js/widgets/StatementTabPanel.js" />
-        <option value="$PROJECT_DIR$/js/widgets/ClassListPanel.js" />
-        <option value="$PROJECT_DIR$/js/WikipediaOntologySearch.js" />
-        <option value="$PROJECT_DIR$/js/widgets/InstanceTypeListPanel.js" />
-        <option value="$PROJECT_DIR$/js/widgets/StatementTablePanel.js" />
         <option value="$PROJECT_DIR$/js/widgets/ResourceSearchPanel.js" />
+        <option value="$PROJECT_DIR$/js/widgets/TreePanel.js" />
+        <option value="$PROJECT_DIR$/search.html" />
+        <option value="$PROJECT_DIR$/my_resources/extjs_mystyle.css" />
+        <option value="$PROJECT_DIR$/js/widgets/SPARQLPanel.js" />
+        <option value="$PROJECT_DIR$/js/resources/EnResource.js" />
+        <option value="$PROJECT_DIR$/js/resources/JaResource.js" />
+        <option value="$PROJECT_DIR$/my_resources/mystyle.css" />
+        <option value="$PROJECT_DIR$/manual.html" />
+        <option value="$PROJECT_DIR$/js/widgets/StatementTablePanel.js" />
+        <option value="$PROJECT_DIR$/js/Utilities.js" />
       </list>
     </option>
   </component>
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -201,20 +206,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="my_resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -255,56 +246,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="actions" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ext_resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ext_resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -312,14 +253,23 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="reference.settings.ide.settings.web.browsers" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="GoToClass.includeJavaFiles" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\t_morita\Documents\Dropbox\software_products\research\wikipedia_ontology_search\src\main\webapp\ext_resources\images" />
       <recent name="C:\Users\t_morita\Documents\Dropbox\software_products\research\wikipedia_ontology_search\src\main\webapp\ext_resources\css" />
-      <recent name="C:\Users\t_morita\Documents\Dropbox\software_products\research\wikipedia_ontology_search\src\main\webapp\js\lib" />
+      <recent name="$PROJECT_DIR$/my_resources/icons" />
+      <recent name="$PROJECT_DIR$/js/lib" />
+      <recent name="C:\Users\t_morita\Documents\Dropbox\software_products\research\wikipedia_ontology_search\src\main\webapp\js\widgets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\t_morita\Documents\Dropbox\software_products\research\wikipedia_ontology_search\src\main\webapp\js" />
     </key>
   </component>
   <component name="RunManager">
@@ -337,7 +287,6 @@
     <option name="USER" value="" />
     <option name="PASSWORD" value="" />
     <option name="LAST_MERGED_REVISION" />
-    <option name="UPDATE_RUN_STATUS" value="false" />
     <option name="MERGE_DRY_RUN" value="false" />
     <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
     <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
@@ -346,7 +295,8 @@
     <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
     <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
     <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <configuration useDefault="true">C:\Users\t_morita\AppData\Roaming\Subversion</configuration>
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="true">$USER_HOME$/.subversion_IDEA</configuration>
     <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
     <supportedVersion>125</supportedVersion>
   </component>
@@ -358,24 +308,44 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <frame x="1" y="1" width="1918" height="1116" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27433628" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24213333" sideWeight="0.71878076" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1922675" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19435737" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946809" sideWeight="0.26854753" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18244681" sideWeight="0.8056426" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2496" sideWeight="0.71878076" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24878837" sideWeight="0.7324974" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -391,6 +361,8 @@
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="LAST_COMMIT_MESSAGE" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
@@ -409,115 +381,125 @@
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="webapp" />
+        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="webapp" />
+        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+      </PATH_ELEMENT>
+    </PATH>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/resources/EnResource.js">
+    <entry file="file://$PROJECT_DIR$/ext_resources/css/xtheme-gray.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="0" selection-start="3947" selection-end="3947" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/StatementSearchPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="592" selection-end="592" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/resources/JaResource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="1657" column="0" selection-start="37914" selection-end="37914" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/search.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="0" selection-start="1900" selection-end="1900" vertical-scroll-proportion="-0.73333335">
+        <state line="88" column="0" selection-start="5186" selection-end="5186" vertical-scroll-proportion="-0.7096774">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/StatementTabPanel.js">
+    <entry file="file://$PROJECT_DIR$/my_resources/mystyle.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1335" selection-end="1335" vertical-scroll-proportion="0.0">
+        <state line="9" column="0" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Utilities.js">
+    <entry file="file://$PROJECT_DIR$/js/resources/EnResource.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="146" column="0" selection-start="4856" selection-end="4856" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/ClassListPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="0" selection-start="2067" selection-end="2067" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/WikipediaOntologySearch.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="373" column="0" selection-start="10997" selection-end="10997" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/InstanceListPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="0" selection-start="3195" selection-end="3195" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/RegionClassesOfPropertyListPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="0" selection-start="2486" selection-end="2486" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/PropertiesOfRegionClassListPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="0" selection-start="2509" selection-end="2509" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/InstanceTypeListPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="0" selection-start="2111" selection-end="2111" vertical-scroll-proportion="0.0">
+        <state line="22" column="0" selection-start="651" selection-end="651" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/widgets/HistoryPanel.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="281" column="0" selection-start="10055" selection-end="10055" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/widgets/SPARQLPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="163" column="0" selection-start="5838" selection-end="5838" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_resources/extjs_mystyle.css">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manual.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="667" column="0" selection-start="23565" selection-end="23565" vertical-scroll-proportion="-0.7096774">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/widgets/StatementTabPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="0" selection-start="2477" selection-end="2477" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/resources/JaResource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="0" selection-start="3234" selection-end="3234" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/actions/SearchAction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="0" selection-start="3883" selection-end="3883" vertical-scroll-proportion="0.0">
+        <state line="1" column="0" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="0" selection-start="3528" selection-end="3528" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/widgets/BookmarkPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="87" column="0" selection-start="3293" selection-end="3293" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/widgets/StatementTablePanel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="251" column="0" selection-start="7795" selection-end="7795" vertical-scroll-proportion="0.0">
+        <state line="238" column="0" selection-start="7788" selection-end="7788" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/widgets/ResourceSearchPanel.js">
+    <entry file="file://$PROJECT_DIR$/js/widgets/StatementSearchPanel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="36" selection-start="3759" selection-end="3759" vertical-scroll-proportion="0.4489796">
+        <state line="16" column="0" selection-start="642" selection-end="642" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Utilities.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="0" selection-start="1625" selection-end="1625" vertical-scroll-proportion="0.5994624">
           <folding />
         </state>
       </provider>
