@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title id="appTitle">Japanese Wikipedia Ontology Search Web Services</title>
+
+    <link rel="stylesheet" href="ext_resources/css/ext-all.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="ext_resources/css/xtheme-midnight.css" type="text/css"/>
+    <link rel="stylesheet" href="ext_resources/css/statusbar.css" type="text/css"/>
+    <link rel="stylesheet" href="ext_resources/css/desktop.css" type="text/css"/>
+    <link rel="stylesheet" href="my_resources/extjs_mystyle.css" type="text/css" media="all"/>
+
+    <!-- extjs libs-->
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("jquery", "1.5.1");</script>
+    <script type="text/javascript" src="js/lib/ext-jquery-adapter.js"></script>
+    <script type="text/javascript" src="js/lib/ecl.js"></script>
+    <script type="text/javascript" src="js/lib/ext-base.js"></script>
+    <script type="text/javascript" src="js/lib/ext-all.js"></script>
+    <script type="text/javascript" src="js/lib/StatusBar.js"></script>
+    <script type="text/javascript" src="js/lib/ext-lang-ja.js"></script>
+    <script type="text/javascript" src="js/lib/SliderTip.js"></script>
+    <script type="text/javascript" src="js/lib/SlidingPager.js"></script>
+    <script type="text/javascript" src="js/lib/ProgressBarPager.js"></script>
+    <script type="text/javascript" src="js/lib/TabCloseMenu.js"></script>
+    <script type="text/javascript" src="js/lib/Reorderer.js"></script>
+    <script type="text/javascript" src="js/lib/ToolbarReorderer.js"></script>
+    <script type="text/javascript" src="js/lib/ToolbarDroppable.js"></script>
+    <script type="text/javascript" src="js/lib/PagingMemoryProxy.js"></script>
+    <script type="text/javascript" src="js/lib/StartMenu.js"></script>
+    <script type="text/javascript" src="js/lib/TaskBar.js"></script>
+    <script type="text/javascript" src="js/lib/Desktop.js"></script>
+    <script type="text/javascript" src="js/lib/App.js"></script>
+    <script type="text/javascript" src="js/lib/Module.js"></script>
+    <script type="text/javascript" src="js/lib/CheckColumn.js"></script>
+    <!-- my libs-->
+    <script type="text/javascript" src="js/resources/EnResource.js"></script>
+    <script type="text/javascript" src="js/Constants.js"></script>
+    <script type="text/javascript" src="js/Utilities.js"></script>
+    <script type="text/javascript" src="js/actions/SearchAction.js"></script>
+    <script type="text/javascript" src="js/widgets/BookmarkImportAndExportDialog.js"></script>
+    <script type="text/javascript" src="js/widgets/BookmarkPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/HelpPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/HistoryPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/ResourceSearchPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/ClassListPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/PropertyListPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/InstanceListPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/InstanceTypeListPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/PropertiesOfRegionClassListPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/RegionClassesOfPropertyListPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/NumberOfStatementsSelectionPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/OptionDialog.js"></script>
+    <script type="text/javascript" src="js/widgets/StatementSearchPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/SourcePanel.js"></script>
+    <script type="text/javascript" src="js/widgets/StatementTablePanel.js"></script>
+    <script type="text/javascript" src="js/widgets/StatementTabPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/TreePanel.js"></script>
+    <script type="text/javascript" src="js/widgets/StatisticsInformationPanel.js"></script>
+    <script type="text/javascript" src="js/widgets/SPARQLPanel.js"></script>
+    <script type="text/javascript" src="js/WikipediaOntologySearch.js"></script>
+</head>
+<body scroll="no">
+
+<div id="x-desktop">
+
+    <dl id="x-shortcuts">
+        <dt id="statement-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Statement</div>
+            </a>
+        </dt>
+        <dt id="class-list-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Class List</div>
+            </a>
+        </dt>
+        <dt id="tree-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Class Tree</div>
+            </a>
+        </dt>
+        <dt id="property-list-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Property List</div>
+            </a>
+        </dt>
+        <dt id="instance-list-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Instance List</div>
+            </a>
+        </dt>
+        <dt id="sparql-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>SPARQL</div>
+            </a>
+        </dt>
+        <dt id="bookmark-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Bookmark</div>
+            </a>
+        </dt>
+
+        <dt id="history-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>History</div>
+            </a>
+        </dt>
+        <dt id="source-win-shortcut">
+            <a href="#"><img src="ext_resources/images/s.gif"/>
+
+                <div>Source Code</div>
+            </a>
+        </dt>
+    </dl>
+</div>
+
+<div id="ux-taskbar">
+    <div id="ux-taskbar-start"></div>
+    <div id="ux-taskbuttons-panel"></div>
+    <div class="x-clear"></div>
+</div>
+
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-11577244-1");
+        pageTracker._trackPageview();
+    } catch(err) {
+    }</script>
+
+</body>
+</html>
+
+

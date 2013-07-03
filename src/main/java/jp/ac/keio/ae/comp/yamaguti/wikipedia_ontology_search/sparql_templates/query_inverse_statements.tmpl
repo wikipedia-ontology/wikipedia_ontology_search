@@ -1,0 +1,11 @@
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  owl: <http://www.w3.org/2002/07/owl#>
+PREFIX  wikiont_class:  <http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/class/>
+PREFIX  wikiont_property:  <http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/property/>
+PREFIX  wikiont_instance:  <http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/instance/>
+
+SELECT ?s ?p
+WHERE {
+	?s ?p $RESOURCE .
+}

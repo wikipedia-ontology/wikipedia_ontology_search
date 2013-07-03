@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title></title>
+</head>
+<body>
+
+<wicket:extend>
+
+    <h1><img wicket:id="resource_icon" src="#"/> <span wicket:id="title">Resource Name</span></h1>
+
+    <div style="text-align: right;">
+        <a wicket:id="html_url" href="#"><img wicket:id="html_icon" src="#" alt="HTML Icon"/>HTML</a>
+        <a wicket:id="xml_url" href="#"><img wicket:id="rdf_icon" src="#" alt="RDF Icon"/>XML</a>
+        <a wicket:id="n3_url" href="#"><img wicket:id="rdf_icon" src="#" alt="RDF Icon"/>N3</a>
+        <a wicket:id="nt_url" href="#"><img wicket:id="rdf_icon" src="#" alt="RDF Icon"/>N-Triples</a>
+        <a wicket:id="json_grid_url" href="#"><img wicket:id="grid_icon" src="#" alt="Table Icon"/>JSON(Grid)</a>
+        <a wicket:id="json_tree_url" href="#"><img wicket:id="tree_icon" src="#" alt="Tree Icon"/>JSON(Tree)</a>
+        [<a wicket:id="inference_type" href="#"></a>]
+    </div>
+
+    <h3>URI</h3>
+    <ul>
+        <li><a wicket:id="page_uri" href="#">Page URI</a></li>
+    </ul>
+
+    <div wicket:id="instance_list_block" style="padding-left: 2em;">
+        <h3>インスタンス一覧 </h3>
+
+        <div>
+            Results: <span wicket:id="start">1</span> – <span wicket:id="end">50</span> of <span
+                wicket:id="instance_count">50</span>
+            <img src="#" wicket:id="indicator" style="display:none"/>
+        </div>
+
+        <ul>
+            <li wicket:id="instance_list"><a wicket:id="instance_uri" href="#">Instance Name</a></li>
+        </ul>
+        <div wicket:id="paging">1,2</div>
+    </div>
+
+<span wicket:id="property_list">
+<span wicket:id="property_and_value_list_block">
+<h3><a wicket:id="property_uri" href="#">Property Name</a></h3>
+<ul>
+    <li wicket:id="property_and_value_list">
+	    <span wicket:id="resource_object_block">
+	        <a wicket:id="resource_object_uri" href="#">Resource Object Name</a>
+       </span>
+       <span wicket:id="literal_object_block">
+	        <span wicket:id="literal_object_name">Literal Object Name</span>
+       </span>
+    </li>
+</ul>
+</span>
+</span>
+
+</wicket:extend>
+
+</body>
+</html>

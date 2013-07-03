@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+    <div wicket:id="confirmDialog"></div>
+    <h1>SPARQLによるWikipediaオントロジーの検索</h1>
+    <form wicket:id="sparql_query_form" method="get">
+        <fieldset>
+            <legend>SPARQL Query Forms</legend>
+            <p>
+                <label for="author">作成者（任意）：</label>
+                <input type="text" id="userId" wicket:id="userId"/>
+            </p>
+            <p>
+                <label for="description">説明：<span class="error_message" wicket:id="description_error_message"></span></label>
+                <br/>
+                <textarea wicket:id="descriptionArea" rows="3" cols="90" wrap="soft"></textarea><br/>
+            </p>
+            <p>
+                <label for="query">クエリ：<span class="error_message" wicket:id="query_error_message"></span></label>
+                <br/>
+                <textarea wicket:id="queryArea" rows="15" cols="90" wrap="soft"></textarea><br/>
+            </p>
+            <p>
+                <input type="checkbox" id="inference_model_check" wicket:id="inference_model_check"/>
+                <label for="inference_model_check">推論モデルを利用する</label>
+                <select wicket:id="format"/>
+            </p>
+            <p>
+                <input type="submit" wicket:id="query" value="検索" class="submit"/>
+                <input type="submit" wicket:id="save" value="保存" class="submit"/>
+                <input type="submit" wicket:id="clear" value="クリア" class="submit"/>
+                <img src="#" wicket:id="button_indicator" style="display:none"/>
+            </p>
+        </fieldset>
+   </form>
+
+    <h2>登録されたSPARQLクエリの一覧</h2>
+        <form wicket:id="search_sparql_query_info_form">
+            <fieldset style="width: 350px;">
+                <legend>Registered Queries Search</legend>
+                <p>
+                    <input type="text" wicket:id="keyword"/>
+                    <input type="button" wicket:id="search_sparql_query_info" value="検索" class="submit"/>
+                    <input type="button" wicket:id="clear_search_sparql_query_info" value="クリア" class="submit"/>
+                </p>
+                <p>
+                    <input type="checkbox" wicket:id="search_description_check"/>
+                    <label for="search_description_check">説明</label>
+                    <input type="checkbox" wicket:id="search_query_check"/>
+                    <label for="search_query_check">クエリ</label>
+                    <input type="checkbox" wicket:id="search_author_check"/>
+                    <label for="search_author_check">作成者</label>
+                </p>
+            </fieldset>
+        </form>
+    <br/>
+    <div style="text-align: right;">
+        <a href="#" wicket:id="all_sparql_query_info_data">登録されたすべてのSPARQLクエリをダウンロード(CSV)</a>
+    </div>
+    <div wicket:id="sparql_query_info_container" class="sparql_query_info_container">
+    <div style="text-align: left;">
+        Results: <span wicket:id = "start">1</span> – <span wicket:id = "end">50</span> of <span wicket:id = "count">50</span>
+        <img src="#" wicket:id="indicator" style="display:none"/>
+        <br/>
+        <div wicket:id="sparql_query_info_paging">1,2</div>
+    </div>
+        <table class="sparql_query_info_table">
+        <thead>
+        <tr>
+            <th width="44%">クエリの説明</th>
+            <th width="10%">作成者</th>
+            <th width="15%">作成日</th>
+            <th width="15%">更新日</th>
+            <th width="8%">更新</th>
+            <th width="8%">削除</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr wicket:id="sparql_query_info_list">
+            <td class="description">
+                <a wicket:id = "rdf_url" href="#"><img wicket:id = "rdf_icon" src="#" alt = "RDF Icon"/></a>
+                <a wicket:id = "html_url" href="#"><img wicket:id = "html_icon" src="#" alt = "HTML Icon"/></a>
+                <a href="" wicket:id="query_link"><span wicket:id="description"></span></a>
+            </td>
+            <td wicket:id="create_userId"></td>
+            <td wicket:id="create_date"></td>
+            <td wicket:id="update_date"></td>
+            <td>
+                <img src="#" wicket:id="update_item_indicator" style="display:none"/>
+                <a href="#" wicket:id="update_button">更新</a>
+                <a href="#" wicket:id="update"></a>
+            </td>
+            <td>
+                <img src="#" wicket:id="delete_item_indicator" style="display:none"/>
+                <a href="#" wicket:id="delete_button">削除</a>
+                <a href="#" wicket:id="delete"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    </div>
+</wicket:extend>
+</body>
+</html>
