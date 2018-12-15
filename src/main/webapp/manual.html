@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
-    <title>マニュアル: 日本語Wikipediaオントロジー検索インタフェース＆Web APIs</title>
+    <title>マニュアル: 日本語Wikipediaオントロジー検索Webサービス</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="my_resources/mystyle.css" type="text/css" media="all"/>
     <link rel="stylesheet" href="ext_resources/css/prettify.css" type="text/css" media="all"/>
@@ -10,7 +10,7 @@
 
 <body onload="prettyPrint()">
 
-<div class="page-title">日本語Wikipediaオントロジー検索インタフェース＆Web APIs</div>
+<div class="page-title">日本語Wikipediaオントロジー検索Webサービス</div>
 <div class="menu">
     <ul>
         <li><a href="index.html"> ホーム </a></li>
@@ -27,7 +27,7 @@
 <h1>マニュアル</h1>
 
 <p class="page_description">
-    以下では，日本語Wikipediaオントロジー検索システム ver. 2011-03-10の使用方法について説明する．<br/>
+    以下では，日本語Wikipediaオントロジー(JWO)検索Webサービス ver. 2011-03-10の使用方法について説明する．<br/>
     (一部，前のバージョンの説明が含まれています．)
 </p>
 
@@ -39,7 +39,7 @@
 <ul>
     <li><a href="#operation_environment">動作環境</a></li>
     <li><a href="#system_overview">システム構成</a></li>
-    <li><a href="#server_side_program">サーバーサイドプログラム</a>
+    <li><a href="#jwo_web_apis">JWO Web APIs</a>
         <ul>
             <li><a href="#url_parameters">共通URLパラメータ</a></li>
             <li><a href="#get_class">クラスの取得</a></li>
@@ -98,7 +98,7 @@
 
 <h2>動作環境</h2>
 
-<p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.3.1</a>が動作可能な環境であれば，日本語Wikipediaオントロジー検索システムは実行可能である．
+<p>基本的には<a href="http://extjs.co.jp/" rel="external">ExtJS 3.3.1</a>が動作可能な環境であれば，JWO検索Webサービスは実行可能である．
     以下の環境で動作確認を行っている．</p>
 <ul>
     <li>Google Chrome 9.0.597.98</li>
@@ -133,42 +133,43 @@
 <br/>
 
 <p>
-    図1-1および1-2に日本語Wikipediaオントロジー検索システムとそのサーバの構成を示す．日本語Wikipediaオントロジー検索システムは，検索インターフェース，サーバーサイドプログラム，
-    日本語WikipediaオントロジーDBの3つから構成される．</p>
+    図1-1および1-2にJWO検索Webサービスとそのサーバの構成を示す．
+    JWO検索Webサービスは，JWO検索インターフェース，JWO Web APIs，
+    JWOデータベース(DB)の大きく分けて3つの部分から構成される．</p>
 
-<p>検索インターフェースは，<a href="http://extjs.co.jp/" rel="external">ExtJS</a>ライブラリを用いて実装されている． サーバーサイドプログラムは，
+<p>JWO検索インターフェースは，<a href="http://extjs.co.jp/" rel="external">ExtJS</a>ライブラリを用いて実装されている．
+    JWO Web APIsは，
     <a rel="external" href="http://wicket.apache.org/">Apache Wicket</a>，
     <a rel="external" href="http://jena.sourceforge.net/">Jena Semantic
         Web Framework for Java</a>，<a rel="external" href="https://activeobjects.dev.java.net/">ActiveObjects</a>，
     <a rel="external" href="http://github.com/gwhalin/Memcached-Java-Client">Memcached Java Client</a>，
     <a rel="external" href="http://openjena.org/TDB/">TDB - A SPARQL Database for Jena</a>，
     <a rel="external" href="http://www.h2database.com/html/main.html">H2 DB</a>を用いて実装し，
-    <a href="http://tomcat.apache.org/"
-       rel="external">Apache Tomcat</a>上で動作している． <a
-            href="http://wikipedia-ont.sourceforge.jp/" rel="external">日本語Wikipediaオントロジー</a>DBは，JenaおよびTDBのAPIを用いてあらかじめOWL形式の
+    Servletコンテナ <a href="http://jetty.codehaus.org/jetty/" rel="external">Jetty</a>上で動作している．
+     JWO DBは，JenaおよびTDBのAPIを用いてあらかじめOWL形式の
     日本語WikipediaオントロジーおよびインスタンスをTDB形式で格納している．</p>
 
 <p>
-    検索インターフェースでは，はじめにユーザが検索キーワードを入力すると，キーワードに関連する日本語Wikipediaオントロジー内の
+    JWO検索インターフェースでは，はじめにユーザが検索キーワードを入力すると，キーワードに関連する日本語Wikipediaオントロジー内の
     クラス，プロパティ，インスタンスを識別するURIに変換する．
-    サーバーサイドプログラムでは，クライアントプログラムから問い合わせのあったURIに関連するステートメントを日本語WikipediaオントロジーDBに問い合わせて，
-    検索インターフェースに，RDF/XMLデータとJSONデータ（テーブル用とツリー用）を返す．検索インターフェースは，
-    サーバーサイドプログラムから返されたJSONデータを元に，テーブルやツリーの構造でWikipediaオントロジーのクラス，プロパティ，インスタンスにおける
+    JWO Web APIsでは，クライアントプログラムから問い合わせのあったURIに関連するステートメントをJWO DBに問い合わせて，
+    JWO検索インターフェースに，RDF/XMLデータやJSONデータを返す．JWO検索インターフェースは，
+    JWO Web APIsから返されたJSONデータを元に，表形式や木構造でWikipediaオントロジーのクラス，プロパティ，インスタンスにおける
     ステートメントや階層関係を表示する．また，ソースコードとしてRDF/XMLデータを表示することもできる．</p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
 
-<a name="server_side_program"></a>
+<a name="jwo_web_apis"></a>
 
-<h2>サーバーサイドプログラム</h2>
+<h2>日本語Wikipediaオントロジー(JWO) Web APIs</h2>
 
-<p>サーバーサイドプログラムは以下の仕様に従って，日本語Wikipediaオントロジー内のクラスやインスタンスに関するRDF/XMLデータやJSONデータを返す．</p>
+<p>JWO Web APIsは以下の仕様に従って，日本語Wikipediaオントロジー内のクラスやインスタンスに関するRDF/XMLデータやJSONデータを返す．</p>
 
 <a name="url_parameters"></a>
 
 <h3>共通URLパラメータ</h3>
 
-<p>サーバーサイドプログラムでは，以下の共通URLパラメータを利用できる．</p>
+<p>JWO Web APIsは，以下の共通URLパラメータを利用できる．</p>
 <dl>
     <dt>search_target</dt>
     <dd>「uri」または「label」を指定可能．「uri」を指定した場合には，リソースURIのローカル名を検索対象とし，「label」を指定した場合には，「rdfs:label」プロパティの値を検索対象とする．</dd>
@@ -761,10 +762,10 @@ public static void main(String[] args) throws Exception {
 <br/>
 
 <p style="color: gray; font-size: 80%;">※
-    厳密には，http://hpcs01.comp.ae.keio.ac.jp/でサーバーサイドプログラムは動作しているため，
+    厳密には，http://hpcs01.comp.ae.keio.ac.jp/でJWO Web APIsは動作しているため，
     http://www.yamaguti.comp.ae.keio.ac.jp/wikipedia_ontology/からリダイレクトで
     http://hpcs01.comp.ae.keio.ac.jp/wikipedia_ontology/に飛ばしている．
-    将来的にサーバーサイドプログラムの場所は変更になる可能性がある．
+    将来的にJWO Web APIsの設置場所は変更になる可能性がある．
     また，リソースのURIについても，試験的に設定しているため，将来変更になる可能性がある．</p>
 
 <div class="to_table_of_contents"><a href="#table_of_contents">目次へ</a></div>
